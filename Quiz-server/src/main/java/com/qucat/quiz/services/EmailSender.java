@@ -9,18 +9,18 @@ import java.util.Properties;
 
 @Service
 public class EmailSender {
-    private final String username = "qucatsender@gmail.com";
-    private final String password = "tfvupauipqoymocc";
+    private final String LOGIN = "qucatsender@gmail.com";
+    private final String PASSWORD = "tfvupauipqoymocc";
     private Session session;
 
-    String[][] registrationMessageConstants = {
+    private final String[][] REGISTRATION_MESSAGE_CONSTANTS = {
             {"Підтвердження реєстрації на", "Добрий день",
                     "Підтвердьте свою адресу електронної пошти. Це допоможе відновити акаунт у разі втрати паролю",
                     "Підтвердьте адресу", "Якщо ви не очікували цього листа або отримали його помилково, проігноруйте його"},
             {"Confirm registration on", "Hi",
                     "Please confirm your email address. This will help to recover your account in case of password loss",
                     "Confirm the mail", "If you didn't expect this email or received it in error, please ignore it"}};
-    String[][] resetPasswordMessageConstants = {
+    private final String[][] RESET_PASSWORD_MESSAGE_CONSTANTS = {
             {"Скидання паролю ", "Добрий день",
                     "Для того щоб скинути пароль, натисніть на кнопку знизу",
                     "Скинути пароль", "Якщо ви не очікували цього листа або отримали його помилково, проігноруйте його"},
@@ -39,7 +39,7 @@ public class EmailSender {
         session = Session.getInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password);
+                        return new PasswordAuthentication(LOGIN, PASSWORD);
                     }
                 });
     }
@@ -47,7 +47,7 @@ public class EmailSender {
     public void sendResetPasswordMessage(String receiverEmailAddress, String username, String url, Lang lang) {
         try {
             Message message = generateMessage(receiverEmailAddress);
-            setContent(message, username, url, resetPasswordMessageConstants[lang.ordinal()]);
+            setContent(message, username, url, RESET_PASSWORD_MESSAGE_CONSTANTS[lang.ordinal()]);
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -57,7 +57,7 @@ public class EmailSender {
     public void sendRegistrationMessage(String receiverEmailAddress, String username, String url, Lang lang) {
         try {
             Message message = generateMessage(receiverEmailAddress);
-            setContent(message, username, url, registrationMessageConstants[lang.ordinal()]);
+            setContent(message, username, url, REGISTRATION_MESSAGE_CONSTANTS[lang.ordinal()]);
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -66,7 +66,7 @@ public class EmailSender {
 
     private Message generateMessage(String receiverEmailAddress) throws MessagingException {
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(username));
+        message.setFrom(new InternetAddress(LOGIN));
         message.setRecipients(
                 Message.RecipientType.TO,
                 InternetAddress.parse(receiverEmailAddress)
