@@ -1,6 +1,6 @@
 package com.qucat.quiz.repositories.entities;
 
-enum Role{
+public enum Role{
     USER,
     MODERATOR,
     ADMIN,
