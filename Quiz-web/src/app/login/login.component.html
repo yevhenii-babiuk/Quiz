@@ -1,0 +1,16 @@
+<div class="container">
+  <h3>Login</h3>
+  <div>
+    <input type="text" placeholder="login" #login>
+  </div>
+  <div>
+    <input type="password" placeholder="password" #password>
+  </div>
+  <button (click)="onLogin(login.value, password.value)" class="btn btn-success">
+    Login
+  </button>
+  <div>
+      <a routerLink="/registration">Sign up</a><br>
+      <a routerLink="/passwordRecovery">Password recovery</a>
+  </div>
+</div>
