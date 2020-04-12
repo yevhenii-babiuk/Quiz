@@ -1,32 +1,29 @@
 package com.qucat.quiz.services;
+
 import com.qucat.quiz.repositories.entities.Lang;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.io.FileInputStream;
 import java.util.Properties;
 
 @Service
+@PropertySource("classpath:application-mail-config.properties")
 public class EmailSender {
-    private final String LOGIN = "qucatsender@gmail.com";
-    private final String PASSWORD = "tfvupauipqoymocc";
-    private Session session;
 
-    private final String[][] REGISTRATION_MESSAGE_CONSTANTS = {
-            {"Підтвердження реєстрації на", "Добрий день",
-                    "Підтвердьте свою адресу електронної пошти. Це допоможе відновити акаунт у разі втрати паролю",
-                    "Підтвердьте адресу", "Якщо ви не очікували цього листа або отримали його помилково, проігноруйте його"},
-            {"Confirm registration on", "Hi",
-                    "Please confirm your email address. This will help to recover your account in case of password loss",
-                    "Confirm the mail", "If you didn't expect this email or received it in error, please ignore it"}};
-    private final String[][] RESET_PASSWORD_MESSAGE_CONSTANTS = {
-            {"Скидання паролю ", "Добрий день",
-                    "Для того щоб скинути пароль, натисніть на кнопку знизу",
-                    "Скинути пароль", "Якщо ви не очікували цього листа або отримали його помилково, проігноруйте його"},
-            {"Confirm reset password", "Hi",
-                    "To reset your password, click the button below",
-                    "Reset password", "If you didn't expect this email or received it in error, please ignore it"}};
+    @Value("${login}")
+    private String login;
+
+    @Value("${password}")
+    private String password;
+    private final Session session;
+
+    private final String[][] REGISTRATION_INPUT=new String[2][];
+    private final String[][] RESET_PASSWORD_INPUT = new String[2][];
 
 
     public EmailSender() {
@@ -39,15 +36,29 @@ public class EmailSender {
         session = Session.getInstance(properties,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(LOGIN, PASSWORD);
+                        return new PasswordAuthentication(login, password);
                     }
                 });
+
+
+        try {
+            FileInputStream fis = new FileInputStream("Quiz-server/src/main/resources/mailInput.xml");
+            Properties messageInput  = new Properties();
+            messageInput.loadFromXML(fis);
+            REGISTRATION_INPUT[0]=messageInput.getProperty("ukRegisterInput").split(";");
+            REGISTRATION_INPUT[1]= messageInput.getProperty("enRegisterInput").split(";");
+            RESET_PASSWORD_INPUT[0]=messageInput.getProperty("ukResetPasswordInput").split(";");
+            RESET_PASSWORD_INPUT[1]= messageInput.getProperty("enResetPasswordInput").split(";");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void sendResetPasswordMessage(String receiverEmailAddress, String username, String url, Lang lang) {
         try {
             Message message = generateMessage(receiverEmailAddress);
-            setContent(message, username, url, RESET_PASSWORD_MESSAGE_CONSTANTS[lang.ordinal()]);
+            setContent(message, username, url, RESET_PASSWORD_INPUT[lang.ordinal()]);
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -57,7 +68,7 @@ public class EmailSender {
     public void sendRegistrationMessage(String receiverEmailAddress, String username, String url, Lang lang) {
         try {
             Message message = generateMessage(receiverEmailAddress);
-            setContent(message, username, url, REGISTRATION_MESSAGE_CONSTANTS[lang.ordinal()]);
+            setContent(message, username, url, REGISTRATION_INPUT[lang.ordinal()]);
             Transport.send(message);
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -66,7 +77,7 @@ public class EmailSender {
 
     private Message generateMessage(String receiverEmailAddress) throws MessagingException {
         Message message = new MimeMessage(session);
-        message.setFrom(new InternetAddress(LOGIN));
+        message.setFrom(new InternetAddress(login));
         message.setRecipients(
                 Message.RecipientType.TO,
                 InternetAddress.parse(receiverEmailAddress)
