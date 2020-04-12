@@ -40,7 +40,6 @@ public class EmailSender {
                     }
                 });
 
-
         try {
             FileInputStream fis = new FileInputStream("Quiz-server/src/main/resources/mailInput.xml");
             Properties messageInput  = new Properties();
