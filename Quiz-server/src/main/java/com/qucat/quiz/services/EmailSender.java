@@ -24,7 +24,7 @@ public class EmailSender {
 
     private final String[][] REGISTRATION_INPUT=new String[2][];
     private final String[][] RESET_PASSWORD_INPUT = new String[2][];
-
+  
 
     public EmailSender() {
         Properties properties = new Properties();
@@ -76,6 +76,7 @@ public class EmailSender {
 
     private Message generateMessage(String receiverEmailAddress) throws MessagingException {
         Message message = new MimeMessage(session);
+
         message.setFrom(new InternetAddress(login));
         message.setRecipients(
                 Message.RecipientType.TO,
