@@ -1,6 +1,5 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.entities.Lang;
 import com.qucat.quiz.repositories.entities.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +11,10 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Map;
+import java.util.Objects;
+import java.util.TreeMap;
+
 
 @Slf4j
 @Service
@@ -23,29 +24,23 @@ public class EmailSender {
     @Value("${login}")
     private String login;
 
-    private final String PATH = "Quiz-server/src/main/resources/mail/";
+    private final String USERNAME_TOKEN = "&\\{userName}";
+    private final String URL_TOKEN = "&\\{url}";
+    private final String CONTENT_ENCODING = "text/html ; charset=utf-8";
 
     @Autowired
     private Session emailSession;
 
-
-    public void sendPasswordRecoveryMessage(String receiverEmailAddress, String username, String url, Lang lang) {
+    public void sendMessage(String receiverEmailAddress, String username, String url, MessageInfo.MessageInfoItem messageInfoItem) {
         try {
             Message message = generateMessage(receiverEmailAddress);
-            setContent(message, username, url,lang.getPasswordRecovery());
+            Map<String, String> replace = new TreeMap<>();
+            replace.put(USERNAME_TOKEN, username);
+            replace.put(URL_TOKEN, url);
+            setContent(message, messageInfoItem, replace);
             Transport.send(message);
         } catch (MessagingException | IOException e) {
             log.error("cant send reset password message", e);
-        }
-    }
-
-    public void sendRegistrationMessage(String receiverEmailAddress, String username, String url, Lang lang) {
-        try {
-            Message message = generateMessage(receiverEmailAddress);
-            setContent(message, username, url, lang.getRegistration());
-            Transport.send(message);
-        } catch (MessagingException | IOException e) {
-            log.error("cant send registration message", e);
         }
     }
 
@@ -59,12 +54,13 @@ public class EmailSender {
         return message;
     }
 
-    private void setContent(Message message, String userName, String url, MessageInfo messageInfo) throws MessagingException, IOException {
-        message.setSubject( messageInfo.getSubject()+ " Qucat");
-        String content = new String(Files.readAllBytes(Paths.get(PATH+messageInfo.getFilename())));
-        content = content.replaceFirst("&\\{url}", url);
-        content = content.replaceFirst("&\\{userName}", userName);
-        message.setContent(content, "text/html ; charset=utf-8");
+    private void setContent(Message message, MessageInfo.MessageInfoItem messageInfoItem, Map<String, String> replace) throws MessagingException, IOException {
+        message.setSubject(messageInfoItem.getSubject());
+        String content = new String(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(messageInfoItem.getFilename())).readAllBytes());
+        for (Map.Entry<String, String> entry : replace.entrySet()) {
+            content = content.replaceFirst(entry.getKey(), entry.getValue());
+        }
+        message.setContent(content, CONTENT_ENCODING);
     }
 
 }
