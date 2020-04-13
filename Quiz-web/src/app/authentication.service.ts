@@ -32,14 +32,14 @@ export class AuthenticationService {
   }
 
   resetPass(email: string){
-      return this.http.post<string>(`${this.url}/pass-reset`, email, this.httpOptions);
+      return this.http.post<string>(`${this.url}/pass-recovery`, email, this.httpOptions);
   }
 
   confirmResetPass (token: string) {
-    return this.http.get<boolean>(`${this.url}/pass-reset/${token}`);
+    return this.http.get<boolean>(`${this.url}/pass-recovery/${token}`);
   }
 
   createNewPass(token: string, newpass: string){
-    return this.http.put<string>(`${this.url}/pass-reset/${token}`, newpass, this.httpOptions);
+    return this.http.put<string>(`${this.url}/pass-recovery/${token}`, newpass, this.httpOptions);
   }
 }

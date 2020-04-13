@@ -9,9 +9,9 @@ import { AppComponent } from './app.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
 import { AlertComponent } from './alert/alert.component';
-import { PassResetComponent } from './pass-reset/pass-reset.component';
+import { PassRecoveryComponent } from './pass-recovery/pass-recovery.component';
 import { MailConfirmComponent } from './registration/mail-confirm/mail-confirm.component';
-import { PassResetConfirmComponent } from './pass-reset/pass-reset-confirm/pass-reset-confirm.component';
+import { PassRecoveryConfirmComponent } from './pass-recovery/pass-recovery-confirm/pass-recovery-confirm.component';
 
 @NgModule({
   declarations: [
@@ -19,9 +19,9 @@ import { PassResetConfirmComponent } from './pass-reset/pass-reset-confirm/pass-
     RegistrationComponent,
     LoginComponent,
     AlertComponent,
-    PassResetComponent,
+    PassRecoveryComponent,
     MailConfirmComponent,
-    PassResetConfirmComponent
+    PassRecoveryConfirmComponent
   ],
   imports: [
     BrowserModule,

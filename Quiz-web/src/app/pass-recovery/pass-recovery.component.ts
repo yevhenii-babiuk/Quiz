@@ -4,20 +4,20 @@ import { AuthenticationService } from '../authentication.service';
 import { AlertService } from '../alert.service';
 
 @Component({
-  selector: 'app-pass-reset',
+  selector: 'app-pass-recovery',
   template: `
-  <h3>Password reset</h3>
+  <h3>Password recovery</h3>
   <div>Please, enter your email to reset the password</div>
   <div>
     <input type="email" placeholder="email" #email>
   </div>
   <button (click)="reset(email.value)">
-    Register
+    Recover
   </button>
   `,
-  styleUrls: ['./pass-reset.component.css']
+  styleUrls: ['./pass-recovery.component.css']
 })
-export class PassResetComponent implements OnInit {
+export class PassRecoveryComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,

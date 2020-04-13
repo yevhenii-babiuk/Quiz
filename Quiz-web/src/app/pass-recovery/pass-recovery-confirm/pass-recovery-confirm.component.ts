@@ -8,11 +8,11 @@ import { AuthenticationService } from '../../authentication.service';
 import { AlertService } from '../../alert.service';
 
 @Component({
-  selector: 'app-pass-reset-confirm',
-  templateUrl: './pass-reset-confirm.component.html',
-  styleUrls: ['./pass-reset-confirm.component.css']
+  selector: 'app-pass-recovery-confirm',
+  templateUrl: './pass-recovery-confirm.component.html',
+  styleUrls: ['./pass-recovery-confirm.component.css']
 })
-export class PassResetConfirmComponent implements OnInit {
+export class PassRecoveryConfirmComponent implements OnInit {
 
   isConfirmed: boolean;
   token: string;
