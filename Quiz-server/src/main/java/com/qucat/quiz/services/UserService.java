@@ -20,16 +20,15 @@ public class UserService {
         int id = 5;//todo DAO add user
         String token = UUID.randomUUID().toString();
         //todo add token in DB
-        emailSender.sendRegistrationMessage(user.getMail(), user.getLogin(), "http://localhost:8080/registration/"+token, Lang.UK);//todo get Lang, set url
+        emailSender.sendRegistrationMessage(user.getMail(), user.getLogin(), "http://localhost:8080/registration/"+token, Lang.EN);//todo get Lang, set url
         return true;
     }
 
-    public boolean restorePassword(String mail){
+    public boolean passwordRecovery(String mail){
         User user=new User("name", "sname", "login", mail, "pass", Role.USER);//todo get from DAO
         String token = UUID.randomUUID().toString();
         //todo add to DAO
-        emailSender.sendResetPasswordMessage(user.getMail(), user.getLogin(),"http://localhost:8080/restore/"+token, Lang.UK);//todo get Lang, set url
-
+        emailSender.sendPasswordRecoveryMessage(user.getMail(), user.getLogin(),"http://localhost:8080/restore/"+token, Lang.EN);//todo get Lang, set url
         return true;
     }
 
@@ -38,7 +37,7 @@ public class UserService {
         return true;
     }
 
-    public boolean openRestorePasswordToken(String token){
+    public boolean openPasswordRecoveryToken(String token){
         System.out.println(token);//todo
         return true;
     }
