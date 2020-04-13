@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../authentication.service';
+import { AlertService } from '../alert.service';
 
 import { User } from '../models/user';
 
@@ -14,6 +15,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private alertService: AlertService,
     private router: Router
   ) { }
 
@@ -22,7 +24,10 @@ export class LoginComponent implements OnInit {
 
   onLogin(login: string, password: string) {
     login = login.trim();
-    if (!login) { return; }
+    if (!login) {
+      this.alertService.error("Login is empty!");
+      return;
+    }
 
     this.authenticationService.login({login, password} as User)
     .subscribe(
@@ -30,7 +35,8 @@ export class LoginComponent implements OnInit {
                    this.router.navigate(['/']);
                },
                error => {
-                   console.log("Error while login");
+                   this.alertService.error("Error while login");
+                   console.log(error);
                });
   }
 

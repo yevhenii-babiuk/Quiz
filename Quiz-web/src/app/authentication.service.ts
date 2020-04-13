@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+// import { Observable, of } from 'rxjs';
+// import { catchError, tap } from 'rxjs/operators';
 
 import { User } from './models/user';
 
@@ -8,7 +10,7 @@ import { User } from './models/user';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  private url = 'http://localhost:8080'
+  private url = 'http://localhost:8080/api/v1'
 
   httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -25,4 +27,19 @@ export class AuthenticationService {
         return this.http.post<User>(`${this.url}/registration`, user, this.httpOptions);
     }
 
+  confirmMail (token: string) {
+    return this.http.get<boolean>(`${this.url}/registration/${token}`);
+  }
+
+  resetPass(email: string){
+      return this.http.post<string>(`${this.url}/pass-reset`, email, this.httpOptions);
+  }
+
+  confirmResetPass (token: string) {
+    return this.http.get<boolean>(`${this.url}/pass-reset/${token}`);
+  }
+
+  createNewPass(token: string, newpass: string){
+    return this.http.put<string>(`${this.url}/pass-reset/${token}`, newpass, this.httpOptions);
+  }
 }

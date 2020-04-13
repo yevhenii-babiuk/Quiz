@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../authentication.service';
+import { AlertService } from '../alert.service';
 
 import { User } from '../models/user';
 
@@ -11,9 +12,11 @@ import { User } from '../models/user';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
+  error: string;
 
   constructor(
     private authenticationService: AuthenticationService,
+    private alertService: AlertService,
     private router: Router
   ) { }
 
@@ -23,7 +26,10 @@ export class RegistrationComponent implements OnInit {
   register(login: string, firstname: string, lastname: string,
             email: string, password: string, confirmPassword: string){
 
-    if (password !== confirmPassword) { return; }
+    if (password !== confirmPassword) {
+      this.alertService.error("Passwords don't match!");
+      return;
+    }
 
     let regUser: User = {
       firstName: firstname,
@@ -35,12 +41,14 @@ export class RegistrationComponent implements OnInit {
 
     this.authenticationService.register(regUser)
     .subscribe(
-               data => {
-                   this.router.navigate(['/login']);
-               },
-               error => {
-                   console.log("Error while registration");
-               });
+      data => {
+        this.alertService.success('Registration successful', true);
+        this.router.navigate(['api/v1/login']);
+      },
+      error => {
+        this.alertService.error("Error while registration!");
+        console.log(error);
+      });
   }
 
 }
