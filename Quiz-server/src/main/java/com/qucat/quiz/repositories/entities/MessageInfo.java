@@ -1,24 +1,42 @@
 package com.qucat.quiz.repositories.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
+import java.util.List;
+
+import static java.util.Arrays.asList;
+
 public enum MessageInfo {
-    registrationUA("registration-ua.html", "Підтвердження реєстрації на "),
-    registrationEN("registration-en.html", "Confirm registration on "),
-    passwordRecoverUA("passwordRecovery-ua.html", "Скидання паролю на "),
-    passwordRecoverEN("passwordRecovery-en.html", "Confirm reset password on ");
+    registration(
+            new MessageInfoItem(Lang.UA, "mail/registration-ua.html", "Підтвердження реєстрації на QuCat"),
+            new MessageInfoItem(Lang.EN, "mail/registration-en.html", "Confirm registration on QuCat")
+    ),
+    passwordRecover(
+            new MessageInfoItem(Lang.UA, "mail/passwordRecovery-ua.html", "Скидання паролю на QuCat"),
+            new MessageInfoItem(Lang.EN, "mail/passwordRecovery-en.html", "Confirm reset password on QuCat")
+    );
 
-    private final String filename;
-    private final String subject;
 
-    MessageInfo(String filename, String subject) {
-        this.filename = filename;
-        this.subject = subject;
+    private List<MessageInfoItem> items;
+
+    MessageInfo(MessageInfoItem... items) {
+        this.items = asList(items);
     }
 
-    public String getFilename() {
-        return filename;
+    public MessageInfoItem findByLang(Lang lang) {
+        return items
+                .stream()
+                .filter(item -> item.getLang().equals(lang))
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Failed to find template by lang: " + lang.name()));
     }
 
-    public String getSubject() {
-        return subject;
+    @Data
+    @AllArgsConstructor
+    public static class MessageInfoItem {
+        private Lang lang;
+        private final String filename;
+        private final String subject;
     }
 }

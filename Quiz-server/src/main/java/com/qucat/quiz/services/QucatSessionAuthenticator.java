@@ -19,6 +19,6 @@ public class QucatSessionAuthenticator extends Authenticator {
 
     @Override
     protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(login,password);
+        return new PasswordAuthentication(login, password);
     }
 }
