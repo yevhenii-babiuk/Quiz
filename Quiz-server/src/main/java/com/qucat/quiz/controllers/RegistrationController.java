@@ -2,33 +2,26 @@ package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Role;
 import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.services.ServiceAddUser;
+import com.qucat.quiz.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@CrossOrigin
+@RestController
+@RequestMapping("api/v1/registration")
 public class RegistrationController {
-
     @Autowired
-    private ServiceAddUser addUserService;
+    private UserService userService;
 
-    @GetMapping("/registration")
-    public String registration() {
-        return "forward:/index.html";
-    }
-
-    @PostMapping(value = "/registration")
-    @ResponseBody
+    @PostMapping
     public boolean registerUser(@RequestBody User user) {
         //TODO: user.setRole
-        addUserService.addUser(user);
         return true;
     }
 
-    @GetMapping("/registration/{token}")
-    public String confirmRegistration(@PathVariable String token) {
-        //TODO: confirm registration
-        return "forward:/index.html";
+    @GetMapping("{token}")
+    public boolean confirmRegistration(@PathVariable String token) {
+        return userService.openRegisterToken(token);
     }
 }
