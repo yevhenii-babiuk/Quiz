@@ -24,14 +24,14 @@ public class UserService {
         return true;
     }
 
-    public boolean restorePassword(String mail){
+/*    public boolean restorePassword(String mail){
         User user=new User("name", "sname", "login", mail, "pass", Role.USER);//todo get from DAO
         String token = UUID.randomUUID().toString();
         //todo add to DAO
         emailSender.sendResetPasswordMessage(user.getMail(), user.getLogin(),"http://localhost:8080/restore/"+token, Lang.UK);//todo get Lang, set url
 
         return true;
-    }
+    }*/
 
     public boolean openRegisterToken(String token){
         System.out.println(token);//todo
