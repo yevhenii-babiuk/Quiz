@@ -122,6 +122,32 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserByMail(String mail) {
+        User user;
+        try {
+            user = jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?;",
+                    new Object[]{mail},
+                    (resultSet, rowNum) ->
+                            new User(resultSet.getInt("user_id"),
+                                    resultSet.getString("first_name"),
+                                    resultSet.getString("second_name"),
+                                    resultSet.getString("login"),
+                                    resultSet.getString("email"),
+                                    resultSet.getString("password"),
+                                    resultSet.getString("profile"),
+                                    resultSet.getDate("registered_date"),
+                                    resultSet.getInt("total_score"),
+                                    UserAccountStatus.valueOf(resultSet.getString("status").toUpperCase()),
+                                    Role.valueOf(resultSet.getString("role").toUpperCase())
+                            )
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return user;
+    }
+
+    @Override
     public void update(User user) {
         String updateQuery = "UPDATE users SET " +
                 "login = ?, password = ?, email = ?, status = cast(? AS profile_status), " +

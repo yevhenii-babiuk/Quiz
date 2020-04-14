@@ -40,7 +40,7 @@ public class EmailSender {
             setContent(message, messageInfoItem, replace);
             Transport.send(message);
         } catch (MessagingException | IOException e) {
-            log.error("cant send reset password message", e);
+            log.error("cant send message", e);
         }
     }
 
