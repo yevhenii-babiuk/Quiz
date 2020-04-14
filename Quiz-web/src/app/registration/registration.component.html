@@ -1,0 +1,27 @@
+<div class="container">
+  <h3>Registration</h3>
+  <div>
+    <input type="text" placeholder="login" #login>
+  </div>
+  <div>
+    <input type="text" placeholder="firstname" #firstname>
+  </div>
+  <div>
+    <input type="text" placeholder="lastname" #lastname>
+  </div>
+  <div>
+    <input type="email" placeholder="email" #email>
+  </div>
+  <div>
+    <input type="password" placeholder="password" #password>
+  </div>
+  <div>
+    <input type="password" placeholder="confirm password" #confirmPassword>
+  </div>
+  <button (click)="register(login.value, firstname.value, lastname.value,
+                            email.value, password.value, confirmPassword.value)"
+          class="btn btn-success">
+    Register
+  </button>
+  <alert></alert>
+</div>
