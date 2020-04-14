@@ -1,10 +1,8 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.repositories.entities.Role;
 import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
@@ -17,7 +15,7 @@ public class RegistrationController {
     @PostMapping
     public boolean registerUser(@RequestBody User user) {
         //TODO: user.setRole
-        return true;
+        return userService.addUser(user);
     }
 
     @GetMapping("{token}")
