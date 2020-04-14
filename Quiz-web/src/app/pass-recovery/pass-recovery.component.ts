@@ -14,6 +14,7 @@ import { AlertService } from '../alert.service';
   <button (click)="reset(email.value)">
     Recover
   </button>
+    <alert></alert>
   `,
   styleUrls: ['./pass-recovery.component.css']
 })
