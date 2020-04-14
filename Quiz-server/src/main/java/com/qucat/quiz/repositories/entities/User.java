@@ -1,43 +1,26 @@
 package com.qucat.quiz.repositories.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+
+import java.util.Date;
+
+@Data
+@Builder
+@AllArgsConstructor
 public class User {
+
+    private int userId;
     private String firstName;
     private String secondName;
     private String login;
     private String mail;
     private String password;
+    private String profile;
+    private Date registrationDate;
+    private int score;
+    private UserAccountStatus status;
     private Role role;
 
-    public User(String firstName, String secondName, String login, String mail, String password, Role role) {
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.login = login;
-        this.mail = mail;
-        this.password = password;
-        this.role = role;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public String getLogin() {
-        return login;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public Role getRole() {
-        return role;
-    }
 }
