@@ -3,12 +3,16 @@ package com.qucat.quiz.repositories.dao.implementation;
 import com.qucat.quiz.repositories.dao.TokenDao;
 import com.qucat.quiz.repositories.entities.Token;
 import com.qucat.quiz.repositories.entities.TokenType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Slf4j
+@Repository
 public class TokenDaoImpl implements TokenDao {
 
 

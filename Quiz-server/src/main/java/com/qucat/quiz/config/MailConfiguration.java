@@ -4,6 +4,9 @@ import com.qucat.quiz.services.QucatSessionAuthenticator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 import javax.mail.Session;
 import java.io.IOException;
@@ -26,4 +29,10 @@ public class MailConfiguration {
         }
         return Session.getInstance(properties, sessionAuthenticator);
     }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
 }
