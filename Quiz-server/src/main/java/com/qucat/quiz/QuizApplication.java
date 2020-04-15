@@ -13,5 +13,15 @@ public class QuizApplication {
         SpringApplication.run(QuizApplication.class, args);
     }
 
+    @Configuration
+    static class ApplicationSecurity extends WebSecurityConfigurerAdapter {
+
+        @Override
+        public void configure(WebSecurity web) throws Exception {
+            web
+                    .ignoring()
+                    .antMatchers("/**");
+        }
+    }
 }
 

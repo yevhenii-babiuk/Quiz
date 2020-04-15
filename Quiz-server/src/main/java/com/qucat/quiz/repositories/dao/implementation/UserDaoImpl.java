@@ -14,6 +14,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
+import java.sql.Types;
 import java.util.List;
 
 @Slf4j
@@ -70,9 +71,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public int save(User user) {
-        String insertQuery = "INSERT INTO users " +
-                "(login, password, email, status, role, first_name, second_name, registered_date, profile, total_score) " +
-                "VALUES (?, ?, ?, cast(? AS profile_status), cast(? AS user_role), ?, ?, NOW(), ?, ?);";
+        String insertQuery = "INSERT INTO users "
+                + "(login, password, email, status, role, first_name, second_name, registered_date, profile, total_score) "
+                + "VALUES (?, ?, ?, cast(? AS profile_status), cast(? AS user_role), ?, ?, NOW(), ?, ?);";
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {
@@ -81,12 +82,24 @@ public class UserDaoImpl implements UserDao {
                 preparedStatement.setString(1, user.getLogin());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setString(3, user.getMail());
-                preparedStatement.setString(4, user.getStatus().name().toLowerCase());
-                preparedStatement.setString(5, user.getRole().name().toLowerCase());
+                preparedStatement.setString(4,
+                        user.getStatus() != null ? user.getStatus().name().toLowerCase()
+                                : UserAccountStatus.UNACTIVATED.name().toLowerCase());
+                preparedStatement.setString(5,
+                        user.getRole() != null ? user.getRole().name().toLowerCase()
+                                : Role.USER.name().toLowerCase());
                 preparedStatement.setString(6, user.getFirstName());
                 preparedStatement.setString(7, user.getSecondName());
-                preparedStatement.setString(8, user.getProfile());
-                preparedStatement.setInt(9, user.getScore());
+                if (user.getProfile() != null) {
+                    preparedStatement.setString(8, user.getProfile());
+                } else {
+                    preparedStatement.setNull(8, Types.VARCHAR);
+                }
+                if (user.getScore() != 0) {
+                    preparedStatement.setInt(9, user.getScore());
+                } else {
+                    preparedStatement.setNull(9, Types.INTEGER);
+                }
                 return preparedStatement;
             }, keyHolder);
         } catch (DuplicateKeyException e) {
