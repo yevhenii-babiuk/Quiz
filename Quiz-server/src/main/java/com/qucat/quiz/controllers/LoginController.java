@@ -13,8 +13,7 @@ public class LoginController {
     private UserService userService;
 
     @PostMapping
-    public boolean loginUser(@RequestBody User user) {
-        //TODO: login user
-        return true;
+    public User loginUser(@RequestBody User user) {
+        return userService.loginUser(user.getLogin(), user.getPassword());
     }
 }

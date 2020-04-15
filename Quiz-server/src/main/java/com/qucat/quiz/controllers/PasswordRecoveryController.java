@@ -23,7 +23,6 @@ public class PasswordRecoveryController {
 
     @PutMapping("{token}")
     public boolean createNewPass(@PathVariable String token, @RequestBody String password) {
-        //TODO: new pass
-        return true;
+        return userService.editPassword(token, password);
     }
 }
