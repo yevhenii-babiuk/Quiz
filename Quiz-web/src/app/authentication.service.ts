@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-// import { Observable, of } from 'rxjs';
+ import { Observable, of } from 'rxjs';
 // import { catchError, tap } from 'rxjs/operators';
 
 import { User } from './models/user';
@@ -18,8 +18,7 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) { }
 
-  login(user: User) {
-        console.log(user.login + " " + user.password);
+  login(user: User): Observable<User>{
         return this.http.post<User>(`${this.url}/login`, user, this.httpOptions);
     }
 
