@@ -41,7 +41,7 @@ public class UserService {
                 .userId(id)
                 .build();
         tokenDao.save(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "login/" + token, MessageInfo.passwordRecover.findByLang(Lang.EN));
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "login/" + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
         //todo get Lang, set url
         return true;
     }
@@ -57,7 +57,7 @@ public class UserService {
                 .userId(user.getUserId())
                 .build();
         tokenDao.save(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "pass-recovery/" + token, MessageInfo.passwordRecover.findByLang(Lang.EN));//todo get Lang
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "pass-recovery/" + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));//todo get Lang
         return true;
     }
 
