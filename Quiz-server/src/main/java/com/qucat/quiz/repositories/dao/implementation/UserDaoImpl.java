@@ -56,10 +56,12 @@ public class UserDaoImpl implements UserDao {
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setString(3, user.getMail());
                 preparedStatement.setString(4,
-                        user.getStatus() != null ? user.getStatus().name().toLowerCase()
+                        user.getStatus() != null
+                                ? user.getStatus().name().toLowerCase()
                                 : UserAccountStatus.UNACTIVATED.name().toLowerCase());
                 preparedStatement.setString(5,
-                        user.getRole() != null ? user.getRole().name().toLowerCase()
+                        user.getRole() != null
+                                ? user.getRole().name().toLowerCase()
                                 : Role.USER.name().toLowerCase());
                 preparedStatement.setString(6, user.getFirstName());
                 preparedStatement.setString(7, user.getSecondName());
