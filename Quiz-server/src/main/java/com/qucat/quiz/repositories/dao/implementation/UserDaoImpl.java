@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.Types;
+import java.sql.*;
 import java.util.List;
 
 @Slf4j
@@ -30,21 +30,7 @@ public class UserDaoImpl implements UserDao {
         User user;
         try {
             user = jdbcTemplate.queryForObject("SELECT * FROM users WHERE user_id=?;",
-                    new Object[]{id},
-                    (resultSet, rowNum) ->
-                            new User(resultSet.getInt("user_id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("second_name"),
-                                    resultSet.getString("login"),
-                                    resultSet.getString("email"),
-                                    resultSet.getString("password"),
-                                    resultSet.getString("profile"),
-                                    resultSet.getDate("registered_date"),
-                                    resultSet.getInt("total_score"),
-                                    UserAccountStatus.valueOf(resultSet.getString("status").toUpperCase()),
-                                    Role.valueOf(resultSet.getString("role").toUpperCase())
-                            )
-            );
+                    new Object[]{id}, new UserRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -53,20 +39,7 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public List<User> getAll() {
-        return jdbcTemplate.query("SELECT * FROM users;", (resultSet, rowNum) ->
-                new User(resultSet.getInt("user_id"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("second_name"),
-                        resultSet.getString("login"),
-                        resultSet.getString("email"),
-                        resultSet.getString("password"),
-                        resultSet.getString("profile"),
-                        resultSet.getDate("registered_date"),
-                        resultSet.getInt("total_score"),
-                        UserAccountStatus.valueOf(resultSet.getString("status").toUpperCase()),
-                        Role.valueOf(resultSet.getString("role").toUpperCase())
-                )
-        );
+        return jdbcTemplate.query("SELECT * FROM users;", new UserRowMapper());
     }
 
     @Override
@@ -78,7 +51,7 @@ public class UserDaoImpl implements UserDao {
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement preparedStatement = connection
-                        .prepareStatement(insertQuery);
+                        .prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, user.getLogin());
                 preparedStatement.setString(2, user.getPassword());
                 preparedStatement.setString(3, user.getMail());
@@ -105,7 +78,7 @@ public class UserDaoImpl implements UserDao {
         } catch (DuplicateKeyException e) {
             return -1;
         }
-        return (int) keyHolder.getKey();
+        return (int) keyHolder.getKeys().get("user_id");
     }
 
     @Override
@@ -113,20 +86,7 @@ public class UserDaoImpl implements UserDao {
         User user;
         try {
             user = jdbcTemplate.queryForObject("SELECT * FROM users WHERE login=? AND password=?;",
-                    new Object[]{login, password},
-                    (resultSet, rowNum) ->
-                            new User(resultSet.getInt("user_id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("second_name"),
-                                    resultSet.getString("login"),
-                                    resultSet.getString("email"),
-                                    resultSet.getString("password"),
-                                    resultSet.getString("profile"),
-                                    resultSet.getDate("registered_date"),
-                                    resultSet.getInt("total_score"),
-                                    UserAccountStatus.valueOf(resultSet.getString("status").toUpperCase()),
-                                    Role.valueOf(resultSet.getString("role").toUpperCase())
-                            )
+                    new Object[]{login, password}, new UserRowMapper()
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -139,22 +99,8 @@ public class UserDaoImpl implements UserDao {
         User user;
         try {
             user = jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?;",
-                    new Object[]{mail},
-                    (resultSet, rowNum) ->
-                            new User(resultSet.getInt("user_id"),
-                                    resultSet.getString("first_name"),
-                                    resultSet.getString("second_name"),
-                                    resultSet.getString("login"),
-                                    resultSet.getString("email"),
-                                    resultSet.getString("password"),
-                                    resultSet.getString("profile"),
-                                    resultSet.getDate("registered_date"),
-                                    resultSet.getInt("total_score"),
-                                    UserAccountStatus.valueOf(resultSet.getString("status").toUpperCase()),
-                                    Role.valueOf(resultSet.getString("role").toUpperCase())
-                            )
-            );
-        } catch (EmptyResultDataAccessException e) {
+                    new Object[]{mail}, new UserRowMapper());
+        } catch (NullPointerException | EmptyResultDataAccessException e) {
             return null;
         }
         return user;
@@ -162,11 +108,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void update(User user) {
-        String updateQuery = "UPDATE users SET " +
-                "login = ?, password = ?, email = ?, status = cast(? AS profile_status), " +
-                "role = cast(? AS user_role), first_name = ?, " +
-                "second_name = ?, registered_date = ?, profile = ?, total_score =? " +
-                "WHERE user_id = ?;";
+        String updateQuery = "UPDATE users SET "
+                + "login = ?, password = ?, email = ?, status = cast(? AS profile_status), "
+                + "role = cast(? AS user_role), first_name = ?, "
+                + "second_name = ?, registered_date = ?, profile = ?, total_score =? "
+                + "WHERE user_id = ?;";
         jdbcTemplate.update(updateQuery, user.getLogin(), user.getPassword(), user.getMail(),
                 user.getStatus().name().toLowerCase(), user.getRole().name().toLowerCase(),
                 user.getFirstName(), user.getSecondName(), user.getRegistrationDate(),
@@ -176,5 +122,25 @@ public class UserDaoImpl implements UserDao {
     @Override
     public void delete(User user) {
 
+    }
+
+    private class UserRowMapper implements RowMapper<User> {
+
+        @Override
+        public User mapRow(ResultSet resultSet, int i) throws SQLException {
+            return User.builder()
+                    .userId(resultSet.getInt("user_id"))
+                    .firstName(resultSet.getString("first_name"))
+                    .secondName(resultSet.getString("second_name"))
+                    .login(resultSet.getString("login"))
+                    .mail(resultSet.getString("email"))
+                    .password(resultSet.getString("password"))
+                    .profile(resultSet.getString("profile"))
+                    .registrationDate(resultSet.getDate("registered_date"))
+                    .score(resultSet.getInt("total_score"))
+                    .status(UserAccountStatus.valueOf(resultSet.getString("status").toUpperCase()))
+                    .role(Role.valueOf(resultSet.getString("role").toUpperCase()))
+                    .build();
+        }
     }
 }

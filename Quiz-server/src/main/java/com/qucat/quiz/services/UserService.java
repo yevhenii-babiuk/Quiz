@@ -26,14 +26,15 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
-    String URL = InetAddress.getLoopbackAddress().getHostName() + "/api/v1/";
+    private String URL = InetAddress.getLoopbackAddress().getHostName() + "/api/v1/";
 
 
     public boolean registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         int id = userDao.save(user);
-        if (id == -1)
+        if (id == -1) {
             return false;
+        }
         Token token = Token.builder()
                 .token(UUID.randomUUID().toString())
                 .tokenType(TokenType.REGISTRATION)
@@ -47,8 +48,9 @@ public class UserService {
 
     public boolean passwordRecovery(String mail) {
         User user = userDao.getUserByMail(mail);
-        if (user == null)
+        if (user == null) {
             return false;
+        }
         Token token = Token.builder()
                 .token(UUID.randomUUID().toString())
                 .tokenType(TokenType.PASSWORD_RECOVERY)
@@ -65,7 +67,9 @@ public class UserService {
                 .tokenType(TokenType.REGISTRATION)
                 .build();
         int id = tokenDao.getUserId(token);
-        if (id == 0) return false;
+        if (id == 0) {
+            return false;
+        }
         User user = userDao.get(id);
         user.setStatus(UserAccountStatus.ACTIVATED);
         userDao.update(user);
@@ -85,18 +89,19 @@ public class UserService {
         return id != 0;
     }
 
-    public boolean editPassword(String tokenStr, String Password) {
+    public boolean editPassword(String tokenStr, String password) {
         Token token = Token.builder()
                 .token(UUID.randomUUID().toString())
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
         int id = tokenDao.getUserId(token);
-        if (id == 0) return false;
+        if (id == 0) {
+            return false;
+        }
         User user = userDao.get(id);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return true;
     }
-
 
 }
 

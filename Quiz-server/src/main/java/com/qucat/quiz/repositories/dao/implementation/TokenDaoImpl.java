@@ -7,8 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 @Slf4j
@@ -25,13 +28,7 @@ public class TokenDaoImpl implements TokenDao {
         Token token;
         try {
             token = jdbcTemplate.queryForObject(selectQuery,
-                    new Object[]{id},
-                    (resultSet, rowNum) ->
-                            new Token(resultSet.getString("token"),
-                                    TokenType.valueOf(resultSet.getString("token_type").toUpperCase()),
-                                    resultSet.getDate("expired_date"),
-                                    resultSet.getInt("user_id")));
-
+                    new Object[]{id}, new TokenRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -40,9 +37,9 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public int getUserId(Token token) {
-        String userIdQuery = "SELECT user_id FROM system_action_tokens " +
-                "WHERE token=? AND token_type=cast(? AS system_action_token_type)" +
-                " AND expired_date > NOW();";
+        String userIdQuery = "SELECT user_id FROM system_action_tokens "
+                + "WHERE token=? AND token_type=cast(? AS system_action_token_type)"
+                + " AND expired_date > NOW();";
         int id;
         try {
             id = jdbcTemplate.queryForObject(userIdQuery,
@@ -62,9 +59,9 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public int save(Token token) {
-        String saveQuery = "INSERT INTO system_action_tokens" +
-                "(token, token_type, user_id, expired_date)" +
-                "VALUES (?,  cast(? AS system_action_token_type), ?, NOW() + interval '1 day');";
+        String saveQuery = "INSERT INTO system_action_tokens"
+                + "(token, token_type, user_id, expired_date)"
+                + "VALUES (?,  cast(? AS system_action_token_type), ?, NOW() + interval '1 day');";
         try {
             jdbcTemplate.update(saveQuery,
                     token.getToken(), token.getTokenType().name().toLowerCase(), token.getUserId());
@@ -83,5 +80,18 @@ public class TokenDaoImpl implements TokenDao {
     @Override
     public void delete(Token token) {
 
+    }
+
+    private class TokenRowMapper implements RowMapper<Token> {
+
+        @Override
+        public Token mapRow(ResultSet resultSet, int i) throws SQLException {
+            return Token.builder()
+                    .token(resultSet.getString("token"))
+                    .tokenType(TokenType.valueOf(resultSet.getString("token_type").toUpperCase()))
+                    .expiredDate(resultSet.getDate("expired_date"))
+                    .userId(resultSet.getInt("user_id"))
+                    .build();
+        }
     }
 }
