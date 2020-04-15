@@ -14,7 +14,7 @@ public class RegistrationController {
 
     @PostMapping
     public boolean registerUser(@RequestBody User user) {
-        //TODO: user.setRole
+        //todo user.setRole
         return userService.addUser(user);
     }
 

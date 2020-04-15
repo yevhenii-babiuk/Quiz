@@ -18,7 +18,7 @@ public class UserService {
 
 
     public boolean addUser(User user) {
-        int id = 5;//todo DAO add user
+        //todo DAO add user
         String token = UUID.randomUUID().toString();
         //todo add token in DB
         emailSender.sendMessage(user.getMail(), user.getLogin(), "http://localhost:8080/registration/" + token, MessageInfo.passwordRecover.findByLang(Lang.EN));
@@ -27,7 +27,14 @@ public class UserService {
     }
 
     public boolean passwordRecovery(String mail) {
-        User user = new User("name", "sname", "login", mail, "pass", Role.USER);//todo get from DAO
+        User user = User.builder()
+                .firstName("name")
+                .secondName("sname")
+                .login("login")
+                .mail("mail")
+                .password("pass")
+                .role(Role.USER)
+                .build();
         String token = UUID.randomUUID().toString();
         //todo add to DAO
         emailSender.sendMessage(user.getMail(), user.getLogin(), "http://localhost:8080/passwordRecovery/" + token, MessageInfo.passwordRecover.findByLang(Lang.EN));//todo get Lang, set url

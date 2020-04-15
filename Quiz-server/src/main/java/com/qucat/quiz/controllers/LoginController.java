@@ -14,7 +14,7 @@ public class LoginController {
 
     @PostMapping
     public boolean loginUser(@RequestBody User user) {
-        //TODO: login user
+        userService.toString();//todo login user
         return true;
     }
 }

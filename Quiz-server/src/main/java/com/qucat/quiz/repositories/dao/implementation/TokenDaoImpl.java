@@ -36,9 +36,9 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public int getUserId(Token token) {
-        String userIdQuery = "SELECT user_id FROM system_action_tokens " +
-                "WHERE token=? AND token_type=cast(? AS system_action_token_type)" +
-                " AND expired_date > NOW();";
+        String userIdQuery = "SELECT user_id FROM system_action_tokens "
+                + "WHERE token=? AND token_type=cast(? AS system_action_token_type)"
+                + " AND expired_date > NOW();";
         int id;
         try {
             id = jdbcTemplate.queryForObject(userIdQuery,
@@ -58,9 +58,9 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public int save(Token token) {
-        String saveQuery = "INSERT INTO system_action_tokens" +
-                "(token, token_type, user_id, expired_date)" +
-                "VALUES (?,  cast(? AS system_action_token_type), ?, NOW() + interval '1 day');";
+        String saveQuery = "INSERT INTO system_action_tokens"
+                + "(token, token_type, user_id, expired_date)"
+                + "VALUES (?,  cast(? AS system_action_token_type), ?, NOW() + interval '1 day');";
         try {
             jdbcTemplate.update(saveQuery,
                     token.getToken(), token.getTokenType().name().toLowerCase(), token.getUserId());
