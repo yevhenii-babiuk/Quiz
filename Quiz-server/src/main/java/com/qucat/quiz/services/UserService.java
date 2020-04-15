@@ -26,7 +26,7 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
-    private String URL = InetAddress.getLoopbackAddress().getHostName() + "/api/v1/";
+    private String URL = InetAddress.getLoopbackAddress().getHostName() + "/#/api/v1/";
 
 
     public boolean registerUser(User user) {
@@ -41,7 +41,7 @@ public class UserService {
                 .userId(id)
                 .build();
         tokenDao.save(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "login/" + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "registration/" + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
         //todo get Lang, set url
         return true;
     }
