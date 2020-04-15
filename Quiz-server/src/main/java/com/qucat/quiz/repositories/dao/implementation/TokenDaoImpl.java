@@ -3,12 +3,19 @@ package com.qucat.quiz.repositories.dao.implementation;
 import com.qucat.quiz.repositories.dao.TokenDao;
 import com.qucat.quiz.repositories.entities.Token;
 import com.qucat.quiz.repositories.entities.TokenType;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
+@Slf4j
+@Repository
 public class TokenDaoImpl implements TokenDao {
 
 
@@ -21,13 +28,7 @@ public class TokenDaoImpl implements TokenDao {
         Token token;
         try {
             token = jdbcTemplate.queryForObject(selectQuery,
-                    new Object[]{id},
-                    (resultSet, rowNum) ->
-                            new Token(resultSet.getString("token"),
-                                    TokenType.valueOf(resultSet.getString("token_type").toUpperCase()),
-                                    resultSet.getDate("expired_date"),
-                                    resultSet.getInt("user_id")));
-
+                    new Object[]{id}, new TokenRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -79,5 +80,18 @@ public class TokenDaoImpl implements TokenDao {
     @Override
     public void delete(Token token) {
 
+    }
+
+    private class TokenRowMapper implements RowMapper<Token> {
+
+        @Override
+        public Token mapRow(ResultSet resultSet, int i) throws SQLException {
+            return Token.builder()
+                    .token(resultSet.getString("token"))
+                    .tokenType(TokenType.valueOf(resultSet.getString("token_type").toUpperCase()))
+                    .expiredDate(resultSet.getDate("expired_date"))
+                    .userId(resultSet.getInt("user_id"))
+                    .build();
+        }
     }
 }

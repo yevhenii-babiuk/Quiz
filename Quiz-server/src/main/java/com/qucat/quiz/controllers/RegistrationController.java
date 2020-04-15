@@ -15,11 +15,11 @@ public class RegistrationController {
     @PostMapping
     public boolean registerUser(@RequestBody User user) {
         //todo user.setRole
-        return userService.addUser(user);
+        return userService.registerUser(user);
     }
 
     @GetMapping("{token}")
     public boolean confirmRegistration(@PathVariable String token) {
-        return userService.openRegisterToken(token);
+        return userService.openRegistrationToken(token);
     }
 }

@@ -5,4 +5,6 @@ import com.qucat.quiz.repositories.entities.User;
 public interface UserDao extends Dao<User> {
 
     User getUserByLoginAndPassword(String login, String password);
+
+    User getUserByMail(String mail);
 }

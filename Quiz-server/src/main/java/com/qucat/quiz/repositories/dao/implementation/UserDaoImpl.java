@@ -85,6 +85,18 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public User getUserByMail(String mail) {
+        User user;
+        try {
+            user = jdbcTemplate.queryForObject("SELECT * FROM users WHERE email=?;",
+                    new Object[]{mail}, new UserRowMapper());
+        } catch (NullPointerException | EmptyResultDataAccessException e) {
+            return null;
+        }
+        return user;
+    }
+
+    @Override
     public void update(User user) {
         String updateQuery = "UPDATE users SET "
                 + "login = ?, password = ?, email = ?, status = cast(? AS profile_status), "
