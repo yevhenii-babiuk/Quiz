@@ -26,7 +26,7 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
-    private String URL = InetAddress.getLoopbackAddress().getHostName() + "/#/api/v1/";
+    private String URL = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":8080/#/api/v1/";
 
 
     public boolean registerUser(User user) {

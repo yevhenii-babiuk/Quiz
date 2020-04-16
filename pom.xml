@@ -13,7 +13,7 @@
         <relativePath/>
     </parent>
     <modules>
-        <module>Quiz-server</module>
         <module>Quiz-web</module>
+        <module>Quiz-server</module>
     </modules>
 </project>
