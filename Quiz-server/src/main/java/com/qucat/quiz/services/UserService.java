@@ -28,11 +28,8 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
-    private final String URL = "http://" + InetAddress.getLocalHost().getHostName() + "/#/api/v1/";
-
-    public UserService() throws UnknownHostException {
-    }
-
+    private final String URL = "http://" + InetAddress.getLoopbackAddress().getHostName() + "/#/api/v1/";
+    
 
     @Transactional
     public boolean registerUser(User user) {
