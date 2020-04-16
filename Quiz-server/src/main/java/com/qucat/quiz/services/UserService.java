@@ -4,15 +4,17 @@ import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
 import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
 import com.qucat.quiz.repositories.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.net.InetAddress;
 import java.util.UUID;
 
 
 @Service
+@PropertySource("classpath:mail/application-mail-config.properties")
 public class UserService {
 
     @Autowired
@@ -27,7 +29,8 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
-    private final String URL = "http://" + InetAddress.getLoopbackAddress().getHostName() + "/#/api/v1/";
+    @Value("${url}")
+    private String URL;
     
 
     @Transactional
