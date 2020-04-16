@@ -84,9 +84,10 @@ public class UserService {
 
     public User loginUser(String login, String password) {
         User user = userDao.getUserByLoginAndPassword(login, passwordEncoder.encode(password));
-        if (user.getStatus()==UserAccountStatus.ACTIVATED)
+        if (user==null || user.getStatus() == UserAccountStatus.UNACTIVATED) {
+            return null;
+        }
         return user;
-        return null;
     }
 
     public boolean openPasswordRecoveryToken(String tokenStr) {
