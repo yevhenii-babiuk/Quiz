@@ -84,7 +84,7 @@ public class UserService {
 
     public User loginUser(String login, String password) {
         User user = userDao.getUserByLoginAndPassword(login, passwordEncoder.encode(password));
-        if (user==null || user.getStatus() == UserAccountStatus.UNACTIVATED) {
+        if (user == null || user.getStatus() == UserAccountStatus.UNACTIVATED) {
             return null;
         }
         return user;
