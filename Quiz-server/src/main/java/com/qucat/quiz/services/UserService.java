@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.UUID;
 
 
