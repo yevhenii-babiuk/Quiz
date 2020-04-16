@@ -6,8 +6,10 @@ import com.qucat.quiz.repositories.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.UUID;
 
 
@@ -26,9 +28,13 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
-    private String URL = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":8080/#/api/v1/";
+    private final String URL = "http://" + InetAddress.getLocalHost().getHostName() + "/#/api/v1/";
+
+    public UserService() throws UnknownHostException {
+    }
 
 
+    @Transactional
     public boolean registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         int id = userDao.save(user);
@@ -77,7 +83,10 @@ public class UserService {
     }
 
     public User loginUser(String login, String password) {
-        return userDao.getUserByLoginAndPassword(login, passwordEncoder.encode(password));
+        User user = userDao.getUserByLoginAndPassword(login, passwordEncoder.encode(password));
+        if (user.getStatus()==UserAccountStatus.ACTIVATED)
+        return user;
+        return null;
     }
 
     public boolean openPasswordRecoveryToken(String tokenStr) {
@@ -91,7 +100,7 @@ public class UserService {
 
     public boolean editPassword(String tokenStr, String password) {
         Token token = Token.builder()
-                .token(UUID.randomUUID().toString())
+                .token(tokenStr)
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
         int id = tokenDao.getUserId(token);
@@ -99,7 +108,7 @@ public class UserService {
             return false;
         }
         User user = userDao.get(id);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(password));
         return true;
     }
 
