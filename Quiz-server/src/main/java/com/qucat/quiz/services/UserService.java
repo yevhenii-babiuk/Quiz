@@ -31,7 +31,10 @@ public class UserService {
 
     @Value("${url}")
     private String URL;
-    
+
+    private final String REGISTRATION = "registration/";
+
+    private final String PASS_RECOVERY = "pass-recovery/";
 
     @Transactional
     public boolean registerUser(User user) {
@@ -46,8 +49,8 @@ public class UserService {
                 .userId(id)
                 .build();
         tokenDao.save(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "registration/" + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
-        //todo get Lang, set url
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
+        //todo get Lang
         return true;
     }
 
@@ -62,7 +65,8 @@ public class UserService {
                 .userId(user.getUserId())
                 .build();
         tokenDao.save(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "pass-recovery/" + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));//todo get Lang
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));
+        //todo get Lang
         return true;
     }
 
