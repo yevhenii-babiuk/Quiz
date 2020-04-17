@@ -4,14 +4,17 @@ import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
 import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
 import com.qucat.quiz.repositories.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.net.InetAddress;
 import java.util.UUID;
 
 
 @Service
+@PropertySource("classpath:mail/application-mail-config.properties")
 public class UserService {
 
     @Autowired
@@ -26,9 +29,14 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
-    private String URL = "http://" + InetAddress.getLoopbackAddress().getHostAddress() + ":8080/#/api/v1/";
+    @Value("${url}")
+    private String URL;
 
+    private final String REGISTRATION = "registration/";
 
+    private final String PASS_RECOVERY = "pass-recovery/";
+
+    @Transactional
     public boolean registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         int id = userDao.save(user);
@@ -41,8 +49,8 @@ public class UserService {
                 .userId(id)
                 .build();
         tokenDao.save(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "registration/" + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
-        //todo get Lang, set url
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
+        //todo get Lang
         return true;
     }
 
@@ -57,7 +65,8 @@ public class UserService {
                 .userId(user.getUserId())
                 .build();
         tokenDao.save(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + "pass-recovery/" + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));//todo get Lang
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));
+        //todo get Lang
         return true;
     }
 
@@ -77,7 +86,11 @@ public class UserService {
     }
 
     public User loginUser(String login, String password) {
-        return userDao.getUserByLoginAndPassword(login, passwordEncoder.encode(password));
+        User user = userDao.getUserByLoginAndPassword(login, passwordEncoder.encode(password));
+        if (user == null || user.getStatus() == UserAccountStatus.UNACTIVATED) {
+            return null;
+        }
+        return user;
     }
 
     public boolean openPasswordRecoveryToken(String tokenStr) {
@@ -91,7 +104,7 @@ public class UserService {
 
     public boolean editPassword(String tokenStr, String password) {
         Token token = Token.builder()
-                .token(UUID.randomUUID().toString())
+                .token(tokenStr)
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
         int id = tokenDao.getUserId(token);
@@ -99,9 +112,8 @@ public class UserService {
             return false;
         }
         User user = userDao.get(id);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(password));
         return true;
     }
 
 }
-
