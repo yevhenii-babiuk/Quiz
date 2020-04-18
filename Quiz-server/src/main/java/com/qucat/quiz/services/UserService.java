@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.UUID;
 
 
@@ -41,7 +42,18 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         int id = userDao.save(user);
         if (id == -1) {
-            return false;
+            User userByMail = userDao.getUserByMail(user.getMail());
+            if (userByMail == null || userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
+                return false;
+            }
+
+            Token token = tokenDao.get(userByMail.getUserId());
+            if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
+                return false;
+            }
+
+            user.setUserId(userByMail.getUserId());
+            userDao.update(user);
         }
         Token token = Token.builder()
                 .token(UUID.randomUUID().toString())
