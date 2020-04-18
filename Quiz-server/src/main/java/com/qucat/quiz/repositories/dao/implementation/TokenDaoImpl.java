@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.entities.Token;
 import com.qucat.quiz.repositories.entities.TokenType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -13,18 +14,21 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @Repository
 public class TokenDaoImpl implements TokenDao {
 
+    @Value("#{${sql.tokens}}")
+    private Map<String, String> tokensQueries;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     @Override
     public Token get(int id) {
-        String selectQuery = "SELECT * FROM system_action_tokens WHERE user_id=?;";
+        String selectQuery = tokensQueries.get("getByUserId");
         Token token;
         try {
             token = jdbcTemplate.queryForObject(selectQuery,
@@ -37,9 +41,7 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public int getUserId(Token token) {
-        String userIdQuery = "SELECT user_id FROM system_action_tokens "
-                + "WHERE token=? AND token_type=cast(? AS system_action_token_type)"
-                + " AND expired_date > NOW();";
+        String userIdQuery = tokensQueries.get("getUserId");
         int id;
         try {
             id = jdbcTemplate.queryForObject(userIdQuery,
@@ -59,9 +61,9 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public int save(Token token) {
-        String saveQuery = "INSERT INTO system_action_tokens"
-                + "(token, token_type, user_id, expired_date)"
+        String saveQuery = "INSERT INTO system_action_tokens (token, token_type, user_id, expired_date) "
                 + "VALUES (?,  cast(? AS system_action_token_type), ?, NOW() + interval '1 day');";
+
         try {
             jdbcTemplate.update(saveQuery,
                     token.getToken(), token.getTokenType().name().toLowerCase(), token.getUserId());
@@ -79,6 +81,11 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public void delete(Token token) {
+
+    }
+
+    @Override
+    public void deleteById(int id) {
 
     }
 
