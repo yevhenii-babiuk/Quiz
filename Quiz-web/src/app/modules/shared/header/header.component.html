@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
 
-</head>
-<body>
   <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
 
     <a class="brand-ref" href="">
-        <img  src='../../assets/img/logo.png' >
+        <img  src='../../../../assets/img/logo.png' >
         Qucat
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
@@ -35,15 +28,13 @@
     <div class="collapse navbar-collapse  text-right" >
       <ul class="navbar-nav ml-auto ">
         <li class="nav-item" >
-          <a class="nav-link" routerLink="api/v1/login">Увійти</a>
+          <a class="nav-link" [routerLink]="['/api/v1/login']" routerLinkActive="active">Увійти</a>
         </li>
         <li class="nav-item, registr" >
-          <a class="nav-link" routerLink="/api/v1/registration">Зареєструватися</a>
+          <a class="nav-link" [routerLink]="['/api/v1/registration']" routerLinkActive="active">Зареєструватися</a>
         </li>
       </ul>
     </div>
 
   </nav>
 
-</body>
-</html>
