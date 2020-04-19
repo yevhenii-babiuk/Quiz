@@ -4,8 +4,8 @@ import { ActivatedRoute } from '@angular/router';
 import { Router } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { AuthenticationService } from '../../authentication.service';
-import { AlertService } from '../../alert.service';
+import { AuthenticationService } from '../../../core/services/authentication.service';
+import { AlertService } from '../../../core/services/alert.service';
 
 @Component({
   selector: 'app-pass-recovery-confirm',

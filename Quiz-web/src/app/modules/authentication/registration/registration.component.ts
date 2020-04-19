@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-import { AuthenticationService } from '../authentication.service';
-import { AlertService } from '../alert.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { AlertService } from '../../core/services/alert.service';
 
-import { User } from '../models/user';
+import { User } from '../../core/models/user';
 
 @Component({
   selector: 'app-registration',

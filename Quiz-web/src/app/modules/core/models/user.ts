@@ -4,5 +4,4 @@ export interface User {
   login: string;
   mail: string;
   password: string;
-  //role: string;
 }

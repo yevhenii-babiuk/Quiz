@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
-import { AuthenticationService } from '../authentication.service';
-import { AlertService } from '../alert.service';
+import { AuthenticationService } from '../../core/services/authentication.service';
+import { AlertService } from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-pass-recovery',
