@@ -4,7 +4,6 @@ import com.qucat.quiz.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
 @RequestMapping("api/v1/pass-recovery")
 public class PasswordRecoveryController {
@@ -12,17 +11,17 @@ public class PasswordRecoveryController {
     private UserService userService;
 
     @PostMapping
-    public boolean recoveryPass(@RequestBody String email) {
+    public boolean passwordRecovery(@RequestBody String email) {
         return userService.passwordRecovery(email);
     }
 
     @GetMapping("{token}")
-    public boolean openByToken(@PathVariable String token) {
+    public boolean checkPasswordRecoveryTokenExistence(@PathVariable String token) {
         return userService.openPasswordRecoveryToken(token);
     }
 
     @PutMapping("{token}")
-    public boolean createNewPass(@PathVariable String token, @RequestBody String password) {
+    public boolean editPassword(@PathVariable String token, @RequestBody String password) {
         return userService.editPassword(token, password);
     }
 }
