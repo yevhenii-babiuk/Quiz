@@ -1,5 +1,5 @@
 export class Quiz {
-  quizId: number;
+  id: number;
   name: string;
   authorId: number;
   categoryId: number;

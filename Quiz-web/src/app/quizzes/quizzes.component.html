@@ -1,11 +1,11 @@
 <div class="row mx-0">
 
   <ng-container *ngFor="let quiz of quizzes">
-    <div class="col-sm-3 card border-0" routerLink="/api/v1/quizzes/quiz/{{quiz.quizId}}">
+    <div class="col-sm-3 card border-0" routerLink="/api/v1/quizzes/quiz/{{quiz.id}}">
       <img class="card-img-top" src="https://i.uaportal.com/2020/2/1/screenshot4.png" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">{{quiz.name}}</h5>
-        <p class="card-text"><small class="text-muted">{{quiz.quizId}}</small></p>
+        <p class="card-text"><small class="text-muted">{{quiz.id}}</small></p>
       </div>
     </div>
   </ng-container>
