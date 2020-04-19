@@ -3,9 +3,12 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
 import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
 import com.qucat.quiz.repositories.entities.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,29 +16,23 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Date;
 import java.util.UUID;
 
-
+@Slf4j
 @Service
 @PropertySource("classpath:mail/application-mail-config.properties")
 public class UserService {
 
+    private final String REGISTRATION = "registration/";
+    private final String PASS_RECOVERY = "pass-recovery/";
     @Autowired
     private EmailSender emailSender;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserDaoImpl userDao;
-
     @Autowired
     private TokenDaoImpl tokenDao;
-
     @Value("${url}")
     private String URL;
-
-    private final String REGISTRATION = "registration/";
-
-    private final String PASS_RECOVERY = "pass-recovery/";
 
     @Transactional
     public boolean registerUser(User user) {
@@ -126,6 +123,15 @@ public class UserService {
         User user = userDao.get(id);
         user.setPassword(passwordEncoder.encode(password));
         return true;
+    }
+
+    public Page<User> getPageUserByRole(Role role, Pageable pageable) {
+        if (role == null) {
+            log.warn("Null id passed to find users by role");
+            throw new IllegalArgumentException("Null id passed to find users by role");
+        }
+
+        return userDao.getUserByRole(role, pageable);
     }
 
 }
