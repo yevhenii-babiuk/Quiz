@@ -34,7 +34,7 @@ public class QuestionOptionDaoImpl extends GenericDaoImpl<QuestionOption> implem
         preparedStatement.setString(2, questionOption.getContent());
         preparedStatement.setBoolean(3, questionOption.isCorrect());
         preparedStatement.setInt(4, questionOption.getSequenceOrder());
-        preparedStatement.setInt(5, questionOption.getImageId());
+        preparedStatement.setString(5, questionOption.getImage());
         return preparedStatement;
     }
 
@@ -46,7 +46,7 @@ public class QuestionOptionDaoImpl extends GenericDaoImpl<QuestionOption> implem
     @Override
     protected Object[] getUpdateParameters(QuestionOption questionOption) {
         return new Object[]{questionOption.getQuestionId(), questionOption.getContent(), questionOption.isCorrect(),
-        questionOption.getSequenceOrder(), questionOption.getImageId(), questionOption.getId()};
+        questionOption.getSequenceOrder(), questionOption.getImage(), questionOption.getId()};
     }
 
     @Override
