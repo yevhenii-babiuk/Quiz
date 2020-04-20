@@ -39,7 +39,7 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
         preparedStatement.setString(2, question.getType().name().toLowerCase());
         preparedStatement.setString(3, question.getContent());
         preparedStatement.setInt(4, question.getScore());
-        preparedStatement.setInt(5, question.getImageId());
+        preparedStatement.setString(5, question.getImage());
         return preparedStatement;
     }
 
@@ -51,7 +51,7 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
     @Override
     protected Object[] getUpdateParameters(Question question) {
         return new Object[]{question.getQuizId(), question.getType().name().toLowerCase(), question.getContent(),
-                question.getScore(), question.getImageId(), question.getId()};
+                question.getScore(), question.getImage(), question.getId()};
     }
 
     @Override

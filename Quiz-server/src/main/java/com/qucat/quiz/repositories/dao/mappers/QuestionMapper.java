@@ -17,7 +17,7 @@ public class QuestionMapper implements RowMapper<Question> {
                 .type(QuestionType.valueOf(resultSet.getString("type").toUpperCase()))
                 .content(resultSet.getString("content"))
                 .score(resultSet.getInt("score"))
-                .imageId(resultSet.getInt("image_id"))
+                .image(resultSet.getString("image"))
                 .build();
     }
 }

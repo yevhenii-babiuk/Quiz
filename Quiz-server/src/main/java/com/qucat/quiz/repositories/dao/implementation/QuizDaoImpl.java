@@ -68,6 +68,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         }
         preparedStatement.setInt(7, quiz.getQuestionNumber());
         preparedStatement.setInt(8, quiz.getMaxScore());
+        preparedStatement.setString(9, quiz.getImage());
         return preparedStatement;
     }
 
@@ -80,7 +81,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     protected Object[] getUpdateParameters(Quiz quiz) {
         return new Object[]{quiz.getName(), quiz.getAuthorId(), quiz.getCategoryId(), quiz.getStatus().name().toLowerCase(),
                 quiz.getPublishedDate(), quiz.getUpdatedDate(),
-                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getId()};
+                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImage(), quiz.getId()};
     }
 
     @Override
