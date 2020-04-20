@@ -3,7 +3,6 @@ package com.qucat.quiz.repositories.entities;
 import lombok.Builder;
 import lombok.Data;
 
-import java.net.URL;
 import java.util.List;
 
 @Data
@@ -14,7 +13,6 @@ public class Question {
     private QuestionType type;
     private String content;
     private int score;
-    private URL imageUrl;
-    private List<QuestionOption> questionOptions;
-    private List<QuestionAnswer> questionAnswers;
+    private String imageUrl;
+    private List<QuestionOption> options;
 }

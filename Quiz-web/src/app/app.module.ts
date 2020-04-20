@@ -1,43 +1,35 @@
 import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
+import { RouterModule } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {RegistrationComponent} from './registration/registration.component';
-import {LoginComponent} from './login/login.component';
-import {AlertComponent} from './alert/alert.component';
-import {PassRecoveryComponent} from './pass-recovery/pass-recovery.component';
-import {MailConfirmComponent} from './registration/mail-confirm/mail-confirm.component';
-import {PassRecoveryConfirmComponent} from './pass-recovery/pass-recovery-confirm/pass-recovery-confirm.component';
-import {HomeComponent} from './home/home.component';
-import {HeaderComponent} from './header/header.component';
-import {FooterComponent} from './footer/footer.component';
-import {SidenavComponent} from './sidenav/sidenav.component';
-import {QuizzesComponent} from './quizzes/quizzes.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+
+import {AuthenticationModule} from './modules/authentication/authentication.module';
+import {CoreModule} from './modules/core/core.module';
+import {SharedModule} from './modules/shared/shared.module';
+import {AuthRoutingModule} from './modules/authentication/auth-routing.module';
+import {PagesRoutingModule} from './modules/core/pages/pages-routing.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegistrationComponent,
-    LoginComponent,
-    AlertComponent,
-    PassRecoveryComponent,
-    MailConfirmComponent,
-    PassRecoveryConfirmComponent,
-    HomeComponent,
-    HeaderComponent,
-    FooterComponent,
-    SidenavComponent,
     QuizzesComponent
   ],
   imports: [
+    RouterModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    AuthenticationModule,
+    CoreModule,
+    SharedModule,
+    AuthRoutingModule,
+    PagesRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
