@@ -20,10 +20,6 @@ public class QuizListController {
         tags.add(Tag.builder().name("tag2").build());
         tags.add(Tag.builder().name("tag3").build());
         tags.add(Tag.builder().name("tag4").build());
-        tags.add(Tag.builder().name("tag5").build());
-        tags.add(Tag.builder().name("tag6").build());
-        tags.add(Tag.builder().name("tag7").build());
-        tags.add(Tag.builder().name("tag8").build());
         List<Quiz> quizList = new ArrayList<>();
         Category category = Category.builder().id(1).name("category").build();
         for (int i = currentCount; i < currentCount + 20; i++) {
