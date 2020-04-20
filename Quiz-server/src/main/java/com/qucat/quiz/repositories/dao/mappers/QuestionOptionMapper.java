@@ -16,6 +16,7 @@ public class QuestionOptionMapper implements RowMapper<QuestionOption> {
                 .content(resultSet.getString("content"))
                 .isCorrect(resultSet.getBoolean("is_correct"))
                 .sequenceOrder(resultSet.getInt("sequence_order"))
+                .image(resultSet.getString("image"))
                 .build();
     }
 }
