@@ -9,17 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
-import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -28,64 +23,43 @@ import java.util.UUID;
 public class UserService {
 
     private final String REGISTRATION = "registration/";
-
     private final String PASS_RECOVERY = "pass-recovery/";
-
     @Autowired
     private EmailSender emailSender;
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private UserDaoImpl userDao;
-
     @Autowired
     private TokenDaoImpl tokenDao;
-
     @Value("${url}")
     private String URL;
 
-
     @Transactional
     public boolean registerUser(User user) {
-
-        if (userDao.getUserByLogin(user.getLogin()) != null) {
-            return false;
-        }
-
-        int id;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        User userByMail = userDao.getUserByMail(user.getMail());
-        Token token = tokenDao.get(userByMail.getUserId());
+        int id = userDao.save(user);
+        if (id == -1) {
+            User userByMail = userDao.getUserByMail(user.getMail());
+            if (userByMail == null || userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
+                return false;
+            }
 
-        if (userByMail != null) {
-            if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
-                return false;
-            } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
-                return false;
-            } else {
-                id = userByMail.getUserId();
-                user.setUserId(id);
-                userDao.update(user);
-            }
-        } else {
-            id = userDao.save(user);
-            if (id == -1) {
+            Token token = tokenDao.get(userByMail.getUserId());
+            if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
                 return false;
             }
+
+            user.setUserId(userByMail.getUserId());
+            userDao.update(user);
         }
-
-        Token tokenForNewUser = Token.builder()
+        Token token = Token.builder()
                 .token(UUID.randomUUID().toString())
                 .tokenType(TokenType.REGISTRATION)
                 .userId(id)
                 .build();
-        tokenDao.save(tokenForNewUser);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + tokenForNewUser.getToken(), MessageInfo.registration.findByLang(Lang.EN));
+        tokenDao.save(token);
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
         //todo get Lang
         return true;
     }
@@ -183,17 +157,5 @@ public class UserService {
         userDao.update(currentUser);
     }
 
-    public void authenticate(String username, String password) throws Exception {
-        Objects.requireNonNull(username);
-        Objects.requireNonNull(password);
-
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        } catch (DisabledException e) {
-            throw new Exception("USER_DISABLED", e);
-        } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
-        }
-    }
 
 }
