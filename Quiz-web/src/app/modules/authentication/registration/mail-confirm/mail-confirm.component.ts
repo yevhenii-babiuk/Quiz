@@ -27,7 +27,7 @@ export class MailConfirmComponent implements OnInit {
    const token = this.route.snapshot.paramMap.get('token');
    this.authenticationService.confirmMail(token)
    .subscribe(
-     isConfirmed => { this.isConfirmed = isConfirmed },
+     isConfirmed => { this.isConfirmed = isConfirmed; },
      error => {
        this.isConfirmed = false;
        console.log(error);

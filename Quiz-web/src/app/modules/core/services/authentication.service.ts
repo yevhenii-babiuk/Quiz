@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { User } from '../models/user';
-import {url} from "../../../../environments/environment.prod";
+import {url} from '../../../../environments/environment.prod';
 
 @Injectable({
   providedIn: 'root'
@@ -22,10 +22,10 @@ export class AuthenticationService {
     }
 
   register(user: User) {
-        return this.http.post<User>(`${url}/registration`, user, this.httpOptions);
+    return this.http.post<User>(`${url}/registration`, user, this.httpOptions);
     }
 
-  confirmMail (token: string) {
+  confirmMail(token: string) {
     return this.http.get<boolean>(`${url}/registration/${token}`);
   }
 
@@ -33,7 +33,7 @@ export class AuthenticationService {
       return this.http.post<string>(`${url}/pass-recovery`, email, this.httpOptions);
   }
 
-  confirmResetPass (token: string) {
+  confirmResetPass(token: string) {
     return this.http.get<boolean>(`${url}/pass-recovery/${token}`);
   }
 

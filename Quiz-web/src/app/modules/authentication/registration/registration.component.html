@@ -1,23 +1,26 @@
 
 
 <div class="container">
-  <form class="form-horizontal" role="form">
+  <div>
     <h3 class="col-sm-9 text-center">Registration</h3>
     <div class="form-group">
       <div class="col-sm-9">
         <input type="text" placeholder="First Name" class="form-control" autofocus #firstname>
       </div>
     </div>
+
     <div class="form-group">
       <div class="col-sm-9">
         <input type="text" placeholder="Last Name" class="form-control" autofocus #lastname>
       </div>
     </div>
+
     <div class="form-group">
       <div class="col-sm-9">
         <input type="text" placeholder="Login" class="form-control" autofocus #login>
       </div>
     </div>
+
     <div class="form-group">
       <div class="col-sm-9">
         <input type="email" placeholder="Email" class="form-control" name= "email" autofocus #email>
@@ -28,17 +31,17 @@
         <input type="password" placeholder="Password" class="form-control" autofocus #password>
       </div>
     </div>
+
     <div class="form-group">
       <div class="col-sm-9">
         <input type="password" placeholder="Confirm password" class="form-control" autofocus #confirmPassword>
       </div>
     </div>
 
-    <button (click)="register(login.value, firstname.value, lastname.value,
-                            email.value, password.value, confirmPassword.value)"
+    <button (click)="registerUser(login.value, firstname.value, lastname.value, email.value, password.value, confirmPassword.value)"
             class="btn btn-warning btn-block col-sm-9">
       Register
     </button>
-  </form>
+  </div>
 
 </div>

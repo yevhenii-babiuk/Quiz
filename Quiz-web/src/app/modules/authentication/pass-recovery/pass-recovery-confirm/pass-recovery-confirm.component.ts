@@ -31,9 +31,9 @@ export class PassRecoveryConfirmComponent implements OnInit {
 
  confirm(): void {
     this.token = this.route.snapshot.paramMap.get('token');
-   this.authenticationService.confirmResetPass(this.token)
+    this.authenticationService.confirmResetPass(this.token)
    .subscribe(
-     isConfirmed => { this.isConfirmed = isConfirmed },
+     isConfirmed => { this.isConfirmed = isConfirmed; },
      error => {
        this.isConfirmed = false;
        console.log(error);
@@ -45,10 +45,10 @@ export class PassRecoveryConfirmComponent implements OnInit {
    this.authenticationService.createNewPass(this.token, password)
    .subscribe(
               data => {
-                  this.router.navigate(['/api/v1/login']);
+                  this.router.navigate(['/api/v1/login']).then();
               },
               error => {
-                  this.alertService.error("Error while applying new pass");
+                  this.alertService.error('Error while applying new pass');
                   console.log(error);
               });
  }

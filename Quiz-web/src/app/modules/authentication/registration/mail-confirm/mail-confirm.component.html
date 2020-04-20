@@ -2,7 +2,7 @@
   <h2>Your registration has been successfully confirmed.</h2>
   <h4>Please, sign in to start</h4>
   <div>
-    <a routerLink="/login">Sign in</a><br>
+    <a [routerLink]="['/api/v1/login']" routerLinkActive="active">Sign in</a><br>
   </div>
 </div>
 <ng-template #tokenUnavailable>
