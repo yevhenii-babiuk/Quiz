@@ -20,4 +20,6 @@ public class Quiz {
     private int questionNumber;
     private int maxScore;
     private List<Question> questions;
+    private Category category;
+    private List<Tag> tags;
 }
