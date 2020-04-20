@@ -111,4 +111,16 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return new PageImpl<>(users, pageable, rowTotal);
     }
 
+    @Override
+    public User getUserByLogin(String login) {
+        User user;
+        try {
+            user = jdbcTemplate.queryForObject(usersQueries.get("selectByLogin"),
+                    new Object[]{login}, new UserMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return user;
+    }
 }
