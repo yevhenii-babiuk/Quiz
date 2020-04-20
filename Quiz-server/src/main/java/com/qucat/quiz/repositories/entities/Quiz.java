@@ -19,9 +19,7 @@ public class Quiz {
     private Date createdDate;
     private int questionNumber;
     private int maxScore;
-    private int imageId;
     private List<Question> questions;
     private Category category;
     private List<Tag> tags;
-    private Image image;
 }
