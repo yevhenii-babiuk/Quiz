@@ -1,3 +1,6 @@
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+
 <div class="row mx-0">
 
   <ng-container *ngFor="let quiz of quizzes">
@@ -5,7 +8,19 @@
       <img class="card-img-top" src="https://i.uaportal.com/2020/2/1/screenshot4.png" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">{{quiz.name}}</h5>
-        <p class="card-text"><small class="text-muted">{{quiz.id}}</small></p>
+        <div class="card-text">
+          <small class="text-muted">
+          <span *ngFor="let tag of quiz.tags; let isLast=last">
+            {{tag.name}}{{isLast ? '' : ', '}}
+          </span>
+          </small>
+          <p class="text-muted">{{quiz.category.name}}</p>
+
+          <p><span class="material-icons ">emoji_events</span>
+            {{quiz.maxScore}}
+          </p>
+
+        </div>
       </div>
     </div>
   </ng-container>
