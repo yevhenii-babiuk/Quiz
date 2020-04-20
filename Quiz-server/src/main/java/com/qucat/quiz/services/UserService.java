@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @Slf4j
@@ -133,5 +134,28 @@ public class UserService {
 
         return userDao.getUserByRole(role, pageable);
     }
+
+    public User getUserDataByLogin(String login) {
+        User user = userDao.getUserByLogin(login);
+
+        if (user == null) {
+            throw new NoSuchElementException("Such user not exist");
+        }
+
+        return user;
+    }
+
+    public void updateUserProfile(User user) {
+        User currentUser = userDao.getUserByLogin(user.getLogin());
+
+        currentUser.setFirstName(user.getFirstName());
+        currentUser.setSecondName(user.getSecondName());
+        currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        currentUser.setProfile(user.getProfile());
+        currentUser.setMail(user.getMail());
+
+        userDao.update(currentUser);
+    }
+
 
 }
