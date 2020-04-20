@@ -1,8 +1,6 @@
 import {Component, OnInit, HostListener} from '@angular/core';
-import {AlertService} from "../alert.service";
-import {Router} from "@angular/router";
-import {QuizzesService} from "../quizzes.service";
-import {Quiz} from "../models/quiz";
+import {QuizzesService} from "../../core/services/quizzes.service";
+import {Quiz} from "../../../models/quiz";
 
 @Component({
   selector: 'app-quizzes',

@@ -4,7 +4,7 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from "rxjs/operators";
 
-import {Quiz} from './models/quiz'
+import {Quiz} from '../../../models/quiz'
 import {logger} from "codelyzer/util/logger";
 
 @Injectable({
