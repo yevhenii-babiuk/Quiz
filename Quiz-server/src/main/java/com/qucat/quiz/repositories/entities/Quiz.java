@@ -19,6 +19,7 @@ public class Quiz {
     private Date createdDate;
     private int questionNumber;
     private int maxScore;
+    private String image;
     private List<Question> questions;
     private Category category;
     private List<Tag> tags;
