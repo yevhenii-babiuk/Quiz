@@ -32,8 +32,6 @@ import { AlertService } from '../alert.service';
               </button>          </div>
           <div class="col-sm"></div>
       </div>
-
-      <alert></alert>
   `,
   styleUrls: ['./pass-recovery.component.css']
 })

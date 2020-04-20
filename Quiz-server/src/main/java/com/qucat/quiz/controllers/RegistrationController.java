@@ -7,7 +7,6 @@ import com.qucat.quiz.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
 @RequestMapping("api/v1/registration")
 public class RegistrationController {
@@ -22,7 +21,7 @@ public class RegistrationController {
     }
 
     @GetMapping("{token}")
-    public boolean confirmRegistration(@PathVariable String token) {
+    public boolean checkRegistrationTokenExistence(@PathVariable String token) {
         return userService.openRegistrationToken(token);
     }
 }
