@@ -8,5 +8,7 @@ import lombok.Data;
 public class QuestionOption {
     private int id;
     private int questionId;
-    private String title;
+    private String content;
+    private boolean isCorrect;
+    private int sequenceOrder;
 }

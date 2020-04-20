@@ -12,7 +12,7 @@ public class Quiz {
     private int id;
     private String name;
     private int authorId;
-    private Category category;
+    private int categoryId;
     private QuizStatus status;
     private Date publishedDate;
     private Date updatedDate;
@@ -20,5 +20,4 @@ public class Quiz {
     private int questionNumber;
     private int maxScore;
     private List<Question> questions;
-    private List<Tag> tags;
 }
