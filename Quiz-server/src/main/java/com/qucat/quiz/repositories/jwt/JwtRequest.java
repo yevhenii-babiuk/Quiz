@@ -1,17 +1,15 @@
 package com.qucat.quiz.repositories.jwt;
 
-import com.qucat.quiz.repositories.entities.Role;
-
 import java.io.Serializable;
 
 public class JwtRequest implements Serializable {
 
     private static final long serialVersionUID = 5926468583005150707L;
 
-//    private int id;
+    //    private int id;
     private String username;
     private String password;
-//    private Role role;
+    //    private Role role;
 
     //need default constructor for JSON Parsing
     public JwtRequest() {
@@ -19,10 +17,10 @@ public class JwtRequest implements Serializable {
     }
 
     public JwtRequest(String username, String password) {
-//        this.setId(id);
+        //        this.setId(id);
         this.setUsername(username);
         this.setPassword(password);
-//        this.setRole(role);
+        //        this.setRole(role);
     }
 
     public String getUsername() {
