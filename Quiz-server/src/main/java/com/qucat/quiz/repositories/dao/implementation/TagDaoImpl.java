@@ -59,6 +59,6 @@ public class TagDaoImpl extends GenericDaoImpl<Tag> implements TagDao {
         } catch (NullPointerException | EmptyResultDataAccessException e) {
             return -1;
         }
-        return (id != null ? id.intValue() : -1);
+        return id != null ? id.intValue() : -1;
     }
 }
