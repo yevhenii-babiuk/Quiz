@@ -105,7 +105,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public Page<User> getUserByRole(Role role, Pageable pageable) {
         int rowTotal = jdbcTemplate.queryForObject(usersQueries.get("rowCount"),
                 new Object[]{role.name().toLowerCase()},
-                (resultSet, number)->resultSet.getInt(1));
+                (resultSet, number) -> resultSet.getInt(1));
         List<User> users = jdbcTemplate.query(usersQueries.get("getPageByRole"),
                 new UserMapper());
         return new PageImpl<>(users, pageable, rowTotal);
