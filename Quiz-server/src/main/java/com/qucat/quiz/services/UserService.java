@@ -23,43 +23,61 @@ import java.util.UUID;
 public class UserService {
 
     private final String REGISTRATION = "registration/";
+
     private final String PASS_RECOVERY = "pass-recovery/";
+
     @Autowired
     private EmailSender emailSender;
+
     @Autowired
     private PasswordEncoder passwordEncoder;
+
     @Autowired
     private UserDaoImpl userDao;
+
     @Autowired
     private TokenDaoImpl tokenDao;
+
     @Value("${url}")
     private String URL;
 
+
     @Transactional
     public boolean registerUser(User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        int id = userDao.save(user);
-        if (id == -1) {
-            User userByMail = userDao.getUserByMail(user.getMail());
-            if (userByMail == null || userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
-                return false;
-            }
 
-            Token token = tokenDao.get(userByMail.getUserId());
-            if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
-                return false;
-            }
-
-            user.setUserId(userByMail.getUserId());
-            userDao.update(user);
+        if (userDao.getUserByLogin(user.getLogin()) != null) {
+            return false;
         }
-        Token token = Token.builder()
+
+        int id;
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        User userByMail = userDao.getUserByMail(user.getMail());
+        Token token = tokenDao.get(userByMail.getUserId());
+
+        if (userByMail != null) {
+            if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
+                return false;
+            } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
+                return false;
+            } else {
+                id = userByMail.getUserId();
+                user.setUserId(id);
+                userDao.update(user);
+            }
+        } else {
+            id = userDao.save(user);
+            if (id == -1) {
+                return false;
+            }
+        }
+
+        Token tokenForNewUser = Token.builder()
                 .token(UUID.randomUUID().toString())
                 .tokenType(TokenType.REGISTRATION)
                 .userId(id)
                 .build();
-        tokenDao.save(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + token.getToken(), MessageInfo.registration.findByLang(Lang.EN));
+        tokenDao.save(tokenForNewUser);
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + tokenForNewUser.getToken(), MessageInfo.registration.findByLang(Lang.EN));
         //todo get Lang
         return true;
     }
@@ -156,6 +174,5 @@ public class UserService {
 
         userDao.update(currentUser);
     }
-
 
 }
