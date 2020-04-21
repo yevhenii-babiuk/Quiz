@@ -4,8 +4,8 @@ import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from "rxjs/operators";
 
-import {Quiz} from '../../../models/quiz'
-import {logger} from "codelyzer/util/logger";
+import {Quiz} from '../models/quiz'
+import {Category} from '../models/category'
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +25,19 @@ export class QuizzesService {
       .pipe(
         catchError(this.handleError<Quiz[]>([]))
       );
+  }
 
+  getCategories(): Observable<Category[]> {
+    return this.http.get<Category[]>(`${this.url}/categories`)
+      .pipe(
+        catchError(this.handleError<Quiz[]>([]))
+      );
+  }
+
+  putImage(image: File) {
+    const uploadData = new FormData();
+    uploadData.append('myFile', image, "name");
+    return this.http.put(`${this.url}/image`, uploadData);
   }
 
   private handleError<T>(result?: T) {
