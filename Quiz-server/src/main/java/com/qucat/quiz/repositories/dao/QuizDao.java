@@ -13,6 +13,8 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     Quiz getFullInformation(Quiz quiz);
 
+    boolean addTag(int quizId, int tagId);
+
     Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable);
 
 }

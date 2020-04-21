@@ -4,4 +4,6 @@ import com.qucat.quiz.repositories.entities.Image;
 
 public interface ImageDao extends GenericDao<Image> {
     String TABLE_NAME = "image";
+
+    int getIdBySrc(String src);
 }

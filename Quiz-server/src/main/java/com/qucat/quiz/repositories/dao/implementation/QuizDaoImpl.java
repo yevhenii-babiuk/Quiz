@@ -11,6 +11,7 @@ import com.qucat.quiz.repositories.entities.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -111,9 +112,22 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         return quiz;    }
 
     @Override
+    public boolean addTag(int quizId, int tagId) {
+        try {
+            jdbcTemplate.update(
+                    quizQueries.get("addTag"),
+                    quizId, tagId
+            );
+        } catch (DuplicateKeyException e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable) {
         int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("rowCountByStatus"),
-                new Object[]{status.name().toLowerCase()},Integer.class);
+                new Object[]{status.name().toLowerCase()}, Integer.class);
         List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByStatus"),
                 new QuizMapper());
         return new PageImpl<>(quizzes, pageable, rowTotal);
