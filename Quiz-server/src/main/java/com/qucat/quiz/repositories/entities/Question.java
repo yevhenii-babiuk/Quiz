@@ -13,6 +13,7 @@ public class Question {
     private QuestionType type;
     private String content;
     private int score;
-    private String image;
+    private int imageId;
+    private Image image;
     private List<QuestionOption> options;
 }
