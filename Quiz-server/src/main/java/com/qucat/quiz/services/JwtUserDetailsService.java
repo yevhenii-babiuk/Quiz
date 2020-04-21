@@ -11,15 +11,11 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-        //        String password = "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6";
-        // TODO replace getUserByLoginAndPassword with getUserByLogin
-
-        //        com.qucat.quiz.repositories.entities.User user = uDao.getUserByLoginAndPassword(username, password);
         if ("username".equals(username)) {
-            return new User(username, "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
+            return new User("username", "$2a$10$slYQmyNdGzTn7ZLBXBChFOC9f6kFjAqPhccnP6DxlWXx2lPk1C3G6",
                     new ArrayList<>());
         } else {
             throw new UsernameNotFoundException("User not found with username: " + username);

@@ -1,7 +1,6 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
-import com.qucat.quiz.repositories.dao.QuestionDao;
-import com.qucat.quiz.repositories.dao.QuizDao;
+import com.qucat.quiz.repositories.dao.*;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
@@ -9,12 +8,16 @@ import com.qucat.quiz.repositories.entities.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -22,6 +25,15 @@ import java.util.Map;
 public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     @Autowired
     private QuestionDao questionDao;
+
+    @Autowired
+    private CategoryDao categoryDao;
+
+    @Autowired
+    private TagDao tagDao;
+
+    @Autowired
+    private ImageDao imageDao;
 
     @Value("#{${sql.quiz}}")
     private Map<String, String> quizQueries;
@@ -56,6 +68,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         }
         preparedStatement.setInt(7, quiz.getQuestionNumber());
         preparedStatement.setInt(8, quiz.getMaxScore());
+        preparedStatement.setInt(9, quiz.getImageId());
         return preparedStatement;
     }
 
@@ -68,13 +81,15 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     protected Object[] getUpdateParameters(Quiz quiz) {
         return new Object[]{quiz.getName(), quiz.getAuthorId(), quiz.getCategoryId(), quiz.getStatus().name().toLowerCase(),
                 quiz.getPublishedDate(), quiz.getUpdatedDate(),
-                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getId()};
+                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImageId(), quiz.getId()};
     }
 
     @Override
     public Quiz getFullInformation(int id) {
         Quiz quiz = get(id);
         if (quiz != null) {
+            quiz.setCategory(categoryDao.get(quiz.getCategoryId()));
+            quiz.setTags(tagDao.getByQuizId(id));
             quiz.setQuestions(questionDao.getByQuizId(id));
             for (Question q : quiz.getQuestions()) {
                 questionDao.getFullInformation(q);
@@ -86,10 +101,44 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     @Override
     public Quiz getFullInformation(Quiz quiz) {
         if (quiz != null) {
+            quiz.setCategory(categoryDao.get(quiz.getCategoryId()));
+            quiz.setTags(tagDao.getByQuizId(quiz.getId()));
             quiz.setQuestions(questionDao.getByQuizId(quiz.getId()));
+            quiz.setImage(imageDao.get(quiz.getImageId()));
             for (Question q : quiz.getQuestions()) {
                 questionDao.getFullInformation(q);
+
             }
         }
-        return quiz;    }
+        return quiz;
+    }
+
+    @Override
+    public Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable) {
+        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("rowCountByStatus"),
+                new Object[]{status.name().toLowerCase()},Integer.class);
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByStatus"),
+                new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, rowTotal);
+    }
+
+    @Override
+    public Page<Quiz> findAll(Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(quizQueries.get("rowCount"),
+                new Object[]{},
+                (resultSet, number) -> resultSet.getInt(1));
+
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"), new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, total);
+    }
+
+    @Override
+    public Page<Quiz> findAllByName(String name, Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(quizQueries.get("nameRowCount"),
+                new Object[]{},
+                (resultSet, number) -> resultSet.getInt(1));
+
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByName"), new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, total);
+    }
 }
