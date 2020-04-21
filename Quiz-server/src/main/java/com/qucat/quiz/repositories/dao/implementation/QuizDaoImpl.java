@@ -112,10 +112,30 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
     @Override
     public Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable) {
-        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("rowCount"),
+        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("rowCountByStatus"),
                 new Object[]{status.name().toLowerCase()},Integer.class);
         List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByStatus"),
                 new QuizMapper());
         return new PageImpl<>(quizzes, pageable, rowTotal);
+    }
+
+    @Override
+    public Page<Quiz> findAll(Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(quizQueries.get("rowCount"),
+                new Object[]{},
+                (resultSet, number) -> resultSet.getInt(1));
+
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"), new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, total);
+    }
+
+    @Override
+    public Page<Quiz> findAllByName(String name, Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(quizQueries.get("nameRowCount"),
+                new Object[]{},
+                (resultSet, number) -> resultSet.getInt(1));
+
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByName"), new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, total);
     }
 }
