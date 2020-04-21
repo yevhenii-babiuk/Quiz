@@ -125,7 +125,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                 new Object[]{},
                 (resultSet, number) -> resultSet.getInt(1));
 
-        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"), new QuizMapper());
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"),
+                new Object[]{ pageable.getPageSize(), pageable.getOffset()},
+                new QuizMapper());
         return new PageImpl<>(quizzes, pageable, total);
     }
 
@@ -135,7 +137,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                 new Object[]{},
                 (resultSet, number) -> resultSet.getInt(1));
 
-        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByName"), new QuizMapper());
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByName"),
+                new Object[]{ pageable.getPageSize(), pageable.getOffset()},
+                new QuizMapper());
         return new PageImpl<>(quizzes, pageable, total);
     }
 }
