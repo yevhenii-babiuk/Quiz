@@ -90,11 +90,13 @@ public class QuizService {
 
     private void addQuizTags(Quiz quiz) {
         for (Tag tag : quiz.getTags()) {
-            int tagId = tagDao.getIdByName(tag.getName());
-            if (tagId == -1) {
-                tagDao.save(tag);
+            if (!tag.getName().isEmpty()) {
+                int tagId = tagDao.getIdByName(tag.getName());
+                if (tagId == -1) {
+                    tagDao.save(tag);
+                }
+                quizDao.addTag(quiz.getId(), tagId);
             }
-            quizDao.addTag(quiz.getId(), tagId);
         }
     }
 
