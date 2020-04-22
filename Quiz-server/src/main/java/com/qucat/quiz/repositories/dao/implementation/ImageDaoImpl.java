@@ -42,4 +42,8 @@ public class ImageDaoImpl extends GenericDaoImpl<Image> implements ImageDao {
         return new Object[]{image.getSrc(), image.getId()};
     }
 
+    public Image getById(int id) {
+        return jdbcTemplate.queryForObject(imageQueries.get("getImageById"),
+                new Object[]{id}, new ImageMapper());
+    }
 }
