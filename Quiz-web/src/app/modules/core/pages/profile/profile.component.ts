@@ -2,22 +2,24 @@ import {Component, Injectable, OnInit, Output} from '@angular/core';
 
 import {User} from "../../../../models/user";
 import {ProfileService} from "../../services/profile.service";
-import {Role} from "../../../../models/role";
 
+
+
+@Injectable()
 @Component({
   selector: 'app-profile',
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
 
+@Injectable()
 export class ProfileComponent implements OnInit {
-  userData: User;
-  role: String;
-  isUser: boolean;
-  isModerator: boolean;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
-
+  userData :  User;
+  role:String;
+  isUser:boolean=false;
+  isModerator:boolean=false;
+  isAdmin:boolean=false;
+  isSuperAdmin:boolean=false;
   constructor(
     private profileService: ProfileService
   ) {
@@ -31,20 +33,22 @@ export class ProfileComponent implements OnInit {
   private getUser() {
     this.profileService.getUser().subscribe(data => {
       this.userData = data;
-      this.role = this.userData.role;
+      this.role=this.userData.role.toLowerCase();
       this.setCondition(this.role);
     });
   }
-
-  private setCondition(role: String) {
-    if (role == Role.USER) {
-      this.isUser = true;
-    } else if (role == Role.SUPER_ADMIN) {
-      this.isSuperAdmin = true;
-    } else if (role == Role.ADMIN) {
-      this.isAdmin = true;
-    } else if (role == Role.MODERATOR) {
-      this.isModerator = true;
+  private setCondition(role:String){
+    if(role=="user"){
+      this.isUser=true;
+    }
+    else if(role=="super_admin"){
+      this.isSuperAdmin=true;
+    }
+    else if(role=="admin"){
+      this.isAdmin=true;
+    }
+    else if(role=="moderator"){
+      this.isModerator=true;
     }
   }
 
