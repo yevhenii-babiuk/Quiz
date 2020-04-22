@@ -43,6 +43,12 @@ export class QuizzesService {
     return this.http.put<string>(`${url}/quiz/`, quiz, this.httpOptions);
   }
 
+  getById(id: string){
+    return this.http.get<Quiz>(`${url}/quiz/${id}`).pipe(
+      catchError(this.handleError<Quiz>())
+    );
+  }
+
   private handleError<T>(result?: T) {
     return (error: any): Observable<T> => {
 

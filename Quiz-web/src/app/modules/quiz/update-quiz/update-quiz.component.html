@@ -25,8 +25,12 @@
 
       <div class="row mx-0">
         <input [(ngModel)]="quiz.name" class="col-sm m-3" placeholder="Quiz name">
-        <select #mySelect class="col-sm custom-select m-3" (change)="setCategory(mySelect.value)">
-          <option *ngFor="let category of categories" [value]="category.name">{{category.name}}</option>
+        <select #mySelect class="col-sm custom-select m-3" id="categories" (change)="setCategory(mySelect.value)">
+          <ng-container *ngFor="let category of categories">
+            <option *ngIf="category.name==quiz.category.name" selected
+                    [value]="category.name">{{category.name}}</option>
+            <option *ngIf="category.name!=quiz.category.name" [value]="category.name">{{category.name}}</option>
+          </ng-container>
         </select>
       </div>
 
@@ -67,22 +71,34 @@
           <div>
             <select #mySelect class="custom-select m-1"
                     (change)="onChangeTypeQuestion(question, mySelect.value)">
-              <option [value]="0"> SELECT OPTION</option>
-              <option [value]="1"> SELECT SEQUENCE</option>
-              <option [value]="2"> TRUE / False</option>
-              <option [value]="3"> ENTER ANSWER</option>
+              <option *ngIf="question.type==0"
+                      selected [value]="0">SELECT OPTION
+              </option>
+              <option *ngIf="question.type!=0" [value]="0">SELECT OPTION</option>
+              <option *ngIf="question.type==1"
+                      selected [value]="1">SELECT SEQUENCE
+              </option>
+              <option *ngIf="question.type!=1" [value]="1">SELECT SEQUENCE</option>
+              <option *ngIf="question.type==2"
+                      selected [value]="2">TRUE / False
+              </option>
+              <option *ngIf="question.type!=2" [value]="2">TRUE / False</option>
+              <option *ngIf="question.type==3"
+                      selected [value]="3">ENTER ANSWER
+              </option>
+              <option *ngIf="question.type!=3" [value]="3">ENTER ANSWER</option>
             </select>
           </div>
           <div>
             <input [(ngModel)]="question.content" class="col-sm m-1" placeholder="Question"/>
           </div>
 
-          <div *ngIf="question.questionType==0">
-            <div class="row mx-0" *ngFor="let questionOption of question.questionOptions">
+          <div *ngIf="question.type==0">
+            <div class="row mx-0" *ngFor="let questionOption of question.options">
               <input [(ngModel)]="questionOption.content"
                      placeholder="answer{{questionOption.sequenceOrder}}"
-                     class="w-50 m-1 border border-{{questionOption.isCorrect? 'warning':'danger'}}"/>
-              <div>
+                     class="w-50 col m-1 border border-{{questionOption.isCorrect? 'warning':'danger'}}"/>
+              <div class="col">
                 <label *ngIf="!questionOption.selectedFile" class="image-upload-container btn btn-bwm btn-warning">
                   <span>Select Image</span>
                   <input class="d-none" #imageInput
@@ -107,8 +123,8 @@
 
           </div>
 
-          <div *ngIf="question.questionType==1">
-            <div class="row mx-0" *ngFor="let questionOption of  question.questionOptions">
+          <div *ngIf="question.type==1">
+            <div class="row mx-0" *ngFor="let questionOption of  question.options">
               <label for="{{question.id+questionOption.sequenceOrder}}">{{questionOption.sequenceOrder}}</label>
               <input id="{{question.id+questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
                      placeholder="answer" class="w-50 m-1">
@@ -135,19 +151,19 @@
             </div>
           </div>
 
-          <div *ngIf="question.questionType==2" class="row mx-0">
-            <div class="col-sm-4 mx-3 btn btn-{{question.questionOptions[0].isCorrect?'primary': 'secondary'}}"
+          <div *ngIf="question.type==2" class="row mx-0">
+            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'primary': 'secondary'}}"
                  (click)="setCorrectAnswer(question, true)">
               True
             </div>
-            <div class="col-sm-4 mx-3 btn btn-{{question.questionOptions[0].isCorrect?'secondary': 'primary'}}"
+            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'secondary': 'primary'}}"
                  (click)="setCorrectAnswer(question, false)">
               False
             </div>
           </div>
 
-          <div *ngIf="question.questionType==3">
-            <input [(ngModel)]="question.questionOptions[0].content" placeholder="correct answer" class="w-75 m-1">
+          <div *ngIf="question.type==3">
+            <input [(ngModel)]="question.options[0].content" placeholder="correct answer" class="w-75 m-1">
           </div>
         </div>
 

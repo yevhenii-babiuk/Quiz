@@ -6,6 +6,7 @@ import {UpdateQuizComponent} from './update-quiz/update-quiz.component'
 
 const authenticationRoutes: Routes = [
   {path: 'quizzes', component: QuizzesComponent},
+  /*{path: 'quiz/:quizId/edit', component: UpdateQuizComponent},*/
   {path: 'createQuiz', component: UpdateQuizComponent}
 ];
 
