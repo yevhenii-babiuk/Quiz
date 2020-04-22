@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -15,6 +15,7 @@ import {AuthRoutingModule} from './modules/authentication/auth-routing.module';
 import {PagesRoutingModule} from './modules/core/pages/pages-routing.module';
 import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
 import {QuizModule} from './modules/quiz/quiz.module'
+import {BasicAuthHtppInterceptorService} from "./modules/core/services/auth-http-interceptor.service";
 @NgModule({
   declarations: [
     AppComponent

@@ -25,17 +25,17 @@ export class LoginComponent implements OnInit {
   onLogin(login: string, password: string) {
     login = login.trim();
     if (!login) {
-      this.alertService.error('Login is empty!');
+      this.alertService.error("Login is empty!");
       return;
     }
 
     this.authenticationService.login({login, password} as User)
     .subscribe(
                data => {
-                 this.router.navigate(['/']).then();
+                   this.router.navigate(['/']);
                },
                error => {
-                   this.alertService.error('Error while login');
+                   this.alertService.error("Error while login");
                    console.log(error);
                });
   }
