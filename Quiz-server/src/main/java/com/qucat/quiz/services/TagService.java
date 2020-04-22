@@ -18,4 +18,16 @@ public class TagService {
     public List<Tag> getTagsByQuizId(@RequestParam int quizId) {
         return tagDao.getByQuizId(quizId);
     }
+
+    public int addTag(Tag tag) {
+        int tagId = -1;
+        String tagName = tag.getName();
+        if (tagName != null && !tagName.isEmpty()) {
+            tagId = tagDao.getIdByName(tagName);
+            if (tagId == -1) {
+                return tagDao.save(tag);
+            }
+        }
+        return tagId;
+    }
 }
