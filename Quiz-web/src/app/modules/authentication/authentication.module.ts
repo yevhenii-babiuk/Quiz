@@ -8,6 +8,7 @@ import {MailConfirmComponent} from './registration/mail-confirm/mail-confirm.com
 import {PassRecoveryConfirmComponent} from './pass-recovery/pass-recovery-confirm/pass-recovery-confirm.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {AuthRoutingModule} from './auth-routing.module';
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import {AuthRoutingModule} from './auth-routing.module';
   imports: [
     CommonModule,
     AuthRoutingModule,
-    RouterModule
+    RouterModule,
+    SharedModule
   ]
 })
 export class AuthenticationModule { }

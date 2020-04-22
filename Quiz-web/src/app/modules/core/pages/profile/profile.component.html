@@ -1,0 +1,54 @@
+<app-header_profile></app-header_profile>
+<app-sideprofile></app-sideprofile>
+<table>
+  <tr>
+    <td align="left" width="250">
+      <div class="menu" >
+        <div><img src="../../assets/img/avatar.png" width="250" height="270"></div>
+      </div>
+      <h3>
+        <p>  {{userData.login}}</p>
+        <p> {{userData.firstName}} {{userData.secondName}}</p>
+      </h3>
+      <div align="top"> <img src="../../assets/img/score.png" width="80" height="92" align="top"/>
+        Мурри: {{userData.score}}</div>
+    </td>
+    <td align="center" *ngIf="isUser">
+      <h4><p style="margin-left: 40px">Рекомендовані вікторини</p></h4>
+      <img src="../../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+      <img src="../../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+      <img src="../../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+      <img src="../../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+      <img src="../../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+      <h4><p style="margin-left: 40px">Досягнення</p></h4>
+      <img src="../../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
+      <img src="../../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
+      <img src="../../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
+      <img src="../../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
+      <img src="../../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
+    </td>
+    <td align="center" *ngIf="isAdmin">
+      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
+
+      <h4><p style="margin-left: 40px">Модератори</p></h4>
+
+    </td>
+    <td align="center" *ngIf="isModerator">
+      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
+    </td>
+    <td align="center" *ngIf="isSuperAdmin">
+      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
+
+      <h4><p style="margin-left: 40px">Адміни</p></h4>
+
+      <h4><p style="margin-left: 40px">Модератори</p></h4>
+
+    </td>
+    <td align="right" width="200">
+      <h5>
+        <a class="act" routerLink="/api/v1/edit"><b>Редагувати</b></a>
+        <a class="act" routerLink="/api/v1/registration" *ngIf="!isSuperAdmin"><b>Активувати/деактивувати</b></a>
+      </h5>
+    </td>
+  </tr>
+</table>

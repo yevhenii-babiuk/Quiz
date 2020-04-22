@@ -7,7 +7,6 @@ import {HttpClientModule} from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import {AuthenticationModule} from './modules/authentication/authentication.module';
 import {CoreModule} from './modules/core/core.module';
 import {SharedModule} from './modules/shared/shared.module';
@@ -17,7 +16,7 @@ import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
 import {QuizModule} from './modules/quiz/quiz.module'
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
   ],
   imports: [
     RouterModule,
