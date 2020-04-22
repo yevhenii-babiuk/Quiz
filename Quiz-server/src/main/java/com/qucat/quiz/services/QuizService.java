@@ -1,6 +1,6 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.*;
+import com.qucat.quiz.repositories.dao.QuizDao;
 import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class QuizService {
     @Autowired
-    private QuizDaoImpl quizDao;
+    private QuizDao quizDao;
 
     @Autowired
     private TagService tagService;
@@ -25,11 +25,13 @@ public class QuizService {
     @Transactional
     public boolean createQuiz(Quiz quiz) {
         if (quiz == null) {
+            log.info("createQuiz: Quiz is null");
             return false;
         }
 
         int quizId = quizDao.save(quiz);
         if (quizId == -1) {
+            log.info("createQuiz: Quiz isn't saved in data base");
             return false;
         }
 
@@ -40,6 +42,7 @@ public class QuizService {
 
         addQuizTags(quiz);
 
+        log.info("createQuiz: Quiz successfully saved");
         return true;
     }
 
@@ -55,6 +58,7 @@ public class QuizService {
     @Transactional
     public void updateQuiz(Quiz quiz) {
         if (quiz == null) {
+            log.info("updateQuiz: Quiz is null");
             return;
         }
 

@@ -1,6 +1,6 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.TagDaoImpl;
+import com.qucat.quiz.repositories.dao.TagDao;
 import com.qucat.quiz.repositories.entities.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class TagService {
     @Autowired
-    private TagDaoImpl tagDao;
+    private TagDao tagDao;
 
     public List<Tag> getTagsByQuizId(@RequestParam int quizId) {
         return tagDao.getByQuizId(quizId);

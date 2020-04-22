@@ -1,6 +1,6 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.QuestionOptionDaoImpl;
+import com.qucat.quiz.repositories.dao.QuestionOptionDao;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class QuestionOptionService {
     @Autowired
-    private QuestionOptionDaoImpl questionOptionDao;
+    private QuestionOptionDao questionOptionDao;
 
     public int addQuestionOption(QuestionOption questionOption) {
         return questionOptionDao.save(questionOption);
