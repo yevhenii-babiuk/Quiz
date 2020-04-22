@@ -14,4 +14,6 @@ public interface UserDao extends GenericDao<User> {
     User getUserByMail(String mail);
 
     Page<User> getUserByRole(Role role, Pageable pageable);
+
+    User getUserByLogin(String login);
 }

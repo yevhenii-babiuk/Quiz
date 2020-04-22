@@ -13,7 +13,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 import java.util.Map;
 
@@ -105,10 +107,23 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public Page<User> getUserByRole(Role role, Pageable pageable) {
         int rowTotal = jdbcTemplate.queryForObject(usersQueries.get("rowCount"),
                 new Object[]{role.name().toLowerCase()},
-                (resultSet, number)->resultSet.getInt(1));
+                (resultSet, number) -> resultSet.getInt(1));
         List<User> users = jdbcTemplate.query(usersQueries.get("getPageByRole"),
+                new Object[]{role.name().toLowerCase(), pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
         return new PageImpl<>(users, pageable, rowTotal);
     }
 
+    @Override
+    public User getUserByLogin(String login) {
+        User user;
+        try {
+            user = jdbcTemplate.queryForObject(usersQueries.get("selectByLogin"),
+                    new Object[]{login}, new UserMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return user;
+    }
 }

@@ -22,6 +22,7 @@ public class QuizMapper implements RowMapper<Quiz> {
                 .createdDate(resultSet.getTimestamp("created_date"))
                 .questionNumber(resultSet.getInt("questions_number"))
                 .maxScore(resultSet.getInt("max_score"))
+                .imageId(resultSet.getInt("image_id"))
                 .build();
     }
 }
