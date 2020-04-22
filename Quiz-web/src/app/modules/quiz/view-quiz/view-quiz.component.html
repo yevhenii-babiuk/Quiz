@@ -1,0 +1,94 @@
+<!--
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+-->
+<div class="container">
+  <p class="text-center">{{quiz.name}}</p>
+
+  <div class="row mx-0">
+
+    <div class="col-sm-3">
+      <img class="card-img-top" src="data:image/jpeg;base64,{{quiz.image.src}}" alt="Card image cap">
+    </div>
+
+
+    <div class="col-sm-9">
+
+      <div class="row mx-0">
+        <label class="col-sm m-3">{{quiz.name}}</label>
+        <label  *ngIf="quiz.category" class="col-sm m-3">{{quiz.category.name}}</label>
+      </div>
+
+      <div>
+        <label class="col-sm m-3">{{quiz.tags.join(", ")}}</label>
+      </div>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="quiz.questions">
+    <ng-container *ngFor="let question of quiz.questions">
+      <div class="row mx-0 my-1 p-4 border-dark border">
+
+        <div class="col-sm-3">
+          <img *ngIf="question.image" class="card-img-top" src="data:image/jpeg;base64,{{question.image.src}}" alt="Card image cap">
+        </div>
+
+        <div class="col-sm-9">
+
+          <div>
+            <label class="col-sm m-1">{{question.type}}</label>
+          </div>
+          <div>
+            <h2 class="col-sm  m-1">{{question.content}}</h2>
+          </div>
+
+          <div *ngIf="question.type=='SELECT_OPTION'">
+            <div class="row mx-0" *ngFor="let questionOption of question.options">
+
+              <label class="w-50 col m-1 border border-{{questionOption.isCorrect? 'warning':'danger'}}">
+                {{questionOption.content}}
+              </label>
+              <div class="col">
+                <img *ngIf="questionOption.image" class="card-img-top" src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
+              </div>
+
+            </div>
+          </div>
+
+          <div *ngIf="question.type=='SELECT_SEQUENCE'">
+            <div class="row mx-0" *ngFor="let questionOption of  question.options">
+
+              <label for="{{question.id+questionOption.sequenceOrder}}">{{questionOption.sequenceOrder}}</label>
+              <input id="{{question.id+questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
+                     class="w-50 m-1" readonly>
+              <div class="col">
+                <img *ngIf="questionOption.image" class="card-img-top" src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
+              </div>
+
+            </div>
+          </div>
+
+          <div *ngIf="question.type=='TRUE_FALSE'" class="row mx-0">
+            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'primary': 'secondary'}}">
+              True
+            </div>
+            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'secondary': 'primary'}}">
+              False
+            </div>
+          </div>
+
+          <div *ngIf="question.type=='ENTER_ANSWER'">
+            <input [(ngModel)]="question.options[0].content" class="w-75 m-1" readonly>
+          </div>
+        </div>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+
+
+</div>

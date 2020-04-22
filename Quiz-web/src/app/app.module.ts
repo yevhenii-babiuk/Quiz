@@ -13,7 +13,7 @@ import {SharedModule} from './modules/shared/shared.module';
 import {AuthRoutingModule} from './modules/authentication/auth-routing.module';
 import {PagesRoutingModule} from './modules/core/pages/pages-routing.module';
 import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
-import {QuizModule} from './modules/quiz/quiz.module'
+import {QuizModule} from './modules/quiz/quiz.module';
 @NgModule({
   declarations: [
     AppComponent,

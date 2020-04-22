@@ -1,6 +1,6 @@
 import {Component, OnInit, HostListener} from '@angular/core';
 import {QuizzesService} from "../../core/services/quizzes.service";
-import {Quiz} from "../../../models/quiz";
+import {Quiz} from "../../core/models/quiz";
 
 @Component({
   selector: 'app-quizzes',
