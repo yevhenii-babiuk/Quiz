@@ -1,5 +1,6 @@
 import {Imaged} from "./imaged";
 import {ImageSnippet} from "./imageSnippet";
+import {Image} from "./image";
 
 
 export class QuestionOptions implements Imaged{
@@ -9,7 +10,7 @@ export class QuestionOptions implements Imaged{
 
   imageId: number;
   selectedFile: ImageSnippet;
-
+  image: Image;
   constructor(sequenceOrder: number) {
     this.sequenceOrder = sequenceOrder;
   };

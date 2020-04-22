@@ -3,6 +3,7 @@ import {Category} from "./category";
 import {Question} from "./question";
 import {ImageSnippet} from "./imageSnippet";
 import {Imaged} from "./imaged";
+import {Image} from "./image";
 
 export class Quiz implements Imaged {
   id: number;
@@ -16,4 +17,5 @@ export class Quiz implements Imaged {
   questions: Question[]=[new Question(0)];
   imageId: number;
   selectedFile: ImageSnippet;
+  image: Image;
 }

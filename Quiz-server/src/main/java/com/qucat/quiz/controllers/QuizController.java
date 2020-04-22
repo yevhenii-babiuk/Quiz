@@ -1,33 +1,29 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.services.QuizService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/quiz")
 public class QuizController {
 
+    @Autowired
+    QuizService quizService;
+
+    @PostMapping
+    public boolean addQuiz(@RequestBody Quiz quiz) {
+        return quizService.createQuiz(quiz);
+    }
+
     @PutMapping
-    public boolean setQuiz(@RequestBody Quiz quiz) {
-        System.out.println(quiz);
-        return true;
+    public void updateQuiz(@RequestBody Quiz quiz) {
+        quizService.updateQuiz(quiz);
     }
 
     @GetMapping("{id}")
     public Quiz getQuiz(@PathVariable int id) {
-        List<QuestionOption> questionOptions = new ArrayList<>();
-        questionOptions.add(QuestionOption.builder().isCorrect(true).build());
-        List<Question> questionList = new ArrayList<>();
-        questionList.add(Question.builder().content("content").type(QuestionType.TRUE_FALSE)
-                .options(questionOptions).build());
-        return Quiz.builder()
-                .id(id)
-                .name("QName")
-                .category(Category.builder().name("Category3").id(3).build())
-                .questions(questionList)
-                .build();
+        return quizService.getQuizById(id);
     }
 }

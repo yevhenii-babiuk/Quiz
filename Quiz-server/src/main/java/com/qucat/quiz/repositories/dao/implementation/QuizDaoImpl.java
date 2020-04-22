@@ -141,7 +141,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         int total = jdbcTemplate.queryForObject(quizQueries.get("rowCount"),
                 new Object[]{},
                 (resultSet, number) -> resultSet.getInt(1));
-
+        System.out.println(total);
         List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"),
                 new Object[]{ pageable.getPageSize(), pageable.getOffset()},
                 new QuizMapper());

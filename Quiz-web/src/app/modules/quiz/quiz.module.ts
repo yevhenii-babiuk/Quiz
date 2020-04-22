@@ -4,13 +4,15 @@ import { RouterModule } from '@angular/router';
 
 import {QuizzesComponent} from './quizzes/quizzes.component';
 import {UpdateQuizComponent} from './update-quiz/update-quiz.component';
+import {ViewQuizComponent} from './view-quiz/view-quiz.component';
 import {QuizRoutingModule} from './quiz-routing.module';
 import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
     QuizzesComponent,
-    UpdateQuizComponent
+    UpdateQuizComponent,
+    ViewQuizComponent
   ],
   imports: [
     CommonModule,
