@@ -90,8 +90,9 @@ public class QuizService {
 
     private void addQuizTags(Quiz quiz) {
         for (Tag tag : quiz.getTags()) {
-            if (!tag.getName().isEmpty()) {
-                int tagId = tagDao.getIdByName(tag.getName());
+            String tagName = tag.getName();
+            if (tagName != null && !tagName.isEmpty()) {
+                int tagId = tagDao.getIdByName(tagName);
                 if (tagId == -1) {
                     tagDao.save(tag);
                 }
