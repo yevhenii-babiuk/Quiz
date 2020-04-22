@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class QuizApplication {
 
     public static void main(String[] args) {
-       SpringApplication.run(QuizApplication.class, args);
+        SpringApplication.run(QuizApplication.class, args);
 
     }
 

@@ -46,7 +46,7 @@ public class QuestionOptionDaoImpl extends GenericDaoImpl<QuestionOption> implem
     @Override
     protected Object[] getUpdateParameters(QuestionOption questionOption) {
         return new Object[]{questionOption.getQuestionId(), questionOption.getContent(), questionOption.isCorrect(),
-        questionOption.getSequenceOrder(), questionOption.getImageId(), questionOption.getId()};
+                questionOption.getSequenceOrder(), questionOption.getImageId(), questionOption.getId()};
     }
 
     @Override
