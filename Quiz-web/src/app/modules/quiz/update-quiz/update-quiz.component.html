@@ -71,29 +71,29 @@
           <div>
             <select #mySelect class="custom-select m-1"
                     (change)="onChangeTypeQuestion(question, mySelect.value)">
-              <option *ngIf="question.type==0"
-                      selected [value]="0">SELECT OPTION
+              <option *ngIf="question.type=='SELECT_OPTION'"
+                      selected [value]="'SELECT_OPTION'">SELECT OPTION
               </option>
-              <option *ngIf="question.type!=0" [value]="0">SELECT OPTION</option>
-              <option *ngIf="question.type==1"
-                      selected [value]="1">SELECT SEQUENCE
+              <option *ngIf="question.type!='SELECT_OPTION'" [value]="'SELECT_OPTION'">SELECT OPTION</option>
+              <option *ngIf="question.type=='SELECT_SEQUENCE'"
+                      selected [value]="'SELECT_SEQUENCE'">SELECT SEQUENCE
               </option>
-              <option *ngIf="question.type!=1" [value]="1">SELECT SEQUENCE</option>
-              <option *ngIf="question.type==2"
-                      selected [value]="2">TRUE / False
+              <option *ngIf="question.type!='SELECT_SEQUENCE'" [value]="'SELECT_SEQUENCE'">SELECT SEQUENCE</option>
+              <option *ngIf="question.type=='TRUE_FALSE'"
+                      selected [value]="'TRUE_FALSE'">TRUE / False
               </option>
-              <option *ngIf="question.type!=2" [value]="2">TRUE / False</option>
-              <option *ngIf="question.type==3"
-                      selected [value]="3">ENTER ANSWER
+              <option *ngIf="question.type!='TRUE_FALSE'" [value]="'TRUE_FALSE'">TRUE / False</option>
+              <option *ngIf="question.type=='ENTER_ANSWER'"
+                      selected [value]="'ENTER_ANSWER'">ENTER ANSWER
               </option>
-              <option *ngIf="question.type!=3" [value]="3">ENTER ANSWER</option>
+              <option *ngIf="question.type!='ENTER_ANSWER'" [value]="'ENTER_ANSWER'">ENTER ANSWER</option>
             </select>
           </div>
           <div>
             <input [(ngModel)]="question.content" class="col-sm m-1" placeholder="Question"/>
           </div>
 
-          <div *ngIf="question.type==0">
+          <div *ngIf="question.type=='SELECT_OPTION'">
             <div class="row mx-0" *ngFor="let questionOption of question.options">
               <input [(ngModel)]="questionOption.content"
                      placeholder="answer{{questionOption.sequenceOrder}}"
@@ -123,7 +123,7 @@
 
           </div>
 
-          <div *ngIf="question.type==1">
+          <div *ngIf="question.type=='SELECT_SEQUENCE'">
             <div class="row mx-0" *ngFor="let questionOption of  question.options">
               <label for="{{question.id+questionOption.sequenceOrder}}">{{questionOption.sequenceOrder}}</label>
               <input id="{{question.id+questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
@@ -151,7 +151,7 @@
             </div>
           </div>
 
-          <div *ngIf="question.type==2" class="row mx-0">
+          <div *ngIf="question.type=='TRUE_FALSE'" class="row mx-0">
             <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'primary': 'secondary'}}"
                  (click)="setCorrectAnswer(question, true)">
               True
@@ -162,7 +162,7 @@
             </div>
           </div>
 
-          <div *ngIf="question.type==3">
+          <div *ngIf="question.type=='ENTER_ANSWER'">
             <input [(ngModel)]="question.options[0].content" placeholder="correct answer" class="w-75 m-1">
           </div>
         </div>

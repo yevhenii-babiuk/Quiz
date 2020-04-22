@@ -20,7 +20,7 @@ export class QuizzesService {
   }
 
   getQuizzes(currentCount: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${url}/quizzes/${currentCount.toString(10)}`)
+    return this.http.get<Quiz[]>(`${url}/quizzes?count=${currentCount}`)
       .pipe(
         catchError(this.handleError<Quiz[]>([]))
       );

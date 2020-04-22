@@ -12,8 +12,8 @@ import java.util.List;
 @RequestMapping("api/v1/quizzes")
 public class QuizListController {
 
-    @GetMapping("{currentCount}")
-    public Quiz[] getQuizzes(@PathVariable int currentCount) {
+    @GetMapping
+    public Quiz[] getQuizzes(@RequestParam(value = "count", required = false) int currentCount) {
         System.out.println("currentCount = " + currentCount);
         List<Tag> tags = new ArrayList<>();
         tags.add(Tag.builder().name("tag1").build());

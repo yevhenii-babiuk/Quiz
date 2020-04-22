@@ -59,7 +59,7 @@ export class UpdateQuizComponent implements OnInit {
     for (let i = 0; i < this.quiz.questions.length; i++) {
       console.log("b == "+(this.quiz.questions[i].type==QuestionType.TRUE_FALSE));
 
-      if(this.quiz.questions[i].type==QuestionType.SELECT_OPTION){
+      /*if(this.quiz.questions[i].type==QuestionType.SELECT_OPTION){
         this.quiz.questions[i].type = 0;
       }else if (this.quiz.questions[i].type==QuestionType.SELECT_SEQUENCE){
         this.quiz.questions[i].type = 1;
@@ -67,7 +67,7 @@ export class UpdateQuizComponent implements OnInit {
         this.quiz.questions[i].type = 2;
       }else if(this.quiz.questions[i].type==QuestionType.ENTER_ANSWER){
         this.quiz.questions[i].type = 3;
-      }
+      }*/
 
 
       console.log("a"+this.quiz.questions[i].type);
@@ -131,7 +131,7 @@ export class UpdateQuizComponent implements OnInit {
   }
 
   onChangeTypeQuestion(question: Question, str: string) {
-    question.type = parseInt(str);
+    question.type = QuestionType[str];
     console.log("changed");
     this.setOptions(question);
   }
