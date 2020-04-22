@@ -4,6 +4,8 @@ import { CommonModule } from '@angular/common';
 import {AlertComponent} from './alert/alert.component';
 
 import { HeaderComponent } from './header/header.component';
+import {HeaderprofileComponent} from "./headerprofile/headerprofile.component";
+import {SideprofileComponent} from "./sideprofile/sideprofile.component";
 import { FooterComponent } from './footer/footer.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
 import {RouterModule} from '@angular/router';
@@ -13,7 +15,9 @@ import {RouterModule} from '@angular/router';
     AlertComponent,
     HeaderComponent,
     FooterComponent,
-    SidenavComponent
+    SidenavComponent,
+    HeaderprofileComponent,
+    SideprofileComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +27,9 @@ import {RouterModule} from '@angular/router';
     AlertComponent,
     HeaderComponent,
     FooterComponent,
-    SidenavComponent
+    SidenavComponent,
+    HeaderprofileComponent,
+    SideprofileComponent
   ]
 })
 export class SharedModule { }

@@ -32,7 +32,8 @@ export class LoginComponent implements OnInit {
     this.authenticationService.login({login, password} as User)
     .subscribe(
                data => {
-                 this.router.navigate(['/']).then();
+                 //this.router.navigate(['/']).then();
+                 this.router.navigate(['/api/v1/profile']).then();
                },
                error => {
                    this.alertService.error('Error while login');
