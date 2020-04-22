@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 public class QuizController {
 
     @Autowired
-    QuizService quizService;
+    private QuizService quizService;
 
     @PostMapping
     public boolean addQuiz(@RequestBody Quiz quiz) {

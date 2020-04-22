@@ -15,7 +15,7 @@ import java.util.Optional;
 public class QuizListController {
 
     @Autowired
-    QuizzesService quizzesService;
+    private QuizzesService quizzesService;
 
     @GetMapping
     public Quiz[] getQuizzes(@RequestParam(value = "count") int currentCount) {

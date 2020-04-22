@@ -13,7 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageController {
 
     @Autowired
-    QuizService quizService;
+    private QuizService quizService;
 
     @PutMapping
     public int saveImage(@RequestParam("myFile") MultipartFile file) {
