@@ -1,0 +1,186 @@
+<!--
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet">
+-->
+<div class="container">
+  <p class="text-center">Create quiz</p>
+
+  <div class="row mx-0">
+
+    <div class="col-sm-3">
+      <label class="image-upload-container btn btn-bwm">
+        <input class="d-none" #imageInput
+               type="file"
+               accept="image/*"
+               (change)="processFile(imageInput, quiz)">
+        <div class="img-preview-container img-preview"
+             [ngStyle]="{'background-image': 'url('+
+       (quiz.selectedFile ? quiz.selectedFile.src : '../../../../assets/img/logo.png') +')'}">
+        </div>
+      </label>
+    </div>
+
+
+    <div class="col-sm-9">
+
+      <div class="row mx-0">
+        <input [(ngModel)]="quiz.name" class="col-sm m-3" placeholder="Quiz name">
+        <select #mySelect class="col-sm custom-select m-3" id="categories" (change)="setCategory(mySelect.value)">
+          <ng-container *ngFor="let category of categories">
+            <option *ngIf="category.name==quiz.category.name" selected
+                    [value]="category.name">{{category.name}}</option>
+            <option *ngIf="category.name!=quiz.category.name" [value]="category.name">{{category.name}}</option>
+          </ng-container>
+        </select>
+      </div>
+
+      <div>
+        <input id="tags" class="col-sm m-3" placeholder="tags" (change)="setTags()">
+      </div>
+
+    </div>
+
+  </div>
+
+  <div>
+    <ng-container *ngFor="let question of quiz.questions">
+      <div class="row mx-0 my-1 p-4 border-dark border">
+
+        <div class="col-sm-3">
+          <label *ngIf="!question.selectedFile" class="image-upload-container btn btn-bwm btn-warning">
+            <span>Select Image</span>
+            <input class="d-none" #imageInput
+                   type="file"
+                   accept="image/*"
+                   (change)="processFile(imageInput, question)">
+          </label>
+
+          <label *ngIf="question.selectedFile" class="image-upload-container btn btn-bwm">
+            <input class="d-none" #imageInput
+                   type="file"
+                   accept="image/*"
+                   (change)="processFile(imageInput, question)">
+            <div class="img-preview-container img-preview"
+                 [ngStyle]="{ 'background-image': 'url(' + question.selectedFile.src  + ')'}">
+            </div>
+          </label>
+        </div>
+
+        <div class="col-sm-9">
+
+          <div>
+            <select #mySelect class="custom-select m-1"
+                    (change)="onChangeTypeQuestion(question, mySelect.value)">
+              <option *ngIf="question.type=='SELECT_OPTION'"
+                      selected [value]="'SELECT_OPTION'">SELECT OPTION
+              </option>
+              <option *ngIf="question.type!='SELECT_OPTION'" [value]="'SELECT_OPTION'">SELECT OPTION</option>
+              <option *ngIf="question.type=='SELECT_SEQUENCE'"
+                      selected [value]="'SELECT_SEQUENCE'">SELECT SEQUENCE
+              </option>
+              <option *ngIf="question.type!='SELECT_SEQUENCE'" [value]="'SELECT_SEQUENCE'">SELECT SEQUENCE</option>
+              <option *ngIf="question.type=='TRUE_FALSE'"
+                      selected [value]="'TRUE_FALSE'">TRUE / False
+              </option>
+              <option *ngIf="question.type!='TRUE_FALSE'" [value]="'TRUE_FALSE'">TRUE / False</option>
+              <option *ngIf="question.type=='ENTER_ANSWER'"
+                      selected [value]="'ENTER_ANSWER'">ENTER ANSWER
+              </option>
+              <option *ngIf="question.type!='ENTER_ANSWER'" [value]="'ENTER_ANSWER'">ENTER ANSWER</option>
+            </select>
+          </div>
+          <div>
+            <input [(ngModel)]="question.content" class="col-sm m-1" placeholder="Question"/>
+          </div>
+
+          <div *ngIf="question.type=='SELECT_OPTION'">
+            <div class="row mx-0" *ngFor="let questionOption of question.options">
+              <input [(ngModel)]="questionOption.content"
+                     placeholder="answer{{questionOption.sequenceOrder}}"
+                     class="w-50 col m-1 border border-{{questionOption.isCorrect? 'warning':'danger'}}"/>
+              <div class="col">
+                <label *ngIf="!questionOption.selectedFile" class="image-upload-container btn btn-bwm btn-warning">
+                  <span>Select Image</span>
+                  <input class="d-none" #imageInput
+                         type="file"
+                         accept="image/*"
+                         (change)="processFile(imageInput, questionOption)">
+                </label>
+
+                <label *ngIf="questionOption.selectedFile" class="image-upload-container btn btn-bwm">
+                  <input class="d-none" #imageInput
+                         type="file"
+                         accept="image/*"
+                         (change)="processFile(imageInput, questionOption)">
+                  <div class="img-preview-container img-preview"
+                       [ngStyle]="{ 'background-image': 'url(' + questionOption.selectedFile.src  + ')'}">
+                  </div>
+                </label>
+              </div>
+
+            </div>
+
+
+          </div>
+
+          <div *ngIf="question.type=='SELECT_SEQUENCE'">
+            <div class="row mx-0" *ngFor="let questionOption of  question.options">
+              <label for="{{question.id+questionOption.sequenceOrder}}">{{questionOption.sequenceOrder}}</label>
+              <input id="{{question.id+questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
+                     placeholder="answer" class="w-50 m-1">
+              <div>
+                <label *ngIf="!questionOption.selectedFile" class="image-upload-container btn btn-bwm btn-warning">
+                  <span>Select Image</span>
+                  <input class="d-none" #imageInput
+                         type="file"
+                         accept="image/*"
+                         (change)="processFile(imageInput, questionOption)">
+                </label>
+
+                <label *ngIf="questionOption.selectedFile" class="image-upload-container btn btn-bwm">
+                  <input class="d-none" #imageInput
+                         type="file"
+                         accept="image/*"
+                         (change)="processFile(imageInput, questionOption)">
+                  <div class="img-preview-container img-preview"
+                       [ngStyle]="{ 'background-image': 'url(' + questionOption.selectedFile.src  + ')'}">
+                  </div>
+                </label>
+              </div>
+
+            </div>
+          </div>
+
+          <div *ngIf="question.type=='TRUE_FALSE'" class="row mx-0">
+            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'primary': 'secondary'}}"
+                 (click)="setCorrectAnswer(question, true)">
+              True
+            </div>
+            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'secondary': 'primary'}}"
+                 (click)="setCorrectAnswer(question, false)">
+              False
+            </div>
+          </div>
+
+          <div *ngIf="question.type=='ENTER_ANSWER'">
+            <input [(ngModel)]="question.options[0].content" placeholder="correct answer" class="w-75 m-1">
+          </div>
+        </div>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+
+
+  <div class="text-center row">
+    <button (click)="addQuestion()" class="btn btn-warning px-5">
+      Add question
+    </button>
+    <button (click)="send()" class="btn btn-success px-5">
+      Send
+    </button>
+  </div>
+
+</div>

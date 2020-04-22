@@ -1,0 +1,56 @@
+<app-header></app-header>
+<app-sidenav></app-sidenav>
+<div class="container">
+  <div class="row form-group">
+    <div class="col-sm"></div>
+
+    <div class="col-sm">
+      <h3>Login</h3>
+    </div>
+    <div class="col-sm"></div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm"></div>
+
+    <div class="col-sm">
+      <input type="text" class="form-control" placeholder="login" #login>
+    </div>
+    <div class="col-sm"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm"></div>
+
+    <div class="col-sm">
+      <input type="password" class="form-control" placeholder="password" #password>
+    </div>
+    <div class="col-sm"></div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm"></div>
+
+    <div class="col-sm">
+      <a [routerLink]="['/api/v1/pass-recovery']" routerLinkActive="active">Forgot password?</a>
+    </div>
+    <div class="col-sm"></div>
+  </div>
+  <div class="row form-group ">
+    <div class="col-sm"></div>
+    <div class="col-sm">
+      <button (click)="onLogin(login.value, password.value)" class="btn btn-warning btn-block col-sm">
+        Login
+      </button>
+    </div>
+    <div class="col-sm"></div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm"></div>
+
+    <div class="col-sm text-center">
+      <a class="btn btn-outline-warning" [routerLink]="['/api/v1/registration']" routerLinkActive="active">Sign up</a><br>
+    </div>
+    <div class="col-sm"></div>
+  </div>
+
+</div>
