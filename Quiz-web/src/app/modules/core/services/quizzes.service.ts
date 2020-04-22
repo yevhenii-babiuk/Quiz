@@ -6,12 +6,11 @@ import {catchError} from "rxjs/operators";
 
 import {Quiz} from '../models/quiz'
 import {Category} from '../models/category'
-
+import {url} from "../../../../environments/environment.prod";
 @Injectable({
   providedIn: 'root'
 })
 export class QuizzesService {
-  private url = '/api/v1';
 
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
@@ -21,14 +20,14 @@ export class QuizzesService {
   }
 
   getQuizzes(currentCount: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${this.url}/quizzes/${currentCount.toString(10)}`)
+    return this.http.get<Quiz[]>(`${url}/quizzes/${currentCount.toString(10)}`)
       .pipe(
         catchError(this.handleError<Quiz[]>([]))
       );
   }
 
   getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.url}/categories`)
+    return this.http.get<Category[]>(`${url}/categories`)
       .pipe(
         catchError(this.handleError<Quiz[]>([]))
       );
@@ -37,7 +36,11 @@ export class QuizzesService {
   putImage(image: File) {
     const uploadData = new FormData();
     uploadData.append('myFile', image, "name");
-    return this.http.put(`${this.url}/image`, uploadData);
+    return this.http.put(`${url}/image`, uploadData);
+  }
+
+  sendQuiz(quiz: Quiz){
+    return this.http.put<string>(`${url}/quiz/`, quiz, this.httpOptions);
   }
 
   private handleError<T>(result?: T) {
