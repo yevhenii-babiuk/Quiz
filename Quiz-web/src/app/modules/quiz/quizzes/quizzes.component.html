@@ -1,11 +1,14 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 
+<button class="btn btn-success w-25 " routerLink="createQuiz">
+  Create quiz
+</button>
 <div class="row mx-0">
 
   <ng-container *ngFor="let quiz of quizzes">
-    <div class="col-sm-3 card border-0" routerLink="/api/v1/quizzes/quiz/{{quiz.id}}">
-      <img class="card-img-top" src="https://i.uaportal.com/2020/2/1/screenshot4.png" alt="Card image cap">
+    <div class="col-sm-3 card border-0" routerLink="/quiz/{{quiz.id}}">
+      <img *ngIf="quiz.image" class="card-img-top" src="data:image/jpeg;base64,{{quiz.image.src}}" alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">{{quiz.name}}</h5>
         <div class="card-text">
@@ -14,7 +17,7 @@
             {{tag.name}}{{isLast ? '' : ', '}}
           </span>
           </small>
-          <p class="text-muted">{{quiz.category.name}}</p>
+          <p *ngIf="quiz.category" class="text-muted">{{quiz.category.name}}</p>
 
           <p><span class="material-icons ">emoji_events</span>
             {{quiz.maxScore}}
