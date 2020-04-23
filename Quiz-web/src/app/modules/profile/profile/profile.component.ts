@@ -1,7 +1,7 @@
 import {Component, Injectable, OnInit, Output} from '@angular/core';
 
-import {User} from "../../../../models/user";
-import {ProfileService} from "../../services/profile.service";
+import {User} from "../../../models/user";
+import {ProfileService} from "../../core/services/profile.service";
 
 
 
