@@ -3,20 +3,20 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 
-import {ProfileComponent} from './profile/profile.component'
+import {ViewProfileComponent} from './view-profile/view-profile.component'
 import {EditorComponent} from './editor/editor.component'
 import {ProfileRoutingModule} from './profile-routing.module'
 
 @NgModule({
   declarations: [
-    ProfileComponent,
+    ViewProfileComponent,
     EditorComponent
   ],
   imports: [
     CommonModule,
+    ProfileRoutingModule,
     RouterModule,
-    FormsModule,
-    ProfileRoutingModule
+    FormsModule
   ]
 })
 export class ProfileModule { }

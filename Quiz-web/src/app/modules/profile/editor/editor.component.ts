@@ -1,4 +1,4 @@
-import {Component, Injectable, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../../models/user";
 
 import {AlertService} from "../../core/services/alert.service";

@@ -14,8 +14,8 @@ import {AuthRoutingModule} from './modules/authentication/auth-routing.module';
 import {PagesRoutingModule} from './modules/core/pages/pages-routing.module';
 import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
 import {QuizModule} from './modules/quiz/quiz.module';
-import {ProfileModule} from './modules/profile/profile.module'
-import {ProfileRoutingModule} from './modules/profile/profile-routing.module'
+import {ProfileModule} from './modules/profile/profile.module';
+import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
 @NgModule({
   declarations: [
     AppComponent

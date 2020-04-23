@@ -1,19 +1,18 @@
-import {Component, Injectable, OnInit, Output} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 
 import {User} from "../../../models/user";
 import {ProfileService} from "../../core/services/profile.service";
 
 
 
-@Injectable()
 @Component({
   selector: 'app-profile',
-  templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.css']
+  templateUrl: './view-profile.component.html',
+  styleUrls: ['./view-profile.component.css']
 })
 
-@Injectable()
-export class ProfileComponent implements OnInit {
+
+export class ViewProfileComponent implements OnInit {
   userData :  User;
   role:String;
   isUser:boolean=false;
