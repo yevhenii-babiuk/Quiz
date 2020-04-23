@@ -4,7 +4,6 @@ import com.qucat.quiz.repositories.dao.*;
 import com.qucat.quiz.repositories.dao.mappers.QuizExtractor;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
 
-import com.qucat.quiz.repositories.dao.mappers.QuizPageMapper;
 import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -117,9 +116,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         int total = jdbcTemplate.queryForObject(quizQueries.get("rowCount"),
                 new Object[]{},
                 (resultSet, number) -> resultSet.getInt(1));
-        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"),
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getFullInfo").replace(";", " LIMIT ? OFFSET ?;"),
                 new Object[]{ pageable.getPageSize(), pageable.getOffset()},
-                new QuizPageMapper());
+                new QuizExtractor());
         return new PageImpl<>(quizzes, pageable, total);
     }
 
