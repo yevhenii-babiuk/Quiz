@@ -122,19 +122,7 @@ public class QuizService {
     }
 
     public Quiz getQuizById(int id) {
-        Quiz quiz = quizDao.getFullInformation(id);
-
-        if (quiz != null) {
-            quiz.setImage(imageDao.get(quiz.getImageId()));
-            for (Question question : quiz.getQuestions()) {
-                question.setImage(imageDao.get(question.getImageId()));
-                for (QuestionOption option : question.getOptions()) {
-                    option.setImage(imageDao.get(option.getImageId()));
-                }
-            }
-        }
-
-        return quiz;
+        return quizDao.getFullInfo(id);
     }
 
     public boolean markQuizAsFavorite(int userId, int quizId) {
