@@ -33,4 +33,8 @@ public class QuestionService {
             questionOptionService.updateQuestionOption(option);
         }
     }
+
+    public void deleteQuestion(Question question) {
+        questionDao.delete(question);
+    }
 }
