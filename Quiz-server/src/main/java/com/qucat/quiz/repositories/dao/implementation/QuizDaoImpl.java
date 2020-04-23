@@ -1,13 +1,12 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.*;
+import com.qucat.quiz.repositories.dao.mappers.QuizExtractor;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
-import com.qucat.quiz.repositories.dao.mappers.QuizPageMapper;
-import com.qucat.quiz.repositories.entities.Question;
+
 import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DuplicateKeyException;
@@ -27,17 +26,6 @@ import java.util.Map;
 @Repository
 @PropertySource("classpath:quiz.properties")
 public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
-    @Autowired
-    private QuestionDao questionDao;
-
-    @Autowired
-    private CategoryDao categoryDao;
-
-    @Autowired
-    private TagDao tagDao;
-
-    @Autowired
-    private ImageDao imageDao;
 
     @Value("#{${sql.quiz}}")
     private Map<String, String> quizQueries;
@@ -88,33 +76,17 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                 quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImageId(), quiz.getId()};
     }
 
+
     @Override
-    public Quiz getFullInformation(int id) {
-        Quiz quiz = get(id);
-        if (quiz != null) {
-            quiz.setCategory(categoryDao.get(quiz.getCategoryId()));
-            quiz.setTags(tagDao.getByQuizId(id));
-            quiz.setQuestions(questionDao.getByQuizId(id));
-            for (Question q : quiz.getQuestions()) {
-                questionDao.getFullInformation(q);
-            }
-        }
-        return quiz;
+    public List<Quiz> getAllFullInfo() {
+        return jdbcTemplate.query(quizQueries.get("getFullInfo"), new QuizExtractor());
     }
 
     @Override
-    public Quiz getFullInformation(Quiz quiz) {
-        if (quiz != null) {
-            quiz.setCategory(categoryDao.get(quiz.getCategoryId()));
-            quiz.setTags(tagDao.getByQuizId(quiz.getId()));
-            quiz.setQuestions(questionDao.getByQuizId(quiz.getId()));
-            quiz.setImage(imageDao.get(quiz.getImageId()));
-            for (Question q : quiz.getQuestions()) {
-                questionDao.getFullInformation(q);
-
-            }
-        }
-        return quiz;
+    public Quiz getFullInfo(int id) {
+        String getQuery = quizQueries.get("getFullInfo").replace(";", " WHERE quiz.id = ?;");
+        List<Quiz> result = jdbcTemplate.query(getQuery, new Object[]{id}, new QuizExtractor());
+        return result.size() == 0 ? null : result.get(0);
     }
 
     @Override
@@ -144,9 +116,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         int total = jdbcTemplate.queryForObject(quizQueries.get("rowCount"),
                 new Object[]{},
                 (resultSet, number) -> resultSet.getInt(1));
-        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"),
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getFullInfo").replace(";", " LIMIT ? OFFSET ?;"),
                 new Object[]{ pageable.getPageSize(), pageable.getOffset()},
-                new QuizPageMapper());
+                new QuizExtractor());
         return new PageImpl<>(quizzes, pageable, total);
     }
 

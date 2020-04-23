@@ -9,8 +9,4 @@ public interface QuestionDao extends GenericDao<Question> {
 
     List<Question> getByQuizId(int id);
 
-    Question getFullInformation(int id);
-
-    Question getFullInformation(Question question);
-
 }
