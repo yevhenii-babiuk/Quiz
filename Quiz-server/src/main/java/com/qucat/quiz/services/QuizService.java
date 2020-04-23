@@ -71,18 +71,6 @@ public class QuizService {
     }
 
     public Quiz getQuizById(int id) {
-        Quiz quiz = quizDao.getFullInformation(id);
-
-        if (quiz != null) {
-            quiz.setImage(imageService.getImageById(quiz.getImageId()));
-            for (Question question : quiz.getQuestions()) {
-                question.setImage(imageService.getImageById(question.getImageId()));
-                for (QuestionOption option : question.getOptions()) {
-                    option.setImage(imageService.getImageById(option.getImageId()));
-                }
-            }
-        }
-
-        return quiz;
+        return quizDao.getFullInfo(id);
     }
 }

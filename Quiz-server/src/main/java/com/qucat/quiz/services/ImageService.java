@@ -18,7 +18,7 @@ public class ImageService {
     private ImageDaoImpl imageDao;
 
     public Image getImageById(@RequestParam int id) {
-        return imageDao.getById(id);
+        return imageDao.get(id);
     }
 
     public int addImage(MultipartFile multipartFile) {

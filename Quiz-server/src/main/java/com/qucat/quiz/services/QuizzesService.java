@@ -8,7 +8,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
@@ -19,9 +18,9 @@ public class QuizzesService {
     @Autowired
     private QuizDaoImpl quizDao;
 
-    public Page<Quiz> showPage(@RequestParam Optional<Integer> page,
-                               @RequestParam Optional<Integer> size) {
-        Page<Quiz> quiz = quizDao.findAll(PageRequest.of(page.orElse(0), size.orElse(10),
+    public Page<Quiz> showPage(Optional<Integer> page, Optional<Integer> size) {
+        Page<Quiz> quiz = quizDao.findAllForPage(
+                PageRequest.of(page.orElse(0), size.orElse(10),
                 Sort.Direction.DESC, "id"));
         return quiz;
     }
