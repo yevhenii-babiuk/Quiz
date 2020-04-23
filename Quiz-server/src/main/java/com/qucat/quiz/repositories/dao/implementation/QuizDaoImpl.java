@@ -2,12 +2,14 @@ package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.*;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
+import com.qucat.quiz.repositories.dao.mappers.QuizPageMapper;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -23,6 +25,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:quiz.properties")
 public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     @Autowired
     private QuestionDao questionDao;
@@ -137,14 +140,13 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     }
 
     @Override
-    public Page<Quiz> findAll(Pageable pageable) {
+    public Page<Quiz> findAllForPage(Pageable pageable) {
         int total = jdbcTemplate.queryForObject(quizQueries.get("rowCount"),
                 new Object[]{},
                 (resultSet, number) -> resultSet.getInt(1));
-        System.out.println(total);
         List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"),
                 new Object[]{ pageable.getPageSize(), pageable.getOffset()},
-                new QuizMapper());
+                new QuizPageMapper());
         return new PageImpl<>(quizzes, pageable, total);
     }
 
@@ -155,7 +157,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                 (resultSet, number) -> resultSet.getInt(1));
 
         List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByName"),
-                new Object[]{ pageable.getPageSize(), pageable.getOffset()},
+                new Object[]{name, pageable.getPageSize(), pageable.getOffset()},
                 new QuizMapper());
         return new PageImpl<>(quizzes, pageable, total);
     }

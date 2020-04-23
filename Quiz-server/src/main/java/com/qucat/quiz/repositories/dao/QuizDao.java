@@ -17,7 +17,7 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable);
 
-    Page<Quiz> findAll(Pageable pageable);
+    Page<Quiz> findAllForPage(Pageable pageable);
 
     Page<Quiz> findAllByName(String name, Pageable pageable);
 }
