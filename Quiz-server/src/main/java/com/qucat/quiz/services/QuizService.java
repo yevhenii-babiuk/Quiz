@@ -29,6 +29,9 @@ public class QuizService {
     @Autowired
     private TagDaoImpl tagDao;
 
+    @Autowired
+    private UserDaoImpl userDao;
+
     @Transactional
     public boolean createQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -108,21 +111,10 @@ public class QuizService {
         }
 
         quizDao.update(quiz);
-
         for (Question question : quiz.getQuestions()) {
-            if (questionDao.get(question.getId()) != null) {
-                questionDao.update(question);
-                for (QuestionOption option : question.getOptions()) {
-                    if (questionOptionDao.get(option.getId()) != null) {
-                        questionOptionDao.update(option);
-                    } else {
-                        option.setQuestionId(question.getId());
-                        questionOptionDao.save(option);
-                    }
-                }
-            } else {
-                question.setQuizId(quiz.getId());
-                addQuestion(question);
+            questionDao.update(question);
+            for (QuestionOption option : question.getOptions()) {
+                questionOptionDao.update(option);
             }
         }
 
@@ -143,5 +135,9 @@ public class QuizService {
         }
 
         return quiz;
+    }
+
+    public boolean markQuizAsFavorite(int userId, int quizId) {
+        return userDao.markQuizAsFavorite(userId, quizId);
     }
 }

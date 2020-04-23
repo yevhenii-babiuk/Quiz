@@ -42,4 +42,8 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category> implements Categor
         return new Object[]{category.getName(), category.getId()};
     }
 
+    public Category getById(int id) {
+        return jdbcTemplate.queryForObject(categoryQueries.get("getCategoryById"),
+                new Object[]{id}, new CategoryMapper());
+    }
 }
