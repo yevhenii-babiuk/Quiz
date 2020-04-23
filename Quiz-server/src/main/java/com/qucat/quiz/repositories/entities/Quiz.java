@@ -3,7 +3,7 @@ package com.qucat.quiz.repositories.entities;
 import lombok.Builder;
 import lombok.Data;
 
-import java.util.Date;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Data
@@ -14,9 +14,9 @@ public class Quiz {
     private int authorId;
     private int categoryId;
     private QuizStatus status;
-    private Date publishedDate;
-    private Date updatedDate;
-    private Date createdDate;
+    private Timestamp publishedDate;
+    private Timestamp updatedDate;
+    private Timestamp createdDate;
     private int questionNumber;
     private int maxScore;
     private String image;
