@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.dao.mappers.QuestionOptionMapper;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -14,6 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:database.properties")
 public class QuestionOptionDaoImpl extends GenericDaoImpl<QuestionOption> implements QuestionOptionDao {
     @Value("#{${sql.questionOption}}")
     private Map<String, String> questionOptionQueries;
