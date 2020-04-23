@@ -7,6 +7,7 @@ import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.repositories.entities.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -22,6 +23,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:database.properties")
 public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Value("#{${sql.users}}")
