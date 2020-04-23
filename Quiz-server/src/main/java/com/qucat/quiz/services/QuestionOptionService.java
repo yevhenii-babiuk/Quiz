@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Slf4j
 @Service
 public class QuestionOptionService {
@@ -18,5 +20,13 @@ public class QuestionOptionService {
 
     public void updateQuestionOption(QuestionOption questionOption) {
         questionOptionDao.update(questionOption);
+    }
+
+    public List<QuestionOption> getOptionsByQuestionId(int questionId) {
+        return questionOptionDao.getByQuestionId(questionId);
+    }
+
+    public void deleteQuestionOption(QuestionOption questionOption) {
+        questionOptionDao.delete(questionOption);
     }
 }

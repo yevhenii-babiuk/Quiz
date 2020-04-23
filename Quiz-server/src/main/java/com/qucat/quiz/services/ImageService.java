@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -46,5 +47,13 @@ public class ImageService {
                         .src(encodedFile)
                         .build()
         );
+    }
+
+    public Image getImage(int imageId) {
+        return imageDao.get(imageId);
+    }
+
+    public List<Image> getAllImages() {
+        return imageDao.getAll();
     }
 }

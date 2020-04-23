@@ -4,8 +4,13 @@ import com.qucat.quiz.repositories.dao.QuizDao;
 import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -15,9 +20,6 @@ public class QuizService {
 
     @Autowired
     private TagService tagService;
-
-    @Autowired
-    private ImageService imageService;
 
     @Autowired
     private QuestionService questionService;
@@ -72,5 +74,12 @@ public class QuizService {
 
     public Quiz getQuizById(int id) {
         return quizDao.getFullInfo(id);
+    }
+
+    public Page<Quiz> showPage(Optional<Integer> page, Optional<Integer> size) {
+        Page<Quiz> quiz = quizDao.findAllForPage(
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return quiz;
     }
 }

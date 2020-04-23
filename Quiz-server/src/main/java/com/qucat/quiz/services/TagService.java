@@ -30,4 +30,20 @@ public class TagService {
         }
         return tagId;
     }
+
+    public Tag getTagById(int tagId) {
+        return tagDao.get(tagId);
+    }
+
+    public List<Tag> getAllTags() {
+        return tagDao.getAll();
+    }
+
+    public void updateTag(Tag tag) {
+        tagDao.update(tag);
+    }
+
+    public void deleteTag(Tag tag) {
+        tagDao.delete(tag);
+    }
 }

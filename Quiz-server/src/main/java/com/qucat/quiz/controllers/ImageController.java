@@ -1,6 +1,6 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.services.QuizService;
+import com.qucat.quiz.services.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,10 +13,10 @@ import org.springframework.web.multipart.MultipartFile;
 public class ImageController {
 
     @Autowired
-    private QuizService quizService;
+    private ImageService imageService;
 
     @PutMapping
     public int saveImage(@RequestParam("myFile") MultipartFile file) {
-        return quizService.addImage(file);
+        return imageService.addImage(file);
     }
 }
