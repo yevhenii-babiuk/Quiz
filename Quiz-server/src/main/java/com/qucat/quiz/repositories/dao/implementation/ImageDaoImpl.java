@@ -43,7 +43,7 @@ public class ImageDaoImpl extends GenericDaoImpl<Image> implements ImageDao {
         return new Object[]{image.getSrc(), image.getId()};
     }
 
-    @Override
+
     public int getIdBySrc(String src) {
         Number id;
         try {
@@ -54,4 +54,5 @@ public class ImageDaoImpl extends GenericDaoImpl<Image> implements ImageDao {
         }
         return id != null ? id.intValue() : -1;
     }
+
 }
