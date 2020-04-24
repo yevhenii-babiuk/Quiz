@@ -1,8 +1,9 @@
 import {Component, Injectable, OnInit, Output} from '@angular/core';
-import {User} from "../../../../models/user";
+
 
 import {AlertService} from "../../services/alert.service";
 import {ProfileService} from "../../services/profile.service";
+import {User} from "../../models/user";
 
 
 
@@ -38,21 +39,18 @@ export class EditorComponent implements OnInit {
       this.alertService.error('passwords don`t match');
       return;
     }
-    let editUser: User = {
-      userId:this.userData.userId,
+    let editedUser: User = {
       firstName:firstname,
       secondName:secondname,
       login:this.userData.login,
       mail:email,
       password:password,
       profile:profile,
-      registrationDate:this.userData.registrationDate,
       score:this.userData.score,
-      status:this.userData.status,
       role:this.userData.role
     };
-    this.profileService.postUser(editUser).subscribe(data => {
-      editUser=data;
+    this.profileService.postUser(editedUser).subscribe(data => {
+      editedUser=data;
     });
   }
 
