@@ -28,10 +28,14 @@
     <div class="collapse navbar-collapse  text-right" >
       <ul class="navbar-nav ml-auto ">
         <li class="nav-item" >
-          <a class="nav-link" [routerLink]="['/api/v1/login']" routerLinkActive="active">Увійти</a>
+          <a class="nav-link" [routerLink]="['/api/v1/login']" routerLinkActive="active" *ngIf="notProfile">Увійти</a>
+          <!--*ngIf="notProfile"-->
+          <img  src='../../../../assets/img/message.png' align="top" *ngIf="isProfile">
+          <img  src='../../../../assets/img/notification.png' width="70" height="50" align="top" *ngIf="isProfile">
         </li>
-        <li class="nav-item, registr" >
-          <a class="nav-link" [routerLink]="['/api/v1/registration']" routerLinkActive="active">Зареєструватися</a>
+        <li class="nav-item, registr" *ngIf="notProfile">
+          <a class="nav-link" [routerLink]="['/api/v1/registration']" routerLinkActive="active" >Зареєструватися</a>
+
         </li>
       </ul>
     </div>
