@@ -175,4 +175,7 @@ public class UserService {
         userDao.update(currentUser);
     }
 
+    public boolean markQuizAsFavorite(int userId, int quizId) {
+        return userDao.markQuizAsFavorite(userId, quizId);
+    }
 }

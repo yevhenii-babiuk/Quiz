@@ -1,7 +1,7 @@
 package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.services.QuizzesService;
+import com.qucat.quiz.services.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,11 +15,11 @@ import java.util.Optional;
 public class QuizListController {
 
     @Autowired
-    private QuizzesService quizzesService;
+    private QuizService quizService;
 
     @GetMapping
     public Quiz[] getQuizzes(@RequestParam(value = "count") int currentCount) {
-        return quizzesService.showPage(Optional.of(currentCount), Optional.of(20)).toList().toArray(Quiz[]::new);
+        return quizService.showPage(Optional.of(currentCount), Optional.of(20)).toList().toArray(Quiz[]::new);
 
     }
 
