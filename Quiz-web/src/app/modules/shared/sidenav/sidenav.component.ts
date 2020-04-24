@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {User} from "../../../models/user";
 import {ProfileService} from "../../core/services/profile.service";
-import {Role} from "../../../models/role";
+import {Role} from "../../core/models/role";
+
 
 @Component({
   selector: 'app-sidenav',

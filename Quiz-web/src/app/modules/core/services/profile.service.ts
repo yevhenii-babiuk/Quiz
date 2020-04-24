@@ -2,7 +2,8 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import { Observable } from "rxjs";
-import {User} from "../../../models/user";
+import {User} from "../models/user";
+
 
 
 
@@ -14,7 +15,7 @@ export class ProfileService {
   constructor(private http: HttpClient) { }
 
   public getUser() : Observable<User>{
-    return this.http.get<User>(`${this.url}/profile/`);
+    return this.http.get<User>(`${this.url}/users/`);
   }
 
   public postUser(user: User) : Observable<User>{

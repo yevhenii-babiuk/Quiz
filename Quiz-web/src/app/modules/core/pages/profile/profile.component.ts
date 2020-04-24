@@ -1,8 +1,11 @@
 import {Component, Injectable, OnInit, Output} from '@angular/core';
 
-import {User} from "../../../../models/user";
+
 import {ProfileService} from "../../services/profile.service";
-import {Role} from "../../../../models/role";
+import {Role} from "../../models/role";
+import {User} from "../../models/user";
+
+
 
 @Component({
   selector: 'app-profile',
