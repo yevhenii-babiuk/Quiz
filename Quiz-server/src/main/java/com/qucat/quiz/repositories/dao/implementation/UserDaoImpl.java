@@ -7,6 +7,8 @@ import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.repositories.entities.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,6 +23,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:database.properties")
 public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Value("#{${sql.users}}")
@@ -125,5 +128,18 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
             return null;
         }
         return user;
+    }
+
+    @Override
+    public boolean markQuizAsFavorite(int userId, int quizId) {
+        try {
+            jdbcTemplate.update(
+                    usersQueries.get("markAsFavorite"),
+                    quizId, userId
+            );
+        } catch (DuplicateKeyException e) {
+            return false;
+        }
+        return true;
     }
 }

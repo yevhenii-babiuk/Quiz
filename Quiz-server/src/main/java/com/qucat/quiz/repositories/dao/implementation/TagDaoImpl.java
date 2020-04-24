@@ -5,6 +5,8 @@ import com.qucat.quiz.repositories.dao.mappers.TagMapper;
 import com.qucat.quiz.repositories.entities.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -14,6 +16,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:database.properties")
 public class TagDaoImpl extends GenericDaoImpl<Tag> implements TagDao {
     @Value("#{${sql.tag}}")
     private Map<String, String> tagQueries;
@@ -47,5 +50,17 @@ public class TagDaoImpl extends GenericDaoImpl<Tag> implements TagDao {
     public List<Tag> getByQuizId(int id) {
         return jdbcTemplate.query(tagQueries.get("getByQuizId"),
                 new Object[]{id}, new TagMapper());
+    }
+
+    @Override
+    public int getIdByName(String name) {
+        Number id;
+        try {
+            id = jdbcTemplate.queryForObject(tagQueries.get("getIdByName"),
+                    new Object[]{name}, Integer.class);
+        } catch (NullPointerException | EmptyResultDataAccessException e) {
+            return -1;
+        }
+        return id != null ? id.intValue() : -1;
     }
 }

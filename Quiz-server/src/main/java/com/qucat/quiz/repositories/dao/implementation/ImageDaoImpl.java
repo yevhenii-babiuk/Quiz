@@ -5,6 +5,8 @@ import com.qucat.quiz.repositories.dao.mappers.ImageMapper;
 import com.qucat.quiz.repositories.entities.Image;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -13,6 +15,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:database.properties")
 public class ImageDaoImpl extends GenericDaoImpl<Image> implements ImageDao {
     @Value("#{${sql.image}}")
     private Map<String, String> imageQueries;
@@ -40,6 +43,18 @@ public class ImageDaoImpl extends GenericDaoImpl<Image> implements ImageDao {
     @Override
     protected Object[] getUpdateParameters(Image image) {
         return new Object[]{image.getSrc(), image.getId()};
+    }
+
+
+    public int getIdBySrc(String src) {
+        Number id;
+        try {
+            id = jdbcTemplate.queryForObject(imageQueries.get("getIdBySrc"),
+                    new Object[]{src}, Integer.class);
+        } catch (NullPointerException | EmptyResultDataAccessException e) {
+            return -1;
+        }
+        return id != null ? id.intValue() : -1;
     }
 
 }

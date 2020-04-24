@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.dao.mappers.CategoryMapper;
 import com.qucat.quiz.repositories.entities.Category;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:database.properties")
 public class CategoryDaoImpl extends GenericDaoImpl<Category> implements CategoryDao {
     @Value("#{${sql.category}}")
     private Map<String, String> categoryQueries;
@@ -42,4 +44,8 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category> implements Categor
         return new Object[]{category.getName(), category.getId()};
     }
 
+    public Category getById(int id) {
+        return jdbcTemplate.queryForObject(categoryQueries.get("getCategoryById"),
+                new Object[]{id}, new CategoryMapper());
+    }
 }

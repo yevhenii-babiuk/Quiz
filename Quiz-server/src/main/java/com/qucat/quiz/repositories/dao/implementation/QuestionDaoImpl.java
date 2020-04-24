@@ -1,12 +1,11 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.QuestionDao;
-import com.qucat.quiz.repositories.dao.QuestionOptionDao;
 import com.qucat.quiz.repositories.dao.mappers.QuestionMapper;
 import com.qucat.quiz.repositories.entities.Question;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -16,9 +15,8 @@ import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:database.properties")
 public class QuestionDaoImpl extends GenericDaoImpl<Question> implements QuestionDao {
-    @Autowired
-    private QuestionOptionDao questionOptionDao;
 
     @Value("#{${sql.question}}")
     private Map<String, String> questionQueries;
@@ -60,20 +58,4 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
                 new Object[]{id}, new QuestionMapper());
     }
 
-    @Override
-    public Question getFullInformation(int id) {
-        Question question = get(id);
-        if (question != null) {
-            question.setOptions(questionOptionDao.getByQuestionId(id));
-        }
-        return question;
-    }
-
-    @Override
-    public Question getFullInformation(Question question) {
-        if (question != null) {
-            question.setOptions(questionOptionDao.getByQuestionId(question.getId()));
-        }
-        return question;
-    }
 }

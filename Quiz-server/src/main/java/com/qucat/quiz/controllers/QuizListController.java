@@ -1,31 +1,26 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.repositories.entities.Category;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.Tag;
-import org.springframework.web.bind.annotation.*;
+import com.qucat.quiz.services.QuizService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/v1/quizzes")
 public class QuizListController {
 
-    @GetMapping("{currentCount}")
-    public Quiz[] getQuizzes(@PathVariable int currentCount) {
-        System.out.println("currentCount = " + currentCount);
-        List<Tag> tags = new ArrayList<>();
-        tags.add(Tag.builder().name("tag1").build());
-        tags.add(Tag.builder().name("tag2").build());
-        tags.add(Tag.builder().name("tag3").build());
-        tags.add(Tag.builder().name("tag4").build());
-        List<Quiz> quizList = new ArrayList<>();
-        Category category = Category.builder().id(1).name("category").build();
-        for (int i = currentCount; i < currentCount + 20; i++) {
-            quizList.add(Quiz.builder().name("name").id(i).tags(tags).category(category).maxScore(25).build());
-        }
-        return quizList.toArray(Quiz[]::new);
+    @Autowired
+    private QuizService quizService;
+
+    @GetMapping
+    public Quiz[] getQuizzes(@RequestParam(value = "count") int currentCount) {
+        return quizService.showPage(Optional.of(currentCount), Optional.of(20)).toList().toArray(Quiz[]::new);
+
     }
 
 }
