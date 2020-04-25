@@ -1,7 +1,8 @@
 import {Component, Injectable, OnInit} from '@angular/core';
 
-import {User} from "../../../models/user";
+import {User} from "../../core/models/User";
 import {ProfileService} from "../../core/services/profile.service";
+import {Role} from "../../core/models/role";
 
 
 
@@ -11,7 +12,7 @@ import {ProfileService} from "../../core/services/profile.service";
   styleUrls: ['./view-profile.component.css']
 })
 
-export class ProfileComponent implements OnInit {
+export class ViewProfile implements OnInit {
   userData: User;
   role: String;
   isUser: boolean;

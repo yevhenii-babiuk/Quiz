@@ -50,7 +50,7 @@ export class RegistrationComponent implements OnInit {
       .subscribe(
         data => {
           this.alertService.success('Registration successful', true);
-          this.router.navigate(['api/v1/login']);
+          this.router.navigate(['login']);
         },
         error => {
           this.alertService.error('Error while registration!');

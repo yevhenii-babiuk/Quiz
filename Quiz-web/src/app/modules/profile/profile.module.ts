@@ -3,13 +3,13 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 
-import {ViewProfileComponent} from './view-profile/view-profile.component'
+import {ViewProfile} from './view-profile/view-profile.component'
 import {EditorComponent} from './editor/editor.component'
 import {ProfileRoutingModule} from './profile-routing.module'
 
 @NgModule({
   declarations: [
-    ViewProfileComponent,
+    ViewProfile,
     EditorComponent
   ],
   imports: [
