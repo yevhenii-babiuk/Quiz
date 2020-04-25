@@ -5,13 +5,17 @@ import com.qucat.quiz.repositories.entities.QuizStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
+
 public interface QuizDao extends GenericDao<Quiz> {
 
     String TABLE_NAME = "quiz";
 
-    Quiz getFullInformation(int id);
+    List<Quiz> getAllFullInfo();
 
-    Quiz getFullInformation(Quiz quiz);
+    Quiz getFullInfo(int id);
+
+    boolean addTag(int quizId, int tagId);
 
     boolean addTag(int quizId, int tagId);
 

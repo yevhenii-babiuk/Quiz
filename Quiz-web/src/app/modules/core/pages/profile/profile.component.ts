@@ -52,4 +52,6 @@ export class ProfileComponent implements OnInit {
       this.isModerator = true;
     }
   }
+
+
 }

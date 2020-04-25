@@ -19,7 +19,7 @@ export class ProfileService {
   }
 
   public postUser(user: User) : Observable<User>{
-    return this.http.post<User>(`${this.url}/edit/`,user);
+    return this.http.post<User>(`${this.url}/users/`,user);
   }
 
 
