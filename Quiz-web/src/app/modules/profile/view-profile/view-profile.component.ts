@@ -11,14 +11,14 @@ import {ProfileService} from "../../core/services/profile.service";
   styleUrls: ['./view-profile.component.css']
 })
 
+export class ProfileComponent implements OnInit {
+  userData: User;
+  role: String;
+  isUser: boolean;
+  isModerator: boolean;
+  isAdmin: boolean;
+  isSuperAdmin: boolean;
 
-export class ViewProfileComponent implements OnInit {
-  userData :  User;
-  role:String;
-  isUser:boolean=false;
-  isModerator:boolean=false;
-  isAdmin:boolean=false;
-  isSuperAdmin:boolean=false;
   constructor(
     private profileService: ProfileService
   ) {
@@ -32,22 +32,20 @@ export class ViewProfileComponent implements OnInit {
   private getUser() {
     this.profileService.getUser().subscribe(data => {
       this.userData = data;
-      this.role=this.userData.role.toLowerCase();
+      this.role = this.userData.role;
       this.setCondition(this.role);
     });
   }
-  private setCondition(role:String){
-    if(role=="user"){
-      this.isUser=true;
-    }
-    else if(role=="super_admin"){
-      this.isSuperAdmin=true;
-    }
-    else if(role=="admin"){
-      this.isAdmin=true;
-    }
-    else if(role=="moderator"){
-      this.isModerator=true;
+
+  private setCondition(role: String) {
+    if (role == Role.USER) {
+      this.isUser = true;
+    } else if (role == Role.SUPER_ADMIN) {
+      this.isSuperAdmin = true;
+    } else if (role == Role.ADMIN) {
+      this.isAdmin = true;
+    } else if (role == Role.MODERATOR) {
+      this.isModerator = true;
     }
   }
 

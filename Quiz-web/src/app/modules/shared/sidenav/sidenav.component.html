@@ -1,6 +1,27 @@
-<div class="sidenav">
+<div class="sidenav" *ngIf="notProfile">
   <a routerLink="../quizzes">Список вікторин</a>
   <a href="#">Рейтинг учасників</a>
+</div>
+<div class="sidenav" *ngIf="isAdmin">
+  <a href="#/api/v1/profile">Профіль</a>
+  <a href="#">Список вікторин</a>
+  <a href="#">Повідомлення</a>
+  <a href="#">Новини</a>
+  <a href="#">Адміністрування</a>
+  <a href="#">Налаштування</a>
+  <a href="#">Вийти</a>
+</div>
+<div class="sidenav" *ngIf="isUser">
+  <a href="#/api/v1/profile">Профіль</a>
+  <a href="#">Список вікторин</a>
+  <a href="#">Друзі</a>
+  <a href="#">Повідомлення</a>
+  <a href="#">Новини</a>
+  <a href="#">Учасники</a>
+  <a href="#">Статистика</a>
+  <a href="#">Досягнення</a>
+  <a href="#">Налаштування</a>
+  <a href="#">Вийти</a>
 </div>
 
 <div class="wrapper">
