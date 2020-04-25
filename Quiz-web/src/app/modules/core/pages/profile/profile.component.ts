@@ -4,7 +4,7 @@ import {Component, Injectable, OnInit, Output} from '@angular/core';
 import {ProfileService} from "../../services/profile.service";
 import {Role} from "../../models/role";
 import {User} from "../../models/user";
-
+import {decode} from 'jwt-decode';
 
 
 @Component({
@@ -34,7 +34,9 @@ export class ProfileComponent implements OnInit {
   private getUser() {
     this.profileService.getUser().subscribe(data => {
       this.userData = data;
-      this.role = this.userData.role;
+      const token = sessionStorage.getItem('token');
+      const tokenPayload = decode(token);
+      this.role = tokenPayload.role;
       this.setCondition(this.role);
     });
   }
@@ -50,6 +52,4 @@ export class ProfileComponent implements OnInit {
       this.isModerator = true;
     }
   }
-
-
 }
