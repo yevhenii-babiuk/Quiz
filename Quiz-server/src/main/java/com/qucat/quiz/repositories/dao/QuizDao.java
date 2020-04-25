@@ -17,8 +17,6 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     boolean addTag(int quizId, int tagId);
 
-    boolean addTag(int quizId, int tagId);
-
     Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable);
 
     Page<Quiz> findAllForPage(Pageable pageable);

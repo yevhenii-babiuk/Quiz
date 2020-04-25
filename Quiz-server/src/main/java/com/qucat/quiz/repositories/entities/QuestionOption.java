@@ -11,5 +11,6 @@ public class QuestionOption {
     private String content;
     private boolean isCorrect;
     private int sequenceOrder;
-    private String image;
+    private int imageId;
+    private Image image;
 }
