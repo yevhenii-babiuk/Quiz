@@ -10,16 +10,16 @@ import {ProfileComponent} from "../core/pages/profile/profile.component";
 import {AuthGuardService as AuthGuard} from '../core/services/auth-guard.service';
 
 const authenticationRoutes: Routes = [
-  { path: 'api/v1/login', component: LoginComponent },
-  { path: 'api/v1/registration', component: RegistrationComponent },
-  { path: 'api/v1/pass-recovery', component: PassRecoveryComponent },
-  { path: 'api/v1/registration/:token', component: MailConfirmComponent },
-  { path: 'api/v1/pass-recovery/:token', component: PassRecoveryConfirmComponent },
   {
     path: 'profile',
     component: ProfileComponent,
     canActivate: [AuthGuard]
   }
+  { path: 'login', component: LoginComponent },
+  { path: 'registration', component: RegistrationComponent },
+  { path: 'pass-recovery', component: PassRecoveryComponent },
+  { path: 'registration/:token', component: MailConfirmComponent },
+  { path: 'pass-recovery/:token', component: PassRecoveryConfirmComponent },
 ];
 
 @NgModule({
