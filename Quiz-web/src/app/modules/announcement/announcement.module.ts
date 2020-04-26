@@ -10,7 +10,10 @@ import { AnnouncementsComponent } from './announcements/announcements.component'
 
 
 @NgModule({
-  declarations: [ViewAnnouncementComponent, UpdateAnnouncementComponent, AnnouncementsComponent],
+  declarations: [
+    ViewAnnouncementComponent,
+    UpdateAnnouncementComponent,
+    AnnouncementsComponent],
   imports: [
     CommonModule,
     AnnouncementRoutingModule,

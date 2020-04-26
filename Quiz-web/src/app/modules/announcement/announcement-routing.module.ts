@@ -8,7 +8,8 @@ import {AnnouncementsComponent} from "./announcements/announcements.component";
 const routes: Routes = [
   {path: 'announcement/:announcementId', component: ViewAnnouncementComponent},
   {path: 'announcement/:announcementId/edit', component: UpdateAnnouncementComponent},
-  {path: 'announcements', component: AnnouncementsComponent},
+  {path: 'createAnnouncement', component: UpdateAnnouncementComponent},
+  {path: 'announcements', component: AnnouncementsComponent}
 ];
 
 @NgModule({

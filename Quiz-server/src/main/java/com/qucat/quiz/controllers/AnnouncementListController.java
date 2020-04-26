@@ -14,7 +14,7 @@ public class AnnouncementListController {
 
 
     @GetMapping
-    public Announcement[] getQuizzes(@RequestParam(value = "count") int currentCount) {
+    public Announcement[] getAnnouncements(@RequestParam(value = "count") int currentCount) {
         Announcement a = Announcement.builder()
                 .title("Interesting title")
                 .subtitle("Very interesting subtitle")

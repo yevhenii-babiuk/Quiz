@@ -8,7 +8,7 @@ export class Announcement implements Imaged {
   subtitle: string;
   fullText: string;
   authorLogin: string;
-  createdDate: string;
+  createdDate: Date;
   imageId: number;
   selectedFile: ImageSnippet;
   image: Image;
