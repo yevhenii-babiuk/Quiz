@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+
 public interface UserDao extends GenericDao<User> {
 
     String TABLE_NAME = "users";
