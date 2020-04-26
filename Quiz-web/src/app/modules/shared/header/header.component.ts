@@ -19,7 +19,7 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {
     this.setCondition(null);
-   // this.getUser();
+    // this.getUser();
   }
 
   private getUser() {

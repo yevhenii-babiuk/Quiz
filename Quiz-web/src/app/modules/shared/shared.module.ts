@@ -6,16 +6,15 @@ import {AlertComponent} from './alert/alert.component';
 import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {SidenavComponent} from './sidenav/sidenav.component';
-import {RouterModule} from '@angular/router';
+import {RouterModule} from "@angular/router";
+
 
 @NgModule({
   declarations: [
     AlertComponent,
     HeaderComponent,
     FooterComponent,
-    SidenavComponent,
-    HeaderprofileComponent,
-    SideprofileComponent
+    SidenavComponent
   ],
   imports: [
     CommonModule,
@@ -25,9 +24,7 @@ import {RouterModule} from '@angular/router';
     AlertComponent,
     HeaderComponent,
     FooterComponent,
-    SidenavComponent,
-    HeaderprofileComponent,
-    SideprofileComponent
+    SidenavComponent
   ]
 })
 export class SharedModule { }

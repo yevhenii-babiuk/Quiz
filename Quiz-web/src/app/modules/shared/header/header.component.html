@@ -1,44 +1,43 @@
 
-  <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
+<nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
 
-    <a class="brand-ref" href="">
-        <img  src='../../../../assets/img/logo.png' >
-        Qucat
-    </a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
-            aria-expanded="false" aria-label="Toggle navigation">
+  <a class="brand-ref" href="">
+    <img  src='../../../../assets/img/logo.png' >
+    Qucat
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse"
+          aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarCollapse" style="margin-left: 30px;">
+    <ul class="navbar-nav mr-auto" >
+      <li class="nav-item" >
+        <a class="nav-link" routerLink="/home" >Створити гру</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/create-quiz">Приєднатися до гри</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class=" text-right">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarCollapse" style="margin-left: 30px;">
-      <ul class="navbar-nav mr-auto" >
-        <li class="nav-item" >
-          <a class="nav-link" routerLink="/home" >Створити гру</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/create-quiz">Приєднатися до гри</a>
-        </li>
-      </ul>
-    </div>
+  </div>
+  <div class="collapse navbar-collapse  text-right" >
+    <ul class="navbar-nav ml-auto ">
+      <li class="nav-item" >
+        <a class="nav-link" [routerLink]="['/api/v1/login']" routerLinkActive="active" *ngIf="notProfile">Увійти</a>
+        <!--*ngIf="notProfile"-->
+        <img  src='../../../../assets/img/message.png' align="top" *ngIf="isProfile">
+        <img  src='../../../../assets/img/notification.png' width="70" height="50" align="top" *ngIf="isProfile">
+      </li>
+      <li class="nav-item, registr" *ngIf="notProfile">
+        <a class="nav-link" [routerLink]="['/api/v1/registration']" routerLinkActive="active" >Зареєструватися</a>
 
-    <div class=" text-right">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#myNavbar">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    </div>
-    <div class="collapse navbar-collapse  text-right" >
-      <ul class="navbar-nav ml-auto ">
-        <li class="nav-item" >
-          <a class="nav-link" [routerLink]="['/api/v1/login']" routerLinkActive="active" *ngIf="notProfile">Увійти</a>
-          <!--*ngIf="notProfile"-->
-          <img  src='../../../../assets/img/message.png' align="top" *ngIf="isProfile">
-          <img  src='../../../../assets/img/notification.png' width="70" height="50" align="top" *ngIf="isProfile">
-        </li>
-        <li class="nav-item, registr" *ngIf="notProfile">
-          <a class="nav-link" [routerLink]="['/api/v1/registration']" routerLinkActive="active" >Зареєструватися</a>
+      </li>
+    </ul>
+  </div>
 
-        </li>
-      </ul>
-    </div>
-
-  </nav>
-
+</nav>

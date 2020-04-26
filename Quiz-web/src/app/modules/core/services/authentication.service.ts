@@ -23,7 +23,7 @@ export class AuthenticationService {
   login(user: User) {
     let username = user.login;
     let password = user.password;
-    return this.http.post<any>('http://localhost:8080/api/v1/login',{username,password}).pipe(
+    return this.http.post<any>(`http://localhost:8080/api/v1/login`,{username,password}).pipe(
       map(
         userData => {
           let tokenStr= 'Bearer '+userData.token;
