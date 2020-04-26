@@ -1,26 +1,31 @@
-import { FBFilter } from "../fb-filter.interface";
+import {FBFilter} from "../fb-filter.interface";
 
 export class DateFilter implements FBFilter {
 
-    public filterValue: Date[] = []
+  public filterValue: string[] = []
 
-    constructor(
-        public identifier: string,
-        public title: string,
-        public min: Date,
-        public max: Date,
-    ) {
-        this.filterValue.push(min)
-        this.filterValue.push(max)
-    }
+  currMin: Date;
+  currMax: Date;
 
-    public getClassName(): string {
-        return 'DateFilter'
-    }
+  constructor(
+    public identifier: string,
+    public title: string,
+    public min: Date,
+    public max: Date,
+  ) {
+    this.filterValue.push(min.toDateString())
+    this.filterValue.push(max.toDateString())
+    this.currMin = min;
+    this.currMax = max;
+  }
 
-    public resetFilterValue(): void {
-        this.filterValue = []
-        this.filterValue.push(this.min)
-        this.filterValue.push(this.max)
-    }
+  public getClassName(): string {
+    return 'DateFilter'
+  }
+
+  public resetFilterValue(): void {
+    this.filterValue = []
+    this.filterValue.push(this.min.toDateString())
+    this.filterValue.push(this.max.toDateString())
+  }
 }
