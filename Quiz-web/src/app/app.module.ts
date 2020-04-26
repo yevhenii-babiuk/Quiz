@@ -14,6 +14,8 @@ import {AuthRoutingModule} from './modules/authentication/auth-routing.module';
 import {PagesRoutingModule} from './modules/core/pages/pages-routing.module';
 import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
 import {QuizModule} from './modules/quiz/quiz.module';
+import {AnnouncementModule} from "./modules/announcement/announcement.module";
+import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
 @NgModule({
   declarations: [
     AppComponent,
@@ -30,7 +32,9 @@ import {QuizModule} from './modules/quiz/quiz.module';
     AuthRoutingModule,
     PagesRoutingModule,
     QuizRoutingModule,
-    QuizModule
+    QuizModule,
+    AnnouncementModule,
+    AnnouncementRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]

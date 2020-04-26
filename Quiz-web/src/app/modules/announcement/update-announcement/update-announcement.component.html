@@ -1,0 +1,40 @@
+<div class="container">
+
+  <div class="row">
+
+    <!-- Post Content Column -->
+    <div class="col-lg-10 text-center">
+      <h1 *ngIf="announcement" class="mt-4">Edit announcement</h1>
+      <h1 *ngIf="!announcement" class="mt-4">Create announcement</h1>
+
+      <input [(ngModel)]="announcement.title" type="text" class="form-control m-2" placeholder="Title">
+      <input [(ngModel)]="announcement.subtitle" type="text" class="form-control m-2" placeholder="Subtitle">
+
+      <textarea [(ngModel)]="announcement.fullText" class="form-control m-2" rows="10" placeholder="Text"></textarea>
+
+      <label *ngIf="!announcement.selectedFile" class="image-upload-container btn btn-bwm btn-warning">
+        <span>Select Image</span>
+        <input class="d-none" #imageInput
+               type="file"
+               accept="image/*"
+               (change)="processFile(imageInput, announcement)">
+      </label>
+
+      <label *ngIf="announcement.selectedFile" class="image-upload-container btn btn-bwm">
+        <input class="d-none" #imageInput
+               type="file"
+               accept="image/*"
+               (change)="processFile(imageInput, announcement)">
+        <img class="img-fluid rounded" src="{{announcement.selectedFile.src}}">
+
+        <div class="img-preview-container img-preview"
+             [ngStyle]="{ 'height: 120px, background-image': 'url(' + announcement.selectedFile.src  + ')'}">
+        </div>
+      </label>
+
+      <button (click)="send()" class="btn btn-warning form-control">Submit</button>
+
+    </div>
+
+  </div>
+</div>
