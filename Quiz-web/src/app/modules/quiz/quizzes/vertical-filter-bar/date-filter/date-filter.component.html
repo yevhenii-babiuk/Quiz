@@ -1,0 +1,29 @@
+<!-- (change)="onSliderChanged($event)" -->
+<!-- <app-range-slider [showValues]="true" [min]="model.min" [max]="model.max" (change)="rangeChanged($event)"></app-range-slider> -->
+<!-- <nouislider [connect]="true" [min]="0" [max]="15" [(ngModel)]="someRange" (change)="rangeChanged($event)"></nouislider> -->
+<!--
+<div>
+    <span *ngIf="!model.currencyRange" style="float: left;">From {{model.filterValue[0]}}</span>
+    <span *ngIf="model.currencyRange" style="float: left;">From {{model.filterValue[0] | currency}}</span>
+    <span *ngIf="!model.currencyRange" style="float: right;">To {{model.filterValue[1] === model.max ? 'max' : model.filterValue[1]}}</span>
+    <span *ngIf="model.currencyRange" style="float: right;">To {{model.filterValue[1] | currency}}</span>
+    <div style="height: 4px; clear: both;"></div>
+</div>
+<p-slider [(ngModel)]="model.filterValue" [range]="true" [min]="model.min" [max]="model.max" (onSlideEnd)="rangeChanged($event)"></p-slider>
+-->
+<div>
+  <mat-form-field class="example-full-width">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [min]="model.min" [max]="model.filterValue[1]" [(ngModel)]="model.filterValue[0]"
+           [matDatepicker]="picker">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field class="example-full-width">
+    <mat-label>Choose a date</mat-label>
+    <input matInput [min]="model.filterValue[0]" [max]="model.max" [(ngModel)]="model.filterValue[1]"
+           [matDatepicker]="picker">
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+</div>

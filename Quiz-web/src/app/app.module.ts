@@ -16,6 +16,9 @@ import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
 import {QuizModule} from './modules/quiz/quiz.module';
 import {ProfileModule} from './modules/profile/profile.module';
 import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 @NgModule({
   declarations: [
     AppComponent
@@ -34,7 +37,10 @@ import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
     QuizRoutingModule,
     QuizModule,
     ProfileRoutingModule,
-    ProfileModule
+    ProfileModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

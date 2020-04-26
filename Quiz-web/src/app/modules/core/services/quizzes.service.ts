@@ -7,6 +7,7 @@ import {catchError} from "rxjs/operators";
 import {Quiz} from '../models/quiz'
 import {Category} from '../models/category'
 import {url} from "../../../../environments/environment.prod";
+import {Tag} from "../models/tag";
 @Injectable({
   providedIn: 'root'
 })
@@ -19,8 +20,8 @@ export class QuizzesService {
   constructor(private http: HttpClient) {
   }
 
-  getQuizzes(currentCount: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${url}/quizzes?count=${currentCount}`)
+  getQuizzes(params: string, currentCount: number): Observable<Quiz[]> {
+    return this.http.get<Quiz[]>(`${url}/quizzes${params}&count=${currentCount}`)
       .pipe(
         catchError(this.handleError<Quiz[]>([]))
       );
@@ -30,6 +31,12 @@ export class QuizzesService {
     return this.http.get<Category[]>(`${url}/categories`)
       .pipe(
         catchError(this.handleError<Quiz[]>([]))
+      );
+  }
+  getTags(): Observable<Tag[]> {
+    return this.http.get<Tag[]>(`${url}/tags`)
+      .pipe(
+        catchError(this.handleError<Tag[]>([]))
       );
   }
 
