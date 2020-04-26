@@ -1,5 +1,4 @@
 import {Imaged} from "./imaged";
-import {ImageSnippet} from "./imageSnippet";
 import {Image} from "./image";
 
 
@@ -9,8 +8,7 @@ export class QuestionOptions implements Imaged{
   sequenceOrder: number = -1;
 
   imageId: number;
-  selectedFile: ImageSnippet;
-  image: Image;
+  image: Image=new Image();
   constructor(sequenceOrder: number) {
     this.sequenceOrder = sequenceOrder;
   };

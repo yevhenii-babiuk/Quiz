@@ -1,5 +1,4 @@
 import {QuestionType} from './questionType';
-import {ImageSnippet} from "./imageSnippet";
 import {Imaged} from "./imaged";
 import {QuestionOptions} from "./questionOptions";
 import {Quiz} from "./quiz";
@@ -11,9 +10,8 @@ export class Question implements Imaged {
   content: string;
   score: number;
   imageId: number;
-  selectedFile: ImageSnippet;
   options: QuestionOptions[] = [];
-  image: Image;
+  image: Image=new Image();
 
   constructor(id: number) {
     this.id = id;
