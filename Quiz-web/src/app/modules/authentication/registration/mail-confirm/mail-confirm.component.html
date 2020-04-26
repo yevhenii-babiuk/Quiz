@@ -1,10 +1,16 @@
-<div *ngIf="isConfirmed; else tokenUnavailable">
-  <h2>Your registration has been successfully confirmed.</h2>
-  <h4>Please, sign in to start</h4>
-  <div>
-    <a [routerLink]="['/api/v1/login']" routerLinkActive="active">Sign in</a><br>
+<div class="container">
+  <div *ngIf="isConfirmed; else tokenUnavailable">
+    <div class="col-sm text-center">
+      <h2>Your registration has been successfully confirmed.</h2>
+      <h4>Please, sign in to start</h4>
+      <div>
+        <a [routerLink]="['/api/v1/login']" routerLinkActive="active">Sign in</a><br>
+      </div>
+    </div>
   </div>
+  <ng-template #tokenUnavailable>
+    <div class="col-sm text-center">
+      <h3>Sorry, but your token is unavailable.</h3>
+    </div>
+  </ng-template>
 </div>
-<ng-template #tokenUnavailable>
-  Sorry, but your token is unavailable.
-</ng-template>

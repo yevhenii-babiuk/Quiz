@@ -52,9 +52,9 @@ public class UserService {
         int id;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userByMail = userDao.getUserByMail(user.getMail());
-        Token token = tokenDao.get(userByMail.getUserId());
 
         if (userByMail != null) {
+            Token token = tokenDao.get(userByMail.getUserId());
             if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
                 return false;
             } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
