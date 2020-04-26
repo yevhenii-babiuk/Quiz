@@ -16,7 +16,7 @@ import {SharedModule} from "../shared/shared.module";
     PassRecoveryComponent,
     MailConfirmComponent,
     PassRecoveryConfirmComponent,
-    RegistrationComponent,
+    RegistrationComponent
   ],
   imports: [
     CommonModule,

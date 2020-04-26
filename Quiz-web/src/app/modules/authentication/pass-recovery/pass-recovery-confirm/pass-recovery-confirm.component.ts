@@ -45,7 +45,7 @@ export class PassRecoveryConfirmComponent implements OnInit {
    this.authenticationService.createNewPass(this.token, password)
    .subscribe(
               data => {
-                  this.router.navigate(['/api/v1/login']).then();
+                  this.router.navigate(['/login']).then();
               },
               error => {
                   this.alertService.error('Error while applying new pass');
