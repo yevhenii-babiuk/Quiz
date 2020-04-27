@@ -1,7 +1,6 @@
-import { Component, OnInit, Input, EventEmitter, Output, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
 import { DateFilter } from './date-filter.model';
 import { FBFilterComponent } from '../fb-filter-component.interface';
-import {DatePipe} from "@angular/common";
 @Component({
   selector: 'app-range-filter',
   templateUrl: './date-filter.component.html',
