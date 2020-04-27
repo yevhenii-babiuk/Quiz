@@ -1,12 +1,39 @@
-<div *ngIf="isConfirmed; else tokenUnavailable">
-  <div>Please, enter a new password</div>
-  <div>
-    <input type="password" placeholder="password" #password>
+<div class="container">
+
+  <div *ngIf="isConfirmed; else tokenUnavailable">
+
+    <div class="row form-group">
+      <div class="col-sm"></div>
+      <div class="col-sm">
+        <h3>Please, enter a new password</h3>
+      </div>
+      <div class="col-sm"></div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm"></div>
+      <div class="col-sm">
+        <input type="password" class="form-control" placeholder="password" #password>
+      </div>
+      <div class="col-sm"></div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm"></div>
+      <div class="col-sm text-center">
+        <button class="btn btn-block btn-warning" (click)="createNewPass(password.value)">
+          Apply
+        </button>
+      </div>
+      <div class="col-sm"></div>
+    </div>
+
   </div>
-  <button (click)="createNewPass(password.value)">
-    Apply
-  </button>
+
+  <ng-template #tokenUnavailable>
+    <div class="col-sm text-center">
+      <h3>Sorry, but your token is unavailable.</h3>
+    </div>
+  </ng-template>
+
 </div>
-<ng-template #tokenUnavailable>
-  Sorry, but your token is unavailable.
-</ng-template>
