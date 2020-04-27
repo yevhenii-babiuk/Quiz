@@ -8,6 +8,7 @@ import { PlayedQuizScoreComponent } from './played-quiz-score/played-quiz-score.
 import { FriendsPreferenceComponent } from './friends-preference/friends-preference.component';
 import { CorrectAnswersPercentComponent } from './correct-answers-percent/correct-answers-percent.component';
 import { BestQuizzesResultComponent } from './best-quizzes-result/best-quizzes-result.component';
+import { PlayedQuizzesByPerriodComponent } from './played-quizzes-by-perriod/played-quizzes-by-perriod.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { BestQuizzesResultComponent } from './best-quizzes-result/best-quizzes-r
     PlayedQuizScoreComponent,
     FriendsPreferenceComponent,
     CorrectAnswersPercentComponent,
-    BestQuizzesResultComponent
+    BestQuizzesResultComponent,
+    PlayedQuizzesByPerriodComponent
   ],
   imports: [
     NgxEchartsModule,

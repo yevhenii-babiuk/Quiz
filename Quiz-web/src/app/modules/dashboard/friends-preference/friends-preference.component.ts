@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class FriendsPreferenceComponent implements OnInit {
   echartsInstance: any;
   options = {
-    backgroundColor: '#2c343c',
+
 
     title: {
       text: 'Customized Pie',
