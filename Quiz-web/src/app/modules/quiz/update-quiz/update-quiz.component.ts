@@ -15,7 +15,6 @@ import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/a
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
-import {MatChipsModule} from '@angular/material/chips';
 
 @Component({
   selector: 'app-create-quiz',
@@ -30,10 +29,9 @@ export class UpdateQuizComponent implements OnInit {
   selectable = true;
   removable = true;
   separatorKeysCodes: number[] = [ENTER, COMMA];
-  fruitCtrl = new FormControl();
-  filteredFruits: Observable<string[]>;
-  fruits: string[] = ['Lemon'];
-  allFruits: string[] = ['Apple', 'Lemon', 'Lime', 'Orange', 'Strawberry'];
+  tagCtrl = new FormControl();
+  filteredTags: Observable<string[]>;
+  tags: string[] = [];
 
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
@@ -41,14 +39,14 @@ export class UpdateQuizComponent implements OnInit {
   constructor(
     private quizzesService: QuizzesService,
     private route: ActivatedRoute) {
-    //this.getCategories();
+    this.getCategories();
+    this.getTags();
     const id = this.route.snapshot.paramMap.get('quizId');
     console.log(id);
     if (id) {
       this.quizzesService.getById(id).subscribe(
         data => {
           this.quiz = data;
-          this.setSelectOnQuiz();
         }, err => {
           console.log(err);
           this.createNewQuiz();
@@ -58,9 +56,9 @@ export class UpdateQuizComponent implements OnInit {
     }
 
 
-    this.filteredFruits = this.fruitCtrl.valueChanges.pipe(
+    this.filteredTags = this.tagCtrl.valueChanges.pipe(
       startWith(null),
-      map((fruit: string | null) => fruit ? this._filter(fruit) : this.allFruits.slice()));
+      map((tags: string | null) => tags ? this._filter(tags) : this.tags.slice()));
   }
 
   getCategories() {
@@ -72,30 +70,22 @@ export class UpdateQuizComponent implements OnInit {
       });
   }
 
+  getTags(): void {
+    this.quizzesService.getTags()
+      .subscribe(
+        tags => {
+          tags.forEach(function (value) {
+            this.push(value.name);
+          }, this.tags);
+        },
+        err => {
+          console.log(err);
+        })
+  }
+
   createNewQuiz() {
     this.quiz = new Quiz();
     this.setOptions(this.quiz.questions[0]);
-  }
-
-  setSelectOnQuiz() {
-    for (let i = 0; i < this.quiz.questions.length; i++) {
-      console.log("b == " + (this.quiz.questions[i].type == QuestionType.TRUE_FALSE));
-
-      /*if(this.quiz.questions[i].type==QuestionType.SELECT_OPTION){
-        this.quiz.questions[i].type = 0;
-      }else if (this.quiz.questions[i].type==QuestionType.SELECT_SEQUENCE){
-        this.quiz.questions[i].type = 1;
-      }else if(this.quiz.questions[i].type==QuestionType.TRUE_FALSE){
-        this.quiz.questions[i].type = 2;
-      }else if(this.quiz.questions[i].type==QuestionType.ENTER_ANSWER){
-        this.quiz.questions[i].type = 3;
-      }*/
-
-
-      console.log("a" + this.quiz.questions[i].type);
-    }
-    //console.log("on setSelectOnQuiz");
-    // (<HTMLInputElement>document.getElementById("categories")).value=this.quiz.category.name;
   }
 
 
@@ -118,7 +108,7 @@ export class UpdateQuizComponent implements OnInit {
           }
         },
         error => {
-          imaged.image.src=null;
+          imaged.image.src = null;
           console.log(error);
         });
     });
@@ -138,9 +128,8 @@ export class UpdateQuizComponent implements OnInit {
   }
 
   setCategory(categoryStr: string) {
-    console.log("on change ctegory");
     this.quiz.category = this.categories.find((item) => item.name == categoryStr);
-    console.log(this.quiz.category.name);
+    this.quiz.categoryId = this.quiz.category.id;
   }
 
   setOptions(question: Question) {
@@ -161,7 +150,7 @@ export class UpdateQuizComponent implements OnInit {
   }
 
   addQuestion() {
-    let question = new Question(this.quiz.questions[this.quiz.questions.length - 1].id + 1);
+    let question = new Question();
     this.setOptions(question);
     this.quiz.questions = this.quiz.questions.concat(question);
   }
@@ -177,41 +166,43 @@ export class UpdateQuizComponent implements OnInit {
   }
 
 
-
   add(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
-    // Add our fruit
+    // Add our tag
     if ((value || '').trim()) {
-      this.fruits.push(value.trim());
+      if (!this.quiz.tags.includes(new Tag(value))) {
+        this.quiz.tags.push(new Tag(value.trim()));
+      }
     }
-
     // Reset the input value
     if (input) {
       input.value = '';
     }
 
-    this.fruitCtrl.setValue(null);
+    this.tagCtrl.setValue(null);
   }
 
-  remove(fruit: string): void {
-    const index = this.fruits.indexOf(fruit);
+  remove(fruit: Tag): void {
+    const index = this.quiz.tags.indexOf(fruit);
 
     if (index >= 0) {
-      this.fruits.splice(index, 1);
+      this.quiz.tags.splice(index, 1);
     }
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    this.fruits.push(event.option.viewValue);
+    if (!this.quiz.tags.includes(new Tag(event.option.viewValue))) {
+      this.quiz.tags.push(new Tag(event.option.viewValue));
+    }
     this.fruitInput.nativeElement.value = '';
-    this.fruitCtrl.setValue(null);
+    this.tagCtrl.setValue(null);
   }
 
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
-    return this.allFruits.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
+    return this.tags.filter(fruit => fruit.toLowerCase().indexOf(filterValue) === 0);
   }
 }

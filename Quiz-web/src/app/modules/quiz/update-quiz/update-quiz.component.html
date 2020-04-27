@@ -33,36 +33,33 @@
         </select>
       </div>
 
-      <!--<div class="mat-app-background w-100">
-        <mat-form-field class="example-chip-list">
-          <mat-chip-list #chipList aria-label="Fruit selection">
+      <div class="mat-app-background">
+        <mat-form-field class="example-chip-list w-100">
+          <mat-chip-list #chipList aria-label="Fruit selection w-100">
             <mat-chip
-              *ngFor="let fruit of fruits"
+              *ngFor="let tag of quiz.tags"
               [selectable]="selectable"
               [removable]="removable"
-              (removed)="remove(fruit)">
-              {{fruit}}
-              <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+              (removed)="remove(tag)">
+              {{tag.name}}
+              <mat-icon matChipRemove *ngIf="removable">x</mat-icon>
             </mat-chip>
             <input
-              placeholder="New fruit..."
+              placeholder="New tag..."
               #fruitInput
-              [formControl]="fruitCtrl"
+              [formControl]="tagCtrl"
               [matAutocomplete]="auto"
               [matChipInputFor]="chipList"
               [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
               (matChipInputTokenEnd)="add($event)">
           </mat-chip-list>
           <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-            <mat-option *ngFor="let fruit of filteredFruits | async" [value]="fruit">
-              {{fruit}}
+            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+              {{tag}}
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        &lt;!&ndash;<chips-autocomplete-example> some</chips-autocomplete-example>&ndash;&gt;
-        &lt;!&ndash;<input id="tags" class="col-sm m-3 form-control chips chips-placeholder chips-autocomplete" placeholder="tags" name="tags-4" type="text" value="">
-        &ndash;&gt;&lt;!&ndash;todo create new&ndash;&gt;
-      </div>-->
+      </div>
 
     </div>
 
@@ -120,7 +117,7 @@
               <div class="row mx-0" *ngFor="let questionOption of question.options">
                 <input [(ngModel)]="questionOption.content"
                        placeholder="{{questionOption.isCorrect? 'Correct' : 'Wrong'}} answer"
-                       class="w-50 col m-1 border border-{{questionOption.isCorrect? 'success':'danger'}}"/>
+                       class="questionOption w-50 col m-1 border border-{{questionOption.isCorrect? 'success':'danger'}}"/>
                 <div>
                   <label *ngIf="!questionOption.image.src" class="image-upload-container btn btn-bwm btn-warning">
                     <span>Select Image</span>
@@ -147,9 +144,9 @@
 
             <div *ngSwitchCase="'SELECT_SEQUENCE'">
               <div class="row mx-0" *ngFor="let questionOption of  question.options">
-                <label for="{{question.id+questionOption.sequenceOrder}}">{{questionOption.sequenceOrder}}</label>
-                <input id="{{question.id+questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
-                       placeholder="answer" class="w-50 m-1">
+                <label for="{{questionOption.sequenceOrder}}" class="questionOption">{{questionOption.sequenceOrder}}</label>
+                <input  id="{{questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
+                       placeholder="answer" class="w-50 m-1 questionOption">
                 <div>
                   <label *ngIf="!questionOption.image.src" class="image-upload-container btn btn-bwm btn-warning">
                     <span>Select Image</span>
@@ -185,7 +182,8 @@
             </div>
 
             <div *ngSwitchCase="'ENTER_ANSWER'">
-              <input [(ngModel)]="question.options[0].content" placeholder="correct answer" class="w-75 m-1">
+              <input [(ngModel)]="question.options[0].content" placeholder="correct answer"
+                     class="questionOption w-75 m-1">
             </div>
           </div>
 

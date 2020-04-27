@@ -47,7 +47,12 @@ export class QuizzesService {
   }
 
   sendQuiz(quiz: Quiz){
-    return this.http.put<string>(`${url}/quiz/`, quiz, this.httpOptions);
+    if(quiz.id){
+      return this.http.put<string>(`${url}/quiz/`, quiz, this.httpOptions);
+    }
+    else {
+      return this.http.post<string>(`${url}/quiz/`, quiz, this.httpOptions);
+    }
   }
 
   getById(id: string){

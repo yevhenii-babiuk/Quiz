@@ -9,11 +9,12 @@ export class Quiz implements Imaged {
   name: string;
   authorId: number;
   category: Category = new Category();
+  categoryId: number;
   publishedDate: string;
   questionNumber: number;
   maxScore: number;
   tags: Tag[] = [];
-  questions: Question[] = [new Question(0)];
+  questions: Question[] = [new Question];
   imageId: number = -1;
   image: Image = new Image();
 }

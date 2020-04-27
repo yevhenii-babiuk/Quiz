@@ -9,11 +9,8 @@ export class Question implements Imaged {
   type: QuestionType = QuestionType.SELECT_OPTION;
   content: string;
   score: number;
-  imageId: number;
+  imageId: number = -1;
   options: QuestionOptions[] = [];
-  image: Image=new Image();
+  image: Image = new Image();
 
-  constructor(id: number) {
-    this.id = id;
-  }
 }

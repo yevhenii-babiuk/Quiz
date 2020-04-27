@@ -2,13 +2,14 @@ import {Imaged} from "./imaged";
 import {Image} from "./image";
 
 
-export class QuestionOptions implements Imaged{
+export class QuestionOptions implements Imaged {
   content: string = "";
   isCorrect: boolean = false;
   sequenceOrder: number = -1;
 
-  imageId: number;
-  image: Image=new Image();
+  imageId: number = -1;
+  image: Image = new Image();
+
   constructor(sequenceOrder: number) {
     this.sequenceOrder = sequenceOrder;
   };

@@ -14,16 +14,12 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatAutocompleteModule} from "@angular/material/autocomplete";
 import {MatInputModule} from "@angular/material/input";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {ChipsAutocompleteExample} from './update-quiz/app/chips-autocomplete-example';
 
 
 
 import {CheckboxFilterComponent} from './quizzes/vertical-filter-bar/checkbox-filter/checkbox-filter.component';
 import {KeywordFilterComponent} from './quizzes/vertical-filter-bar/keyword-filter/keyword-filter.component';
 import {DateFilterComponent} from './quizzes/vertical-filter-bar/date-filter/date-filter.component';
-/*
-import {DateFilterComponent} from './quizzes/vertical-filter-bar/date-filter/date-filter.component';
-*/
 import {VerticalFilterBarComponent} from './quizzes/vertical-filter-bar/vertical-filter-bar.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
@@ -33,11 +29,9 @@ import {MatNativeDateModule} from '@angular/material/core';
     QuizzesComponent,
     UpdateQuizComponent,
     ViewQuizComponent,
-    ChipsAutocompleteExample,
     CheckboxFilterComponent,
     KeywordFilterComponent,
     DateFilterComponent,
-/*    DateFilterComponent,*/
     VerticalFilterBarComponent,
   ],
   imports: [
