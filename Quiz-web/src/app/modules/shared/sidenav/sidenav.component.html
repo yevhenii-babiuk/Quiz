@@ -26,10 +26,10 @@
 
 <div class="wrapper">
   <!-- Sidebar Holder -->
-  <nav id="sidebar">
-    <div class="sidebar-header">
+  <nav id="sidebar" >
+    <a class="sidebar-header" routerLink="../home">
       <h3>Qucat</h3>
-    </div>
+    </a>
 
     <ul class="list-unstyled components">
       <li *ngIf="!notProfile">
@@ -46,8 +46,11 @@
 
     <ul class="list-unstyled CTAs">
       <li>
-        <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
+        <a href="https://github.com/Yevhenii-Babiuk/Quiz" class="article">Go to source</a>
       </li>
     </ul>
+    <div id="scrollTop" (click)= "onScrollClick()">
+
+    </div>
   </nav>
 </div>

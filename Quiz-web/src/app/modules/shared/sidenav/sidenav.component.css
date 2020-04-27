@@ -5,6 +5,7 @@
 .wrapper {
   display: flex;
   width: 100%;
+  height: 100%;
   align-items: stretch;
   perspective: 1500px;
 }
@@ -13,10 +14,15 @@
 #sidebar {
   min-width: 250px;
   max-width: 250px;
-  background: #FFA700;
+  background: #F5EDCE;
   color: #fff;
+  height: 100%;
+  min-height: 100vh;
   transition: all 0.6s cubic-bezier(0.945, 0.020, 0.270, 0.665);
   transform-origin: bottom left;
+
+  display: flex;
+  flex-direction: column;
 }
 
 #sidebar.active {
@@ -26,7 +32,9 @@
 
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #FFA600;
+  background: #FFC11E;
+  color: white;
+  text-decoration: none;
 }
 
 #sidebar ul.components {
@@ -43,16 +51,17 @@
   padding: 10px;
   font-size: 1.1em;
   display: block;
+  color: black;
 }
 #sidebar ul li a:hover {
-  color: #FFA700;
-  background: #fff;
+  color: black;
+  background: #C4BC9F;
   text-decoration: none;
 }
 
 #sidebar ul li.active > a, a[aria-expanded="true"] {
   color: #fff;
-  background: #FFA600;
+  background: #FFC11E;
 }
 
 
@@ -71,7 +80,7 @@ a[data-toggle="collapse"] {
 ul ul a {
   font-size: 0.9em !important;
   padding-left: 30px !important;
-  background: #FFA600;
+  background: #FFC11E;
 }
 
 ul.CTAs {
@@ -86,52 +95,13 @@ ul.CTAs a {
   margin-bottom: 5px;
 }
 
-a.download {
-  background: #fff;
-  color: #FFA700;
-}
 
 a.article, a.article:hover {
-  background: #FFA600 !important;
+  background: #FFC11E !important;
   color: #fff !important;
 }
 
-
-
-
-
-
-
-
-
-
-.sidenav {
-  height: 100%;
-  width: 200px;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  background-color: #FFA700;
-  overflow-x: hidden;
-  padding-top: 100px;
-}
-
-
-
-
-/* The navigation menu links */
-.sidenav a {
-  padding: 8px 8px 0px 10px;
-  text-decoration: none;
-  font-size: 20px;
-  color: black;
-  display: block;
-}
-
-
-.sidenav a:hover {
-  color: #FFA700;
-  background: #fff;
+#scrollTop{
+  flex: 1;
 }
 
