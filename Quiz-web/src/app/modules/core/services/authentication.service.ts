@@ -25,7 +25,7 @@ export class AuthenticationService {
   login(user: User) {
     let username = user.login;
     let password = user.password;
-    return this.http.post<any>(`http://localhost:8080/api/v1/login`, {username, password}).pipe(
+    return this.http.post<any>(`${url}/login`, {username, password}).pipe(
       map(
         userData => {
           let tokenStr = 'Bearer ' + userData.token;
@@ -60,6 +60,6 @@ export class AuthenticationService {
     const token = sessionStorage.getItem('token');
     // Check whether the token is expired and return
     // true or false
-    return token != null /*&& !this.jwtHelper.isTokenExpired(token)*/;
+    return !this.jwtHelper.isTokenExpired(token);
   }
 }
