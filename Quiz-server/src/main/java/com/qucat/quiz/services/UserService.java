@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.NoSuchElementException;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -183,8 +184,8 @@ public class UserService {
     }
 
     public void authenticate(String username, String password) throws Exception {
-        //        Objects.requireNonNull(username);
-        //        Objects.requireNonNull(password);
+                Objects.requireNonNull(username);
+                Objects.requireNonNull(password);
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

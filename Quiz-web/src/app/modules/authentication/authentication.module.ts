@@ -9,6 +9,8 @@ import {PassRecoveryConfirmComponent} from './pass-recovery/pass-recovery-confir
 import {RegistrationComponent} from './registration/registration.component';
 import {AuthRoutingModule} from './auth-routing.module';
 import {SharedModule} from "../shared/shared.module";
+import {HTTP_INTERCEPTORS} from "@angular/common/http";
+import {BasicAuthHtppInterceptorService} from "../core/services/auth-http-interceptor.service";
 
 @NgModule({
   declarations: [

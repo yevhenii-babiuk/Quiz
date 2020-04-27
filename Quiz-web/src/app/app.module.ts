@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -16,6 +16,8 @@ import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
 import {QuizModule} from './modules/quiz/quiz.module';
 import {ProfileModule} from './modules/profile/profile.module';
 import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
+import {BasicAuthHtppInterceptorService} from "./modules/core/services/auth-http-interceptor.service";
+import {AuthGuardService} from "./modules/core/services/auth-guard.service";
 @NgModule({
   declarations: [
     AppComponent
@@ -36,7 +38,9 @@ import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
     ProfileRoutingModule,
     ProfileModule
   ],
-  providers: [],
+  providers: [
+    {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
+    AuthGuardService],
   bootstrap: [AppComponent]
 })
 

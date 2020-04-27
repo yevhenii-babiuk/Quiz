@@ -1,14 +1,13 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {ViewProfile} from "./view-profile/view-profile.component";
 import {EditorComponent} from "./editor/editor.component";
 import {AuthGuardService as AuthGuard} from "../core/services/auth-guard.service";
 
 const routes: Routes = [
-  { path: 'profile', component: ViewProfile,  },
-  { path: 'edit', component: EditorComponent },
-  {path: 'profile', component: ViewProfile, canActivate: [AuthGuard] }
-];
+  {path: 'profile', component: ViewProfile, canActivate: [AuthGuard]},
+  {path: 'edit', component: EditorComponent}
+]
 
 @NgModule({
   declarations: [],
@@ -16,7 +15,8 @@ const routes: Routes = [
     RouterModule.forChild(routes)
   ],
   exports: [
-  RouterModule
-]
+    RouterModule
+  ]
 })
-export class ProfileRoutingModule { }
+export class ProfileRoutingModule {
+}
