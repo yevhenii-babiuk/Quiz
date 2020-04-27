@@ -36,7 +36,7 @@ import {AnnouncementRoutingModule} from "./modules/announcement/announcement-rou
     QuizRoutingModule,
     QuizModule,
     ProfileRoutingModule,
-    ProfileModule
+    ProfileModule,
     QuizModule,
     AnnouncementModule,
     AnnouncementRoutingModule

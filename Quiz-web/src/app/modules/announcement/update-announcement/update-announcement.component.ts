@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Announcement} from "../../core/models/announcement";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {AnnouncementService} from "../../core/services/announcement.service";
 import {Imaged} from "../../core/models/imaged";
 import {ImageSnippet} from "../../core/models/imageSnippet";
@@ -57,12 +57,23 @@ export class UpdateAnnouncementComponent implements OnInit {
   }
 
   send() {
-    this.announcementService.sendAnnouncement(this.announcement).subscribe(
-      get => {
-        console.log("id = " + get);
-      },
-      error => {
-        console.log(error);
-      });
+    if (this.announcement.id) {
+      this.announcementService.updateAnnouncement(this.announcement).subscribe(
+        get => {
+          console.log("id = " + get);
+        },
+        error => {
+          console.log(error);
+        });
+    } else {
+      this.announcement.isPublished = false;
+      this.announcementService.sendAnnouncement(this.announcement).subscribe(
+        get => {
+          console.log("id = " + get);
+        },
+        error => {
+          console.log(error);
+        });
+    }
   }
 }

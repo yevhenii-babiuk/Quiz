@@ -8,6 +8,7 @@ export class Announcement implements Imaged {
   subtitle: string;
   fullText: string;
   authorLogin: string;
+  isPublished: boolean;
   createdDate: Date;
   imageId: number;
   selectedFile: ImageSnippet;

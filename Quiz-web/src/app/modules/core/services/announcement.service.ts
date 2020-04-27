@@ -33,8 +33,12 @@ export class AnnouncementService {
     return this.http.put(`${url}/image`, uploadData);
   }
 
-  sendAnnouncement(announcement: Announcement) {
+  updateAnnouncement(announcement: Announcement) {
     return this.http.put<string>(`${url}/announcement/`, announcement, this.httpOptions);
+  }
+
+  sendAnnouncement(announcement: Announcement) {
+    return this.http.post<string>(`${url}/announcement/`, announcement, this.httpOptions);
   }
 
   getById(id: string) {

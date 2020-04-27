@@ -24,10 +24,10 @@ export class ViewAnnouncementComponent implements OnInit {
           this.announcement = data;
         }, err => {
           console.log(err);
-          redirect.navigate(['home']);
+          redirect.navigate(['announcements']);
         });
     } else {
-      redirect.navigate(['home']);
+      redirect.navigate(['announcements']);
     }
 
   }
