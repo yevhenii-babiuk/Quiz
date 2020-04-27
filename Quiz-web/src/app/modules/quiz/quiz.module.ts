@@ -4,7 +4,6 @@ import {CommonModule} from '@angular/common';
 import {RouterModule} from '@angular/router';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from '@angular/material/form-field';
-import {SliderModule} from 'primeng/slider';
 
 import {QuizzesComponent} from './quizzes/quizzes.component';
 import {UpdateQuizComponent} from './update-quiz/update-quiz.component';
@@ -53,7 +52,6 @@ import {MatNativeDateModule} from '@angular/material/core';
     MatInputModule,
     BrowserAnimationsModule,
     MatFormFieldModule,
-    SliderModule,
     MatDatepickerModule,
     MatNativeDateModule,
   ]

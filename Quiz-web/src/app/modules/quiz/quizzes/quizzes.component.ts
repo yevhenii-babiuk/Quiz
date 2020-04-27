@@ -7,6 +7,7 @@ import {CheckboxFilter} from "./vertical-filter-bar/checkbox-filter/checkbox-fil
 import {FBFilter} from "./vertical-filter-bar/fb-filter.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DateFilter} from "./vertical-filter-bar/date-filter/date-filter.model";
+import {Category} from "../../core/models/category";
 /*import {DateFilter} from "./vertical-filter-bar/date-filter/date-filter.model";*/
 
 @Component({
@@ -15,7 +16,8 @@ import {DateFilter} from "./vertical-filter-bar/date-filter/date-filter.model";
 })
 export class QuizzesComponent implements OnInit {
   quizzes: Quiz[] = [new Quiz(), new Quiz(), new Quiz(), new Quiz(), new Quiz()];
-  tags: Tag[] = [];
+  tags: string[] = [];
+  categories: string[] = [];
   isWaiting: boolean = false;
 
   params: string;
@@ -35,13 +37,11 @@ export class QuizzesComponent implements OnInit {
 
   verticalBarFilters: FBFilter[] = [
     new KeywordFilter('quizName', 'Quiz name'),
-    new KeywordFilter('authorName', 'Author name'),/*
-    new RangeFilter('price', 'Price', 0, 10000, true),*/
+    new KeywordFilter('authorName', 'Author name'),
+    new CheckboxFilter('category', 'Categories', this.categories),
+    /*new RangeFilter('price', 'Price', 0, 10000, true),*/
     new DateFilter("Date", "date",  new Date(2020,3,20), new Date()),
-    new CheckboxFilter('category', 'Categories', this.manufacturers),
-    new CheckboxFilter('tag', 'Tags', this.conditions),
-    new CheckboxFilter('display-size', 'Display Size', this.displaySizes),
-    new CheckboxFilter('category', 'Categories', this.ramSize)
+    new CheckboxFilter('tag', 'Tags', this.tags),
   ]
 
 
@@ -79,12 +79,29 @@ export class QuizzesComponent implements OnInit {
     this.quizzesService.getTags()
       .subscribe(
         tags => {
-          this.tags = tags;
+          tags.forEach(function (value) {
+            console.log(value.name);
+            this.push(value.name);
+          }, this.tags);
+
         },
         err => {
           console.log(err);
         })
+  }
+  getCategories(): void {
+    this.quizzesService.getCategories()
+      .subscribe(
+        category => {
+          category.forEach(function (value) {
+            console.log(value.name);
+            this.push(value.name);
+          }, this.categories);
 
+        },
+        err => {
+          console.log(err);
+        })
   }
 
   ngOnInit(): void {
@@ -99,7 +116,8 @@ export class QuizzesComponent implements OnInit {
 
     });
 
-    /*this.getTags();*/
+    this.getTags();
+    this.getCategories();
   }
 
 }
