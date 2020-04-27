@@ -7,6 +7,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -54,7 +55,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.csrf().disable()
                 // dont authenticate this particular request
                 .authorizeRequests()
-                .antMatchers("/api/v1/login", "/home", "/api/v1/registration").permitAll()
+                .antMatchers("/api/v1/login", "/home", "/api/v1/registration", "/api/v1/quizzes")
+                .permitAll()
+                .antMatchers("/",
+                        "/favicon.ico",
+                        "/**/*.png",
+                        "/**/*.gif",
+                        "/**/*.svg",
+                        "/**/*.jpg",
+                        "/**/*.html",
+                        "/**/*.woff2",
+                        "/**/*.css",
+                        "/**/*.js")
+                .permitAll()
+
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // all other requests need to be authenticated
                 .anyRequest().authenticated().and()
@@ -67,6 +81,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
+
+/*    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web
+                .ignoring()
+                .antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/img/**");
+    }*/
 //
 //    @Override
 //    public void configure(WebSecurity web) throws Exception {
