@@ -6,9 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -46,8 +44,8 @@ public class DashboardService {
         }
     }
 
-    public Map<String,Double> getPercentOfCorrectAnswers(String login) {
-        Map<String,Double> correctAnswers = dashboardDao.getPercentOfCorrectAnswers(login);
+    public List<Statistics> getPercentOfCorrectAnswers(String login) {
+        List<Statistics> correctAnswers = dashboardDao.getPercentOfCorrectAnswers(login);
         if (correctAnswers.isEmpty()) {
             log.warn("Can`t get information about correct answers");
             return null;
@@ -76,8 +74,8 @@ public class DashboardService {
         }
     }
 
-    public Map<String,Integer> getFriendsPreferences(int userId) {
-        Map<String,Integer>  friendsPreferences = dashboardDao.getFriendsPreferences(userId);
+    public List<Statistics> getFriendsPreferences(int userId) {
+        List<Statistics> friendsPreferences = dashboardDao.getFriendsPreferences(userId);
         if (friendsPreferences.isEmpty()) {
             log.warn("Can`t get information about friends` preferences");
             return null;
@@ -86,8 +84,8 @@ public class DashboardService {
         }
     }
 
-    public Map<String,Integer> getStatisticOfQuizzesPlayed() {
-        Map<String,Integer>  playedQuizzes = dashboardDao.getStatisticOfQuizzesPlayed();
+    public List<Statistics> getStatisticOfQuizzesPlayed() {
+        List<Statistics> playedQuizzes = dashboardDao.getStatisticOfQuizzesPlayed();
         if (playedQuizzes.isEmpty()) {
             log.warn("There are no quizzes played");
             return null;
@@ -96,13 +94,13 @@ public class DashboardService {
         }
     }
 
-    public Map<Timestamp,Integer> getAmountOfPublishedQuizzes() {
-        Map<Timestamp,Integer>  publishedQuizzes = dashboardDao.getAmountOfPublishedQuizzes();
-        if (publishedQuizzes.isEmpty()) {
-            log.warn("There are no published quizzes");
+    public List<AdminStatistics> getAmountOfCreatedAndPublishedQuizzes() {
+        List<AdminStatistics> adminStatistics = dashboardDao.getAmountOfCreatedAndPublishedQuizzes();
+        if (adminStatistics.isEmpty()) {
+            log.warn("There are no created or published quizzes");
             return null;
         } else {
-            return publishedQuizzes;
+            return adminStatistics;
         }
     }
 }

@@ -11,10 +11,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.Timestamp;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,14 +58,12 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public Map<String, Double> getPercentOfCorrectAnswers(String login) {
-        return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersByLogin"), new Object[]{login}, (ResultSet rs) -> {
-            HashMap<String, Double> results = new HashMap<>();
-            while (rs.next()) {
-                results.put(rs.getString("name"), rs.getDouble("correct_answers_persentage"));
-            }
-            return results;
-        });
+    public List<Statistics> getPercentOfCorrectAnswers(String login) {
+        return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersByLogin"), new Object[]{login}, (rs, rowNum) ->
+                new Statistics(
+                        rs.getString("name"),
+                        rs.getDouble("correct_answers_persentage")
+                ));
     }
 
     @Override
@@ -99,36 +93,32 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public Map<String, Integer> getFriendsPreferences(int userId) {
-        return jdbcTemplate.query(dashboardQueries.get("getFriendsPreferences"), new Object[]{userId}, (ResultSet rs) -> {
-            HashMap<String, Integer> results = new HashMap<>();
-            while (rs.next()) {
-                results.put(rs.getString("name"), rs.getInt("count"));
-            }
-            return results;
-        });
+    public List<Statistics> getFriendsPreferences(int userId) {
+        return jdbcTemplate.query(dashboardQueries.get("getFriendsPreferences"), new Object[]{userId}, (rs, rowNum) ->
+                new Statistics(
+                        rs.getString("name"),
+                        rs.getDouble("count")
+                ));
     }
 
     @Override
-    public Map<String, Integer> getStatisticOfQuizzesPlayed() {
-        return jdbcTemplate.query(dashboardQueries.get("getStatisticOfQuizzesPlayed"), (ResultSet rs) -> {
-            HashMap<String, Integer> results = new HashMap<>();
-            while (rs.next()) {
-                results.put(rs.getString("name"), rs.getInt("count"));
-            }
-            return results;
-        });
+    public List<Statistics> getStatisticOfQuizzesPlayed() {
+        return jdbcTemplate.query(dashboardQueries.get("getStatisticOfQuizzesPlayed"), (rs, rowNum) ->
+                new Statistics(
+                        rs.getString("name"),
+                        rs.getDouble("count")
+                ));
     }
 
     @Override
-    public Map<Timestamp, Integer> getAmountOfPublishedQuizzes() {
-        return jdbcTemplate.query(dashboardQueries.get("getAmountOfPublishedQuizzes"), (ResultSet rs) -> {
-            HashMap<Timestamp, Integer> results = new LinkedHashMap<>();
-            while (rs.next()) {
-                results.put(rs.getTimestamp("published_date"), rs.getInt("count"));
-            }
-            return results;
-        });
+    public List<AdminStatistics> getAmountOfCreatedAndPublishedQuizzes() {
+        return jdbcTemplate.query(dashboardQueries.get("getAmountOfPublishedQuizzes"), (rs, rowNum) ->
+                new AdminStatistics(
+                        rs.getDate("date"),
+                        rs.getInt("created"),
+                        rs.getInt("published")
+                ));
     }
+
 }
 
