@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -81,10 +82,16 @@ public class QuizService {
     }
 
     public Page<Quiz> showPage(int page, int size, String name, String author,
-                               List<String> category, Timestamp minDate, Timestamp maxDate, List<String> tags) {
+                               List<String> category, Date[] dates, List<String> tags) {
+        Timestamp tMinDate = null;
+        Timestamp tMaxDate = null;
+        if (dates != null && dates.length == 2) {
+            tMinDate = new Timestamp(dates[0].getTime());
+            tMaxDate = new Timestamp(dates[1].getTime());
+        }
 
         return quizDao.findAllForPage(
                 PageRequest.of(page, size,
-                        Sort.Direction.DESC, "id"), name, author, category, maxDate, minDate, tags);
+                        Sort.Direction.DESC, "id"), name, author, category, tMinDate, tMaxDate, tags);
     }
 }
