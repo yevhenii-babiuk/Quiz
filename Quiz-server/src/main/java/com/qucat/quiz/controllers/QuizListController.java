@@ -19,7 +19,7 @@ public class QuizListController {
 
     @GetMapping
     public Quiz[] getQuizzes(@RequestParam(value = "count") int currentCount) {
-        return quizService.showPage(Optional.of(currentCount), Optional.of(20)).toList().toArray(Quiz[]::new);
+        return null;//quizService.showPage(Optional.of(currentCount), Optional.of(20)).toList().toArray(Quiz[]::new);
 
     }
 
