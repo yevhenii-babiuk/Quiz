@@ -6,7 +6,7 @@ import {AuthGuardService as AuthGuard} from "../core/services/auth-guard.service
 
 const routes: Routes = [
   {path: 'profile', component: ViewProfile, canActivate: [AuthGuard]},
-  {path: 'edit', component: EditorComponent}
+  {path: 'edit', component: EditorComponent, canActivate: [AuthGuard]}
 ]
 
 @NgModule({

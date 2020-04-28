@@ -18,6 +18,7 @@ import {ProfileModule} from './modules/profile/profile.module';
 import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
 import {BasicAuthHtppInterceptorService} from "./modules/core/services/auth-http-interceptor.service";
 import {AuthGuardService} from "./modules/core/services/auth-guard.service";
+import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 @NgModule({
   declarations: [
     AppComponent
@@ -40,7 +41,8 @@ import {AuthGuardService} from "./modules/core/services/auth-guard.service";
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
-    AuthGuardService],
+    AuthGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService],
   bootstrap: [AppComponent]
 })
 

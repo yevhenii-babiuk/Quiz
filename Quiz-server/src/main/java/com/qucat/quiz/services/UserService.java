@@ -161,8 +161,8 @@ public class UserService {
         return userDao.getUserByRole(role, pageable);
     }
 
-    public User getUserDataByLogin(String login) {
-        User user = userDao.getUserByLogin(login);
+    public User getUserDataById(int id) {
+        User user = userDao.get(id);
 
         if (user == null) {
             throw new NoSuchElementException("Such user not exist");

@@ -3,7 +3,10 @@ import {Component, Injectable, OnInit} from '@angular/core';
 import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
-import {decode} from 'jwt-decode';
+import {RoleService} from "../../core/services/role.service";
+import {switchAll} from "rxjs/operators";
+import {IdService} from "../../core/services/id.service";
+import {formatNumber} from "@angular/common";
 
 
 @Component({
@@ -14,14 +17,13 @@ import {decode} from 'jwt-decode';
 
 export class ViewProfile implements OnInit {
   userData: User;
-  role: String;
-  isUser: boolean;
-  isModerator: boolean;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
-
+  id
+  role: Role;
+  roleEnum= Role;
   constructor(
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private roleService: RoleService,
+    private idService: IdService
   ) {
 
   }
@@ -31,26 +33,18 @@ export class ViewProfile implements OnInit {
   }
 
   private getUser() {
-    this.profileService.getUser().subscribe(data => {
+    this.id = this.idService.getCurrentId();
+    console.log(this.id);
+    this.profileService.getUser(this.id).subscribe(data => {
+      console.log(data)
       this.userData = data;
-      const token = sessionStorage.getItem('token');
-      const tokenPayload = decode(token);
-      this.role = tokenPayload.role;
-      this.setCondition(this.role);
+      this.role = this.roleService.getCurrentRole();
+
     });
   }
-
-  private setCondition(role: String) {
-    if (role == Role.USER) {
-      this.isUser = true;
-    } else if (role == Role.SUPER_ADMIN) {
-      this.isSuperAdmin = true;
-    } else if (role == Role.ADMIN) {
-      this.isAdmin = true;
-    } else if (role == Role.MODERATOR) {
-      this.isModerator = true;
-    }
-  }
-
-
 }
+
+
+
+
+

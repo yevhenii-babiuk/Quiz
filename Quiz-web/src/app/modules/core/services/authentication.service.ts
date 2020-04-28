@@ -6,7 +6,7 @@ import {User} from '../models/user';
 import {url} from '../../../../environments/environment.prod';
 import {map} from "rxjs/operators";
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {consoleTestResultHandler} from "tslint/lib/test";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +16,20 @@ export class AuthenticationService {
   httpOptions = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
+  providers: [
 
-  public jwtHelper: JwtHelperService;
+  ]
 
-  constructor(private http: HttpClient) {
+
+
+
+  constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
   }
 
-  login(user: User) {
+  login(user: User): Observable<any> {
     let username = user.login;
     let password = user.password;
-    return this.http.post<any>(`${url}/login`, {username, password}).pipe(
+    return this.http.post<any>(`http://localhost:8080/api/v1/login`, {username, password}).pipe(
       map(
         userData => {
           let tokenStr = 'Bearer ' + userData.token;
@@ -63,6 +67,10 @@ export class AuthenticationService {
     if (!token) {
       return false;
     }
-    return !this.jwtHelper.isTokenExpired(token);
+    if(!this.jwtHelper){
+      return false;
+    }
+    return  !this.jwtHelper.isTokenExpired(token);
+
   }
 }

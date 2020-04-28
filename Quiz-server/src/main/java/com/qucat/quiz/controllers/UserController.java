@@ -12,9 +12,9 @@ public class UserController {
      @Autowired
      private UserService userService;
 
-    @GetMapping
-    public User getUser() {
-        return userService.getUserDataByLogin("eugene");
+    @GetMapping("{id}")
+    public User getUser(@PathVariable int id) {
+        return userService.getUserDataById(id);
     }
 
     @PostMapping

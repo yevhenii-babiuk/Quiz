@@ -2,6 +2,8 @@ import {Component, Injectable, OnInit, Output} from '@angular/core';
 import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {AlertService} from "../../core/services/alert.service";
+import {IdService} from "../../core/services/id.service";
+import {RoleService} from "../../core/services/role.service";
 
 
 
@@ -15,13 +17,16 @@ import {AlertService} from "../../core/services/alert.service";
 })
 
 export class EditorComponent implements OnInit {
+  id: number;
   userData : User;
   login:String;
   role:String;
 
   constructor(
     private profileService: ProfileService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private idService: IdService,
+    private roleService: RoleService
   ) {
   }
 
@@ -29,18 +34,22 @@ export class EditorComponent implements OnInit {
     this.getUser();
   }
   private getUser() {
-    this.profileService.getUser().subscribe(data => {
+    this.id = this.idService.getCurrentId();
+    this.role = this.roleService.getCurrentRole();
+    this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
-      this.role=this.userData.role;
+      this.userData.id = this.id;
+
 
     });
   }
-  edit(firstname: string, secondname: string, email: string, profile:string, password: string, confirmPassword: string){
+  edit(id: number, firstname: string, secondname: string, email: string, profile:string, password: string, confirmPassword: string){
     if (password!=confirmPassword) {
       this.alertService.error('passwords don`t match');
       return;
     }
     let editedUser: User = {
+      id: id,
       firstName:firstname,
       secondName:secondname,
       login:this.userData.login,
