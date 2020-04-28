@@ -26,12 +26,12 @@
 
 <div class="wrapper">
   <!-- Sidebar Holder -->
-  <nav id="sidebar" >
-    <a class="sidebar-header" routerLink="../home">
-      <h3>Qucat</h3>
-    </a>
-
-    <ul class="list-unstyled components">
+  <nav id="sidebar">
+    <div class="sidebar-brand">
+      <img src='assets/img/Qucat.png' routerLink="../home" class="logo-image" alt="Qucat">
+    </div>
+<hr>
+    <ul class="sidebar-nav components">
       <li *ngIf="!notProfile">
         <a routerLink="../profile">Profile</a>
       </li>
@@ -49,6 +49,7 @@
         <a href="https://github.com/Yevhenii-Babiuk/Quiz" class="article">Go to source</a>
       </li>
     </ul>
+
     <div id="scrollTop" (click)= "onScrollClick()">
 
     </div>

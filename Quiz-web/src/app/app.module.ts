@@ -19,6 +19,8 @@ import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
+import {AnnouncementModule} from "./modules/announcement/announcement.module";
+import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
 @NgModule({
   declarations: [
     AppComponent
@@ -40,7 +42,11 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
     ProfileModule,
     MatFormFieldModule,
     MatDatepickerModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ProfileModule,
+    QuizModule,
+    AnnouncementModule,
+    AnnouncementRoutingModule
   ],
   providers: [],
   bootstrap: [AppComponent]
