@@ -23,9 +23,9 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  registerUser(login: string, firstname: string, lastname: string, email: string, password: string, confirmPassword: string): void {
+  registerUser(login: string, firstName: string, secondName: string, mail: string, password: string, confirmPassword: string): void {
 
-    if (!login || !firstname || !lastname || !email) {
+    if (!login || !firstName || !secondName || !mail) {
       this.alertService.error('Fields should not be empty!');
       return;
     }
@@ -35,22 +35,15 @@ export class RegistrationComponent implements OnInit {
       return;
     }
 
-    const regUser: User = {
-      firstName: firstname,
-      secondName: lastname,
-      login: login,
-      mail: email,
-      password: password,
-      profile: null,
-      score: null,
-      role: null
-    };
-
-    this.authenticationService.register(regUser)
+    this.authenticationService.register({firstName, secondName, login, mail, password} as User)
       .subscribe(
         data => {
-          this.alertService.success('Registration successful', true);
-          this.router.navigate(['api/v1/login']);
+          if (data){
+            this.alertService.success('Registration successful', true);
+            this.router.navigate(['login']);
+          } else {
+            this.alertService.error('Registration is not successful', false);
+          }
         },
         error => {
           this.alertService.error('Error while registration!');

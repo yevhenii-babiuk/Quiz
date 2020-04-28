@@ -1,0 +1,18 @@
+<ng-container *ngFor="let announcement of announcements">
+  <div class="row">
+    <div class="col-lg-10 col-md-10 mx-auto m-2" routerLink="/announcement/{{announcement.id}}">
+      <div class="post-preview">
+        <h2 class="post-title mt-4 font-weight-bolder">
+          {{announcement.title}}
+        </h2>
+        <h2 class="lead">
+          {{announcement.subtitle}}
+        </h2>
+        <p class="post-meta">Posted by
+          {{announcement.authorLogin}}
+          on {{announcement.createdDate | date:'MMMM d, yyyy'}}</p>
+        <hr>
+      </div>
+    </div>
+  </div>
+</ng-container>

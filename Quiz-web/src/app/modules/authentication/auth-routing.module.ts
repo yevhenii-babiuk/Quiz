@@ -8,11 +8,11 @@ import { MailConfirmComponent } from './registration/mail-confirm/mail-confirm.c
 import { PassRecoveryConfirmComponent } from './pass-recovery/pass-recovery-confirm/pass-recovery-confirm.component';
 
 const authenticationRoutes: Routes = [
-  { path: 'api/v1/login', component: LoginComponent },
-  { path: 'api/v1/registration', component: RegistrationComponent },
-  { path: 'api/v1/pass-recovery', component: PassRecoveryComponent },
-  { path: 'api/v1/registration/:token', component: MailConfirmComponent },
-  { path: 'api/v1/pass-recovery/:token', component: PassRecoveryConfirmComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'registration', component: RegistrationComponent },
+  { path: 'pass-recovery', component: PassRecoveryComponent },
+  { path: 'registration/:token', component: MailConfirmComponent },
+  { path: 'pass-recovery/:token', component: PassRecoveryConfirmComponent },
 ];
 
 @NgModule({
