@@ -6,7 +6,7 @@ import {catchError} from "rxjs/operators";
 
 import {Quiz} from '../models/quiz'
 import {Category} from '../models/category'
-import {url} from "../../../../environments/environment.prod";
+import {countOnPage, url} from "../../../../environments/environment.prod";
 import {Tag} from "../models/tag";
 @Injectable({
   providedIn: 'root'
@@ -21,7 +21,7 @@ export class QuizzesService {
   }
 
   getQuizzes(params: string, currentCount: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${url}/quizzes${params}&count=${currentCount}`)
+    return this.http.get<Quiz[]>(`${url}/quizzes${params}&pageNumber=${currentCount/countOnPage}&countOnPage=${countOnPage}`)
       .pipe(
         catchError(this.handleError<Quiz[]>([]))
       );

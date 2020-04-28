@@ -6,6 +6,7 @@ import {CheckboxFilter} from "./vertical-filter-bar/checkbox-filter/checkbox-fil
 import {FBFilter} from "./vertical-filter-bar/fb-filter.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DateFilter} from "./vertical-filter-bar/date-filter/date-filter.model";
+import {countOnPage} from "../../../../environments/environment.prod";
 
 @Component({
   selector: 'app-quizzes',
@@ -54,11 +55,9 @@ export class QuizzesComponent implements OnInit {
     this.quizzesService.getQuizzes(this.params, this.quizzes.length)
       .subscribe(
         quizzes => {
-          if (quizzes.length == 0) {
-            return;
+          if (quizzes.length==countOnPage){
+            this.isWaiting=false;
           }
-
-          this.isWaiting=false;
           this.quizzes = this.quizzes.concat(quizzes);
         },
         err => {

@@ -15,6 +15,7 @@ import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/a
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-create-quiz',
@@ -43,7 +44,8 @@ export class UpdateQuizComponent implements OnInit {
   constructor(
     private quizzesService: QuizzesService,
     private route: ActivatedRoute,
-    private router: Router,) {
+    private router: Router,
+    private securityService: SecurityService) {
     this.getCategories();
     this.getTags();
 
@@ -91,7 +93,7 @@ export class UpdateQuizComponent implements OnInit {
 
   createNewQuiz() {
     this.quiz = new Quiz();
-    this.quiz.authorId = 43;//todo get from security
+    this.quiz.authorId = this.securityService.getCurrentId();
     this.setOptions(this.quiz.questions[0]);
   }
 
