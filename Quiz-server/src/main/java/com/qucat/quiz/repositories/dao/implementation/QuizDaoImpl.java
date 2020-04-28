@@ -141,11 +141,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
             query.append(quizQueries.get("caseCategory"));
 
-            List<String> mark = new ArrayList<>();
-            for (int i = 0; i < category.size(); i++) {
-                mark.add("?");
-            }
-            String insertion = String.join(",", mark);
+            String insertion = makeInsertion(tags);
 
             query.replace(query.indexOf("(") + 1, query.indexOf(")") - 1, insertion);
         }
@@ -165,11 +161,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             anotherParameter = true;
             query.append(quizQueries.get("caseTag"));
 
-            List<String> mark = new ArrayList<>();
-            for (int i = 0; i < tags.size(); i++) {
-                mark.add("?");
-            }
-            String insertion = String.join(",", mark);
+            String insertion = makeInsertion(tags);
 
             query.replace(query.lastIndexOf("(") + 1, query.lastIndexOf(")") - 1, insertion);
         }
@@ -177,6 +169,14 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
         return getParamForPreparedStatement(query.toString(), pageable, name, author, category,
                 minDate, maxDate, tags);
+    }
+
+    private String makeInsertion(List<String> list) {
+        List<String> mark = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            mark.add("?");
+        }
+        return String.join(",", mark);
     }
 
     private PreparedStatement getParamForPreparedStatement(String query, Pageable pageable, String name, String author,
