@@ -1,30 +1,23 @@
-.nav-item{
-  padding:2px;
-  margin-left: 7px;
-}
-
-.registr {
-  alignment: right;
-  background: #FFA700;
-  color: #ffffff;
-}
 
 .logo-image{
   width: 46px;
   height: 46px;
-  border-radius: 50%;
   overflow: hidden;
-  margin-top: -6px;
-}
-
-.brand-ref {
-  font-size: 30px;
-  color: #FFA700;
-  font-weight: bold;
-  text-decoration: none;
 }
 
 .header-link {
   color: black;
   font-size: 15px;
 }
+
+.navbar-btn {
+  box-shadow: none;
+  outline: none !important;
+  border: none;
+}
+
+.custom-nav{
+  margin-top: -15px;
+  margin-bottom: 15px;
+}
+

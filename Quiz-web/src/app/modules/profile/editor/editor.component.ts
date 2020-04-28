@@ -1,11 +1,8 @@
 import {Component, Injectable, OnInit, Output} from '@angular/core';
-
-
-import {AlertService} from "../../services/alert.service";
-import {ProfileService} from "../../services/profile.service";
-import {User} from "../../models/user";
-
-
+import {User} from "../../core/models/user";
+import {ProfileService} from "../../core/services/profile.service";
+import {AlertService} from "../../core/services/alert.service";
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-editor',
@@ -14,13 +11,16 @@ import {User} from "../../models/user";
 })
 
 export class EditorComponent implements OnInit {
+
+  id: number;
   userData : User;
   login:String;
   role:String;
 
   constructor(
     private profileService: ProfileService,
-    private alertService: AlertService
+    private alertService: AlertService,
+    private securityService: SecurityService
   ) {
   }
 
@@ -28,18 +28,22 @@ export class EditorComponent implements OnInit {
     this.getUser();
   }
   private getUser() {
-    this.profileService.getUser().subscribe(data => {
+    this.id = this.securityService.getCurrentId();
+    this.role = this.securityService.getCurrentRole();
+    this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
-      this.role=this.userData.role;
+      this.userData.id = this.id;
+
 
     });
   }
-  edit(firstname: string, secondname: string, email: string, profile:string, password: string, confirmPassword: string){
+  edit(id: number, firstname: string, secondname: string, email: string, profile:string, password: string, confirmPassword: string){
     if (password!=confirmPassword) {
       this.alertService.error('passwords don`t match');
       return;
     }
     let editedUser: User = {
+      id: id,
       firstName:firstname,
       secondName:secondname,
       login:this.userData.login,
