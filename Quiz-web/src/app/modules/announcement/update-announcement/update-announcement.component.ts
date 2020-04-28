@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AnnouncementService} from "../../core/services/announcement.service";
 import {Imaged} from "../../core/models/imaged";
 import {ImageSnippet} from "../../core/models/imageSnippet";
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-update-announcement',
@@ -15,7 +16,8 @@ export class UpdateAnnouncementComponent implements OnInit {
   announcement: Announcement;
 
   constructor(private announcementService: AnnouncementService,
-              private route: ActivatedRoute) {
+              private route: ActivatedRoute,
+              private securityService : SecurityService) {
     const id = this.route.snapshot.paramMap.get('announcementId');
     console.log(id);
     if (id) {
@@ -28,6 +30,7 @@ export class UpdateAnnouncementComponent implements OnInit {
         });
     } else {
       this.announcement = new Announcement();
+      this.announcement.authorId = this.securityService.getCurrentId();
     }
 
   }
