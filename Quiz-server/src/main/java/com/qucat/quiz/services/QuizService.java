@@ -13,6 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -81,10 +84,22 @@ public class QuizService {
     }
 
     public Page<Quiz> showPage(int page, int size, String name, String author,
-                               List<String> category, Timestamp minDate, Timestamp maxDate, List<String> tags) {
+                               List<String> category, String[] dates, List<String> tags) {
+        Timestamp tMinDate = null;
+        Timestamp tMaxDate = null;
+        if (dates != null && dates.length == 2) {
+            try {
+                Date minDate = new SimpleDateFormat("yyyy-MM-dd").parse(dates[0]);
+                Date maxDate = new SimpleDateFormat("yyyy-MM-dd").parse(dates[0]);
+                tMinDate = new Timestamp(minDate.getTime());
+                tMaxDate = new Timestamp(maxDate.getTime());
+            } catch (ParseException e) {
+                log.error("error while parse date" + e.getMessage());
+            }
+        }
 
         return quizDao.findAllForPage(
                 PageRequest.of(page, size,
-                        Sort.Direction.DESC, "id"), name, author, category, maxDate, minDate, tags);
+                        Sort.Direction.DESC, "id"), name, author, category, tMinDate, tMaxDate, tags);
     }
 }
