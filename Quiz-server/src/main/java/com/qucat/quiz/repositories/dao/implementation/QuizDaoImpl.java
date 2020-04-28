@@ -254,8 +254,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             QuizExtractor qe = new QuizExtractor();
             quizzes = qe.extractData(psForPage.executeQuery());
             ResultSet rs = psForCount.executeQuery();
-            if (rs.next())
+            if (rs.next()) {
                 rowTotal = rs.getInt("row_count");
+            }
         } catch (Exception e) {
             log.error("Error while read page of quiz from DB: " + e.getMessage());
         }

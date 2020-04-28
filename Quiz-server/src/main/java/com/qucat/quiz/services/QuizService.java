@@ -27,8 +27,6 @@ public class QuizService {
     @Autowired
     private QuestionService questionService;
 
-    @Autowired
-    private UserService userService;
 
     @Transactional
     public boolean createQuiz(Quiz quiz) {
