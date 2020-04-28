@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-header',
@@ -10,9 +11,8 @@ import {Role} from "../../core/models/role";
 export class HeaderComponent implements OnInit {
   isProfile: boolean;
   notProfile: boolean;
-
   constructor(
-    private profileService: ProfileService
+    private profileService: ProfileService,private redirect: Router
   ) {
 
   }
@@ -37,4 +37,7 @@ export class HeaderComponent implements OnInit {
   }
 
 
+  search(event:any) {
+    this.redirect.navigate(['quizzes?quizName=*'+event.target.value+'*']);
+  }
 }
