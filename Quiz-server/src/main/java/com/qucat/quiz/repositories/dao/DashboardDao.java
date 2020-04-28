@@ -10,13 +10,13 @@ public interface DashboardDao {
 
     User getBestUserByQuizId(int quizId);
 
-    List<CategoryStatistics> getStatisticInTheCategory(String login);
+    List<CategoryStatistics> getStatisticInTheCategory(int id);
 
-    List<Statistics> getPercentOfCorrectAnswers(String login);
+    List<Statistics> getPercentOfCorrectAnswers(int id);
 
-    BestQuiz getTheMostSuccessfulQuiz(String login);
+    BestQuiz getTheMostSuccessfulQuiz(int id);
 
-    List<ComparedScores> getComparedScores(String login);
+    List<ComparedScores> getComparedScores(int userId);
 
     List<Statistics> getFriendsPreferences(int userId);
 

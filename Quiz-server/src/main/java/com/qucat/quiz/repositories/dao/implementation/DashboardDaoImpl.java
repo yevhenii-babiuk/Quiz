@@ -47,8 +47,8 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<CategoryStatistics> getStatisticInTheCategory(String login) {
-        return jdbcTemplate.query(dashboardQueries.get("getStatisticInTheCategoryByLogin"), new Object[]{login}, (rs, rowNum) ->
+    public List<CategoryStatistics> getStatisticInTheCategory(int id) {
+        return jdbcTemplate.query(dashboardQueries.get("getStatisticInTheCategoryById"), new Object[]{id}, (rs, rowNum) ->
                 new CategoryStatistics(
                         rs.getInt("category_id"),
                         rs.getString("name"),
@@ -58,8 +58,8 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<Statistics> getPercentOfCorrectAnswers(String login) {
-        return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersByLogin"), new Object[]{login}, (rs, rowNum) ->
+    public List<Statistics> getPercentOfCorrectAnswers(int id) {
+        return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersById"), new Object[]{id}, (rs, rowNum) ->
                 new Statistics(
                         rs.getString("name"),
                         rs.getDouble("correct_answers_persentage")
@@ -67,9 +67,9 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public BestQuiz getTheMostSuccessfulQuiz(String login) {
+    public BestQuiz getTheMostSuccessfulQuiz(int id) {
         try {
-            return jdbcTemplate.queryForObject(dashboardQueries.get("getMaxScoreByLogin"), new Object[]{login}, (rs, rowNum) ->
+            return jdbcTemplate.queryForObject(dashboardQueries.get("getMaxScoreById"), new Object[]{id}, (rs, rowNum) ->
                     new BestQuiz(
                             rs.getString("name"),
                             rs.getTimestamp("take_date"),
@@ -81,13 +81,13 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<ComparedScores> getComparedScores(String login) {
-        return jdbcTemplate.query(dashboardQueries.get("getComparedScores"), new Object[]{login}, (rs, rowNum) ->
+    public List<ComparedScores> getComparedScores(int userId) {
+        return jdbcTemplate.query(dashboardQueries.get("getComparedScores"), new Object[]{userId}, (rs, rowNum) ->
                 new ComparedScores(
                         rs.getInt("id"),
                         rs.getString("name"),
                         rs.getInt("score"),
-                        rs.getString("login"),
+                        rs.getInt("userId"),
                         rs.getInt("record")
                 ));
     }
