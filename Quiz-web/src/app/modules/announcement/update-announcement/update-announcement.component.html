@@ -12,7 +12,7 @@
 
       <textarea [(ngModel)]="announcement.fullText" class="form-control m-2" rows="10" placeholder="Text"></textarea>
 
-      <label *ngIf="(!announcement.selectedFile && !announcement.image)" class="image-upload-container btn btn-bwm btn-warning">
+      <label *ngIf="(announcement.imageId==-1)" class="image-upload-container btn btn-bwm btn-warning">
         <span>Select Image</span>
         <input class="d-none" #imageInput
                type="file"
@@ -20,19 +20,13 @@
                (change)="processFile(imageInput, announcement)">
       </label>
 
-      <label *ngIf="announcement.selectedFile" class="image-upload-container btn btn-bwm">
+      <label *ngIf="announcement.imageId!=-1" class="image-upload-container btn btn-bwm">
         <input class="d-none" #imageInput
                type="file"
                accept="image/*"
                (change)="processFile(imageInput, announcement)">
-        <img class="img-fluid rounded" src="{{announcement.selectedFile.src}}">
-      </label>
-      <label *ngIf="(announcement.image && !announcement.selectedFile)" class="image-upload-container btn btn-bwm">
-        <input class="d-none" #imageInput
-               type="file"
-               accept="image/*"
-               (change)="processFile(imageInput, announcement)">
-        <img class="img-fluid rounded" src="data:image/jpeg;base64,{{announcement.image.src}}">
+        <img *ngIf="updated" class="img-fluid rounded" src="{{announcement.image.src}}">
+        <img *ngIf="!updated" class="img-fluid rounded" src="data:image/jpeg;base64,{{announcement.image.src}}">
       </label>
 
       <button (click)="send()" class="btn btn-warning form-control" routerLink="/announcements">Submit</button>

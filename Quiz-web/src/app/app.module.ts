@@ -16,6 +16,9 @@ import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
 import {QuizModule} from './modules/quiz/quiz.module';
 import {ProfileModule} from './modules/profile/profile.module';
 import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 import {BasicAuthHtppInterceptorService} from "./modules/core/services/auth-http-interceptor.service";
 import {AuthGuardService} from "./modules/core/services/auth-guard.service";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
@@ -39,6 +42,10 @@ import {AnnouncementRoutingModule} from "./modules/announcement/announcement-rou
     QuizRoutingModule,
     QuizModule,
     ProfileRoutingModule,
+    ProfileModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    BrowserAnimationsModule,
     ProfileModule,
     QuizModule,
     AnnouncementModule,

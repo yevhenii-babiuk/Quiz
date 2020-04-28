@@ -3,7 +3,7 @@
       rel="stylesheet">
 -->
 <div class="container">
-  <p class="text-center">{{quiz.name}}</p>
+  <p class="text-center">{{quiz.name | uppercase}}</p>
 
   <div class="row mx-0">
 
@@ -16,11 +16,18 @@
 
       <div class="row mx-0">
         <label class="col-sm m-3">{{quiz.name}}</label>
-        <label  *ngIf="quiz.category" class="col-sm m-3">{{quiz.category.name}}</label>
+        <label *ngIf="quiz.category" class="col-sm m-3">{{quiz.category.name}}</label>
       </div>
 
-      <div>
-        <label class="col-sm m-3">{{quiz.tags.join(", ")}}</label>
+      <div class="mat-app-background">
+        <mat-form-field class="example-chip-list w-100">
+          <mat-chip-list aria-label="Fruit selection w-100">
+            <mat-chip
+              *ngFor="let tag of quiz.tags">
+              {{tag.name}}
+            </mat-chip>
+          </mat-chip-list>
+        </mat-form-field>
       </div>
 
     </div>
@@ -32,7 +39,8 @@
       <div class="row mx-0 my-1 p-4 border-dark border">
 
         <div class="col-sm-3">
-          <img *ngIf="question.image" class="card-img-top" src="data:image/jpeg;base64,{{question.image.src}}" alt="Card image cap">
+          <img *ngIf="question.imageId!=-1" class="img-preview-container img-preview" src="data:image/jpeg;base64,{{question.image.src}}"
+               alt="Card image cap">
         </div>
 
         <div class="col-sm-9">
@@ -47,11 +55,12 @@
           <div *ngIf="question.type=='SELECT_OPTION'">
             <div class="row mx-0" *ngFor="let questionOption of question.options">
 
-              <label class="w-50 col m-1 border border-{{questionOption.isCorrect? 'warning':'danger'}}">
+              <label class="w-50 col m-1 border border-{{questionOption.isCorrect? 'success':'danger'}}">
                 {{questionOption.content}}
               </label>
               <div class="col">
-                <img *ngIf="questionOption.image" class="card-img-top" src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
+                <img *ngIf="questionOption.imageId!=-1" class="img-preview-container img-preview "
+                     src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
               </div>
 
             </div>
@@ -64,7 +73,8 @@
               <input id="{{question.id+questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
                      class="w-50 m-1" readonly>
               <div class="col">
-                <img *ngIf="questionOption.image" class="card-img-top" src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
+                <img *ngIf="questionOption.imageId!=-1" class="img-preview-container img-preview"
+                     src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
               </div>
 
             </div>
