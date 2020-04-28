@@ -7,6 +7,9 @@ import com.qucat.quiz.repositories.entities.Announcement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -32,7 +35,7 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
 
     @Override
     protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Announcement announcement) throws SQLException {
-        preparedStatement.setString(1, announcement.getAuthorLogin());
+        preparedStatement.setInt(1, announcement.getAuthorId());
         preparedStatement.setBoolean(2, announcement.isPublished());
         preparedStatement.setString(3, announcement.getTitle());
         preparedStatement.setString(4, announcement.getSubtitle());
@@ -48,14 +51,14 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
 
     @Override
     protected Object[] getUpdateParameters(Announcement announcement) {
-        return new Object[]{announcement.getAuthorLogin(), announcement.isPublished(), announcement.getTitle(),
+        return new Object[]{announcement.isPublished(), announcement.getTitle(),
                 announcement.getSubtitle(), announcement.getFullText(), announcement.getImageId(), announcement.getId()};
     }
 
     @Override
     public List<Announcement> getByAuthorLogin(String login) {
         return jdbcTemplate.query(
-                announcementQueries.get("getAllInfo").replace(";", " WHERE author_login = ?;"),
+                announcementQueries.get("getAllInfo").replace(";", " WHERE u.login = ?;"),
                 new Object[]{login}, new AnnouncementExtractor()
         );
     }
@@ -72,5 +75,43 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
                 new Object[]{id}, new AnnouncementExtractor()
         );
         return result.size() == 0 ? null : result.get(0);
+    }
+
+    @Override
+    public Page<Announcement> getAllInfoForPage(Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(announcementQueries.get("rowCount"),
+                new Object[]{},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+        List<Announcement> announcements = jdbcTemplate.query(
+                announcementQueries.get("getAllInfo").replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{pageable.getPageSize(), pageable.getOffset()},
+                new AnnouncementExtractor());
+        return new PageImpl<>(announcements, pageable, total);
+    }
+
+    @Override
+    public Page<Announcement> getPageByAuthorId(int authorId, Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(announcementQueries.get("idRowCount"),
+                new Object[]{authorId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<Announcement> announcements = jdbcTemplate.query(
+                announcementQueries.get("getAllInfo").replace(";", " WHERE a.id = ? LIMIT ? OFFSET ?;"),
+                new Object[]{authorId, pageable.getPageSize(), pageable.getOffset()},
+                new AnnouncementExtractor());
+        return new PageImpl<>(announcements, pageable, total);
+    }
+
+    @Override
+    public Page<Announcement> getPageByAuthorLogin(String login, Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(announcementQueries.get("loginRowCount"),
+                new Object[]{login},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<Announcement> announcements = jdbcTemplate.query(
+                announcementQueries.get("getAllInfo").replace(";", " WHERE u.login = ? LIMIT ? OFFSET ?;"),
+                new Object[]{login, pageable.getPageSize(), pageable.getOffset()},
+                new AnnouncementExtractor());
+        return new PageImpl<>(announcements, pageable, total);
     }
 }

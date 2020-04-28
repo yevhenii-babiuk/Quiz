@@ -12,6 +12,7 @@ import java.util.Date;
 public class Announcement {
     private int id;
     private String authorLogin;
+    private int authorId;
     private boolean isPublished;
     private Date createdDate;
     private String title;
