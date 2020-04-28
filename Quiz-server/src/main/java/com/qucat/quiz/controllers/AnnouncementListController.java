@@ -18,15 +18,7 @@ public class AnnouncementListController {
 
     @GetMapping
     public Announcement[] getAnnouncements(@RequestParam(value = "count") int currentCount) {
-        /*Announcement a = Announcement.builder()
-                .title("Interesting title")
-                .subtitle("Very interesting subtitle")
-                .authorLogin("greatAuthor")
-                .createdDate(new Date())
-                .id(1)
-                .build();*/
-
-        return announcementService.getAllAnnouncements().toArray(Announcement[]::new); //announcementService.showPage(Optional.of(currentCount), Optional.of(20)).toList().toArray(Announcement[]::new);
+        return announcementService.getAllAnnouncements().toArray(Announcement[]::new);
     }
 }
 
