@@ -17,11 +17,7 @@ export class AuthenticationService {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
   providers: [
-
   ]
-
-
-
 
   constructor(private http: HttpClient, private jwtHelper: JwtHelperService) {
   }
@@ -29,7 +25,7 @@ export class AuthenticationService {
   login(user: User): Observable<any> {
     let username = user.login;
     let password = user.password;
-    return this.http.post<any>(`http://localhost:8080/api/v1/login`, {username, password}).pipe(
+    return this.http.post<any>(`${url}/login`, {username, password}).pipe(
       map(
         userData => {
           let tokenStr = 'Bearer ' + userData.token;
@@ -56,8 +52,8 @@ export class AuthenticationService {
     return this.http.get<boolean>(`${url}/pass-recovery/${token}`);
   }
 
-  createNewPass(token: string, newpass: string) {
-    return this.http.put<string>(`${url}/pass-recovery/${token}`, newpass, this.httpOptions);
+  createNewPass(token: string, password: string) {
+    return this.http.put<string>(`${url}/pass-recovery/${token}`, password, this.httpOptions);
   }
 
   public isAuthenticated(): boolean {

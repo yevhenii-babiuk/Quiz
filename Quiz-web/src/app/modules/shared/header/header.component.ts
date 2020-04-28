@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {Router} from "@angular/router";
-import {IdService} from "../../core/services/id.service";
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-header',
@@ -16,7 +16,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private idService: IdService,
+    private securityService: SecurityService,
     private redirect: Router
   ) {
 
@@ -28,7 +28,7 @@ export class HeaderComponent implements OnInit {
   }
 
   private getUser() {
-    this.id = this.idService.getCurrentId();
+    this.id = this.securityService.getCurrentId();
     this.profileService.getUser(this.id).subscribe(data => {
       this.setCondition(data.role);
     });

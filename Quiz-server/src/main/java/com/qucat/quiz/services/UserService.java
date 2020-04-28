@@ -149,6 +149,7 @@ public class UserService {
         }
         User user = userDao.get(id);
         user.setPassword(passwordEncoder.encode(password));
+        userDao.update(user);
         return true;
     }
 

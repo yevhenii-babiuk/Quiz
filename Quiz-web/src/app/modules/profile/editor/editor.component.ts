@@ -2,13 +2,7 @@ import {Component, Injectable, OnInit, Output} from '@angular/core';
 import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {AlertService} from "../../core/services/alert.service";
-import {IdService} from "../../core/services/id.service";
-import {RoleService} from "../../core/services/role.service";
-
-
-
-
-
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-editor',
@@ -17,6 +11,7 @@ import {RoleService} from "../../core/services/role.service";
 })
 
 export class EditorComponent implements OnInit {
+
   id: number;
   userData : User;
   login:String;
@@ -25,8 +20,7 @@ export class EditorComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private alertService: AlertService,
-    private idService: IdService,
-    private roleService: RoleService
+    private securityService: SecurityService
   ) {
   }
 
@@ -34,8 +28,8 @@ export class EditorComponent implements OnInit {
     this.getUser();
   }
   private getUser() {
-    this.id = this.idService.getCurrentId();
-    this.role = this.roleService.getCurrentRole();
+    this.id = this.securityService.getCurrentId();
+    this.role = this.securityService.getCurrentRole();
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.userData.id = this.id;

@@ -1,8 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
-import {IdService} from "../../core/services/id.service";
-
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-sidenav',
@@ -18,7 +17,7 @@ export class SidenavComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private idService: IdService
+    private securityService: SecurityService
   ) {
 
   }
@@ -30,7 +29,7 @@ export class SidenavComponent implements OnInit {
   }
 
   private getUser() {
-    this.id = this.idService.getCurrentId();
+    this.id = this.securityService.getCurrentId();
     this.profileService.getUser(this.id).subscribe(data => {
       this.setCondition(data.role);
     });
