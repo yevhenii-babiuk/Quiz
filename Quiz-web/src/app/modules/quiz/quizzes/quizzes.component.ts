@@ -32,7 +32,7 @@ export class QuizzesComponent implements OnInit {
     new KeywordFilter('authorName', 'Author name'),
     new CheckboxFilter('category', 'Categories', this.categories),
     /*new RangeFilter('price', 'Price', 0, 10000, true),*/
-    new DateFilter("Date", "date",  new Date(2020,3,20), new Date()),
+    new DateFilter("date", "Date",  new Date(2020,3,20), new Date()),
     new CheckboxFilter('tag', 'Tags', this.tags),
   ]
 

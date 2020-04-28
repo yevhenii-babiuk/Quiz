@@ -7,7 +7,7 @@ import {Imaged} from "../../core/models/imaged";
 import {QuestionType} from "../../core/models/questionType";
 import {QuestionOptions} from "../../core/models/questionOptions";
 import {Tag} from "../../core/models/tag";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FormControl} from '@angular/forms';
@@ -38,7 +38,8 @@ export class UpdateQuizComponent implements OnInit {
 
   constructor(
     private quizzesService: QuizzesService,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+  private router: Router,) {
     this.getCategories();
     this.getTags();
     const id = this.route.snapshot.paramMap.get('quizId');
@@ -157,8 +158,9 @@ export class UpdateQuizComponent implements OnInit {
 
   send() {
     this.quizzesService.sendQuiz(this.quiz).subscribe(
-      get => {
-        console.log("id=" + get);
+      id => {
+        console.log("id=" + id);
+        this.router.navigate(['quiz/'+id])
       },
       error => {
         console.log(error);
