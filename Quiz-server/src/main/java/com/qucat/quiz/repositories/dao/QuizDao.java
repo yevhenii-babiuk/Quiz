@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.entities.QuizStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 public interface QuizDao extends GenericDao<Quiz> {
@@ -19,7 +20,6 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable);
 
-    Page<Quiz> findAllForPage(Pageable pageable);
-
-    Page<Quiz> findAllByName(String name, Pageable pageable);
+    Page<Quiz> findAllForPage(Pageable pageable, String name, String author,
+                              List<String> category, Timestamp minDate, Timestamp maxDate, List<String> tags);
 }
