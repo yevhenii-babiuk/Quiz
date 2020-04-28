@@ -9,6 +9,6 @@ public class ComparedScores {
     private int id;
     private String name;
     private int score;
-    private String login;
+    private int userId;
     private int record;
 }

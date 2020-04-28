@@ -26,26 +26,17 @@
       <img src="../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
     </td>
     <td align="center" *ngIf="isAdmin">
-      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
-
-      <h4><p style="margin-left: 40px">Модератори</p></h4>
 
     </td>
     <td align="center" *ngIf="isModerator">
-      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
     </td>
     <td align="center" *ngIf="isSuperAdmin">
-      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
-
-      <h4><p style="margin-left: 40px">Адміни</p></h4>
-
-      <h4><p style="margin-left: 40px">Модератори</p></h4>
 
     </td>
     <td align="right" width="200">
       <h5>
-        <a class="act" routerLink="/api/v1/edit"><b>Редагувати</b></a>
-        <a class="act" routerLink="/api/v1/registration" *ngIf="!isSuperAdmin"><b>Активувати/деактивувати</b></a>
+        <a class="act" routerLink="/edit"><b>Редагувати</b></a>
+        <a class="act" routerLink="/registration" *ngIf="!isSuperAdmin"><b>Активувати/деактивувати</b></a>
       </h5>
     </td>
   </tr>
