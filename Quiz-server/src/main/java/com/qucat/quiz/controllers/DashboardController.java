@@ -1,7 +1,13 @@
 package com.qucat.quiz.controllers;
 
+import com.qucat.quiz.repositories.entities.CategoryStatistics;
+import com.qucat.quiz.repositories.entities.ComparedScores;
+import com.qucat.quiz.repositories.entities.Statistics;
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.services.DashboardService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -11,10 +17,37 @@ import java.util.List;
 @RequestMapping("api/v1/dashboard")
 public class DashboardController {
 
-    @GetMapping("/top")
-    public User[] getTopPlayers() {
-        return List.of(User.builder().score(50).login("eugene").build(),
-                User.builder().score(15).login("new").build()).toArray(User[]::new);
+    @Autowired
+    private DashboardService dashboardService;
 
+    @GetMapping("/top")
+    public List<User> getTopPlayers() {
+        return dashboardService.getTopUsers(10);
     }
+
+    @GetMapping("/{id}/quizzes/played/categories")
+    public  List<CategoryStatistics> getStatisticInTheCategory (@PathVariable int id) {
+        return dashboardService.getStatisticInTheCategory(id);
+    }
+
+    @GetMapping("/{id}/quizzes/played/percent")
+    public  List<Statistics> getPercentOfCorrectAnswers (@PathVariable int id) {
+        return dashboardService.getPercentOfCorrectAnswers(id);
+    }
+
+    @GetMapping("/{id}/quizzes/played/compare")
+    public  List<ComparedScores> getComparedScores (@PathVariable int id) {
+        return dashboardService.getComparedScores(id);
+    }
+
+    @GetMapping("/{id}/friends/preferences")
+    public  List<Statistics> getFriendsPreferences (@PathVariable int id) {
+        return dashboardService.getFriendsPreferences(id);
+    }
+
+    @GetMapping("/quizzes/played/amount")
+    public  List<Statistics> getStatisticOfQuizzesPlayed () {
+        return dashboardService.getStatisticOfQuizzesPlayed();
+    }
+
 }
