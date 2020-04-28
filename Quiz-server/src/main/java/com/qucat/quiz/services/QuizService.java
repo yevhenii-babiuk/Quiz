@@ -1,7 +1,9 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.QuizDao;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.repositories.entities.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,7 +12,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.sql.Timestamp;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -23,6 +26,7 @@ public class QuizService {
 
     @Autowired
     private QuestionService questionService;
+
 
     @Transactional
     public boolean createQuiz(Quiz quiz) {
@@ -76,10 +80,11 @@ public class QuizService {
         return quizDao.getFullInfo(id);
     }
 
-    public Page<Quiz> showPage(Optional<Integer> page, Optional<Integer> size) {
-        Page<Quiz> quiz = quizDao.findAllForPage(
-                PageRequest.of(page.orElse(0), size.orElse(10),
-                        Sort.Direction.DESC, "id"));
-        return quiz;
+    public Page<Quiz> showPage(int page, int size, String name, String author,
+                               List<String> category, Timestamp minDate, Timestamp maxDate, List<String> tags) {
+
+        return quizDao.findAllForPage(
+                PageRequest.of(page, size,
+                        Sort.Direction.DESC, "id"), name, author, category, maxDate, minDate, tags);
     }
 }

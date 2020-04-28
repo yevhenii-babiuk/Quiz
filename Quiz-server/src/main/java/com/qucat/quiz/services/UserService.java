@@ -149,7 +149,6 @@ public class UserService {
             log.warn("Null id passed to find users by role");
             throw new IllegalArgumentException("Null id passed to find users by role");
         }
-
         return userDao.getUserByRole(role, pageable);
     }
 
@@ -178,4 +177,6 @@ public class UserService {
     public boolean markQuizAsFavorite(int userId, int quizId) {
         return userDao.markQuizAsFavorite(userId, quizId);
     }
+
+
 }
