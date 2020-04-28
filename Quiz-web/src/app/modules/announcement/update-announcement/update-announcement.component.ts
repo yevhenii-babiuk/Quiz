@@ -3,7 +3,6 @@ import {Announcement} from "../../core/models/announcement";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AnnouncementService} from "../../core/services/announcement.service";
 import {Imaged} from "../../core/models/imaged";
-import {ImageSnippet} from "../../core/models/imageSnippet";
 
 @Component({
   selector: 'app-update-announcement',
@@ -13,6 +12,7 @@ import {ImageSnippet} from "../../core/models/imageSnippet";
 export class UpdateAnnouncementComponent implements OnInit {
 
   announcement: Announcement;
+  updated:boolean=false;
 
   constructor(private announcementService: AnnouncementService,
               private route: ActivatedRoute) {
@@ -41,7 +41,8 @@ export class UpdateAnnouncementComponent implements OnInit {
 
     reader.addEventListener('load', (event: any) => {
       console.log("in reader.addEventListener (announcement)")
-      imaged.selectedFile = new ImageSnippet(event.target.result);
+      imaged.image.src = event.target.result;
+      this.updated=true;
       this.announcementService.putImage(file).subscribe(
         id => {
           console.log("id = " + id);
