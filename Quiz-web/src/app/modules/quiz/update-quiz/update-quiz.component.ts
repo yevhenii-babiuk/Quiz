@@ -33,15 +33,20 @@ export class UpdateQuizComponent implements OnInit {
   filteredTags: Observable<string[]>;
   tags: string[] = [];
 
+
+  message: string = "";
+  isInvalid: boolean = false;
+
   @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(
     private quizzesService: QuizzesService,
     private route: ActivatedRoute,
-  private router: Router,) {
+    private router: Router,) {
     this.getCategories();
     this.getTags();
+
     const id = this.route.snapshot.paramMap.get('quizId');
     console.log(id);
     if (id) {
@@ -86,6 +91,7 @@ export class UpdateQuizComponent implements OnInit {
 
   createNewQuiz() {
     this.quiz = new Quiz();
+    this.quiz.authorId = 43;//todo get from security
     this.setOptions(this.quiz.questions[0]);
   }
 
@@ -156,15 +162,49 @@ export class UpdateQuizComponent implements OnInit {
     this.quiz.questions = this.quiz.questions.concat(question);
   }
 
+  isValid(): boolean {
+    if (this.quiz.name == null || this.quiz.name.length == 0) {
+      this.message = "Please enter name of quiz";
+      return false
+    }
+    if (this.quiz.questions.length < 1) {
+      this.message = "Please add one or more question";
+      return false
+    }
+    for (let i = 0; i < this.quiz.questions.length; i++) {
+      let question = this.quiz.questions[i];
+      if ((question.content == null || question.content.length == 0) && question.imageId == -1) {
+        this.message = `Please enter name or add image of your ${i + 1} question`;
+        return false
+      }
+      for (let j = 0; j < question.options.length; j++) {
+        if (question.type != "TRUE_FALSE")
+          if (question.options[i].content.length == 0 && question.options[j].imageId == -1) {
+            this.message = `Please enter name ${(question.type == "ENTER_ANSWER" ? '' : ' or add image')}
+             for your ${j + 1} option ${i + 1} question`;
+            return false
+          }
+      }
+    }
+    return true;
+  }
+
   send() {
-    this.quizzesService.sendQuiz(this.quiz).subscribe(
-      id => {
-        console.log("id=" + id);
-        this.router.navigate(['quiz/'+id])
-      },
-      error => {
-        console.log(error);
-      });
+    if (!this.isValid()) {
+      this.isInvalid = true;
+    } else {
+      this.quizzesService.sendQuiz(this.quiz).subscribe(
+        id => {
+          console.log("id=" + id);
+          this.isInvalid = false;
+          this.router.navigate(['quiz/' + id])
+        },
+        error => {
+          this.message=`cant ${this.quiz.id? 'update': 'add'} quiz`;
+          console.log(error);
+        });
+    }
+
   }
 
 

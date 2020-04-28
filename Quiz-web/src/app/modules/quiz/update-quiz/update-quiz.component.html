@@ -201,12 +201,14 @@
 
 
   <div class="text-center row">
-    <button (click)="addQuestion()" class="btn btn-warning px-5">
+    <button (click)="addQuestion()" class="btn btn-warning px-5 m-3">
       Add question
     </button>
-    <button (click)="send()" class="btn btn-success px-5">
+    <button (click)="send()" class="btn btn-success px-5 m-3">
       Send
     </button>
   </div>
-
+  <div *ngIf="isInvalid" class="w-100 alert border-danger">
+    {{message}}
+  </div>
 </div>
