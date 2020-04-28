@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
+import {IdService} from "../../core/services/id.service";
 
 
 @Component({
@@ -9,13 +10,15 @@ import {Role} from "../../core/models/role";
   styleUrls: ['./sidenav.component.css']
 })
 export class SidenavComponent implements OnInit {
+  id: number;
   role: String;
   isUser: boolean;
   isAdmin: boolean;
   notProfile: boolean;
 
   constructor(
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private idService: IdService
   ) {
 
   }
@@ -27,7 +30,8 @@ export class SidenavComponent implements OnInit {
   }
 
   private getUser() {
-    this.profileService.getUser().subscribe(data => {
+    this.id = this.idService.getCurrentId();
+    this.profileService.getUser(this.id).subscribe(data => {
       this.setCondition(data.role);
     });
   }

@@ -14,8 +14,8 @@ export class ProfileService {
   private url = '/api/v1';
   constructor(private http: HttpClient) { }
 
-  public getUser() : Observable<User>{
-    return this.http.get<User>(`${this.url}/users/`);
+  public getUser(id: number) : Observable<User>{
+    return this.http.get<User>(`${this.url}/users/${id}`);
   }
 
   public postUser(user: User) : Observable<User>{

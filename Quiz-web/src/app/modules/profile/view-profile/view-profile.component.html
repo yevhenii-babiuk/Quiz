@@ -11,7 +11,7 @@
       <div align="top"> <img src="../../assets/img/score.png" width="80" height="92" align="top"/>
         Мурри: {{userData.score}}</div>
     </td>
-    <td align="center" *ngIf="isUser">
+    <td align="center" *ngIf="role == roleEnum.USER">
       <h4><p style="margin-left: 40px">Рекомендовані вікторини</p></h4>
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
@@ -25,18 +25,27 @@
       <img src="../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
     </td>
-    <td align="center" *ngIf="isAdmin">
+    <td align="center" *ngIf="role == roleEnum.ADMIN">
+      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
+
+      <h4><p style="margin-left: 40px">Модератори</p></h4>
 
     </td>
-    <td align="center" *ngIf="isModerator">
+    <td align="center" *ngIf="role == roleEnum.MODERATOR">
+      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
     </td>
-    <td align="center" *ngIf="isSuperAdmin">
+    <td align="center" *ngIf="role == roleEnum.SUPER_ADMIN">
+      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
+
+      <h4><p style="margin-left: 40px">Адміни</p></h4>
+
+      <h4><p style="margin-left: 40px">Модератори</p></h4>
 
     </td>
     <td align="right" width="200">
       <h5>
-        <a class="act" routerLink="/edit"><b>Редагувати</b></a>
-        <a class="act" routerLink="/registration" *ngIf="!isSuperAdmin"><b>Активувати/деактивувати</b></a>
+        <a class="act" routerLink="/api/v1/edit"><b>Редагувати</b></a>
+        <a class="act" routerLink="/api/v1/registration" *ngIf="role != roleEnum.SUPER_ADMIN"><b>Активувати/деактивувати</b></a>
       </h5>
     </td>
   </tr>
