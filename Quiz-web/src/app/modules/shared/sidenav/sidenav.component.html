@@ -27,11 +27,11 @@
 <div class="wrapper">
   <!-- Sidebar Holder -->
   <nav id="sidebar">
-    <div class="sidebar-header">
-      <h3>Qucat</h3>
+    <div class="sidebar-brand">
+      <img src='assets/img/Qucat.png' class="logo-image" alt="Qucat">
     </div>
-
-    <ul class="list-unstyled components">
+<hr>
+    <ul class="sidebar-nav components">
       <li *ngIf="!notProfile">
         <a routerLink="../profile">Profile</a>
       </li>
@@ -41,13 +41,7 @@
       <li>
         <a href="#">Рейтинг учасників</a>
       </li>
-
     </ul>
 
-    <ul class="list-unstyled CTAs">
-      <li>
-        <a href="https://bootstrapious.com/p/bootstrap-sidebar" class="article">Back to article</a>
-      </li>
-    </ul>
   </nav>
 </div>

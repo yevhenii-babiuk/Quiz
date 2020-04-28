@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
+import {Router} from "@angular/router";
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-header',
@@ -8,22 +10,26 @@ import {Role} from "../../core/models/role";
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
+  id: number;
   isProfile: boolean;
   notProfile: boolean;
 
   constructor(
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private securityService: SecurityService,
+    private redirect: Router
   ) {
 
   }
 
   ngOnInit(): void {
     this.setCondition(null);
-   // this.getUser();
+    // this.getUser();
   }
 
   private getUser() {
-    this.profileService.getUser().subscribe(data => {
+    this.id = this.securityService.getCurrentId();
+    this.profileService.getUser(this.id).subscribe(data => {
       this.setCondition(data.role);
     });
   }
@@ -36,5 +42,7 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-
+  search(event:any) {
+    this.redirect.navigate(['quizzes?quizName=*'+event.target.value+'*']);
+  }
 }

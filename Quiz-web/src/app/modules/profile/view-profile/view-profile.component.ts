@@ -1,9 +1,8 @@
 import {Component, Injectable, OnInit} from '@angular/core';
-
 import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
-
+import {SecurityService} from "../../core/services/security.service";
 
 
 @Component({
@@ -14,16 +13,14 @@ import {Role} from "../../core/models/role";
 
 export class ViewProfile implements OnInit {
   userData: User;
-  role: String;
-  isUser: boolean;
-  isModerator: boolean;
-  isAdmin: boolean;
-  isSuperAdmin: boolean;
+  id : number;
+  role: Role;
+  roleEnum= Role;
 
   constructor(
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private securityService : SecurityService
   ) {
-
   }
 
   ngOnInit(): void {
@@ -31,24 +28,12 @@ export class ViewProfile implements OnInit {
   }
 
   private getUser() {
-    this.profileService.getUser().subscribe(data => {
+    this.id = this.securityService.getCurrentId();
+    console.log(this.id);
+    this.profileService.getUser(this.id).subscribe(data => {
+      console.log(data)
       this.userData = data;
-      this.role = this.userData.role;
-      this.setCondition(this.role);
+      this.role = this.securityService.getCurrentRole();
     });
   }
-
-  private setCondition(role: String) {
-    if (role == Role.USER) {
-      this.isUser = true;
-    } else if (role == Role.SUPER_ADMIN) {
-      this.isSuperAdmin = true;
-    } else if (role == Role.ADMIN) {
-      this.isAdmin = true;
-    } else if (role == Role.MODERATOR) {
-      this.isModerator = true;
-    }
-  }
-
-
 }

@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
     .subscribe(
                data => {
                  //this.router.navigate(['/']).then();
-                 this.router.navigate(['/api/v1/profile']).then();
+                 this.router.navigate(['profile']).then();
                },
                error => {
                    this.alertService.error('Error while login');
