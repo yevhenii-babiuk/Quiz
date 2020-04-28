@@ -22,15 +22,16 @@ public class QuizListController {
 
     @GetMapping
     public Quiz[] getQuizzes(
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
             @RequestParam(value = "category", required = false) String[] categories,
             @RequestParam(value = "tag", required = false) String[] tags,
-            @RequestParam(value = "count") int currentCount,
-            @RequestParam(value = "quizName") String quizName,
-            @RequestParam(value = "authorName") String authorName,
-            @RequestParam(value = "date")
+            @RequestParam(value = "quizName", required = false) String quizName,
+            @RequestParam(value = "authorName", required = false) String authorName,
+            @RequestParam(value = "date", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)Date[] dates) {
         Timestamp t1 = null, t2 = null;
-        return quizService.showPage(currentCount, 20,
+        return quizService.showPage(pageNumber, countOnPage,
                 quizName, authorName, Arrays.asList(categories), t1, t2, Arrays.asList(tags)).toList().toArray(Quiz[]::new);
 
     }
