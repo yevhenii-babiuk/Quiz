@@ -1,9 +1,22 @@
-<!--app-header></app-header-->
-<!--app-sidenav></app-sidenav-->
-
-<div class="start-pos">
-  <router-outlet></router-outlet>
+<div>
   <alert></alert>
 </div>
 
-<!--<app-footer></app-footer>-->
+<div class="wrapper">
+
+  <nav id="sidebar" [ngClass]="{'active': isOpened}">
+    <app-sidenav></app-sidenav>
+  </nav>
+
+  <button type="button" id="sidebarCollapse" class="navbar-btn ml-4 mt-3" [ngClass]="{'active': isOpened}"
+          (click)="onSidebarClick()">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+
+  <div id="content">
+    <app-header></app-header>
+    <router-outlet></router-outlet>
+  </div>
+</div>

@@ -1,6 +1,6 @@
-import {ImageSnippet} from "./imageSnippet";
+import {Image} from "./image";
 
 export interface Imaged {
-  selectedFile: ImageSnippet;
+  image: Image;
   imageId: number;
 }

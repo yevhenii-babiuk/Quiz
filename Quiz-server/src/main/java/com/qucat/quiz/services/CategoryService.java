@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 
 @Slf4j
 @Service
@@ -16,5 +18,9 @@ public class CategoryService {
 
     public Category getCategoryById(@RequestParam int id) {
         return categoryDao.getById(id);
+    }
+
+    public List<Category> getAllCategories() {
+        return categoryDao.getAll();
     }
 }

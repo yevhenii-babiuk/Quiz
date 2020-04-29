@@ -1,24 +1,23 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.QuestionDao;
-import com.qucat.quiz.repositories.dao.QuestionOptionDao;
 import com.qucat.quiz.repositories.dao.mappers.QuestionMapper;
 import com.qucat.quiz.repositories.entities.Question;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:database.properties")
 public class QuestionDaoImpl extends GenericDaoImpl<Question> implements QuestionDao {
-    @Autowired
-    private QuestionOptionDao questionOptionDao;
 
     @Value("#{${sql.question}}")
     private Map<String, String> questionQueries;
@@ -61,19 +60,26 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
     }
 
     @Override
-    public Question getFullInformation(int id) {
-        Question question = get(id);
-        if (question != null) {
-            question.setOptions(questionOptionDao.getByQuestionId(id));
+    public int deleteQuestions(List<Integer> questionId) {
+        StringBuilder deleteQuery = new StringBuilder(questionQueries.get("deleteQuestions"));
+        List<String> mark = new ArrayList<>();
+        for (int i = 0; i < questionId.size(); i++) {
+            mark.add("?");
         }
-        return question;
-    }
+        String insertion = String.join(",", mark);
+        deleteQuery.replace(deleteQuery.lastIndexOf("(") + 1,
+                deleteQuery.lastIndexOf(")") - 1, insertion);
+        int deletedRow = 0;
+        PreparedStatement preparedStatement = null;
 
-    @Override
-    public Question getFullInformation(Question question) {
-        if (question != null) {
-            question.setOptions(questionOptionDao.getByQuestionId(question.getId()));
+        try {
+            preparedStatement = jdbcTemplate.getDataSource().getConnection().prepareStatement(deleteQuery.toString());
+            deletedRow = preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            log.error("error while get connection: " + e.getMessage());
+            e.getStackTrace();
         }
-        return question;
+        return deletedRow;
     }
 }
+

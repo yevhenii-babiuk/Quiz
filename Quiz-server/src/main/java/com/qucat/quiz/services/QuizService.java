@@ -1,104 +1,69 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.*;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.dao.QuizDao;
+import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.repositories.entities.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.util.Base64;
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
 public class QuizService {
     @Autowired
-    private QuizDaoImpl quizDao;
+    private QuizDao quizDao;
 
     @Autowired
-    private QuestionDaoImpl questionDao;
+    private TagService tagService;
 
     @Autowired
-    private QuestionOptionDaoImpl questionOptionDao;
+    private QuestionService questionService;
 
     @Autowired
-    private ImageDaoImpl imageDao;
-
-    @Autowired
-    private TagDaoImpl tagDao;
-
-    @Autowired
-    private UserDaoImpl userDao;
+    private ImageService imageService;
 
     @Transactional
     public boolean createQuiz(Quiz quiz) {
         if (quiz == null) {
+            log.info("createQuiz: Quiz is null");
             return false;
+        }
+
+        if (quiz.getImageId() == -1) {
+            quiz.setImageId(imageService.addImage(null));
         }
 
         int quizId = quizDao.save(quiz);
         if (quizId == -1) {
+            log.info("createQuiz: Quiz isn't saved in data base");
             return false;
         }
+        quiz.setId(quizId);
 
         for (Question question : quiz.getQuestions()) {
             question.setQuizId(quizId);
-            addQuestion(question);
+            questionService.addQuestion(question);
         }
 
         addQuizTags(quiz);
 
+        log.info("createQuiz: Quiz successfully saved");
         return true;
-    }
-
-    public int addImage(MultipartFile multipartFile) {
-        if (multipartFile == null) {
-            return -1;
-        }
-
-        byte[] fileBytes;
-        try {
-            fileBytes = multipartFile.getBytes();
-        } catch (IOException e) {
-            log.error("Error while get bytes of file", e);
-            return -1;
-        }
-
-        String encodedFile = Base64.getEncoder().encodeToString(fileBytes);
-
-        int imageId = imageDao.getIdBySrc(encodedFile);
-        if (imageId != -1) {
-            return imageId;
-        }
-
-        return imageDao.save(
-                Image.builder()
-                        .src(encodedFile)
-                        .build()
-        );
-    }
-
-    private int addQuestion(Question question) {
-        int questionId = questionDao.save(question);
-        if (questionId != -1) {
-            for (QuestionOption option : question.getOptions()) {
-                option.setQuestionId(questionId);
-                questionOptionDao.save(option);
-            }
-        }
-        return questionId;
     }
 
     private void addQuizTags(Quiz quiz) {
         for (Tag tag : quiz.getTags()) {
-            String tagName = tag.getName();
-            if (tagName != null && !tagName.isEmpty()) {
-                int tagId = tagDao.getIdByName(tagName);
-                if (tagId == -1) {
-                    tagDao.save(tag);
-                }
+            int tagId = tagService.addTag(tag);
+            if (tagId != -1) {
                 quizDao.addTag(quiz.getId(), tagId);
             }
         }
@@ -107,37 +72,50 @@ public class QuizService {
     @Transactional
     public void updateQuiz(Quiz quiz) {
         if (quiz == null) {
+            log.info("updateQuiz: Quiz is null");
             return;
         }
 
-        quizDao.update(quiz);
-        for (Question question : quiz.getQuestions()) {
-            questionDao.update(question);
-            for (QuestionOption option : question.getOptions()) {
-                questionOptionDao.update(option);
-            }
-        }
+        Quiz beforeUpdateQuiz = getQuizById(quiz.getId());
+        List<Question> afterUpdateQuestions = quiz.getQuestions();
+        List<Question> beforeUpdateQuestions = beforeUpdateQuiz.getQuestions();
 
-        addQuizTags(quiz);
-    }
+        List<Question> toInsert = afterUpdateQuestions;
+        List<Question> toDelete = beforeUpdateQuestions;
 
-    public Quiz getQuizById(int id) {
-        Quiz quiz = quizDao.getFullInformation(id);
-
-        if (quiz != null) {
-            quiz.setImage(imageDao.get(quiz.getImageId()));
-            for (Question question : quiz.getQuestions()) {
-                question.setImage(imageDao.get(question.getImageId()));
-                for (QuestionOption option : question.getOptions()) {
-                    option.setImage(imageDao.get(option.getImageId()));
+        for (Question buq : beforeUpdateQuestions) {
+            for (Question auq : afterUpdateQuestions) {
+                if (buq.getId() == auq.getId() && buq.equals(auq)) {
+                    toInsert.remove(auq);
+                    toDelete.remove(buq);
                 }
             }
         }
 
-        return quiz;
+        questionService.deleteQuestions(toDelete);
+        for (Question question : toInsert) {
+            questionService.addQuestion(question);
+        }
+
+        addQuizTags(quiz);
+        quizDao.update(quiz);
     }
 
-    public boolean markQuizAsFavorite(int userId, int quizId) {
-        return userDao.markQuizAsFavorite(userId, quizId);
+    public Quiz getQuizById(int id) {
+        return quizDao.getFullInfo(id);
+    }
+
+    public Page<Quiz> showPage(int page, int size, String name, String author,
+                               List<String> category, Date[] dates, List<String> tags) {
+        Timestamp tMinDate = null;
+        Timestamp tMaxDate = null;
+        if (dates != null && dates.length == 2) {
+            tMinDate = new Timestamp(dates[0].getTime());
+            tMaxDate = new Timestamp(dates[1].getTime());
+        }
+
+        return quizDao.findAllForPage(
+                PageRequest.of(page, size,
+                        Sort.Direction.DESC, "id"), name, author, category, tMinDate, tMaxDate, tags);
     }
 }

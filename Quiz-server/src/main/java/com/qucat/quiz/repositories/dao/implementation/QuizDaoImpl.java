@@ -1,40 +1,28 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
-import com.qucat.quiz.repositories.dao.*;
+import com.qucat.quiz.repositories.dao.QuizDao;
+import com.qucat.quiz.repositories.dao.mappers.QuizExtractor;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
-import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.sql.Types;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @Slf4j
 @Repository
+@PropertySource("classpath:quiz.properties")
 public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
-    @Autowired
-    private QuestionDao questionDao;
-
-    @Autowired
-    private CategoryDao categoryDao;
-
-    @Autowired
-    private TagDao tagDao;
-
-    @Autowired
-    private ImageDao imageDao;
 
     @Value("#{${sql.quiz}}")
     private Map<String, String> quizQueries;
@@ -85,33 +73,17 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                 quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImageId(), quiz.getId()};
     }
 
+
     @Override
-    public Quiz getFullInformation(int id) {
-        Quiz quiz = get(id);
-        if (quiz != null) {
-            quiz.setCategory(categoryDao.get(quiz.getCategoryId()));
-            quiz.setTags(tagDao.getByQuizId(id));
-            quiz.setQuestions(questionDao.getByQuizId(id));
-            for (Question q : quiz.getQuestions()) {
-                questionDao.getFullInformation(q);
-            }
-        }
-        return quiz;
+    public List<Quiz> getAllFullInfo() {
+        return jdbcTemplate.query(quizQueries.get("getFullInfo"), new QuizExtractor());
     }
 
     @Override
-    public Quiz getFullInformation(Quiz quiz) {
-        if (quiz != null) {
-            quiz.setCategory(categoryDao.get(quiz.getCategoryId()));
-            quiz.setTags(tagDao.getByQuizId(quiz.getId()));
-            quiz.setQuestions(questionDao.getByQuizId(quiz.getId()));
-            quiz.setImage(imageDao.get(quiz.getImageId()));
-            for (Question q : quiz.getQuestions()) {
-                questionDao.getFullInformation(q);
-
-            }
-        }
-        return quiz;
+    public Quiz getFullInfo(int id) {
+        String getQuery = quizQueries.get("getFullInfo").replace(";", " WHERE quiz.id = ?;");
+        List<Quiz> result = jdbcTemplate.query(getQuery, new Object[]{id}, new QuizExtractor());
+        return result.size() == 0 ? null : result.get(0);
     }
 
     @Override
@@ -136,27 +108,167 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         return new PageImpl<>(quizzes, pageable, rowTotal);
     }
 
-    @Override
-    public Page<Quiz> findAll(Pageable pageable) {
-        int total = jdbcTemplate.queryForObject(quizQueries.get("rowCount"),
-                new Object[]{},
-                (resultSet, number) -> resultSet.getInt(1));
-        System.out.println(total);
-        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageAllQuizzes"),
-                new Object[]{ pageable.getPageSize(), pageable.getOffset()},
-                new QuizMapper());
-        return new PageImpl<>(quizzes, pageable, total);
+    private PreparedStatement getPagePreparedStatement(Pageable pageable, String name, String author,
+                                                       List<String> category, Timestamp minDate, Timestamp maxDate, List<String> tags) {
+        StringBuilder query = new StringBuilder(quizQueries.get("getFullInfo").replace(";", " "));
+        boolean anotherParameter = false;
+
+        if (author != null) {
+            author = '%' + author + '%';
+            query.append(quizQueries.get("authorJoin")).append(" WHERE ")
+                    .append(quizQueries.get("caseAuthor"));
+            anotherParameter = true;
+        } else if (name != null | category != null | minDate != null | tags != null) {
+            query.append(" WHERE");
+        } else {
+            query.append(quizQueries.get("caseAll"));
+
+            return getParamForPreparedStatement(query.toString(), pageable, name, author, category,
+                    minDate, maxDate, tags);
+        }
+        if (name != null) {
+            name = '%' + name + '%';
+            if (anotherParameter) {
+                query.append(" OR ");
+            }
+            anotherParameter = true;
+            query.append(quizQueries.get("caseName"));
+        }
+
+        if (category != null) {
+            if (anotherParameter) {
+                query.append(" OR ");
+            }
+            anotherParameter = true;
+
+            query.append(quizQueries.get("caseCategory"));
+
+            String insertion = makeInsertion(category);
+
+            query.replace(query.indexOf("(") + 1, query.indexOf(")") - 1, insertion);
+        }
+
+        if (minDate != null & maxDate != null) {
+            if (anotherParameter) {
+                query.append(" OR ");
+            }
+            anotherParameter = true;
+            query.append(quizQueries.get("caseDate"));
+        }
+
+        if (tags != null) {
+            if (anotherParameter) {
+                query.append(" OR ");
+            }
+            anotherParameter = true;
+            query.append(quizQueries.get("caseTag"));
+
+            String insertion = makeInsertion(tags);
+
+            query.replace(query.lastIndexOf("(") + 1, query.lastIndexOf(")") - 1, insertion);
+        }
+        query.append(quizQueries.get("caseAll"));
+
+        return getParamForPreparedStatement(query.toString(), pageable, name, author, category,
+                minDate, maxDate, tags);
+    }
+
+    private String makeInsertion(List<String> list) {
+        List<String> mark = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            mark.add("?");
+        }
+        return String.join(",", mark);
+    }
+
+    private PreparedStatement getParamForPreparedStatement(String query, Pageable pageable, String name, String author,
+                                                           List<String> category, Timestamp minDate, Timestamp maxDate, List<String> tags) {
+
+        PreparedStatement preparedStatement = null;
+
+        try {
+            preparedStatement = jdbcTemplate.getDataSource().getConnection().prepareStatement(query);
+            int paramIndex = 1;
+            if (author != null) {
+                preparedStatement.setString(paramIndex++, author);
+            }
+            if (name != null) {
+                preparedStatement.setString(paramIndex++, name);
+            }
+
+            if (category != null) {
+                for (String categoryItem : category) {
+                    preparedStatement.setString(paramIndex++, categoryItem);
+                }
+            }
+
+            if (minDate != null) {
+                preparedStatement.setTimestamp(paramIndex++, minDate);
+            }
+
+            if (minDate != null) {
+                preparedStatement.setTimestamp(paramIndex++, maxDate);
+            }
+
+            if (tags != null) {
+                for (String tagItem : tags) {
+                    preparedStatement.setString(paramIndex++, tagItem);
+                }
+            }
+            if (pageable != null) {
+                preparedStatement.setInt(paramIndex++, pageable.getPageSize());
+                preparedStatement.setLong(paramIndex++, pageable.getOffset());
+            }
+        } catch (SQLException e) {
+            log.error(" " + e.getMessage());
+            e.printStackTrace();
+        }
+        return preparedStatement;
+    }
+
+    private PreparedStatement getQuizCountStatement(String query, String name, String author, List<String> category,
+                                                    Timestamp minDate, Timestamp maxDate, List<String> tags) {
+        StringBuilder countQuery = new StringBuilder(quizQueries.get("rowCount").replace(";", ""));
+        countQuery.append(quizQueries.get("countJoin"));
+        if (tags != null) {
+            countQuery.append(quizQueries.get("countJoinTags"));
+        }
+        if (author != null | name != null | category != null | minDate != null) {
+            countQuery.append(query.substring(query.indexOf("W"), query.lastIndexOf("L")));
+        }
+        countQuery.append(";");
+
+        return getParamForPreparedStatement(countQuery.toString(), null, name, author, category,
+                minDate, maxDate, tags);
+
     }
 
     @Override
-    public Page<Quiz> findAllByName(String name, Pageable pageable) {
-        int total = jdbcTemplate.queryForObject(quizQueries.get("nameRowCount"),
-                new Object[]{},
-                (resultSet, number) -> resultSet.getInt(1));
-
-        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getPageByName"),
-                new Object[]{ pageable.getPageSize(), pageable.getOffset()},
-                new QuizMapper());
-        return new PageImpl<>(quizzes, pageable, total);
+    public Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category,
+                                     Timestamp minDate, Timestamp maxDate, List<String> tags) {
+        List<Quiz> quizzes = new ArrayList<>();
+        int rowTotal = 0;
+        PreparedStatement psForPage = getPagePreparedStatement(pageable, name, author, category,
+                minDate, maxDate, tags);
+        PreparedStatement psForCount = getQuizCountStatement(psForPage.toString(), name, author, category,
+                minDate, maxDate, tags);
+        try {
+            QuizExtractor qe = new QuizExtractor();
+            quizzes = qe.extractData(psForPage.executeQuery());
+            ResultSet rs = psForCount.executeQuery();
+            if (rs.next()) {
+                rowTotal = rs.getInt("row_count");
+            }
+        } catch (Exception e) {
+            log.error("Error while read page of quiz from DB: " + e.getMessage());
+        } finally {
+            try {
+                psForPage.getConnection().close();
+                psForCount.getConnection().close();
+            } catch (SQLException throwables) {
+                log.error("cant close connection", throwables);
+            }
+        }
+        return new PageImpl<>(quizzes, pageable, rowTotal);
     }
 }
