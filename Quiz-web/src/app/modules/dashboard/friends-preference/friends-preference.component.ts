@@ -18,7 +18,6 @@ export class FriendsPreferenceComponent implements OnInit {
 
   getPreferences() {
     this.dashboardService.getFriendsPreferences().subscribe(statistics => {
-        console.log(statistics);
         this.stat = statistics;
         this.plotGraph();
       },
@@ -28,10 +27,8 @@ export class FriendsPreferenceComponent implements OnInit {
   }
 
   plotGraph() {
-/*    this.stat.forEach(element =>
-    {this.options.series.
-    add(value: element.count, name: element.name)};*/
     this.options = {
+      backgroundColor: '#ffffff',
 
       title: {
         text: 'Friends preferences',
@@ -61,13 +58,7 @@ export class FriendsPreferenceComponent implements OnInit {
           type: 'pie',
           radius: '55%',
           center: ['50%', '50%'],
-          data: [
-            {value: 335, name: 'C-1'},
-            {value: 310, name: 'C-2'},
-            {value: 274, name: 'C-3'},
-            {value: 235, name: 'C-4'},
-            {value: 400, name: 'C-5'}
-          ].sort(function (a, b) {
+          data:  this.stat.sort(function (a, b) {
             return a.value - b.value;
           }),
           roseType: 'radius',
@@ -92,7 +83,7 @@ export class FriendsPreferenceComponent implements OnInit {
             normal: {
               color: '#c23531',
               shadowBlur: 200,
-              shadowColor: 'rgba(0, 0, 0, 0.5)'
+              shadowColor: 'rgb(232,182,9)'
             }
           },
 

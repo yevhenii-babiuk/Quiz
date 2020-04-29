@@ -1,31 +1,50 @@
 import { Component, OnInit } from '@angular/core';
+import {Statistics} from "../../core/models/statistics";
+import {DashboardService} from "../../core/services/dashboard.service";
 import {graphic} from "echarts";
 
 @Component({
-  selector: 'app-best-quizzes-result',
-  templateUrl: './best-quizzes-result.component.html',
-  styleUrls: ['./best-quizzes-result.component.css']
+  selector: 'app-played-quizzes-amount',
+  templateUrl: './played-quizzes-amount.component.html',
+  styleUrls: ['./played-quizzes-amount.component.css']
 })
-export class BestQuizzesResultComponent implements OnInit {
+export class PlayedQuizzesAmountComponent implements OnInit {
 
+  stat: Statistics[] = [];
   options: any;
   detectEventChanges = true;
 
-  constructor() { }
+  constructor(private dashboardService: DashboardService) {
+  }
 
-  ngOnInit() {
-    const dataAxis = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T'];
-    const data = [220, 182, 191, 234, 290, 330, 310, 123, 442, 321, 90, 149, 210, 122, 133, 334, 198, 123, 125, 220];
-    const yMax = 500;
+  ngOnInit(): void {
+    this.getAmount()
+  }
+
+  getAmount() {
+    this.dashboardService.getQuizzesAmount().subscribe(statistics => {
+        this.stat = statistics;
+        this.plotGraph();
+      },
+      err => {
+        console.log(err);
+      });
+  }
+
+  plotGraph() {
+    let dataAxis: Array<string> = [];
+    this.stat.forEach(element => dataAxis.push(element.name))
+    let dataCount: Array<number> = [];
+    this.stat.forEach(element => dataCount.push(element.value))
+    const yMax = 1;
     const dataShadow = [];
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < dataCount.length; i++) {
       dataShadow.push(yMax);
     }
-
     this.options = {
       title: {
-        text: 'Check Console for Events'
+        text: 'Played quizzes'
       },
       xAxis: {
         data: dataAxis,
@@ -65,7 +84,7 @@ export class BestQuizzesResultComponent implements OnInit {
         { // For shadow
           type: 'bar',
           itemStyle: {
-            normal: { color: 'rgba(0,0,0,0.05)' }
+            normal: {color: 'rgba(0,0,0,0.05)'}
           },
           barGap: '-100%',
           barCategoryGap: '40%',
@@ -79,9 +98,9 @@ export class BestQuizzesResultComponent implements OnInit {
               color: new graphic.LinearGradient(
                 0, 0, 0, 1,
                 [
-                  { offset: 0, color: '#83bff6' },
-                  { offset: 0.5, color: '#188df0' },
-                  { offset: 1, color: '#188df0' }
+                  {offset: 0, color: '#83bff6'},
+                  {offset: 0.5, color: '#188df0'},
+                  {offset: 1, color: '#188df0'}
                 ]
               )
             },
@@ -89,14 +108,14 @@ export class BestQuizzesResultComponent implements OnInit {
               color: new graphic.LinearGradient(
                 0, 0, 0, 1,
                 [
-                  { offset: 0, color: '#2378f7' },
-                  { offset: 0.7, color: '#2378f7' },
-                  { offset: 1, color: '#83bff6' }
+                  {offset: 0, color: '#2378f7'},
+                  {offset: 0.7, color: '#2378f7'},
+                  {offset: 1, color: '#83bff6'}
                 ]
               )
             }
           },
-          data: data
+          data: dataCount
         }
       ]
     };

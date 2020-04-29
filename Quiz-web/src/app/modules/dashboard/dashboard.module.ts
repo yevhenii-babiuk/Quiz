@@ -7,9 +7,9 @@ import {PlayedProgressComponent} from './played-progress/played-progress.compone
 import {PlayedQuizScoreComponent} from './played-quiz-score/played-quiz-score.component';
 import {FriendsPreferenceComponent} from './friends-preference/friends-preference.component';
 import {CorrectAnswersPercentComponent} from './correct-answers-percent/correct-answers-percent.component';
-import {BestQuizzesResultComponent} from './best-quizzes-result/best-quizzes-result.component';
-import {PlayedQuizzesByPerriodComponent} from './played-quizzes-by-perriod/played-quizzes-by-perriod.component';
 import {TopPlayersComponent} from './top-players/top-players.component';
+import { PlayedQuizzesAmountComponent } from './played-quizzes-amount/played-quizzes-amount.component';
+import { QuizzesStatusComponent } from './quizzes-status/quizzes-status.component';
 
 @NgModule({
   declarations: [
@@ -18,9 +18,9 @@ import {TopPlayersComponent} from './top-players/top-players.component';
     PlayedQuizScoreComponent,
     FriendsPreferenceComponent,
     CorrectAnswersPercentComponent,
-    BestQuizzesResultComponent,
-    PlayedQuizzesByPerriodComponent,
-    TopPlayersComponent
+    TopPlayersComponent,
+    PlayedQuizzesAmountComponent,
+    QuizzesStatusComponent
   ],
   imports: [
     NgxEchartsModule,

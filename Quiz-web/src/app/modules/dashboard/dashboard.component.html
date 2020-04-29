@@ -1,9 +1,14 @@
 <div class="col-lg-11 col-md-11 mx-auto m-2">
-<!--<app-played-progress></app-played-progress>
-<app-played-quiz-score></app-played-quiz-score>-->
+  <div *ngIf="role == roleEnum.USER">
+<!--<app-played-progress></app-played-progress>-->
+<!--<app-played-quizzes-by-perriod></app-played-quizzes-by-perriod>-->
+<app-played-quiz-score></app-played-quiz-score>
 <app-friends-preference></app-friends-preference>
 <app-correct-answers-percent></app-correct-answers-percent>
-<!--<app-best-quizzes-result></app-best-quizzes-result>
-<app-played-quizzes-by-perriod></app-played-quizzes-by-perriod>-->
 <app-top-players></app-top-players>
+  </div>
+  <div *ngIf="role == roleEnum.ADMIN || role == roleEnum.MODERATOR || role == roleEnum.SUPER_ADMIN">
+<app-played-quizzes-amount></app-played-quizzes-amount>
+<app-quizzes-status></app-quizzes-status>
+  </div>
 </div>

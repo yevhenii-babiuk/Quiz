@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {Role} from "../core/models/role";
+import {SecurityService} from "../core/services/security.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent implements OnInit {
 
-  constructor() { }
+  roleEnum= Role;
+  role: Role;
+
+  constructor(private securityService : SecurityService) { }
 
   ngOnInit(): void {
+    this.role = this.securityService.getCurrentRole();
   }
 
 }

@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ComparedScores} from "../../core/models/comparedScores";
+import {DashboardService} from "../../core/services/dashboard.service";
 
 @Component({
   selector: 'app-played-quiz-score',
@@ -6,27 +8,54 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./played-quiz-score.component.css']
 })
 export class PlayedQuizScoreComponent implements OnInit {
-  data = {
-    labels: ['Qiuz_1', 'Qiuz_2', 'Qiuz_3', 'Qiuz_4', 'Qiuz_5', 'Qiuz_6', 'Qiuz_7'],
-    datasets: [
-      {
-        label: 'Max score',
-        backgroundColor: '#42A5F5',
-        borderColor: '#1E88E5',
-        data: [65, 59, 80, 81, 56, 55, 40]
+
+  score: ComparedScores[] = [];
+  data: any;
+
+  getScore() {
+    this.dashboardService.getCompareScore().subscribe(statistics => {
+        this.score = statistics;
+        this.plotGraph();
       },
-      {
-        label: 'My score',
-        backgroundColor: '#9CCC65',
-        borderColor: '#7CB342',
-        data: [28, 48, 40, 19, 86, 27, 90]
-      }
-    ]
+      err => {
+        console.log(err);
+      });
   }
 
-  constructor() { }
+  plotGraph() {
+
+    let label:Array<string> = [];
+    let score:Array<number> = [];
+    let record:Array<number> = [];
+
+    this.score.forEach(element=>label.push(element.name))
+    this.score.forEach(element=>score.push(element.score))
+    this.score.forEach(element=>record.push(element.record))
+
+    this.data = {
+      labels: label,
+      datasets: [
+        {
+          label: 'Max score',
+          backgroundColor: '#42A5F5',
+          borderColor: '#1E88E5',
+          data: record
+        },
+        {
+          label: 'My score',
+          backgroundColor: '#9CCC65',
+          borderColor: '#7CB342',
+          data: score
+        }
+      ]
+    }
+  }
+
+  constructor(private dashboardService: DashboardService) {
+  }
 
   ngOnInit(): void {
+    this.getScore();
   }
 
 }
