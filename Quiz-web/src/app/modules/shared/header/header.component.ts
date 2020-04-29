@@ -13,18 +13,18 @@ export class HeaderComponent implements OnInit {
   id: number;
   isProfile: boolean;
   notProfile: boolean;
+  role: Role;
 
   constructor(
     private profileService: ProfileService,
     private securityService: SecurityService,
     private redirect: Router
   ) {
-
+    this.role = this.securityService.getCurrentRole();
   }
 
   ngOnInit(): void {
     this.setCondition(null);
-    // this.getUser();
   }
 
   private getUser() {
@@ -37,12 +37,12 @@ export class HeaderComponent implements OnInit {
   private setCondition(role: String) {
     if (role == null) {
       this.notProfile = true;
-    } else if (role == Role.USER || role == Role.ADMIN|| role == Role.MODERATOR || role == Role.SUPER_ADMIN) {
+    } else if (role == Role.USER || role == Role.ADMIN || role == Role.MODERATOR || role == Role.SUPER_ADMIN) {
       this.isProfile = true;
     }
   }
 
-  search(event:any) {
-    this.redirect.navigate(['quizzes?quizName=*'+event.target.value+'*']);
+  search(event: any) {
+    this.redirect.navigate(['Quizzes?quizName=' + event.target.value]);
   }
 }

@@ -7,7 +7,8 @@ export class SecurityService {
 
   private role: Role;
   private id: number;
-  constructor () {
+
+  constructor() {
   }
 
   public getCurrentId() {
@@ -18,9 +19,12 @@ export class SecurityService {
 
   public getCurrentRole() {
     const token = sessionStorage.getItem('token');
-    const tokenPayload = decode(token);
-
-    return this.role = tokenPayload.role;
+    if (token) {
+      const tokenPayload = decode(token);
+      return this.role = tokenPayload.role;
+    } else{
+      return null;
+    }
 
   }
 }

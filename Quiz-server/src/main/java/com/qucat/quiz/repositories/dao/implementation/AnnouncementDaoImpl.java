@@ -90,6 +90,19 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
     }
 
     @Override
+    public Page<Announcement> getAllInfoForPage(boolean isPublished, Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(announcementQueries.get("rowCount").replace(";", " WHERE is_published = ?;"),
+                new Object[]{isPublished},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<Announcement> announcements = jdbcTemplate.query(
+                announcementQueries.get("getAllInfo").replace(";", " WHERE is_published = ? LIMIT ? OFFSET ?;"),
+                new Object[]{isPublished, pageable.getPageSize(), pageable.getOffset()},
+                new AnnouncementExtractor());
+        return new PageImpl<>(announcements, pageable, total);
+    }
+
+    @Override
     public Page<Announcement> getPageByAuthorId(int authorId, Pageable pageable) {
         int total = jdbcTemplate.queryForObject(announcementQueries.get("idRowCount"),
                 new Object[]{authorId},
@@ -114,4 +127,6 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
                 new AnnouncementExtractor());
         return new PageImpl<>(announcements, pageable, total);
     }
+
+
 }
