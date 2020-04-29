@@ -1,9 +1,6 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.repositories.entities.CategoryStatistics;
-import com.qucat.quiz.repositories.entities.ComparedScores;
-import com.qucat.quiz.repositories.entities.Statistics;
-import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.*;
 import com.qucat.quiz.services.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/dashboard")
+@RequestMapping("api/v1/profile/dashboard")
 public class DashboardController {
 
     @Autowired
@@ -50,4 +47,8 @@ public class DashboardController {
         return dashboardService.getStatisticOfQuizzesPlayed();
     }
 
+    @GetMapping("/quizzes/status")
+    public  List<AdminStatistics> getAmountOfCreatedAndPublishedQuizzes () {
+        return dashboardService.getAmountOfCreatedAndPublishedQuizzes();
+    }
 }
