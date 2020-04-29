@@ -36,7 +36,7 @@ export class CorrectAnswersPercentComponent implements OnInit {
     let dataAxis: Array<string> = [];
     this.stat.forEach(element=>dataAxis.push(element.name))
     let dataCount: Array<number> = [];
-    this.stat.forEach(element=>dataCount.push(element.count))
+    this.stat.forEach(element=>dataCount.push(element.value))
     const yMax = 1;
     const dataShadow = [];
 

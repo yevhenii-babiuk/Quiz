@@ -8,6 +8,8 @@ import {User} from '../models/user'
 import {url} from "../../../../environments/environment.prod";
 import {SecurityService} from "./security.service";
 import {Statistics} from "../models/statistics";
+import {ComparedScores} from "../models/comparedScores";
+import {AdminStatistics} from "../models/adminStatistics";
 
 @Injectable({
   providedIn: 'root'
@@ -35,6 +37,28 @@ export class DashboardService {
     return this.http.get<Statistics[]>(`${url}/profile/dashboard/${id}/quizzes/played/percent`)
       .pipe(
         catchError(this.handleError<Statistics[]>([]))
+      );
+  }
+
+  getQuizzesAmount(): Observable<Statistics[]> {
+    return this.http.get<Statistics[]>(`${url}/profile/dashboard/quizzes/played/amount`)
+      .pipe(
+        catchError(this.handleError<Statistics[]>([]))
+      );
+  }
+
+  getByStatus(): Observable<AdminStatistics[]> {
+    return this.http.get<AdminStatistics[]>(`${url}/profile/dashboard/quizzes/status`)
+      .pipe(
+        catchError(this.handleError<AdminStatistics[]>([]))
+      );
+  }
+
+  getCompareScore(): Observable<ComparedScores[]> {
+    let id=this.securityService.getCurrentId();
+    return this.http.get<ComparedScores[]>(`${url}/profile/dashboard/${id}/quizzes/played/compare`)
+      .pipe(
+        catchError(this.handleError<ComparedScores[]>([]))
       );
   }
 
