@@ -15,19 +15,17 @@ export class CorrectAnswersPercentComponent implements OnInit {
   options: any;
   detectEventChanges = true;
 
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService) {
+  }
 
   ngOnInit(): void{
-    this.getDate();
-    console.log(this.stat);
-    this.plotGraph();
-
+    this.getDate()
   }
 
   getDate() {
     this.dashboardService.getQuizzesCorrectAnswerPercent().subscribe(statistics => {
-        console.log(statistics);
         this.stat = statistics;
+        this.plotGraph();
       },
       err => {
         console.log(err);
@@ -35,14 +33,14 @@ export class CorrectAnswersPercentComponent implements OnInit {
   }
 
   plotGraph(){
-    let dataAxis = [];
+    let dataAxis: Array<string> = [];
     this.stat.forEach(element=>dataAxis.push(element.name))
-    let data = [];
-    this.stat.forEach(element=>dataAxis.push(element.count))
+    let dataCount: Array<number> = [];
+    this.stat.forEach(element=>dataCount.push(element.count))
     const yMax = 1;
     const dataShadow = [];
 
-    for (let i = 0; i < data.length; i++) {
+    for (let i = 0; i < dataCount.length; i++) {
       dataShadow.push(yMax);
     }
     this.options = {
@@ -118,11 +116,10 @@ export class CorrectAnswersPercentComponent implements OnInit {
               )
             }
           },
-          data: data
+          data: dataCount
         }
       ]
     };
-
   }
 
   onChartEvent(event: any, type: string) {

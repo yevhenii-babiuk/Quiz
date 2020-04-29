@@ -38,6 +38,14 @@ export class DashboardService {
       );
   }
 
+  getFriendsPreferences(): Observable<Statistics[]> {
+    let id=this.securityService.getCurrentId();
+    return this.http.get<Statistics[]>(`${url}/profile/dashboard/${id}/friends/preferences`)
+      .pipe(
+        catchError(this.handleError<Statistics[]>([]))
+      );
+  }
+
   private handleError<T>(result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);
