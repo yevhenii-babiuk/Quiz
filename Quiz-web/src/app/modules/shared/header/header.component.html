@@ -20,23 +20,27 @@
       <li class="nav-item active">
         <a class="nav-link font-weight-bold" routerLink="/home">Приєднатися до гри</a>
       </li>
-      <li class="nav-item ml-5">
-        <a class="nav-link" routerLink="/login" routerLinkActive="active" *ngIf="notProfile">Увійти</a>
+      <li class="nav-item ml-5"  *ngIf="!role">
+        <a class="nav-link" routerLink="/login" routerLinkActive="active">Увійти</a>
       </li>
-      <li class="nav-item" *ngIf="notProfile">
+      <li class="nav-item" *ngIf="!role">
         <a class="nav-link" routerLink="/registration"
            routerLinkActive="active">Зареєструватися</a>
+      </li>
+      <li class="nav-item" *ngIf="role">
+        <a class="nav-link" routerLink="/registration"
+           routerLinkActive="active">Вийти</a>
       </li>
     </ul>
 
     <form class="form-inline">
       <div class="md-form my-0">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search" (keyup.enter)="search($event)">
+        <input class="form-control mr-sm-2" type="text" placeholder="Пошук вікторин" aria-label="Search" (keyup.enter)="search($event)">
       </div>
     </form>
 
-    <img src='../../../../assets/img/message.png' class="ml-3" *ngIf="isProfile">
-    <img src='../../../../assets/img/notification.png' width="70" height="50" *ngIf="isProfile">
+    <img src='../../../../assets/img/message.png' class="ml-3" *ngIf="role">
+    <img src='../../../../assets/img/notification.png' width="70" height="50" *ngIf="role">
   </div>
 
 </nav>

@@ -27,6 +27,13 @@ export class AnnouncementService {
       );
   }
 
+  getAnnouncementsByRole(currentCount: number, isPublished:boolean): Observable<Announcement[]> {
+    return this.http.get<Announcement[]>(`${url}/announcements?count=${currentCount}&isPublished=${isPublished}`)
+      .pipe(
+        catchError(this.handleError<Announcement[]>([]))
+      );
+  }
+
   putImage(image: File) {
     const uploadData = new FormData();
     uploadData.append('myFile', image, "name");

@@ -1,5 +1,6 @@
 package com.qucat.quiz.repositories.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +14,10 @@ public class Announcement {
     private int id;
     private String authorLogin;
     private int authorId;
+
+    @JsonProperty("isPublished")
     private boolean isPublished;
+
     private Date createdDate;
     private String title;
     private String subtitle;
