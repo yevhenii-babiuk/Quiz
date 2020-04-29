@@ -56,6 +56,10 @@ export class AuthenticationService {
     return this.http.put<string>(`${url}/pass-recovery/${token}`, password, this.httpOptions);
   }
 
+  logOut() {
+    sessionStorage.removeItem('token');
+  }
+
   public isAuthenticated(): boolean {
     const token = sessionStorage.getItem('token');
     // Check whether the token is expired and return
