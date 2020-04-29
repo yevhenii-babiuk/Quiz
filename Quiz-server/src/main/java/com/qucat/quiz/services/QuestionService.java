@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -42,5 +43,11 @@ public class QuestionService {
 
     public void deleteQuestionsById(List<Integer> questionsId) {
         questionDao.deleteQuestions(questionsId);
+    }
+
+    public void deleteQuestions(List<Question> questions) {
+        questionDao.deleteQuestions(
+                questions.stream().map(Question::getId).collect(Collectors.toList())
+        );
     }
 }
