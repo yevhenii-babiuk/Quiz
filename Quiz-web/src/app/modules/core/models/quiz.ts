@@ -1,7 +1,6 @@
 import {Tag} from "./tag";
 import {Category} from "./category";
 import {Question} from "./question";
-import {ImageSnippet} from "./imageSnippet";
 import {Imaged} from "./imaged";
 import {Image} from "./image";
 
@@ -9,13 +8,13 @@ export class Quiz implements Imaged {
   id: number;
   name: string;
   authorId: number;
-  category: Category=new Category();
+  category: Category = new Category();
+  categoryId: number;
   publishedDate: string;
   questionNumber: number;
   maxScore: number;
-  tags: Tag[]=[];
-  questions: Question[]=[new Question(0)];
-  imageId: number;
-  selectedFile: ImageSnippet;
-  image: Image;
+  tags: Tag[] = [];
+  questions: Question[] = [new Question];
+  imageId: number = -1;
+  image: Image = new Image();
 }

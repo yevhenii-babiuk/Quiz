@@ -6,7 +6,8 @@ import {catchError} from "rxjs/operators";
 
 import {Quiz} from '../models/quiz'
 import {Category} from '../models/category'
-import {url} from "../../../../environments/environment.prod";
+import {countOnPage, url} from "../../../../environments/environment.prod";
+import {Tag} from "../models/tag";
 @Injectable({
   providedIn: 'root'
 })
@@ -19,8 +20,8 @@ export class QuizzesService {
   constructor(private http: HttpClient) {
   }
 
-  getQuizzes(currentCount: number): Observable<Quiz[]> {
-    return this.http.get<Quiz[]>(`${url}/quizzes?count=${currentCount}`)
+  getQuizzes(params: string, currentCount: number): Observable<Quiz[]> {
+    return this.http.get<Quiz[]>(`${url}/quizzes${params}&pageNumber=${currentCount/countOnPage}&countOnPage=${countOnPage}`)
       .pipe(
         catchError(this.handleError<Quiz[]>([]))
       );
@@ -32,6 +33,12 @@ export class QuizzesService {
         catchError(this.handleError<Quiz[]>([]))
       );
   }
+  getTags(): Observable<Tag[]> {
+    return this.http.get<Tag[]>(`${url}/tags`)
+      .pipe(
+        catchError(this.handleError<Tag[]>([]))
+      );
+  }
 
   putImage(image: File) {
     const uploadData = new FormData();
@@ -40,7 +47,12 @@ export class QuizzesService {
   }
 
   sendQuiz(quiz: Quiz){
-    return this.http.put<string>(`${url}/quiz/`, quiz, this.httpOptions);
+    if(quiz.id){
+      return this.http.put<string>(`${url}/quiz/`, quiz, this.httpOptions);
+    }
+    else {
+      return this.http.post<string>(`${url}/quiz/`, quiz, this.httpOptions);
+    }
   }
 
   getById(id: string){

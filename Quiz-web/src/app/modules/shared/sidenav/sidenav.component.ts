@@ -46,4 +46,7 @@ export class SidenavComponent implements OnInit {
   }
 
 
+  onScrollClick() {
+    window.scroll(0,0);
+  }
 }

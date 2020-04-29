@@ -141,7 +141,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
             query.append(quizQueries.get("caseCategory"));
 
-            String insertion = makeInsertion(tags);
+            String insertion = makeInsertion(category);
 
             query.replace(query.indexOf("(") + 1, query.indexOf(")") - 1, insertion);
         }

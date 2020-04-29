@@ -3,3 +3,4 @@ export const environment = {
 };
 
 export const url = '/api/v1';
+export const countOnPage = 20;

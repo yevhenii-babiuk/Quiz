@@ -1,5 +1,4 @@
 import {Imaged} from "./imaged";
-import {ImageSnippet} from "./imageSnippet";
 import {Image} from "./image";
 
 export class Announcement implements Imaged {
@@ -11,7 +10,6 @@ export class Announcement implements Imaged {
   authorId: number;
   isPublished: boolean;
   createdDate: Date;
-  imageId: number;
-  selectedFile: ImageSnippet;
+  imageId: number = -1;
   image: Image;
 }

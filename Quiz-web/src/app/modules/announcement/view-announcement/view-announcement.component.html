@@ -32,7 +32,7 @@
       <hr>
 
       <!-- Preview Image -->
-      <img *ngIf="announcement.image" class="img-fluid rounded" src="data:image/jpeg;base64,{{announcement.image.src}}">
+      <img *ngIf="announcement.imageId!=-1" class="img-fluid rounded" src="data:image/jpeg;base64,{{announcement.image.src}}">
 
       <hr>
 
