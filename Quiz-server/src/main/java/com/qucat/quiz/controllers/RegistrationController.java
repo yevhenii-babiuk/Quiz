@@ -22,6 +22,7 @@ public class RegistrationController {
 
     @GetMapping("{token}")
     public boolean checkRegistrationTokenExistence(@PathVariable String token) {
-        return userService.openRegistrationToken(token);
+        boolean tokenValid = userService.openRegistrationToken(token);
+        return tokenValid;
     }
 }
