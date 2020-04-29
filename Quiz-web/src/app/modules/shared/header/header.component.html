@@ -20,16 +20,15 @@
       <li class="nav-item active">
         <a class="nav-link font-weight-bold" routerLink="/home">Приєднатися до гри</a>
       </li>
-      <li class="nav-item ml-5"  *ngIf="!role">
+      <li class="nav-item ml-5"  *ngIf="!authService.isAuthenticated()">
         <a class="nav-link" routerLink="/login" routerLinkActive="active">Увійти</a>
       </li>
-      <li class="nav-item" *ngIf="!role">
+      <li class="nav-item" *ngIf="!authService.isAuthenticated()">
         <a class="nav-link" routerLink="/registration"
            routerLinkActive="active">Зареєструватися</a>
       </li>
-      <li class="nav-item" *ngIf="role">
-        <a class="nav-link" routerLink="/registration"
-           routerLinkActive="active">Вийти</a>
+      <li class="nav-item custom-link" *ngIf="authService.isAuthenticated()">
+        <a class="nav-link" (click)="logout()" routerLinkActive="active">Вийти</a>
       </li>
     </ul>
 
@@ -39,8 +38,8 @@
       </div>
     </form>
 
-    <img src='../../../../assets/img/message.png' class="ml-3" *ngIf="role">
-    <img src='../../../../assets/img/notification.png' width="70" height="50" *ngIf="role">
+    <img src='../../../../assets/img/message.png' class="ml-3" *ngIf="authService.isAuthenticated()">
+    <img src='../../../../assets/img/notification.png' width="70" height="50" *ngIf="authService.isAuthenticated()">
   </div>
 
 </nav>

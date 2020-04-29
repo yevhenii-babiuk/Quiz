@@ -80,7 +80,7 @@ a, a:hover, a:focus {
 }
 
 #sidebarCollapse span {
-  width: 80%;
+  width: 30px;
   height: 2px;
   margin: 0 auto;
   display: block;

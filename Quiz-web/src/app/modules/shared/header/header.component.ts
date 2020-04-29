@@ -3,6 +3,7 @@ import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {Router} from "@angular/router";
 import {SecurityService} from "../../core/services/security.service";
+import {AuthenticationService} from "../../core/services/authentication.service";
 
 @Component({
   selector: 'app-header',
@@ -11,38 +12,26 @@ import {SecurityService} from "../../core/services/security.service";
 })
 export class HeaderComponent implements OnInit {
   id: number;
-  isProfile: boolean;
-  notProfile: boolean;
   role: Role;
+
 
   constructor(
     private profileService: ProfileService,
     private securityService: SecurityService,
-    private redirect: Router
+    private redirect: Router,
+    public authService: AuthenticationService
   ) {
     this.role = this.securityService.getCurrentRole();
   }
 
   ngOnInit(): void {
-    this.setCondition(null);
-  }
-
-  private getUser() {
-    this.id = this.securityService.getCurrentId();
-    this.profileService.getUser(this.id).subscribe(data => {
-      this.setCondition(data.role);
-    });
-  }
-
-  private setCondition(role: String) {
-    if (role == null) {
-      this.notProfile = true;
-    } else if (role == Role.USER || role == Role.ADMIN || role == Role.MODERATOR || role == Role.SUPER_ADMIN) {
-      this.isProfile = true;
-    }
   }
 
   search(event: any) {
     this.redirect.navigate(['Quizzes?quizName=' + event.target.value]);
+  }
+  logout(){
+    this.authService.logOut();
+    this.redirect.navigate(['home']);
   }
 }
