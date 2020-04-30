@@ -29,7 +29,6 @@ public class QuizController {
 
     @PostMapping("/quiz")
     public boolean addQuiz(@RequestBody Quiz quiz) {
-        System.out.println(quiz.getImageId());
         return quizService.createQuiz(quiz);
     }
 
@@ -38,7 +37,7 @@ public class QuizController {
         quizService.updateQuiz(quiz);
     }
 
-    @GetMapping("/quiz{id}")
+    @GetMapping("/quiz/{id}")
     public Quiz getQuiz(@PathVariable int id) {
         return quizService.getQuizById(id);
     }

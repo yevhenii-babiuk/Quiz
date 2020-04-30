@@ -18,7 +18,10 @@ public interface AnnouncementDao extends GenericDao<Announcement> {
 
     Page<Announcement> getAllInfoForPage(Pageable pageable);
 
+    Page<Announcement> getAllInfoForPage(boolean isPublished, Pageable pageable);
+
     Page<Announcement> getPageByAuthorId(int id, Pageable pageable);
 
     Page<Announcement> getPageByAuthorLogin(String login, Pageable pageable);
+
 }

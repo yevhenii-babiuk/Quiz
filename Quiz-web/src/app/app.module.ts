@@ -24,6 +24,9 @@ import {AuthGuardService} from "./modules/core/services/auth-guard.service";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {AnnouncementModule} from "./modules/announcement/announcement.module";
 import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
+import {DashboardModule} from "./modules/dashboard/dashboard.module";
+import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.module";
+
 @NgModule({
   declarations: [
     AppComponent
@@ -49,7 +52,10 @@ import {AnnouncementRoutingModule} from "./modules/announcement/announcement-rou
     ProfileModule,
     QuizModule,
     AnnouncementModule,
-    AnnouncementRoutingModule
+    AnnouncementRoutingModule,
+    ProfileModule,
+    DashboardModule,
+    DashboardRoutingModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},

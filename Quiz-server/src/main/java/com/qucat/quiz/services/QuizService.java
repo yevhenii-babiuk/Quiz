@@ -28,6 +28,8 @@ public class QuizService {
     @Autowired
     private QuestionService questionService;
 
+    @Autowired
+    private ImageService imageService;
 
     @Transactional
     public boolean createQuiz(Quiz quiz) {
@@ -36,11 +38,16 @@ public class QuizService {
             return false;
         }
 
+        if (quiz.getImageId() == -1) {
+            quiz.setImageId(imageService.addImage(null));
+        }
+
         int quizId = quizDao.save(quiz);
         if (quizId == -1) {
             log.info("createQuiz: Quiz isn't saved in data base");
             return false;
         }
+        quiz.setId(quizId);
 
         for (Question question : quiz.getQuestions()) {
             question.setQuizId(quizId);
@@ -69,12 +76,29 @@ public class QuizService {
             return;
         }
 
-        quizDao.update(quiz);
-        for (Question question : quiz.getQuestions()) {
-            questionService.updateQuestion(question);
+        Quiz beforeUpdateQuiz = getQuizById(quiz.getId());
+        List<Question> afterUpdateQuestions = quiz.getQuestions();
+        List<Question> beforeUpdateQuestions = beforeUpdateQuiz.getQuestions();
+
+        List<Question> toInsert = afterUpdateQuestions;
+        List<Question> toDelete = beforeUpdateQuestions;
+
+        for (Question buq : beforeUpdateQuestions) {
+            for (Question auq : afterUpdateQuestions) {
+                if (buq.getId() == auq.getId() && buq.equals(auq)) {
+                    toInsert.remove(auq);
+                    toDelete.remove(buq);
+                }
+            }
+        }
+
+        questionService.deleteQuestions(toDelete);
+        for (Question question : toInsert) {
+            questionService.addQuestion(question);
         }
 
         addQuizTags(quiz);
+        quizDao.update(quiz);
     }
 
     public Quiz getQuizById(int id) {
