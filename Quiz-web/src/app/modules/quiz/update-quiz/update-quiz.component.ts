@@ -108,7 +108,7 @@ export class UpdateQuizComponent implements OnInit {
 
     reader.addEventListener('load', (event: any) => {
       console.log("in reader.addEventListener")
-      imaged.image.src = event.target.result;
+      imaged.image.src = event.target.result.substring(23);
       this.quizzesService.putImage(file).subscribe(
         id => {
           console.log("id=" + id);
@@ -189,6 +189,10 @@ export class UpdateQuizComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  removeQuestion(deletedQuestion: Question){
+    this.quiz.questions=this.quiz.questions.filter(question=> question!==deletedQuestion);
   }
 
   send() {

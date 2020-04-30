@@ -30,7 +30,7 @@ public class QuizController {
     @PostMapping("/quiz")
     public boolean addQuiz(@RequestBody Quiz quiz) {
         System.out.println(quiz.getImageId());
-        return true;//quizService.createQuiz(quiz);
+        return quizService.createQuiz(quiz);
     }
 
     @PutMapping("/quiz")
