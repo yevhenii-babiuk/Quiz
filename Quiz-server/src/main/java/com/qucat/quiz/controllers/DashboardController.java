@@ -28,7 +28,7 @@ public class DashboardController {
     }
 
     @GetMapping("/{id}/quizzes/played/percent")
-    public List<Statistics> getPercentOfCorrectAnswers(@PathVariable int id) {
+    public List<QuizStatistics> getPercentOfCorrectAnswers(@PathVariable int id) {
         return dashboardService.getPercentOfCorrectAnswers(id);
     }
 
@@ -38,12 +38,12 @@ public class DashboardController {
     }
 
     @GetMapping("/{id}/friends/preferences")
-    public List<Statistics> getFriendsPreferences(@PathVariable int id) {
+    public List<QuizStatistics> getFriendsPreferences(@PathVariable int id) {
         return dashboardService.getFriendsPreferences(id);
     }
 
     @GetMapping("/quizzes/played/amount")
-    public List<Statistics> getStatisticOfQuizzesPlayed() {
+    public List<QuizStatistics> getStatisticOfQuizzesPlayed() {
         return dashboardService.getStatisticOfQuizzesPlayed();
     }
 
