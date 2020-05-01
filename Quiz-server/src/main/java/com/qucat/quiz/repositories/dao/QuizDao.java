@@ -18,6 +18,8 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     boolean addTag(int quizId, int tagId);
 
+    void removeTag(int quizId, int tagId);
+
     Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable);
 
     Page<Quiz> findAllForPage(Pageable pageable, String name, String author,
