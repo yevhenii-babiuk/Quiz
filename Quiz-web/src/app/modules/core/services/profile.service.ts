@@ -15,8 +15,8 @@ export class ProfileService {
     return this.http.get<User>(`${this.url}/users/${id}`);
   }
 
-  public postUser(user: User) : Observable<User>{
-    return this.http.post<User>(`${this.url}/users/`,user);
+  public updateUser(user: User) : Observable<User>{
+    return this.http.put<User>(`${this.url}/users/`,user);
   }
 
 }
