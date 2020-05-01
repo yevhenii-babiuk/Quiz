@@ -114,6 +114,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         boolean anotherParameter = false;
 
         if (author != null) {
+            author = '%' + author + '%';
             query.append(quizQueries.get("authorJoin")).append(" WHERE ")
                     .append(quizQueries.get("caseAuthor"));
             anotherParameter = true;
@@ -126,6 +127,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                     minDate, maxDate, tags);
         }
         if (name != null) {
+            name = '%' + name + '%';
             if (anotherParameter) {
                 query.append(" OR ");
             }
@@ -259,6 +261,13 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             }
         } catch (Exception e) {
             log.error("Error while read page of quiz from DB: " + e.getMessage());
+        } finally {
+            try {
+                psForPage.getConnection().close();
+                psForCount.getConnection().close();
+            } catch (SQLException throwables) {
+                log.error("cant close connection", throwables);
+            }
         }
         return new PageImpl<>(quizzes, pageable, rowTotal);
     }
