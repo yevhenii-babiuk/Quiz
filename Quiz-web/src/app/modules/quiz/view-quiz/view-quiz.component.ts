@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {QuizzesService} from "../../core/services/quizzes.service";
 import {Quiz} from "../../core/models/quiz";
 import {ActivatedRoute, Route, Router} from "@angular/router";
+import {SecurityService} from "../../core/services/security.service";
 
 
 @Component({
@@ -14,9 +15,11 @@ export class ViewQuizComponent implements OnInit {
   quiz: Quiz;
 
   constructor(
+    public securityService: SecurityService,
     private quizzesService: QuizzesService,
     private route: ActivatedRoute,
     private redirect: Router) {
+    console.log(this.securityService.getCurrentId())
     const id = this.route.snapshot.paramMap.get('quizId');
     console.log(id);
     if (id) {
