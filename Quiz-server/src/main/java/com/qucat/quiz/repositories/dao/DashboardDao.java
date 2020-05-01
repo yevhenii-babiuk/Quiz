@@ -12,15 +12,15 @@ public interface DashboardDao {
 
     List<CategoryStatistics> getStatisticInTheCategory(int id);
 
-    List<Statistics> getPercentOfCorrectAnswers(int id);
+    List<QuizStatistics> getPercentOfCorrectAnswers(int id);
 
     BestQuiz getTheMostSuccessfulQuiz(int id);
 
     List<ComparedScores> getComparedScores(int userId);
 
-    List<Statistics> getFriendsPreferences(int userId);
+    List<QuizStatistics> getFriendsPreferences(int userId);
 
-    List<Statistics> getStatisticOfQuizzesPlayed();
+    List<QuizStatistics> getStatisticOfQuizzesPlayed();
 
     List<AdminStatistics> getAmountOfCreatedAndPublishedQuizzes();
 }
