@@ -68,7 +68,7 @@ public class DashboardService {
     public List<ComparedScores> getComparedScores(int userId) {
         List<ComparedScores> comparedScores = dashboardDao.getComparedScores(userId);
         if (comparedScores.isEmpty()) {
-            log.warn("Can`t get information about scores");
+            log.warn("Can`t get information about scores of user with id={}",userId);
             return Collections.emptyList();
         } else {
             return comparedScores;
@@ -78,7 +78,7 @@ public class DashboardService {
     public List<QuizStatistics> getFriendsPreferences(int userId) {
         List<QuizStatistics> friendsPreferences = dashboardDao.getFriendsPreferences(userId);
         if (friendsPreferences.isEmpty()) {
-            log.warn("Can`t get information about friends` preferences");
+            log.warn("Can`t get information about about the preferences of friends of a user with id = {}",userId);
             return Collections.emptyList();
         } else {
             return friendsPreferences;
