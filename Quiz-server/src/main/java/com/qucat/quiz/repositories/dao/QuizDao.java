@@ -20,6 +20,6 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable);
 
-    Page<Quiz> findAllForPage(Pageable pageable, String name, String author,
-                              List<String> category, Timestamp minDate, Timestamp maxDate, List<String> tags);
+    Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category, Timestamp minDate,
+                              Timestamp maxDate, List<String> tags, QuizStatus status);
 }
