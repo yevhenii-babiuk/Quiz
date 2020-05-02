@@ -94,9 +94,14 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                     quizId, tagId
             );
         } catch (DuplicateKeyException e) {
-            return false;
+            return true;
         }
         return true;
+    }
+
+    @Override
+    public void removeTag(int quizId, int tagId) {
+        jdbcTemplate.update(quizQueries.get("removeTag"), quizId, tagId);
     }
 
     @Override
