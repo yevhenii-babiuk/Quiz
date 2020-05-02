@@ -19,6 +19,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {CheckboxFilterComponent} from './quizzes/vertical-filter-bar/checkbox-filter/checkbox-filter.component';
 import {KeywordFilterComponent} from './quizzes/vertical-filter-bar/keyword-filter/keyword-filter.component';
 import {DateFilterComponent} from './quizzes/vertical-filter-bar/date-filter/date-filter.component';
+import {TagFilterComponent} from './quizzes/vertical-filter-bar/tag-filter/tag-filter.component';
 import {VerticalFilterBarComponent} from './quizzes/vertical-filter-bar/vertical-filter-bar.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
@@ -31,6 +32,7 @@ import {MatNativeDateModule} from '@angular/material/core';
     CheckboxFilterComponent,
     KeywordFilterComponent,
     DateFilterComponent,
+    TagFilterComponent,
     VerticalFilterBarComponent,
   ],
   imports: [
