@@ -6,8 +6,8 @@ import {WaitingRoomComponent} from "./waiting-room/waiting-room.component";
 
 
 const routes: Routes = [
-  {path: 'settings', component: SettingsComponent},
- // {path: 'waitingRoom', component: WaitingRoomComponent},
+  {path: 'quiz/:quizId/game/:gameId/settings', component: SettingsComponent},
+  {path: 'quiz/:quizId/game/:gameId/waitingRoom', component: WaitingRoomComponent},
 ];
 
 @NgModule({
