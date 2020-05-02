@@ -46,9 +46,6 @@ export class UpdateQuizComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService) {
-    this.getCategories();
-    this.getTags();
-
     const id = this.route.snapshot.paramMap.get('quizId');
     console.log(id);
     if (id) {
@@ -63,6 +60,9 @@ export class UpdateQuizComponent implements OnInit {
       this.createNewQuiz();
     }
 
+    this.getCategories();
+    this.getTags();
+
 
     this.filteredTags = this.tagCtrl.valueChanges.pipe(
       startWith(null),
@@ -72,6 +72,9 @@ export class UpdateQuizComponent implements OnInit {
   getCategories() {
     this.quizzesService.getCategories().subscribe(categories => {
         this.categories = categories;
+        if(!this.quiz.id){
+          this.setCategory(categories[0].name)
+        }
       },
       err => {
         console.log(err);
@@ -166,6 +169,10 @@ export class UpdateQuizComponent implements OnInit {
   isValid(): boolean {
     if (this.quiz.name == null || this.quiz.name.length == 0) {
       this.message = "Please enter name of quiz";
+      return false
+    }
+    if (this.quiz.description == null || this.quiz.description.length == 0) {
+      this.message = "Please enter description of quiz";
       return false
     }
     if (this.quiz.questions.length < 1) {
