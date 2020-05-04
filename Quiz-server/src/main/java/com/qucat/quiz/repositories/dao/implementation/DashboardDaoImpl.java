@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.dao.mappers.UserMapper;
 import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -22,6 +23,7 @@ public class DashboardDaoImpl implements DashboardDao {
     private Map<String, String> dashboardQueries;
 
     @Autowired
+    @Qualifier("postgresJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
 
