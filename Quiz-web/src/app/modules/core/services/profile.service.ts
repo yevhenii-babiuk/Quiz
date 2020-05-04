@@ -19,5 +19,11 @@ export class ProfileService {
     return this.http.post<User>(`${this.url}/users/`,user);
   }
 
+  /*putImage(image: File) {
+    const uploadData = new FormData();
+    uploadData.append('myFile', image, "name");
+    return this.http.put(`${url}/users`, uploadData);
+  }*/
+
 }
 

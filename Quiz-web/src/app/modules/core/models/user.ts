@@ -1,4 +1,4 @@
-export class User {
+export class User{
   id: number;
   firstName:string;
   secondName:string;
@@ -8,4 +8,6 @@ export class User {
   profile:string;
   score:number;
   role:string;
+  /*imageId: number = -1;
+  image: Image = new Image();*/
 }

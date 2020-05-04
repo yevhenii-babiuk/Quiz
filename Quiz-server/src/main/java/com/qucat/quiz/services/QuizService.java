@@ -31,6 +31,9 @@ public class QuizService {
     @Autowired
     private ImageService imageService;
 
+    @Autowired
+    private SuggestionsService suggestionsService;
+
     @Transactional
     public boolean createQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -57,6 +60,7 @@ public class QuizService {
         addQuizTags(quiz);
 
         log.info("createQuiz: Quiz successfully saved");
+        suggestionsService.sendSuggestion(quizId, quiz.getName(),quiz.getCategory().getName());
         return true;
     }
 
