@@ -10,6 +10,9 @@ import java.sql.Timestamp;
 @Builder
 public class GameQuestionDto {
     private int id;
+    private String gameId;
+    private GameDto game;
+    private int questionId;
     private Question question;
     private boolean isCurrent;
     private Timestamp finishTime;
