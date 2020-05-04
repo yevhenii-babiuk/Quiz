@@ -32,19 +32,19 @@ public class GameDaoImpl implements GameDao {
     @Qualifier("h2JdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
-    public List<UserDto> getUsersByGame(int id) {
+    public List<UserDto> getUsersByGame(String id) {
         String selectQuery = queries.get("getUsersByGameId");
         return jdbcTemplate.query(selectQuery,
                 new Object[]{id}, new UserDtoMapper());
     }
 
-    public List<AnswerDto> getAnswersToCurrentQuestionByGameId(int id) {
+    public List<AnswerDto> getAnswersToCurrentQuestionByGameId(String id) {
         String selectQuery = queries.get("getAnswersToCurrentQuestionByGameId");
         return jdbcTemplate.query(selectQuery,
                 new Object[]{id}, new AnswerExtractor());
     }
 
-    public Question getCurrentQuestionByGameId(int id) {
+    public Question getCurrentQuestionByGameId(String id) {
         String selectQuery = queries.get("getCurrentQuestionByGameId");
         return jdbcTemplate.queryForObject(selectQuery,
                 new Object[]{id}, new QuestionMapper());
@@ -56,7 +56,7 @@ public class GameDaoImpl implements GameDao {
                 new Object[]{id}, new QuestionMapper());
     }
 
-    public int getHostId(int gameId) {
+    public int getHostId(String gameId) {
         return jdbcTemplate.queryForObject(queries.get("getHostId"),
                 new Object[]{gameId}, Integer.class);
     }
