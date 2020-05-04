@@ -1,6 +1,28 @@
-<div class="container" *ngIf="question">
+<div class="container">
+  <ng-container *ngIf="gameResults">
+    <table matSort (matSortChange)="sortData($event)" class="table table-striped">
+      <thead>
+      <tr>
+        <th mat-sort-header="login">Login</th>
+        <th mat-sort-header="score">Score</th>
+        <!--<th mat-sort-header="fat">Fat (g)</th>
+        <th mat-sort-header="carbs">Carbs (g)</th>
+        <th mat-sort-header="protein">Protein (g)</th>-->
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let singleResult of sortedData" [ngClass]="{'font-weight-bold':singleResult.id==10}">
+        <td>{{singleResult.login}}</td>
+        <td>{{singleResult.score}}</td>
+        <!--<td>{{singleResult.fat}}</td>
+        <td>{{singleResult.carbs}}</td>
+        <td>{{singleResult.protein}}</td>-->
+      </tr>
+      </tbody>
+    </table>
+  </ng-container>
 
-  <ng-container>
+  <ng-container *ngIf="question">
     <div class="form-control h-auto row mx-0 my-1 mt-5 p-4 border-dark border ">
       <div class="d-flex justify-content-end"><h5>00:00</h5></div>
 

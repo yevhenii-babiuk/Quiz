@@ -6,6 +6,7 @@ import {FormsModule} from "@angular/forms";
 import {PlayQuizRoutingModule} from "./play-quiz-routing.module";
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { PlayQuestionComponent } from './play-question/play-question.component';
+import {MatSortModule} from "@angular/material/sort";
 
 
 @NgModule({
@@ -14,12 +15,13 @@ import { PlayQuestionComponent } from './play-question/play-question.component';
     WaitingRoomComponent,
     PlayQuestionComponent
   ],
-  imports: [
-    CommonModule,
-    PlayQuizRoutingModule,
-    RouterModule,
-    FormsModule
-  ]
+    imports: [
+        CommonModule,
+        PlayQuizRoutingModule,
+        RouterModule,
+        FormsModule,
+        MatSortModule
+    ]
 })
 export class PlayQuizModule {
 }
