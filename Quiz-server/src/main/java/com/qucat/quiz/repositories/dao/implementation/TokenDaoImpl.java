@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.entities.Token;
 import com.qucat.quiz.repositories.entities.TokenType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -26,6 +27,7 @@ public class TokenDaoImpl implements TokenDao {
     private Map<String, String> tokensQueries;
 
     @Autowired
+    @Qualifier("postgresJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
     @Override
