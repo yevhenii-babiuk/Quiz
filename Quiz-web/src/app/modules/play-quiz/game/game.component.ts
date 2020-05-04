@@ -3,6 +3,7 @@ import {GameResults} from "../../core/models/gameResults";
 import {Question} from "../../core/models/question";
 import {QuestionType} from "../../core/models/questionType";
 import {QuestionOptions} from "../../core/models/questionOptions";
+import {Answer} from "../../core/models/answer";
 
 @Component({
   selector: 'app-game',
@@ -64,11 +65,14 @@ export class GameComponent implements OnInit {
         score: 30
       }
     ]
-  }
+  };
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  processAnswer(answer: Answer) {
+    console.log(answer);
+  }
 }

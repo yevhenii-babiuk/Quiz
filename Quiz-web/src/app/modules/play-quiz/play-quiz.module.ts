@@ -9,6 +9,7 @@ import { PlayQuestionComponent } from './game/play-question/play-question.compon
 import {MatSortModule} from "@angular/material/sort";
 import {TimerPipe} from "./game/play-question/timer-pipe";
 import { GameComponent } from './game/game.component';
+import { ResultsComponent } from './game/results/results.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { GameComponent } from './game/game.component';
     WaitingRoomComponent,
     PlayQuestionComponent,
     TimerPipe,
-    GameComponent
+    GameComponent,
+    ResultsComponent
   ],
     imports: [
         CommonModule,

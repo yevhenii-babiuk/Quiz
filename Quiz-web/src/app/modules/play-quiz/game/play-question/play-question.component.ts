@@ -20,18 +20,12 @@ export class PlayQuestionComponent implements OnInit {
   @Input()
   question: Question;
 
-  @Input()
-  gameResults: GameResults;
 
-  // @Output()
-  // sendAnswer = new EventEmitter()
+  @Output()
+  public sendAnswer : EventEmitter<any> = new EventEmitter();
 
-  answer: Answer = {
-    user_id: 2,
-    question_id: this.question.id,
-    result: '',
-    time: this.timeLeft
-  }
+  answer: Answer;
+
 
   map = new Map();
   answerText = '';
@@ -50,6 +44,12 @@ export class PlayQuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.answer = {
+      user_id: 2,
+      question_id: this.question.id,
+      result: '',
+      time: this.timeLeft
+    };
   }
 
   nextQuestion() {
@@ -70,9 +70,9 @@ export class PlayQuestionComponent implements OnInit {
     this.answer.time = this.subscribeTimer;
     this.isSend = true;
 
-    console.log(this.answer);
+    console.log("play_quiz" + this.answer);
 
-    // this.sendAnswer.emit(this.answer)
+    this.sendAnswer.emit(this.answer)
   }
 
   setOption(value: string) {
@@ -86,32 +86,5 @@ export class PlayQuestionComponent implements OnInit {
     this.map.set(opId, seqId);
   }
 
-  sortedData: SingleResult[] = this.gameResults.singleResult;
 
-  sortData(sort: Sort) {
-    const data = this.gameResults.singleResult.slice();
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
-      return;
-    }
-
-    this.sortedData = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'login':
-          return compare(a.login, b.login, isAsc);
-        case 'score':
-          return compare(a.score, b.score, isAsc);
-        /*case 'fat': return compare(a.fat, b.fat, isAsc);
-        case 'carbs': return compare(a.carbs, b.carbs, isAsc);
-        case 'protein': return compare(a.protein, b.protein, isAsc);*/
-        default:
-          return 0;
-      }
-    });
-  }
-}
-
-function compare(a: number | string, b: number | string, isAsc: boolean) {
-  return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
 }
