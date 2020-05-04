@@ -23,8 +23,9 @@
   </ng-container>
 
   <ng-container *ngIf="question">
-    <div class="form-control h-auto row mx-0 my-1 mt-5 p-4 border-dark border ">
-      <div class="d-flex justify-content-end"><h5>00:00</h5></div>
+
+    <div class="form-control h-auto row mx-0 my-1 mt-5 p-4 border-dark border " >
+      <div class="d-flex justify-content-end"><h5>{{ subscribeTimer | timerFormat}}</h5></div>
 
       <div class="col p-md-3 d-flex justify-content-center">
         <div>
@@ -41,13 +42,15 @@
 
           <div class="form-check col p-3 m-2">
             <label class="btn bg-light btn-block p-3">
-              <input type="radio" class="form-check-input" name="optradio">True
+              <input type="radio" class="form-check-input" name="optradio" (click)="setOption('true')" [disabled]="isSend">
+              True
             </label>
           </div>
 
           <div class="form-check col p-3 m-2">
             <label class="btn bg-light btn-block p-3">
-              <input type="radio" class="form-check-input" name="optradio">False
+              <input type="radio" class="form-check-input" name="optradio" (click)="setOption('false')" [disabled]="isSend">
+              False
             </label>
           </div>
 
@@ -63,8 +66,8 @@
                      src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
               </div>
 
-              <label class="btn bg-light btn-block p-3">
-                <input type="radio" class="form-check-input" name="optradio">
+              <label class="btn bg-light btn-block p-3" (click)="setOption(questionOption.id.toString())" >
+                <input type="radio" class="form-check-input" name="optradio" [disabled]="isSend">
                 {{questionOption.content}}
               </label>
             </div>
@@ -73,7 +76,7 @@
         </div>
 
         <div *ngIf="question.type=='ENTER_ANSWER'" class="form-group">
-          <input type="text" class="form-control" placeholder="Enter your answer here">
+          <input type="text" class="form-control" placeholder="Enter your answer here" [(ngModel)]="answerText" [disabled]="isSend">
         </div>
 
         <div *ngIf="question.type=='SELECT_SEQUENCE'">
@@ -85,8 +88,10 @@
                      src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
               </div>
 
-              <select class="form-control col-1">
-                <option *ngFor="let qo of question.options; let i = index">{{i + 1}}</option>
+              <select class="form-control col-1" [disabled]="isSend">
+                <option></option>
+                <option *ngFor="let qo of question.options; let i = index"
+                        (click)="setSequence(questionOption.id, i+1)">{{i + 1}}</option>
               </select>
               <label class="col">{{questionOption.content}}</label>
             </div>
@@ -96,7 +101,13 @@
 
       </div>
 
-      <button type="button" (click)="nextQuestion()" class="btn btn-success btn-lg btn-block">Next ></button>
+      <button type="button" (click)="nextQuestion()" class="btn btn-success btn-lg btn-block" [disabled]="isSend">Next ></button>
+
+      <br>
+
+      <div class="p-m-3" *ngIf="isSend">
+        <h5 class="text-center">Waiting for other players...</h5>
+      </div>
 
     </div>
   </ng-container>

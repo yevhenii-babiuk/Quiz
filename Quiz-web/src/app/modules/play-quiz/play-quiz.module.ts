@@ -7,13 +7,15 @@ import {PlayQuizRoutingModule} from "./play-quiz-routing.module";
 import { WaitingRoomComponent } from './waiting-room/waiting-room.component';
 import { PlayQuestionComponent } from './play-question/play-question.component';
 import {MatSortModule} from "@angular/material/sort";
+import {TimerPipe} from "./play-question/timer-pipe";
 
 
 @NgModule({
   declarations: [
     SettingsComponent,
     WaitingRoomComponent,
-    PlayQuestionComponent
+    PlayQuestionComponent,
+    TimerPipe
   ],
     imports: [
         CommonModule,
