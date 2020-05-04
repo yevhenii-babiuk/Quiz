@@ -29,9 +29,7 @@ public class QuizController {
 
     @PostMapping("/quiz")
     public boolean addQuiz(@RequestBody Quiz quiz) {
-        System.out.println(quiz.getImageId());
-        quizService.createQuiz(quiz);
-        return true;
+        return quizService.createQuiz(quiz);
     }
 
     @PutMapping("/quiz")
@@ -52,11 +50,12 @@ public class QuizController {
             @RequestParam(value = "tag", required = false) ArrayList<String> tags,
             @RequestParam(value = "quizName", required = false) String quizName,
             @RequestParam(value = "authorName", required = false) String authorName,
-            @RequestParam(value = "date", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date[] dates) {
+            @RequestParam(value = "minDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minDate,
+            @RequestParam(value = "maxDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate) {
         return quizService.showPage(pageNumber, countOnPage, quizName, authorName,
-                categories, dates, tags).toList().toArray(Quiz[]::new);
-
+                categories, null, tags).toList().toArray(Quiz[]::new);//todo set min and max dates
     }
 
     @GetMapping("/categories")

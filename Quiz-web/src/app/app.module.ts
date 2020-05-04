@@ -26,6 +26,9 @@ import {AnnouncementModule} from "./modules/announcement/announcement.module";
 import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
 import {DashboardModule} from "./modules/dashboard/dashboard.module";
 import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.module";
+import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
+import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
+import {WebsocketModule} from "./modules/websocket/websocket.module";
 
 @NgModule({
   declarations: [
@@ -55,7 +58,12 @@ import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.modu
     AnnouncementRoutingModule,
     ProfileModule,
     DashboardModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    PlayQuizModule,
+    PlayQuizRoutingModule,
+    WebsocketModule.config({
+      url: 'wss://echo.websocket.org'
+    })
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},

@@ -73,6 +73,13 @@ public class QuizService {
         }
     }
 
+    private void deleteQuizTags(Quiz quiz) {
+        int quizId = quiz.getId();
+        for (Tag tag : quiz.getTags()) {
+            quizDao.removeTag(quizId, tag.getId());
+        }
+    }
+
     @Transactional
     public void updateQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -81,6 +88,8 @@ public class QuizService {
         }
 
         Quiz beforeUpdateQuiz = getQuizById(quiz.getId());
+        deleteQuizTags(beforeUpdateQuiz);
+
         List<Question> afterUpdateQuestions = quiz.getQuestions();
         List<Question> beforeUpdateQuestions = beforeUpdateQuiz.getQuestions();
 

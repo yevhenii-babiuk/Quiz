@@ -8,6 +8,7 @@ export class Quiz implements Imaged {
   id: number;
   name: string;
   authorId: number;
+  description: string= "";
   category: Category = new Category();
   categoryId: number;
   publishedDate: string;

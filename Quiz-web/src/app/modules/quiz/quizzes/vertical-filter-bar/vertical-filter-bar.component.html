@@ -22,6 +22,8 @@
           *ngIf="fbFilter.getClassName() === 'DateFilter'"></app-range-filter>
         <app-keyword-filter [model]="fbFilter" (change)="onFilterChanged(fbFilter.identifier, $event)"
                             *ngIf="fbFilter.getClassName() === 'KeywordFilter'"></app-keyword-filter>
+        <app-tag-filter [model]="fbFilter" (change)="onFilterChanged(fbFilter.identifier, $event)"
+                            *ngIf="fbFilter.getClassName() === 'TagFilter'"></app-tag-filter>
 
       </div>
     </div>

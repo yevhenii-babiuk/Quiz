@@ -1,0 +1,32 @@
+<div class="row">
+  <div class="col">
+    <div class="text-center">
+      <img src="https://i1.wp.com/blog.depuhl.com/wp-content/uploads/2010/01/QR-Code.jpg" alt="image">
+    </div>
+    <div class="text-center">
+      <input class="border border-warning rounded" value="link" readonly #link>
+      <button class="btn btn-outline-dark ml-1 mb-2 btn-sm" (click)="copy(link)">Copy to clipboard</button>
+    </div>
+    <div class="text-center">
+      <input class="border border-warning rounded" value="code" readonly #code>
+      <button class="btn btn-outline-dark ml-1 mb-2 btn-sm" (click)="copy(code)">Copy to clipboard</button>
+    </div>
+  </div>
+  <div class="col">
+    <div class="row border border-dark rounded w-75 mx-auto">
+      <div class="col-1">
+        <span style="font-size: 4vh;">
+          <i class="fa fa-user"></i>
+        </span>
+      </div>
+      <div class="col-8 mt-1">
+        <span style="font-size: 3vh;">
+          User
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="text-center">
+  <button class="btn btn-warning my-4 w-50">PLAY</button>
+</div>

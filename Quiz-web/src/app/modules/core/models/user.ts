@@ -8,6 +8,4 @@ export class User{
   profile:string;
   score:number;
   role:string;
-  /*imageId: number = -1;
-  image: Image = new Image();*/
 }
