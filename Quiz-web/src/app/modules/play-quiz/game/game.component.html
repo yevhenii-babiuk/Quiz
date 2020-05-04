@@ -1,0 +1,7 @@
+<div *ngIf="isWainting; else playQuiz">
+  <app-waiting-room></app-waiting-room>
+</div>
+
+<ng-template #playQuiz>
+  <app-play-question [question]="question" [gameResults]="gameResults" ></app-play-question>
+</ng-template>

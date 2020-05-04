@@ -1,12 +1,10 @@
-import {Component, OnInit} from '@angular/core';
-import {Question} from '../../core/models/question';
-import {QuestionType} from "../../core/models/questionType";
-import {QuestionOptions} from "../../core/models/questionOptions";
-import {GameResults, SingleResult} from "../../core/models/gameResults";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Question} from '../../../core/models/question';
+import {GameResults, SingleResult} from "../../../core/models/gameResults";
 import {Sort} from "@angular/material/sort";
 
 import {timer} from 'rxjs';
-import {Answer} from "../../core/models/answer";
+import {Answer} from "../../../core/models/answer";
 
 @Component({
   selector: 'app-play-question',
@@ -19,60 +17,14 @@ export class PlayQuestionComponent implements OnInit {
   public subscribeTimer: number;
   public timeLeft: number = 10;
 
-  // question: Question;
-  //gameResults: GameResults;
-  gameResults: GameResults = {
-    singleResult: [
-      {
-        login: "some login",
-        id: 2,
-        score: 20
-      }, {
-        login: "another login",
-        id: 5,
-        score: 35
-      }, {
-        login: "my login",
-        id: 10,
-        score: 30
-      }
-    ]
-  }
+  @Input()
+  question: Question;
 
-  question: Question = {
-    id: 1,
-    type: QuestionType.ENTER_ANSWER,
-    content: "Ambitioni dedisse scripsisse iudicaretur. Cras mattis iudicium purus sit amet fermentum.",
-    score: 10,
-    imageId: -1,
-    options: [
-      {
-        id: 12,
-        content: "falewtetse fhsf",
-        isCorrect: false,
-        imageId: -1
-      } as QuestionOptions,
-      {
-        id: 14,
-        content: "trudsfdsge fsjet rye",
-        isCorrect: true,
-        imageId: -1
-      } as QuestionOptions,
-      {
-        id: 16,
-        content: "falewftetse",
-        isCorrect: false,
-        imageId: -1
-      } as QuestionOptions,
-      {
-        id: 11,
-        content: "trudswgefdsge fsg",
-        isCorrect: false,
-        imageId: -1
-      } as QuestionOptions
-    ],
-    image: null
-  };
+  @Input()
+  gameResults: GameResults;
+
+  // @Output()
+  // sendAnswer = new EventEmitter()
 
   answer: Answer = {
     user_id: 2,
@@ -119,6 +71,8 @@ export class PlayQuestionComponent implements OnInit {
     this.isSend = true;
 
     console.log(this.answer);
+
+    // this.sendAnswer.emit(this.answer)
   }
 
   setOption(value: string) {
