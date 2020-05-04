@@ -4,10 +4,7 @@ import com.qucat.quiz.repositories.dao.GameDao;
 import com.qucat.quiz.repositories.dao.mappers.AnswerExtractor;
 import com.qucat.quiz.repositories.dao.mappers.QuestionMapper;
 import com.qucat.quiz.repositories.dao.mappers.UserDtoMapper;
-import com.qucat.quiz.repositories.dto.quizplay.AnswerDto;
-import com.qucat.quiz.repositories.dto.quizplay.GameDto;
-import com.qucat.quiz.repositories.dto.quizplay.QuizDto;
-import com.qucat.quiz.repositories.dto.quizplay.UserDto;
+import com.qucat.quiz.repositories.dto.quizplay.*;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
@@ -60,7 +57,7 @@ public class GameDaoImpl implements GameDao {
     }
 
     public int getHostId(int gameId) {
-        return jdbcTemplate.queryForObject(queries.get(""),
+        return jdbcTemplate.queryForObject(queries.get("getHostId"),
                 new Object[]{gameId}, Integer.class);
     }
 
@@ -69,7 +66,7 @@ public class GameDaoImpl implements GameDao {
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement preparedStatement = connection
-                        .prepareStatement(queries.get(""), Statement.RETURN_GENERATED_KEYS);
+                        .prepareStatement(queries.get("saveUser"), Statement.RETURN_GENERATED_KEYS);
                 preparedStatement.setString(1, user.getGameId());
                 preparedStatement.setString(2, user.getLogin());
                 preparedStatement.setInt(3, user.getRegisterId());
@@ -83,14 +80,14 @@ public class GameDaoImpl implements GameDao {
 
     public int saveAnswer(AnswerDto answer) {
         return jdbcTemplate.update(
-                queries.get(""), answer.getUser().getId(),
+                queries.get("saveAnswer"), answer.getUser().getId(),
                 answer.getAnswer(), answer.getQuestion().getId(),
                 answer.isCorrect(), answer.getTime());
     }
 
     public int saveSettings(GameDto game) {
         return jdbcTemplate.update(
-                queries.get(""), game.getGameId(),
+                queries.get("saveSettings"), game.getGameId(),
                 game.getTime(), game.isQuestionAnswerSequence(),
                 game.isCombo(), game.isIntermediateResult(),
                 game.isQuickAnswerBonus());
@@ -98,39 +95,39 @@ public class GameDaoImpl implements GameDao {
 
     public void saveQuiz(QuizDto quiz) {
         jdbcTemplate.update(
-                queries.get(""), quiz.getId(),
+                queries.get("saveQuiz"), quiz.getId(),
                 quiz.getName(), quiz.getQuestionNumber(),
                 quiz.getImageId());
     }
 
-    public void saveQuestion (Question question){
-        jdbcTemplate.update(queries.get(""),
-        question.getId(),
-        question.getQuizId(), question.getType().name().toLowerCase(),
+    public void saveQuestion(Question question) {
+        jdbcTemplate.update(queries.get("saveQuestion"),
+                question.getId(),
+                question.getQuizId(), question.getType().name().toLowerCase(),
                 question.getContent(), question.getScore(),
                 question.getImageId());
     }
 
-    public void saveOption (QuestionOption option){
-        jdbcTemplate.update(queries.get(""),
+    public void saveOption(QuestionOption option) {
+        jdbcTemplate.update(queries.get("saveOption"),
                 option.getId(),
                 option.getQuestionId(), option.getContent(),
                 option.isCorrect(), option.getSequenceOrder(),
                 option.getImageId());
     }
 
-    public void saveImage (Image image){
-        jdbcTemplate.update(queries.get(""),
+    public void saveImage(Image image) {
+        jdbcTemplate.update(queries.get("saveImage"),
                 image.getId(), image.getSrc());
     }
 
-    public int saveGameQuestion (int gameId, int questionId){
+    public int saveGameQuestion(String gameId, int questionId) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         try {
             jdbcTemplate.update(connection -> {
                 PreparedStatement preparedStatement = connection
-                        .prepareStatement(queries.get(""), Statement.RETURN_GENERATED_KEYS);
-                preparedStatement.setInt(1, gameId);
+                        .prepareStatement(queries.get("saveGameQuestion"), Statement.RETURN_GENERATED_KEYS);
+                preparedStatement.setString(1, gameId);
                 preparedStatement.setInt(2, questionId);
                 return preparedStatement;
             }, keyHolder);
@@ -140,8 +137,18 @@ public class GameDaoImpl implements GameDao {
         return (int) Objects.requireNonNull(keyHolder.getKeys()).get("id");
     }
 
+    public void updateGameQuestion(GameQuestionDto gameQuestion) {
+        jdbcTemplate.update(queries.get("updateGameQuestion"),
+                gameQuestion.getGameId(), gameQuestion.getQuestionId(),
+                gameQuestion.isCurrent(), gameQuestion.getId());
+    }
+
+    public void deleteGame(String id){
+        jdbcTemplate.update(queries.get("deleteGame"), id);
+    }
+
     public void saveGame(int quizId, String gameId) {
-        jdbcTemplate.update(queries.get(""),
+        jdbcTemplate.update(queries.get("saveGame"),
                 gameId, quizId);
     }
 }
