@@ -1,8 +1,8 @@
-export class GameResults {
-  singleResult: SingleResult[];
+export class Users {
+  users: UserDto[];
 }
 
-export class SingleResult {
+export class UserDto {
   login: string;
   id:number;
   score: number;

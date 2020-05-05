@@ -1,4 +1,4 @@
-package com.qucat.quiz.repositories.entities;
+package com.qucat.quiz.repositories.dto.quizplay;
 
 import lombok.Builder;
 import lombok.Data;
@@ -11,4 +11,6 @@ public class UserDto {
     private String login;
     private int registerId;
     private int score;
+    private int comboAnswer;
+
 }

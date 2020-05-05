@@ -22,4 +22,5 @@ public class UserController {
     public void updateUser(@RequestBody User editedUser) {
         userService.updateUserProfile(editedUser);
     }
+
 }

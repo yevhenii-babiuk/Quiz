@@ -1,12 +1,11 @@
 package com.qucat.quiz.controllers;
 
 import com.google.gson.Gson;
-import com.qucat.quiz.repositories.dto.quizPlay.AnswerDto;
-import com.qucat.quiz.repositories.dto.quizPlay.Game;
+import com.qucat.quiz.repositories.dto.quizplay.AnswerDto;
+import com.qucat.quiz.repositories.dto.quizplay.Game;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionType;
-import com.qucat.quiz.repositories.entities.UserDto;
-import com.qucat.quiz.services.PlayGameService;
+import com.qucat.quiz.repositories.dto.quizplay.UserDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONStringer;
@@ -22,9 +21,6 @@ import java.util.List;
 public class PlayGameController {
     @Autowired
     private SimpMessagingTemplate template;
-
-    @Autowired
-    private PlayGameService playGameService;
 
     private List<String> pl = new ArrayList<>();
 

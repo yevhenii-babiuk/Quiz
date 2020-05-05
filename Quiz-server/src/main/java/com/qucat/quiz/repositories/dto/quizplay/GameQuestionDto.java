@@ -4,15 +4,16 @@ import com.qucat.quiz.repositories.entities.Question;
 import lombok.Builder;
 import lombok.Data;
 
+import java.sql.Timestamp;
+
 @Data
 @Builder
-public class AnswerDto {
+public class GameQuestionDto {
     private int id;
-    private int userId;
-    private UserDto user;
-    private String answer;
+    private String gameId;
+    private GameDto game;
     private int questionId;
     private Question question;
-    private boolean isCorrect;
-    private int time;
+    private boolean isCurrent;
+    private Timestamp finishTime;
 }

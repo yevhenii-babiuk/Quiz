@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {GameResults} from "../../core/models/gameResults";
+import {Users} from "../../core/models/gameResults";
 import {Question} from "../../core/models/question";
 import {Answer} from "../../core/models/answer";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -24,7 +24,7 @@ export class GameComponent implements OnInit, OnDestroy {
   time: number;
   //private serverUrl = 'http://localhost:8080/socket';
   private stompClient;
-  public gameResults: GameResults;
+  public gameResults: Users;
 
   public currentUser: UserDto;
   public gameId: string = this.route.snapshot.paramMap.get('gameId');
@@ -100,7 +100,7 @@ export class GameComponent implements OnInit, OnDestroy {
           that.question = null;
           console.log("results " + that.question);
           that.gameResults = {
-            singleResult: [
+            users: [
               {
                 login: "some login",
                 id: 2,
@@ -125,7 +125,6 @@ export class GameComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
   }
-
 
   sendAnswer(answer: Answer) {
     answer.gameId = this.gameId;

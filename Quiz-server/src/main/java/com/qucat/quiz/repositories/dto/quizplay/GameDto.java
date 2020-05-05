@@ -1,13 +1,12 @@
 package com.qucat.quiz.repositories.dto.quizplay;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-@AllArgsConstructor
-public class Game {
+public class GameDto {
+
     private String gameId;
     private int quizId;
     private int time;
@@ -15,5 +14,6 @@ public class Game {
     private boolean quickAnswerBonus;
     private boolean combo;
     private boolean intermediateResult;
+    private QuizDto quiz;
     private int hostId;
 }

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Question} from '../../../core/models/question';
-import {GameResults, SingleResult} from "../../../core/models/gameResults";
+import {Users, UserDto} from "../../../core/models/gameResults";
 import {Sort} from "@angular/material/sort";
 
 import {timer} from 'rxjs';
