@@ -1,15 +1,11 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.GameDao;
-import com.qucat.quiz.repositories.dto.quizplay.AnswerDto;
-import com.qucat.quiz.repositories.dto.quizplay.GameDto;
-import com.qucat.quiz.repositories.dto.quizplay.GameQuestionDto;
-import com.qucat.quiz.repositories.dto.quizplay.UserDto;
+import com.qucat.quiz.repositories.dto.quizplay.*;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -114,6 +110,7 @@ public class GameProcess implements Runnable {
                             answer.setCorrect(true);
                         }
                         user.setScore(user.getScore() + question.getScore() * correctAnswer / question.getOptions().size());
+                        break;
                     }
                     case SELECT_SEQUENCE: {
                         String[] currAnswers = answerStr.split(" ");
@@ -135,18 +132,19 @@ public class GameProcess implements Runnable {
 
                         break;
                     }
+                    default:
+                        break;
                 }
 
-                if (gameDto.isCombo()) {
-                    if (answer.isCorrect()) {
-                        user.setComboAnswer(user.getComboAnswer() + 1);
-                        if (user.getComboAnswer() >= COMBO_COUNT) {
-                            user.setScore(user.getScore() + question.getScore() * (user.getComboAnswer() - COMBO_COUNT + 1));
-                        }
-                    } else {
-                        user.setComboAnswer(0);
+                if (gameDto.isCombo() && answer.isCorrect()) {
+                    user.setComboAnswer(user.getComboAnswer() + 1);
+                    if (user.getComboAnswer() >= COMBO_COUNT) {
+                        user.setScore(user.getScore() + question.getScore() * (user.getComboAnswer() - COMBO_COUNT + 1));
                     }
+                } else {
+                    user.setComboAnswer(0);
                 }
+
                 gameDao.updateUserDto(user);
             }
 
@@ -167,7 +165,7 @@ public class GameProcess implements Runnable {
             }
 
             if (gameDto.isIntermediateResult()) {
-                List<UserDto> users = gameDao.getUsersByGame(gameId);
+                Users users = Users.builder().users(gameDao.getUsersByGame(gameId)).build();
                 socketSenderService.sendUsers(users, gameId);
                 try {
                     wait((long) 1e4);
@@ -178,7 +176,7 @@ public class GameProcess implements Runnable {
 
             gameDao.deleteGameQuestion(questionDto.getId());
         }
-        //todo send results
+        //todo send results end command end
         gameDao.deleteGame(gameId);
     }
 
@@ -204,6 +202,8 @@ public class GameProcess implements Runnable {
                 }
                 break;
             }
+            default:
+                break;
         }
     }
 

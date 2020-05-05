@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {GameResults, SingleResult} from "../../../core/models/gameResults";
+import {Users, UserDto} from "../../../core/models/gameResults";
 import {Sort} from "@angular/material/sort";
 
 @Component({
@@ -9,19 +9,19 @@ import {Sort} from "@angular/material/sort";
 export class ResultsComponent implements OnInit {
 
   @Input()
-  gameResults: GameResults;
-  sortedData: SingleResult[];
+  gameResults: Users;
+  sortedData: UserDto[];
 
 
   constructor() {
   }
 
   ngOnInit(): void {
-    this.sortedData = this.gameResults.singleResult;
+    this.sortedData = this.gameResults.users;
   }
 
   sortData(sort: Sort) {
-    const data = this.gameResults.singleResult.slice();
+    const data = this.gameResults.users.slice();
     if (!sort.active || sort.direction === '') {
       this.sortedData = data;
       return;

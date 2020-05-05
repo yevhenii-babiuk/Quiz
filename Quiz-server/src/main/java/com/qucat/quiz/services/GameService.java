@@ -1,11 +1,10 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.implementation.GameDaoImpl;
-import com.qucat.quiz.repositories.dto.quizplay.AnswerDto;
-import com.qucat.quiz.repositories.dto.quizplay.GameDto;
-import com.qucat.quiz.repositories.dto.quizplay.QuizDto;
-import com.qucat.quiz.repositories.dto.quizplay.UserDto;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.dto.quizplay.*;
+import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.QuestionOption;
+import com.qucat.quiz.repositories.entities.Quiz;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
 import java.util.Base64;
-import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -38,7 +36,7 @@ public class GameService {
 
     public int connectUser(UserDto user) {
         int id = gameDao.saveUser(user);
-        List<UserDto> users = gameDao.getUsersByGame(user.getGameId());
+        Users users = Users.builder().users(gameDao.getUsersByGame(user.getGameId())).build();
         socketSenderService.sendUsers(users, user.getGameId());
         return id;
     }
@@ -67,13 +65,13 @@ public class GameService {
         gameDao.saveImage(quiz.getImage());
         for (Question question : quizDto.getQuestions()) {
             gameDao.saveQuestion(question);
-            if (question.getImageId()!=-1){
+            if (question.getImageId() != -1) {
                 gameDao.saveImage(question.getImage());
             }
             gameDao.saveGameQuestion(game.getGameId(), question.getId());
-            for (QuestionOption option: question.getOptions()){
+            for (QuestionOption option : question.getOptions()) {
                 gameDao.saveOption(option);
-                if (option.getImageId()!=-1){
+                if (option.getImageId() != -1) {
                     gameDao.saveImage(option.getImage());
                 }
             }
@@ -82,7 +80,7 @@ public class GameService {
         return gameId;
     }
 
-    public String getQRCode(int quizId, String accessCode){
+    public String getQRCode(int quizId, String accessCode) {
         return Base64.getEncoder().encodeToString(qrCodeGenerator.getQRCodeImage(
                 URL + "quiz/" + quizId + "/game/" + accessCode,
                 200, 200));
