@@ -1,4 +1,4 @@
-package com.qucat.quiz.repositories.entities;
+package com.qucat.quiz.repositories.dto.quizPlay;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +8,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class Game {
-    private int gameId;
+    private String gameId;
     private int quizId;
     private int time;
     private boolean questionAnswerSequence;

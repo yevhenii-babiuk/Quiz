@@ -4,5 +4,5 @@
 
 <ng-template #playQuiz>
   <app-results *ngIf="gameResults" [gameResults]="gameResults"></app-results>
-  <app-play-question *ngIf="question" [question]="question" (sendAnswer)="processAnswer($event)" ></app-play-question>
+  <app-play-question *ngIf="question" [question]="question" (sendAnswer)="sendAnswer($event)" ></app-play-question>
 </ng-template>

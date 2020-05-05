@@ -1,14 +1,15 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {GameResults} from "../../core/models/gameResults";
 import {Question} from "../../core/models/question";
 import {Answer} from "../../core/models/answer";
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../../core/services/security.service";
 import {PlayGameService} from "../../core/services/play-game.service";
-import {Game} from "../../core/models/game";
-import {User} from "../../core/models/user";
 import * as Stomp from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
+import {UserDto} from "../../core/models/userDto";
+import {QuestionType} from "../../core/models/questionType";
+
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -16,28 +17,29 @@ import * as SockJS from 'sockjs-client';
 })
 export class GameComponent implements OnInit {
 
+  question: Question;
   players: String[] = [];
   private serverUrl = 'http://localhost:8080/socket';
   private stompClient;
-  public question: Question;
   public gameResults: GameResults;
 
-  public currentUser:User;
+  public currentUser: UserDto;
+  public gameId: string = this.route.snapshot.paramMap.get('gameId');
   isWaiting: boolean = true;
 
   constructor(private route: ActivatedRoute,
               private redirect: Router,
               private securityService: SecurityService,
               private playGameService: PlayGameService) {
-    console.log("parCon");
     let userId = securityService.getCurrentId();
+    if (!userId) userId = 0;
     this.initializeWebSocketConnection();
 
-    this.playGameService.sendJoinedUser(userId, this.route.snapshot.paramMap.get('gameId')).subscribe(
+    this.playGameService.sendJoinedUser(userId, this.gameId).subscribe(
       user => {
         console.log("userJoined");
         this.currentUser = user;
-        this.playGameService.getJoinedPlayers(this.route.snapshot.paramMap.get('gameId')).subscribe(
+        this.playGameService.getJoinedPlayers(this.gameId).subscribe(
           players => {
             if (players)
               this.players = players;
@@ -47,7 +49,6 @@ export class GameComponent implements OnInit {
             this.redirect.navigate(['home']);
           }
         );
-     //   this.players.push(this.currentUser.login);
       }, err => {
         console.log(err);
         this.redirect.navigate(['home']);
@@ -60,34 +61,66 @@ export class GameComponent implements OnInit {
     let ws = new SockJS(this.serverUrl);
     this.stompClient = Stomp.Stomp.over(ws);
     let that = this;
-    console.log("socket"+this.currentUser);
+
     this.stompClient.connect({}, function () {
-      that.stompClient.subscribe("/game/" + that.route.snapshot.paramMap.get('gameId') + "/players", (message) => {
-        console.log("received");
+      that.stompClient.subscribe("/game/" + that.gameId + "/players", (message) => {
         if (message.body) {
           let json = JSON.parse(message.body);
           console.log(json);
-          //if (json.command == 'question') {
-          //  console.log("it is question");
           that.players = json;
-          console.log(that.players);
-          //  } else if (json.command == 'answer') {
-          //    console.log("it is answer");
-          //    console.log(message.body);
-          //  }
+        }
+      });
+
+      that.stompClient.subscribe("/game/" + that.gameId + "/play/question", (message) => {
+        if (message.body) {
+          let json = JSON.parse(message.body);
+          that.isWaiting = false;
+          that.gameResults = null;
+          that.question = json;
+        }
+      });
+
+      that.stompClient.subscribe("/game/" + that.gameId + "/play/results", (message) => {
+        if (message.body) {
+          //  let json = JSON.parse(message.body);
+          that.isWaiting = false;
+          that.question = null;
+          console.log("results " + that.question);
+          that.gameResults = {
+            singleResult: [
+              {
+                login: "some login",
+                id: 2,
+                score: 20
+              }, {
+                login: "another login",
+                id: 5,
+                score: 35
+              }, {
+                login: "my login",
+                id: 10,
+                score: 30
+              }
+            ]
+          }
+          //that.gameResults.singleResult = json;
         }
       });
     }, this);
+
   }
 
   ngOnInit(): void {
   }
 
-  processAnswer(answer: Answer) {
-    console.log(answer);
+  sendAnswer(answer: Answer) {
+    answer.gameId = this.gameId;
+    answer.userId = this.currentUser.id;
+    this.stompClient.send("/game/" + this.gameId + "/play", {}, JSON.stringify(answer));
   }
 
   startGame() {
-
+    this.isWaiting = false;
+    this.stompClient.send("/game/" + this.gameId + "/start", {}, "start game");
   }
 }

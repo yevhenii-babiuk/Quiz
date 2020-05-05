@@ -6,8 +6,8 @@ import {catchError} from "rxjs/operators";
 
 import {url} from "../../../../environments/environment.prod";
 import {Game} from "../models/game";
-import {User} from "../models/user";
 import Str = echarts.EChartOption.Tooltip.Position.Str;
+import {UserDto} from "../models/userDto";
 
 @Injectable({
   providedIn: 'root'
@@ -53,7 +53,7 @@ export class PlayGameService {
   }
 
   sendJoinedUser(userId: number, gameId: string) {
-    return this.http.post<User>(`${url}/game/${gameId}/joinedUser`, userId, this.httpOptions);
+    return this.http.post<UserDto>(`${url}/game/${gameId}/joinedUser`, userId, this.httpOptions);
   }
 
   /*getById(id: string) {
@@ -77,4 +77,5 @@ export class PlayGameService {
         catchError(this.handleError<String[]>([]))
       );
   }
+
 }
