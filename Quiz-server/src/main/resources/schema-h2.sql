@@ -23,9 +23,9 @@ CREATE TABLE question
     content       VARCHAR(255),
     score         INT,
     image_id      INT,
-   /* FOREIGN KEY (image_id)
-        REFERENCES image (id)
-        ON DELETE CASCADE,*/
+    /* FOREIGN KEY (image_id)
+         REFERENCES image (id)
+         ON DELETE CASCADE,*/
     FOREIGN KEY (quiz_id)
         REFERENCES quiz (id)
         ON DELETE CASCADE
@@ -49,7 +49,7 @@ CREATE TABLE question_option
 
 CREATE TABLE game
 (
-    id      INT PRIMARY KEY,
+    game_id VARCHAR(25) PRIMARY KEY,
     quiz_id INT,
     FOREIGN KEY (quiz_id)
         REFERENCES quiz (id)
@@ -79,7 +79,7 @@ CREATE TABLE game_questions
     is_current  BOOLEAN DEFAULT FALSE,
     finish_time TIMESTAMP,
     FOREIGN KEY (game_id)
-        REFERENCES game (id)
+        REFERENCES game (game_id)
         ON DELETE CASCADE,
     FOREIGN KEY (question_id)
         REFERENCES question (id)
@@ -95,7 +95,7 @@ CREATE TABLE settings
     combo                    BOOLEAN,
     intermediate_result      BOOLEAN,
     FOREIGN KEY (game_id)
-        REFERENCES game (id)
+        REFERENCES game (game_id)
         ON DELETE CASCADE
 );
 

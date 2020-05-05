@@ -79,6 +79,8 @@ public class GameService {
                 .name(quiz.getName()).questionNumber(quiz.getQuestionNumber()).questions(quiz.getQuestions()).build();
         gameDao.saveImage(quiz.getImage());
         gameDao.saveQuiz(quizDto);
+        gameDao.saveGame(game.getQuizId(), game.getGameId());
+        gameDao.saveSettings(game);
         for (Question question : quizDto.getQuestions()) {
             gameDao.saveQuestion(question);
             if (question.getImageId() != -1) {
@@ -92,9 +94,6 @@ public class GameService {
                 }
             }
         }
-
-        gameDao.saveGame(game.getQuizId(), game.getGameId());
-        gameDao.saveSettings(game);
 
         return gameId;
     }

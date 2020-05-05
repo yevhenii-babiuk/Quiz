@@ -6,6 +6,7 @@ import com.qucat.quiz.repositories.dto.*;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 @Repository
 @PropertySource("classpath:game.properties")
 public class GameDaoImpl implements GameDao {
@@ -79,6 +81,7 @@ public class GameDaoImpl implements GameDao {
                 return preparedStatement;
             }, keyHolder);
         } catch (DuplicateKeyException e) {
+            log.warn("user is already exist id={} ", user.getId());
             return -1;
         }
         return (int) Objects.requireNonNull(keyHolder.getKeys()).get("id");
@@ -86,10 +89,15 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public int saveAnswer(AnswerDto answer) {
-        return jdbcTemplate.update(
-                queries.get("saveAnswer"), answer.getUserId(),
-                answer.getAnswer(), answer.getQuestion().getId(),
-                answer.isCorrect(), answer.getTime());
+        try {
+            return jdbcTemplate.update(
+                    queries.get("saveAnswer"), answer.getUserId(),
+                    answer.getAnswer(), answer.getQuestion().getId(),
+                    answer.isCorrect(), answer.getTime());
+        } catch (DuplicateKeyException e) {
+            log.warn("image is already exist id={} ", answer.getId());
+            return -1;
+        }
     }
 
     @Override
@@ -103,34 +111,50 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public void saveQuiz(QuizDto quiz) {
-        jdbcTemplate.update(
-                queries.get("saveQuiz"), quiz.getId(),
-                quiz.getName(), quiz.getQuestionNumber(),
-                quiz.getImageId());
+        try {
+            jdbcTemplate.update(
+                    queries.get("saveQuiz"), quiz.getId(),
+                    quiz.getName(), quiz.getQuestionNumber(),
+                    quiz.getImageId());
+        } catch (DuplicateKeyException e) {
+            log.warn("quiz is already exist id={} ", quiz.getId());
+        }
     }
 
     @Override
     public void saveQuestion(Question question) {
-        jdbcTemplate.update(queries.get("saveQuestion"),
-                question.getId(),
-                question.getQuizId(), question.getType().name().toLowerCase(),
-                question.getContent(), question.getScore(),
-                question.getImageId());
+        try {
+            jdbcTemplate.update(queries.get("saveQuestion"),
+                    question.getId(),
+                    question.getQuizId(), question.getType().name().toLowerCase(),
+                    question.getContent(), question.getScore(),
+                    question.getImageId());
+        } catch (DuplicateKeyException e) {
+            log.warn("question is already exist id={} ", question.getId());
+        }
     }
 
     @Override
     public void saveOption(QuestionOption option) {
+        try {
         jdbcTemplate.update(queries.get("saveOption"),
                 option.getId(),
                 option.getQuestionId(), option.getContent(),
                 option.isCorrect(), option.getSequenceOrder(),
                 option.getImageId());
+        }catch (DuplicateKeyException e){
+            log.warn("question option is already exist id={} ", option.getId());
+        }
     }
 
     @Override
     public void saveImage(Image image) {
-        jdbcTemplate.update(queries.get("saveImage"),
-                image.getId(), image.getSrc());
+        try {
+            jdbcTemplate.update(queries.get("saveImage"),
+                    image.getId(), image.getSrc());
+        } catch (DuplicateKeyException e) {
+            log.warn("image is already exist id={} ", image.getId());
+        }
     }
 
     @Override
