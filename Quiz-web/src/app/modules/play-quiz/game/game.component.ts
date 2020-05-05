@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {GameResults} from "../../core/models/gameResults";
 import {Question} from "../../core/models/question";
 import {Answer} from "../../core/models/answer";
@@ -9,17 +9,20 @@ import * as Stomp from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {UserDto} from "../../core/models/userDto";
 import {QuestionType} from "../../core/models/questionType";
+import {socket} from "../../../../environments/environment.prod";
 
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
   styleUrls: ['./game.component.css']
 })
-export class GameComponent implements OnInit {
+export class GameComponent implements OnInit, OnDestroy {
 
   question: Question;
   players: String[] = [];
-  private serverUrl = 'http://localhost:8080/socket';
+  hostId: number;
+  time: number;
+  //private serverUrl = 'http://localhost:8080/socket';
   private stompClient;
   public gameResults: GameResults;
 
@@ -34,6 +37,16 @@ export class GameComponent implements OnInit {
     let userId = securityService.getCurrentId();
     if (!userId) userId = 0;
     this.initializeWebSocketConnection();
+
+    this.playGameService.getGame(this.gameId).subscribe(
+      game => {
+        this.hostId = game.hostId;
+        this.time = game.time;
+        console.log(game);
+      }, err => {
+        console.log(err);
+        this.redirect.navigate(['home']);
+      });
 
     this.playGameService.sendJoinedUser(userId, this.gameId).subscribe(
       user => {
@@ -58,7 +71,7 @@ export class GameComponent implements OnInit {
   }
 
   initializeWebSocketConnection() {
-    let ws = new SockJS(this.serverUrl);
+    let ws = new SockJS(socket);
     this.stompClient = Stomp.Stomp.over(ws);
     let that = this;
 
@@ -113,6 +126,7 @@ export class GameComponent implements OnInit {
   ngOnInit(): void {
   }
 
+
   sendAnswer(answer: Answer) {
     answer.gameId = this.gameId;
     answer.userId = this.currentUser.id;
@@ -122,5 +136,9 @@ export class GameComponent implements OnInit {
   startGame() {
     this.isWaiting = false;
     this.stompClient.send("/game/" + this.gameId + "/start", {}, "start game");
+  }
+
+  ngOnDestroy(): void {
+    this.stompClient.disconnect();
   }
 }

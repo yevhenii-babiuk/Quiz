@@ -62,7 +62,7 @@ public class PlayGameController {
 
     @GetMapping("api/v1/game/{gameId}")
     public Game getJoinedUsers(@PathVariable String gameId) {
-        return Game.builder().gameId(gameId).build();
+        return Game.builder().gameId(gameId).time(15).hostId(72).build();
     }
 
     @PostMapping("api/v1/game/{gameId}/joinedUser")

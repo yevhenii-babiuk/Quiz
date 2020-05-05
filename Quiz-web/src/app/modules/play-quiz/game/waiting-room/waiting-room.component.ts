@@ -21,7 +21,9 @@ export class WaitingRoomComponent implements OnInit {
   @Input()
   currentUser: UserDto;
 
-  hostId: number = 0;
+  @Input()
+  hostId: number;
+
   gameId: string = this.route.snapshot.paramMap.get('gameId');
 
   constructor(private route: ActivatedRoute,

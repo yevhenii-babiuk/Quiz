@@ -78,4 +78,10 @@ export class PlayGameService {
       );
   }
 
+  getGame(gameId: string) {
+    return this.http.get<Game>(`${url}/game/${gameId}`)
+      .pipe(
+        catchError(this.handleError<Game>(null))
+      );
+  }
 }

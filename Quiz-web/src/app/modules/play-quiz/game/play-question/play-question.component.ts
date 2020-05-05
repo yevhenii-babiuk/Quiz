@@ -15,7 +15,9 @@ export class PlayQuestionComponent implements OnInit {
   public isSend: boolean = false;
 
   public subscribeTimer: number;
-  public timeLeft: number = 15;
+
+  @Input()
+  timeLeft: number;
 
   @Input()
   question: Question;
