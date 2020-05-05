@@ -17,13 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1")
 public class PlayGameController {
     @Autowired
     private SimpMessagingTemplate template;
 
     @Autowired
     private PlayGameService playGameService;
+
+    List<String> pl = new ArrayList<>();
 
     @MessageMapping("/{gameId}/play")
     public void onReceiveMessage(@DestinationVariable String gameId, String message) {
@@ -63,29 +64,30 @@ public class PlayGameController {
         System.out.println("user id= " + id);
     }
 
-    @PostMapping("/game")
+    @PostMapping("api/v1/game")
     public int addGame(@RequestBody Game game) {
         //service.createGame()
         System.out.println(game);
         return 0;
     }
 
-    @PostMapping("/game/{gameId}/joinedUser")
+    @PostMapping("api/v1/game/{gameId}/joinedUser")
     public User addJoinedUser(@PathVariable int gameId, @RequestBody int userId) {
         //service.createGame()
         System.out.println("JOINED USER game id= " + gameId);
         System.out.println("user id= " + userId);
-        sendPlayers(gameId, List.of("user1", "user2", "user3", "user4", "authorisedUser" + userId));
+        pl.add("authorisedUser" + userId);
+        sendPlayers(gameId, pl);
 
         if (userId != 0) return User.builder().userId(userId).login("authorisedUser" + userId).build();
         return User.builder().userId(userId).login("unauthorisedUser" + userId).build();
     }
 
-    @GetMapping("/game/{gameId}/joinedUser")
+    @GetMapping("api/v1/game/{gameId}/joinedUser")
     public List<String> getJoinedUsers(@PathVariable int gameId) {
         //service.createGame()
         System.out.println("game id= " + gameId);
-        return List.of("user1", "user2", "user3", "user4");
+        return pl;
     }
 
     private void sendPlayers(int gameId, List<String> players) {
