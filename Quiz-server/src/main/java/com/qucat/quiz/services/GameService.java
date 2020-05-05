@@ -73,9 +73,9 @@ public class GameService {
                 new BigInteger(UUID.randomUUID().toString().replace("-", ""), 16)
         ).substring(0, 10);
         game.setGameId(gameId);
+        gameDao.saveGame(game.getQuizId(), game.getGameId());
         gameDao.saveSettings(game);
 
-        gameDao.saveGame(game.getQuizId(), game.getGameId());
         Quiz quiz = quizService.getQuizById(game.getQuizId());
         QuizDto quizDto = QuizDto.builder().id(quiz.getId()).image(quiz.getImage()).imageId(quiz.getImageId())
                 .name(quiz.getName()).questionNumber(quiz.getQuestionNumber()).questions(quiz.getQuestions()).build();
