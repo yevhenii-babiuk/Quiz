@@ -17,7 +17,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -137,12 +138,12 @@ public class GameDaoImpl implements GameDao {
     @Override
     public void saveOption(QuestionOption option) {
         try {
-        jdbcTemplate.update(queries.get("saveOption"),
-                option.getId(),
-                option.getQuestionId(), option.getContent(),
-                option.isCorrect(), option.getSequenceOrder(),
-                option.getImageId());
-        }catch (DuplicateKeyException e){
+            jdbcTemplate.update(queries.get("saveOption"),
+                    option.getId(),
+                    option.getQuestionId(), option.getContent(),
+                    option.isCorrect(), option.getSequenceOrder(),
+                    option.getImageId());
+        } catch (DuplicateKeyException e) {
             log.warn("question option is already exist id={} ", option.getId());
         }
     }

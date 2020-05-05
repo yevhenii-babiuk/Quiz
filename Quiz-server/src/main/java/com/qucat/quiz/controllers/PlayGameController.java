@@ -34,7 +34,8 @@ public class PlayGameController {
 
     @PostMapping("api/v1/game")
     public String addGame(@RequestBody GameDto game) {
-        return gameService.createRoom(game);
+        Gson gson = new Gson();
+        return gson.toJson(gameService.createRoom(game));
     }
 
     @GetMapping("api/v1/game/{gameId}")
@@ -44,7 +45,6 @@ public class PlayGameController {
 
     @PostMapping("api/v1/game/{gameId}/joinedUser")
     public UserDto addJoinedUser(@PathVariable String gameId, @RequestBody int userId) {
-        //service.createGame()
         System.out.println("JOINED USER game id= " + gameId);
         System.out.println("user id= " + userId);
         return gameService.connectUser(gameId, userId);

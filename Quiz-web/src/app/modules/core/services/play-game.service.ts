@@ -6,7 +6,6 @@ import {catchError} from "rxjs/operators";
 
 import {url} from "../../../../environments/environment.prod";
 import {GameDto} from "../models/gameDto";
-import Str = echarts.EChartOption.Tooltip.Position.Str;
 import {UserDto} from "../models/userDto";
 
 @Injectable({
@@ -49,7 +48,9 @@ export class PlayGameService {
    }*/
 
   sendGame(game: GameDto) {
-    return this.http.post<string>(`${url}/game/`, game, this.httpOptions);
+    return this.http.post<string>(`${url}/game/`, game, this.httpOptions).pipe(
+      catchError(this.handleError<String>(null))
+    );
   }
 
   sendJoinedUser(userId: number, gameId: string) {
@@ -71,7 +72,7 @@ export class PlayGameService {
     };
   }
 
-  getJoinedPlayers(gameId: string) : Observable<String[]> {
+  getJoinedPlayers(gameId: string): Observable<String[]> {
     return this.http.get<String[]>(`${url}/game/${gameId}/joinedUser`)
       .pipe(
         catchError(this.handleError<String[]>([]))
