@@ -73,14 +73,12 @@ public class GameService {
                 new BigInteger(UUID.randomUUID().toString().replace("-", ""), 16)
         ).substring(0, 10);
         game.setGameId(gameId);
-        gameDao.saveGame(game.getQuizId(), game.getGameId());
-        gameDao.saveSettings(game);
 
         Quiz quiz = quizService.getQuizById(game.getQuizId());
         QuizDto quizDto = QuizDto.builder().id(quiz.getId()).image(quiz.getImage()).imageId(quiz.getImageId())
                 .name(quiz.getName()).questionNumber(quiz.getQuestionNumber()).questions(quiz.getQuestions()).build();
-        gameDao.saveQuiz(quizDto);
         gameDao.saveImage(quiz.getImage());
+        gameDao.saveQuiz(quizDto);
         for (Question question : quizDto.getQuestions()) {
             gameDao.saveQuestion(question);
             if (question.getImageId() != -1) {
@@ -94,6 +92,9 @@ public class GameService {
                 }
             }
         }
+
+        gameDao.saveGame(game.getQuizId(), game.getGameId());
+        gameDao.saveSettings(game);
 
         return gameId;
     }

@@ -9,10 +9,10 @@ CREATE TABLE quiz
     id              INT PRIMARY KEY,
     name            VARCHAR(50),
     question_number INT,
-    image_id        INT,
+    image_id        INT/*,
     FOREIGN KEY (image_id)
         REFERENCES image (id)
-        ON DELETE CASCADE
+        ON DELETE CASCADE*/
 );
 
 CREATE TABLE question
@@ -23,9 +23,9 @@ CREATE TABLE question
     content       VARCHAR(255),
     score         INT,
     image_id      INT,
-    FOREIGN KEY (image_id)
+   /* FOREIGN KEY (image_id)
         REFERENCES image (id)
-        ON DELETE CASCADE,
+        ON DELETE CASCADE,*/
     FOREIGN KEY (quiz_id)
         REFERENCES quiz (id)
         ON DELETE CASCADE
@@ -39,9 +39,9 @@ CREATE TABLE question_option
     is_correct     BOOLEAN,
     sequence_order INT,
     image_id       INT,
-    FOREIGN KEY (image_id)
+    /*FOREIGN KEY (image_id)
         REFERENCES image (id)
-        ON DELETE CASCADE,
+        ON DELETE CASCADE,*/
     FOREIGN KEY (question_id)
         REFERENCES question (id)
         ON DELETE CASCADE
