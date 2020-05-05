@@ -1,9 +1,7 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.GameDao;
-import com.qucat.quiz.repositories.dao.mappers.AnswerExtractor;
-import com.qucat.quiz.repositories.dao.mappers.QuestionMapper;
-import com.qucat.quiz.repositories.dao.mappers.UserDtoMapper;
+import com.qucat.quiz.repositories.dao.mappers.*;
 import com.qucat.quiz.repositories.dto.quizplay.*;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
@@ -143,12 +141,50 @@ public class GameDaoImpl implements GameDao {
                 gameQuestion.isCurrent(), gameQuestion.getId());
     }
 
-    public void deleteGame(String id){
+    public void deleteGame(String id) {
         jdbcTemplate.update(queries.get("deleteGame"), id);
     }
 
     public void saveGame(int quizId, String gameId) {
         jdbcTemplate.update(queries.get("saveGame"),
                 gameId, quizId);
+    }
+
+    public GameDto getGame(String id) {
+        return jdbcTemplate.queryForObject(queries.get("getGame"),
+                new Object[]{id}, new GameDtoMapper());
+
+    }
+
+    public void updateUserDto(UserDto user) {
+        jdbcTemplate.update(queries.get("updateUser"),
+                user.getGameId(), user.getLogin(), user.getRegisterId(), user.getScore(),
+                user.getId());
+    }
+
+    public void updateGameQuestionToCurrent(int id) {
+        jdbcTemplate.update(queries.get("updateGameQuestionToCurrent"), true, id);
+    }
+
+    public void deleteGameQuestion(int id) {
+        jdbcTemplate.update(queries.get("deleteGameQuestion"), id);
+    }
+
+    public void updateUserToHost(int id) {
+        jdbcTemplate.update(queries.get("updateUserToHost"), true, id);
+    }
+
+    public GameQuestionDto getGameQuestion(String gameId, int random) {
+        return jdbcTemplate.queryForObject(queries.get("getGameQuestion"),
+                new Object[]{gameId, random}, new GameQuestionMapper());
+    }
+
+    public int getCountGameQuestion(int gameId) {
+        try {
+            return jdbcTemplate.queryForObject(queries.get("getCountGameQuestion"),
+                    new Object[]{gameId}, Integer.class);
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 }
