@@ -179,7 +179,7 @@ public class GameDaoImpl implements GameDao {
     public void updateUserDto(UserDto user) {
         jdbcTemplate.update(queries.get("updateUser"),
                 user.getGameId(), user.getLogin(), user.getRegisterId(), user.getScore(),
-                user.getId());
+                user.getComboAnswer(), user.getId());
     }
 
     @Override

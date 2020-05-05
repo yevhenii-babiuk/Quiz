@@ -39,6 +39,7 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
                 user.setRegisterId(rs.getInt("registered_id"));
                 user.setLogin(rs.getString("login"));
                 user.setScore(rs.getInt("user_score"));
+                user.setComboAnswer(rs.getInt("combo_answer"));
 
             }
 
