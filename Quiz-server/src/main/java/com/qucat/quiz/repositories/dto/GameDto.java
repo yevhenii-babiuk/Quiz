@@ -1,4 +1,4 @@
-package com.qucat.quiz.repositories.dto.quizplay;
+package com.qucat.quiz.repositories.dto;
 
 import lombok.Builder;
 import lombok.Data;
@@ -16,4 +16,5 @@ public class GameDto {
     private boolean intermediateResult;
     private QuizDto quiz;
     private int hostId;
+    private String image;
 }

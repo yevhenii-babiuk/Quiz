@@ -1,4 +1,4 @@
-package com.qucat.quiz.repositories.dto.quizplay;
+package com.qucat.quiz.repositories.dto;
 
 import com.qucat.quiz.repositories.entities.Question;
 import lombok.Builder;

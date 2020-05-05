@@ -1,7 +1,7 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
-import com.qucat.quiz.repositories.dto.quizplay.AnswerDto;
-import com.qucat.quiz.repositories.dto.quizplay.UserDto;
+import com.qucat.quiz.repositories.dto.AnswerDto;
+import com.qucat.quiz.repositories.dto.UserDto;
 import com.qucat.quiz.repositories.entities.*;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;

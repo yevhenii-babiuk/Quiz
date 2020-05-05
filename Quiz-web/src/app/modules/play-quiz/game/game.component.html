@@ -1,5 +1,5 @@
 <div *ngIf="isWaiting; else playQuiz">
-  <app-waiting-room [players]="players" [currentUser]="currentUser" [hostId]="hostId" (startGame)="startGame()"></app-waiting-room>
+  <app-waiting-room [players]="players" [image]="image" [currentUser]="currentUser" [hostId]="hostId" (startGame)="startGame()"></app-waiting-room>
 </div>
 
 <ng-template #playQuiz>

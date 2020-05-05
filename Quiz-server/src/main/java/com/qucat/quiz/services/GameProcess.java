@@ -1,7 +1,8 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.GameDao;
-import com.qucat.quiz.repositories.dto.quizplay.*;
+
+import com.qucat.quiz.repositories.dto.*;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,6 @@ public class GameProcess implements Runnable {
     @Autowired
     private GameDao gameDao;
 
-    @Autowired
-    private QuizService quizService;
 
     public GameProcess(String gameId) {
         this.gameId = gameId;
@@ -77,7 +76,7 @@ public class GameProcess implements Runnable {
                 answerStr = answerStr.substring(answerStr.indexOf(':'));
 
                 switch (question.getType()) {
-                    case ENTER_ANSWER: {
+                    case ENTER_ANSWER:
                         List<QuestionOption> options = question.getOptions();
                         answer.setCorrect(options.get(0).getContent().toLowerCase().trim()
                                 .equals(answerStr.toLowerCase().trim()));
@@ -85,16 +84,16 @@ public class GameProcess implements Runnable {
                             user.setScore(user.getScore() + question.getScore());
                         }
                         break;
-                    }
-                    case TRUE_FALSE: {
-                        List<QuestionOption> options = question.getOptions();
-                        answer.setCorrect(options.get(0).isCorrect() == answerStr.equals("true"));
+
+                    case TRUE_FALSE:
+                        List<QuestionOption> questionOptions = question.getOptions();
+                        answer.setCorrect(questionOptions.get(0).isCorrect() == answerStr.equals("true"));
                         if (answer.isCorrect()) {
                             user.setScore(user.getScore() + question.getScore());
                         }
                         break;
-                    }
-                    case SELECT_OPTION: {
+
+                    case SELECT_OPTION:
                         String[] userAnswers = answerStr.split(" ");
                         List<Integer> chosenAnswers = new ArrayList<>();
                         for (String currAnswer : userAnswers) {
@@ -111,27 +110,27 @@ public class GameProcess implements Runnable {
                         }
                         user.setScore(user.getScore() + question.getScore() * correctAnswer / question.getOptions().size());
                         break;
-                    }
-                    case SELECT_SEQUENCE: {
+
+                    case SELECT_SEQUENCE:
                         String[] currAnswers = answerStr.split(" ");
-                        HashMap<Integer, Integer> userAnswers = new HashMap<>();
+                        HashMap<Integer, Integer> useranswers = new HashMap<>();
                         for (String currAnswer : currAnswers) {
                             String[] oneUserAnswer = currAnswer.split("-");
-                            userAnswers.put(Integer.parseInt(oneUserAnswer[0]), Integer.parseInt(oneUserAnswer[1]));
+                            useranswers.put(Integer.parseInt(oneUserAnswer[0]), Integer.parseInt(oneUserAnswer[1]));
                         }
-                        int correctAnswer = 0;
+                        int correct = 0;
                         for (QuestionOption option : question.getOptions()) {
-                            if (option.getSequenceOrder() == userAnswers.get(option.getId())) {
-                                correctAnswer++;
+                            if (option.getSequenceOrder() == useranswers.get(option.getId())) {
+                                correct++;
                             }
                         }
-                        if (correctAnswer == question.getOptions().size()) {
+                        if (correct == question.getOptions().size()) {
                             answer.setCorrect(true);
                         }
-                        user.setScore(user.getScore() + question.getScore() * correctAnswer / question.getOptions().size());
+                        user.setScore(user.getScore() + question.getScore() * correct / question.getOptions().size());
 
                         break;
-                    }
+
                     default:
                         break;
                 }
@@ -166,7 +165,7 @@ public class GameProcess implements Runnable {
 
             if (gameDto.isIntermediateResult()) {
                 Users users = Users.builder().users(gameDao.getUsersByGame(gameId)).build();
-                socketSenderService.sendUsers(users, gameId);
+                socketSenderService.sendResults(gameId, users);
                 try {
                     wait((long) 1e4);
                 } catch (InterruptedException e) {
@@ -182,26 +181,26 @@ public class GameProcess implements Runnable {
 
     private void clearRightAnswer(Question question) {
         switch (question.getType()) {
-            case ENTER_ANSWER: {
+            case ENTER_ANSWER:
                 question.getOptions().get(0).setContent(null);
                 break;
-            }
-            case TRUE_FALSE: {
+
+            case TRUE_FALSE:
                 question.getOptions().get(0).setCorrect(false);
                 break;
-            }
-            case SELECT_OPTION: {
+
+            case SELECT_OPTION:
                 for (QuestionOption option : question.getOptions()) {
                     option.setCorrect(false);
                 }
                 break;
-            }
-            case SELECT_SEQUENCE: {
+
+            case SELECT_SEQUENCE:
                 for (QuestionOption option : question.getOptions()) {
                     option.setSequenceOrder(0);
                 }
                 break;
-            }
+
             default:
                 break;
         }

@@ -5,7 +5,7 @@ import {Observable, of} from 'rxjs';
 import {catchError} from "rxjs/operators";
 
 import {url} from "../../../../environments/environment.prod";
-import {Game} from "../models/game";
+import {GameDto} from "../models/gameDto";
 import Str = echarts.EChartOption.Tooltip.Position.Str;
 import {UserDto} from "../models/userDto";
 
@@ -48,7 +48,7 @@ export class PlayGameService {
      return this.http.put(`${url}/image`, uploadData);
    }*/
 
-  sendGame(game: Game) {
+  sendGame(game: GameDto) {
     return this.http.post<string>(`${url}/game/`, game, this.httpOptions);
   }
 
@@ -79,9 +79,9 @@ export class PlayGameService {
   }
 
   getGame(gameId: string) {
-    return this.http.get<Game>(`${url}/game/${gameId}`)
+    return this.http.get<GameDto>(`${url}/game/${gameId}`)
       .pipe(
-        catchError(this.handleError<Game>(null))
+        catchError(this.handleError<GameDto>(null))
       );
   }
 }

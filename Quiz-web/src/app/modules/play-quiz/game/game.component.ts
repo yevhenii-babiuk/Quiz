@@ -22,6 +22,7 @@ export class GameComponent implements OnInit, OnDestroy {
   players: String[] = [];
   hostId: number;
   time: number;
+  image: string;
   //private serverUrl = 'http://localhost:8080/socket';
   private stompClient;
   public gameResults: Users;
@@ -42,6 +43,7 @@ export class GameComponent implements OnInit, OnDestroy {
       game => {
         this.hostId = game.hostId;
         this.time = game.time;
+        this.image = game.image;
         console.log(game);
       }, err => {
         console.log(err);
@@ -52,7 +54,7 @@ export class GameComponent implements OnInit, OnDestroy {
       user => {
         console.log("userJoined");
         this.currentUser = user;
-        this.playGameService.getJoinedPlayers(this.gameId).subscribe(
+        /*this.playGameService.getJoinedPlayers(this.gameId).subscribe(
           players => {
             if (players)
               this.players = players;
@@ -61,7 +63,7 @@ export class GameComponent implements OnInit, OnDestroy {
             console.log(err);
             this.redirect.navigate(['home']);
           }
-        );
+        );*/
       }, err => {
         console.log(err);
         this.redirect.navigate(['home']);

@@ -2,7 +2,7 @@ package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.GameDao;
 import com.qucat.quiz.repositories.dao.mappers.*;
-import com.qucat.quiz.repositories.dto.quizplay.*;
+import com.qucat.quiz.repositories.dto.*;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;

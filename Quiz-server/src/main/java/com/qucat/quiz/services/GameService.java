@@ -1,10 +1,11 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.implementation.GameDaoImpl;
-import com.qucat.quiz.repositories.dto.quizplay.*;
+import com.qucat.quiz.repositories.dto.*;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,16 +30,27 @@ public class GameService {
     private QuizService quizService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private WebSocketSenderService socketSenderService;
 
     @Value("${url}")
     private String URL;
 
-    public int connectUser(UserDto user) {
-        int id = gameDao.saveUser(user);
+    public UserDto connectUser(String gameId, int userId) {
+        UserDto user;
+        if (userId != 0) {
+            User registerUser = userService.getUserDataById(userId);
+            user = UserDto.builder().login(registerUser.getLogin())
+                    .registerId(registerUser.getUserId()).gameId(gameId).build();
+        } else {
+            user = UserDto.builder().gameId(gameId).login("player").registerId(userId).build();
+        }
+        user.setId(gameDao.saveUser(user));
         Users users = Users.builder().users(gameDao.getUsersByGame(user.getGameId())).build();
-        socketSenderService.sendUsers(users, user.getGameId());
-        return id;
+        socketSenderService.sendUsers(user.getGameId(),users);
+        return user;
     }
 
     public void startGame(String gameId) {
@@ -48,6 +60,12 @@ public class GameService {
 
     public void setAnswer(AnswerDto answer) {
         gameDao.saveAnswer(answer);
+    }
+
+    public GameDto getGameById(String gameID) {
+        GameDto gameDto = gameDao.getGame(gameID);
+        gameDto.setImage(getQRCode(gameDto.getQuizId(), gameID));
+        return gameDto;
     }
 
     public String createRoom(GameDto game) {
