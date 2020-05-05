@@ -87,7 +87,7 @@ public class GameDaoImpl implements GameDao {
     @Override
     public int saveAnswer(AnswerDto answer) {
         return jdbcTemplate.update(
-                queries.get("saveAnswer"), answer.getUser().getId(),
+                queries.get("saveAnswer"), answer.getUserId(),
                 answer.getAnswer(), answer.getQuestion().getId(),
                 answer.isCorrect(), answer.getTime());
     }
