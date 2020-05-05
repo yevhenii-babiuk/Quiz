@@ -64,6 +64,7 @@ CREATE TABLE user
     registered_id INT,
     score         INT,
     is_host       BOOLEAN DEFAULT FALSE,
+    combo_answer  INT,
     PRIMARY KEY (id, game_id, login)-- ,
 --     FOREIGN KEY (game_id)
 --     REFERENCES game (id)

@@ -11,5 +11,6 @@ public class UserDto {
     private String login;
     private int registerId;
     private int score;
+    private int comboAnswer;
 
 }

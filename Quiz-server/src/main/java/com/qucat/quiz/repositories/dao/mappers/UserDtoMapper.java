@@ -16,6 +16,7 @@ public class UserDtoMapper implements RowMapper<UserDto> {
                     .gameId(resultSet.getString("game_id"))
                     .registerId(resultSet.getInt("registered_id"))
                     .score(resultSet.getInt("total_score"))
+                    .comboAnswer(resultSet.getInt("combo_answer"))
                     .build();
         }
     }
