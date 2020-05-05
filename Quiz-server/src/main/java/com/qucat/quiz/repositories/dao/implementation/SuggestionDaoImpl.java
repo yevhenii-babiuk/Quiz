@@ -3,6 +3,7 @@ package com.qucat.quiz.repositories.dao.implementation;
 import com.qucat.quiz.repositories.dao.SuggestionDao;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,8 +21,8 @@ public class SuggestionDaoImpl implements SuggestionDao {
     private Map<String, String> suggestionsQueries;
 
     @Autowired
+    @Qualifier("postgresJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
-
 
     @Override
     public Map<String, String> getLoginAndEmail(int quizId) {

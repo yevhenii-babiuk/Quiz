@@ -58,9 +58,9 @@ CREATE TABLE game
 
 CREATE TABLE user
 (
-    id            INT,
-    game_id       INT,
-    login         VARCHAR(25),
+    id            INT AUTO_INCREMENT,
+    game_id       VARCHAR(255),
+    login         VARCHAR(255),
     registered_id INT,
     score         INT,
     is_host       BOOLEAN DEFAULT FALSE,
@@ -73,8 +73,8 @@ CREATE TABLE user
 
 CREATE TABLE game_questions
 (
-    id          INT PRIMARY KEY,
-    game_id     INT,
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    game_id     VARCHAR(25),
     question_id INT,
     is_current  BOOLEAN DEFAULT FALSE,
     finish_time TIMESTAMP,
@@ -88,7 +88,7 @@ CREATE TABLE game_questions
 
 CREATE TABLE settings
 (
-    game_id                  INT,
+    game_id                  VARCHAR(25),
     time                     INT,
     question_answer_sequence BOOLEAN,
     quick_answer_bonus       BOOLEAN,
