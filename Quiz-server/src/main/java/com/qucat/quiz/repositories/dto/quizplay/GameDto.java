@@ -7,7 +7,7 @@ import lombok.Data;
 @Builder
 public class GameDto {
 
-    private int gameId;
+    private String gameId;
     private int quizId;
     private int time;
     private boolean questionAnswerSequence;
