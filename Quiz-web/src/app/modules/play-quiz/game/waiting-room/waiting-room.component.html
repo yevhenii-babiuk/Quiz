@@ -4,11 +4,11 @@
       <img src="https://i1.wp.com/blog.depuhl.com/wp-content/uploads/2010/01/QR-Code.jpg" alt="image">
     </div>
     <div class="text-center">
-      <input class="border border-warning rounded" value="link" readonly #link>
+      <input class="border border-warning rounded" value="https://qucat.herokuapp.com/qame/{{gameId}}" readonly #link>
       <button class="btn btn-outline-dark ml-1 mb-2 btn-sm" (click)="copy(link)">Copy to clipboard</button>
     </div>
     <div class="text-center">
-      <input class="border border-warning rounded" value="code" readonly #code>
+      <input class="border border-warning rounded" value="{{gameId}}" readonly #code>
       <button class="btn btn-outline-dark ml-1 mb-2 btn-sm" (click)="copy(code)">Copy to clipboard</button>
     </div>
   </div>
@@ -30,5 +30,5 @@
   </div>
 </div>
 <div *ngIf="currentUser.id===hostId" class="text-center">
-  <button class="btn btn-warning my-4 w-50">START GAME</button>
+  <button (click)="start()" class="btn btn-warning my-4 w-50">START GAME</button>
 </div>

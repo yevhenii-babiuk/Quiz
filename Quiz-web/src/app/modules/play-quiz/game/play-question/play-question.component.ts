@@ -15,7 +15,7 @@ export class PlayQuestionComponent implements OnInit {
   public isSend: boolean = false;
 
   public subscribeTimer: number;
-  public timeLeft: number = 10;
+  public timeLeft: number = 15;
 
   @Input()
   question: Question;
@@ -23,15 +23,14 @@ export class PlayQuestionComponent implements OnInit {
   @Output()
   public sendAnswer: EventEmitter<any> = new EventEmitter();
 
-  answer: Answer;
+  answer: Answer = new Answer();
 
   map = new Map();
   answerText = '';
 
   constructor() {
-    console.log("gCon");
 
-    timer(1000, 2000).subscribe(val => {
+    timer(1000, 1000).subscribe(val => {
       if (this.subscribeTimer != 0) {
         this.subscribeTimer = this.timeLeft - val;
       } else {
@@ -44,39 +43,35 @@ export class PlayQuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.answer = {
+   /* this.answer = {
       userId: 2,
-      questionId: this.question.id,
       result: '',
       time: this.timeLeft
-    };
+    };*/
   }
 
   nextQuestion() {
     if (this.question.type == 'SELECT_SEQUENCE') {
       for (let key of this.map.keys()) {
-        this.answer.result += key.toString() + '-' + this.map.get(key).toString() + ' ';
+        this.answer.answer += key.toString() + '-' + this.map.get(key).toString() + ' ';
       }
-
-      this.answer.result.trim();
+      this.answer.answer.trim();
     }
 
     if (this.question.type == 'ENTER_ANSWER') {
-      this.answer.result = this.answerText;
+      this.answer.answer = this.answerText;
     }
 
-
-    this.answer.result = this.question.type.toString() + ':' + this.answer.result;
+    this.answer.questionId=this.question.id;
+    this.answer.answer = this.question.type.toString() + ':' + this.answer.answer;
     this.answer.time = this.subscribeTimer;
     this.isSend = true;
-
-    console.log("play_quiz" + this.answer);
 
     this.sendAnswer.emit(this.answer)
   }
 
   setOption(value: string) {
-    this.answer.result = value;
+    this.answer.answer = value;
   }
 
   setSequence(opId: number, seqId: number) {

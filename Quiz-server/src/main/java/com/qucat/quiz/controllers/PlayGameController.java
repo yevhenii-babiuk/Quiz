@@ -1,16 +1,18 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.repositories.entities.Game;
-import com.qucat.quiz.repositories.entities.User;
+import com.google.gson.Gson;
+import com.qucat.quiz.repositories.dto.quizPlay.AnswerDto;
+import com.qucat.quiz.repositories.dto.quizPlay.Game;
+import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.QuestionType;
+import com.qucat.quiz.repositories.entities.UserDto;
 import com.qucat.quiz.services.PlayGameService;
-import edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.boot.configurationprocessor.json.JSONStringer;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -24,45 +26,32 @@ public class PlayGameController {
     @Autowired
     private PlayGameService playGameService;
 
-    List<String> pl = new ArrayList<>();
+    private List<String> pl = new ArrayList<>();
 
     @MessageMapping("/{gameId}/play")
+    public void onReceiveAnswer(@DestinationVariable String gameId, String message) {
+        Gson g = new Gson();
+        AnswerDto answerDto = g.fromJson(message, AnswerDto.class);
+        System.out.println(answerDto);
+    }
+
+    @MessageMapping("/{gameId}/start")
     public void onReceiveMessage(@DestinationVariable String gameId, String message) {
         System.out.println(message);
-        //playGameService.sendQ(gameId);
-       /* String destination = "/game/%s/user/%s";
-        destination = String.format(destination, gameId, "72");
-        System.out.println(destination);
-        JSONStringer stringer1 = new JSONStringer();
         try {
-            stringer1.object();
-            stringer1.key("command").value("question");
-            stringer1.key("question").value(Question.builder().content("content").score(20).build());
-            stringer1.endObject();
-            this.template.convertAndSend(destination, stringer1.toString());
-        } catch (JSONException e) {
+            Thread.sleep(1000);
+            sendQuestion(gameId, Question.builder().id(1).content("content1").type(QuestionType.TRUE_FALSE).score(20).build());
+            Thread.sleep(18000);
+            sendResults(gameId);
+            Thread.sleep(5000);
+            sendQuestion(gameId, Question.builder().id(2).content("content2").type(QuestionType.TRUE_FALSE).score(20).build());
+            Thread.sleep(18000);
+            sendResults(gameId);
+        } catch (InterruptedException e) {
             e.printStackTrace();
         }
-
-      /*  JSONStringer stringer2 = new JSONStringer();
-        try {
-            stringer2.object();
-            stringer2.key("command").value("answer");
-            stringer2.key("answer").value(QuestionOption.builder().content("content").id(5).build());
-            stringer2.endObject();
-            this.template.convertAndSend("/game/6", stringer2.toString());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
-        // this.template.convertAndSend("/game/6", Question.builder().content("another").score(10).build());
-
     }
 
-    @MessageMapping("/game/{gameId}/connect")
-    public void onConnect(@DestinationVariable String gameId, String id) {
-        System.out.println("CONNECT game id= " + gameId);
-        System.out.println("user id= " + id);
-    }
 
     @PostMapping("api/v1/game")
     public int addGame(@RequestBody Game game) {
@@ -71,16 +60,22 @@ public class PlayGameController {
         return 0;
     }
 
+    @GetMapping("api/v1/game/{gameId}")
+    public Game getJoinedUsers(@PathVariable String gameId) {
+        return Game.builder().gameId(gameId).build();
+    }
+
     @PostMapping("api/v1/game/{gameId}/joinedUser")
-    public User addJoinedUser(@PathVariable int gameId, @RequestBody int userId) {
+    public UserDto addJoinedUser(@PathVariable String gameId, @RequestBody int userId) {
         //service.createGame()
         System.out.println("JOINED USER game id= " + gameId);
         System.out.println("user id= " + userId);
-        pl.add("authorisedUser" + userId);
+        if (userId != 0) pl.add("authorisedUser" + userId);
+        else pl.add("unauthorisedUser" + userId);
         sendPlayers(gameId, pl);
 
-        if (userId != 0) return User.builder().userId(userId).login("authorisedUser" + userId).build();
-        return User.builder().userId(userId).login("unauthorisedUser" + userId).build();
+        if (userId != 0) return UserDto.builder().id(userId).login("authorisedUser" + userId).build();
+        return UserDto.builder().id(userId).login("unauthorisedUser" + userId).build();
     }
 
     @GetMapping("api/v1/game/{gameId}/joinedUser")
@@ -90,8 +85,7 @@ public class PlayGameController {
         return pl;
     }
 
-    private void sendPlayers(int gameId, List<String> players) {
-        System.out.println("SEND PLAYERS");
+    private void sendPlayers(String gameId, List<String> players) {
         JSONStringer stringer = new JSONStringer();
         try {
             stringer.array();
@@ -103,5 +97,17 @@ public class PlayGameController {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    private void sendQuestion(String gameId, Question question) {
+        System.out.println("send question");
+        Gson g = new Gson();
+        this.template.convertAndSend(String.format("/game/%s/play/question", gameId), g.toJson(question));
+    }
+
+    private void sendResults(String gameId) {
+        System.out.println("send results");
+        Gson g = new Gson();
+        this.template.convertAndSend(String.format("/game/%s/play/results", gameId), "results");
     }
 }
