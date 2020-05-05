@@ -1,23 +1,35 @@
 package com.qucat.quiz.controllers;
 
+import com.qucat.quiz.repositories.entities.Game;
+import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.services.PlayGameService;
+import edu.emory.mathcs.backport.java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.configurationprocessor.json.JSONException;
+import org.springframework.boot.configurationprocessor.json.JSONStringer;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
 
-@Controller
+import java.util.ArrayList;
+import java.util.List;
+
+@RestController
 public class PlayGameController {
-
+    @Autowired
+    private SimpMessagingTemplate template;
 
     @Autowired
     private PlayGameService playGameService;
 
+    List<String> pl = new ArrayList<>();
+
     @MessageMapping("/{gameId}/play")
     public void onReceiveMessage(@DestinationVariable String gameId, String message) {
         System.out.println(message);
-        playGameService.sendQ(gameId);
+        //playGameService.sendQ(gameId);
        /* String destination = "/game/%s/user/%s";
         destination = String.format(destination, gameId, "72");
         System.out.println(destination);
@@ -46,9 +58,50 @@ public class PlayGameController {
 
     }
 
-    @MessageMapping("/{gameId}/connect")
+    @MessageMapping("/game/{gameId}/connect")
     public void onConnect(@DestinationVariable String gameId, String id) {
-        System.out.println("game id= " + gameId);
+        System.out.println("CONNECT game id= " + gameId);
         System.out.println("user id= " + id);
+    }
+
+    @PostMapping("api/v1/game")
+    public int addGame(@RequestBody Game game) {
+        //service.createGame()
+        System.out.println(game);
+        return 0;
+    }
+
+    @PostMapping("api/v1/game/{gameId}/joinedUser")
+    public User addJoinedUser(@PathVariable int gameId, @RequestBody int userId) {
+        //service.createGame()
+        System.out.println("JOINED USER game id= " + gameId);
+        System.out.println("user id= " + userId);
+        pl.add("authorisedUser" + userId);
+        sendPlayers(gameId, pl);
+
+        if (userId != 0) return User.builder().userId(userId).login("authorisedUser" + userId).build();
+        return User.builder().userId(userId).login("unauthorisedUser" + userId).build();
+    }
+
+    @GetMapping("api/v1/game/{gameId}/joinedUser")
+    public List<String> getJoinedUsers(@PathVariable int gameId) {
+        //service.createGame()
+        System.out.println("game id= " + gameId);
+        return pl;
+    }
+
+    private void sendPlayers(int gameId, List<String> players) {
+        System.out.println("SEND PLAYERS");
+        JSONStringer stringer = new JSONStringer();
+        try {
+            stringer.array();
+            for (String p : players) {
+                stringer.value(p);
+            }
+            stringer.endArray();
+            this.template.convertAndSend(String.format("/game/%s/players", gameId), stringer.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

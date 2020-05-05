@@ -5,17 +5,14 @@
   <ul class="list-group list-group-flush">
     <li class="list-group-item">
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="settingsModel.isTimeForAnswerChosen" id="checkbox1" type="checkbox" class="styled">
-        <label for="checkbox1">
           Час на відповідь
-          <input [(ngModel)]="settingsModel.timeForAnswer" type="number" class="border border-dark rounded w-25"
+          <input [(ngModel)]="game.time" type="number" class="border border-dark rounded w-25"
                  value="15" min="5" max="60">
-        </label>
       </div>
     </li>
     <li class="list-group-item">
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="settingsModel.isQuestionThenAnswerChosen" id="checkbox2" type="checkbox" class="styled">
+        <input [(ngModel)]="game.questionAnswerSequence" id="checkbox2" type="checkbox" class="styled">
         <label for="checkbox2">
           Спочатку питання, потім відповіді
         </label>
@@ -23,7 +20,7 @@
     </li>
     <li class="list-group-item">
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="settingsModel.isQuickAnswerBonusChosen" id="checkbox3" type="checkbox" class="styled">
+        <input [(ngModel)]="game.quickAnswerBonus" id="checkbox3" type="checkbox" class="styled">
         <label for="checkbox3">
           Бонус гравцю, який відповів першим
         </label>
@@ -31,7 +28,7 @@
     </li>
     <li class="list-group-item">
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="settingsModel.isComboBonusChosen" id="checkbox4" type="checkbox" class="styled">
+        <input [(ngModel)]="game.combo" id="checkbox4" type="checkbox" class="styled">
         <label for="checkbox4">
           Бонус за декілька послідовних правильних відповідей
         </label>
@@ -39,7 +36,7 @@
     </li>
     <li class="list-group-item">
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="settingsModel.isIntermediateResultChosen" id="checkbox5" type="checkbox" class="styled">
+        <input [(ngModel)]="game.intermediateResult" id="checkbox5" type="checkbox" class="styled">
         <label for="checkbox5">
           Показувати проміжні результати
         </label>

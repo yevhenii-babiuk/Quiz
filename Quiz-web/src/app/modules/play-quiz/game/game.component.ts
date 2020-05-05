@@ -1,10 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {GameResults} from "../../core/models/gameResults";
 import {Question} from "../../core/models/question";
-import {QuestionType} from "../../core/models/questionType";
-import {QuestionOptions} from "../../core/models/questionOptions";
 import {Answer} from "../../core/models/answer";
-
+import {ActivatedRoute, Router} from "@angular/router";
+import {SecurityService} from "../../core/services/security.service";
+import {PlayGameService} from "../../core/services/play-game.service";
+import {Game} from "../../core/models/game";
+import {User} from "../../core/models/user";
+import * as Stomp from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
 @Component({
   selector: 'app-game',
   templateUrl: './game.component.html',
@@ -12,67 +16,78 @@ import {Answer} from "../../core/models/answer";
 })
 export class GameComponent implements OnInit {
 
-  isWainting:boolean = false;
+  players: String[] = [];
+  private serverUrl = 'http://localhost:8080/socket';
+  private stompClient;
+  public question: Question;
+  public gameResults: GameResults;
 
-  public question: Question = {
-    id: 1,
-    type: QuestionType.SELECT_OPTION,
-    content: "Ambitioni dedisse scripsisse iudicaretur. Cras mattis iudicium purus sit amet fermentum.",
-    score: 10,
-    imageId: -1,
-    options: [
-      {
-        id: 12,
-        content: "falewtetse fhsf",
-        isCorrect: false,
-        imageId: -1
-      } as QuestionOptions,
-      {
-        id: 14,
-        content: "trudsfdsge fsjet rye",
-        isCorrect: true,
-        imageId: -1
-      } as QuestionOptions,
-      {
-        id: 16,
-        content: "falewftetse",
-        isCorrect: false,
-        imageId: -1
-      } as QuestionOptions,
-      {
-        id: 11,
-        content: "trudswgefdsge fsg",
-        isCorrect: false,
-        imageId: -1
-      } as QuestionOptions
-    ],
-    image: null
-  };
+  public currentUser:User;
+  isWaiting: boolean = true;
 
-  public gameResults: GameResults = {
-    singleResult: [
-      {
-        login: "some login",
-        id: 2,
-        score: 20
-      }, {
-        login: "another login",
-        id: 5,
-        score: 35
-      }, {
-        login: "my login",
-        id: 10,
-        score: 30
-      }
-    ]
-  };
+  constructor(private route: ActivatedRoute,
+              private redirect: Router,
+              private securityService: SecurityService,
+              private playGameService: PlayGameService) {
+    console.log("parCon");
+    let userId = securityService.getCurrentId();
+    this.initializeWebSocketConnection();
 
-  constructor() { }
+    this.playGameService.sendJoinedUser(userId, this.route.snapshot.paramMap.get('gameId')).subscribe(
+      user => {
+        console.log("userJoined");
+        this.currentUser = user;
+        this.playGameService.getJoinedPlayers(this.route.snapshot.paramMap.get('gameId')).subscribe(
+          players => {
+            if (players)
+              this.players = players;
+            else players.push(this.currentUser.login);
+          }, err => {
+            console.log(err);
+            this.redirect.navigate(['home']);
+          }
+        );
+     //   this.players.push(this.currentUser.login);
+      }, err => {
+        console.log(err);
+        this.redirect.navigate(['home']);
+      });
+
+
+  }
+
+  initializeWebSocketConnection() {
+    let ws = new SockJS(this.serverUrl);
+    this.stompClient = Stomp.Stomp.over(ws);
+    let that = this;
+    console.log("socket"+this.currentUser);
+    this.stompClient.connect({}, function () {
+      that.stompClient.subscribe("/game/" + that.route.snapshot.paramMap.get('gameId') + "/players", (message) => {
+        console.log("received");
+        if (message.body) {
+          let json = JSON.parse(message.body);
+          console.log(json);
+          //if (json.command == 'question') {
+          //  console.log("it is question");
+          that.players = json;
+          console.log(that.players);
+          //  } else if (json.command == 'answer') {
+          //    console.log("it is answer");
+          //    console.log(message.body);
+          //  }
+        }
+      });
+    }, this);
+  }
 
   ngOnInit(): void {
   }
 
   processAnswer(answer: Answer) {
     console.log(answer);
+  }
+
+  startGame() {
+
   }
 }

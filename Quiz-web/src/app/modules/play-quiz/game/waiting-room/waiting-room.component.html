@@ -13,20 +13,22 @@
     </div>
   </div>
   <div class="col">
-    <div class="row border border-dark rounded w-75 mx-auto">
-      <div class="col-1">
+    <ng-container *ngFor="let player of players">
+      <div class="row border border-dark rounded w-75 mx-auto mb-2">
+        <div class="col-1">
         <span style="font-size: 4vh;">
           <i class="fa fa-user"></i>
         </span>
-      </div>
-      <div class="col-8 mt-1">
+        </div>
+        <div class="col-8 mt-1">
         <span style="font-size: 3vh;">
-          User
+          {{player}}
         </span>
+        </div>
       </div>
-    </div>
+    </ng-container>
   </div>
 </div>
-<div class="text-center">
-  <button class="btn btn-warning my-4 w-50">PLAY</button>
+<div *ngIf="currentUser.id===hostId" class="text-center">
+  <button class="btn btn-warning my-4 w-50">START GAME</button>
 </div>

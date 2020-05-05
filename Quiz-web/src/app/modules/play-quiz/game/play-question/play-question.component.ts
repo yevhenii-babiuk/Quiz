@@ -20,17 +20,17 @@ export class PlayQuestionComponent implements OnInit {
   @Input()
   question: Question;
 
-
   @Output()
-  public sendAnswer : EventEmitter<any> = new EventEmitter();
+  public sendAnswer: EventEmitter<any> = new EventEmitter();
 
   answer: Answer;
-
 
   map = new Map();
   answerText = '';
 
   constructor() {
+    console.log("gCon");
+
     timer(1000, 2000).subscribe(val => {
       if (this.subscribeTimer != 0) {
         this.subscribeTimer = this.timeLeft - val;
@@ -45,8 +45,8 @@ export class PlayQuestionComponent implements OnInit {
 
   ngOnInit(): void {
     this.answer = {
-      user_id: 2,
-      question_id: this.question.id,
+      userId: 2,
+      questionId: this.question.id,
       result: '',
       time: this.timeLeft
     };

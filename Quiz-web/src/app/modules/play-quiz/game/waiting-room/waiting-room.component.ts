@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ActivatedRoute, Router} from "@angular/router";
+import {SecurityService} from "../../../core/services/security.service";
+import {PlayGameService} from "../../../core/services/play-game.service";
+import {User} from "../../../core/models/user";
+
 
 @Component({
   selector: 'app-waiting-room',
@@ -7,12 +12,28 @@ import { Component, OnInit } from '@angular/core';
 })
 export class WaitingRoomComponent implements OnInit {
 
-  constructor() { }
+  @Input() players: String[];
+
+  @Output()
+  public startGame: EventEmitter<any> = new EventEmitter();
+
+  @Input()
+  currentUser: User;
+
+  hostId: number = 0;
+  gameId: string = this.route.snapshot.paramMap.get('gameId');
+
+  constructor(private route: ActivatedRoute,
+              private redirect: Router,
+              private securityService: SecurityService,
+              private playGameService: PlayGameService) {
+
+  }
 
   ngOnInit(): void {
   }
 
-  copy(divElement){
+  copy(divElement) {
     divElement.select();
     document.execCommand('copy');
     divElement.setSelectionRange(0, 0);

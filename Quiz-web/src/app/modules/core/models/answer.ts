@@ -1,6 +1,7 @@
 export class Answer {
-  user_id:number;
-  question_id:number;
+  userId:number;
+  gameId: number;
+  questionId:number;
   result: string;
   time: number;
 }
