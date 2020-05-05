@@ -176,7 +176,7 @@ public class GameProcess implements Runnable {
 
             gameDao.deleteGameQuestion(questionDto.getId());
         }
-        //todo send results end command end
+        //todo send results, and send end command
         gameDao.deleteGame(gameId);
     }
 
