@@ -9,6 +9,7 @@ import com.qucat.quiz.repositories.entities.QuestionOption;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -21,6 +22,7 @@ import java.util.Map;
 import java.util.Objects;
 
 @Repository
+@PropertySource("classpath:game.properties")
 public class GameDaoImpl implements GameDao {
 
     @Value("#{${sql.game}}")
