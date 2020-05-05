@@ -54,4 +54,6 @@ public interface GameDao {
     GameQuestionDto getGameQuestion(String gameId, int random);
 
     int getCountGameQuestion(String gameId);
+
+    UserDto getUserById(int id);
 }

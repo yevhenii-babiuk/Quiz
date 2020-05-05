@@ -212,4 +212,10 @@ public class GameDaoImpl implements GameDao {
             return 0;
         }
     }
+
+    @Override
+    public UserDto getUserById(int id) {
+        return jdbcTemplate.queryForObject(queries.get("getUserById"), new Object[]{id},
+                new UserDtoMapper());
+    }
 }
