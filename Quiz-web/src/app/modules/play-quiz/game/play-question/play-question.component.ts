@@ -1,7 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Question} from '../../../core/models/question';
-import {Users, UserDto} from "../../../core/models/gameResults";
-import {Sort} from "@angular/material/sort";
 
 import {timer} from 'rxjs';
 import {Answer} from "../../../core/models/answer";
@@ -45,18 +43,22 @@ export class PlayQuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   /* this.answer = {
-      userId: 2,
-      result: '',
-      time: this.timeLeft
-    };*/
+    let key = 'endTime' + this.question.id;
+
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, '' + (new Date().getTime() + this.timeLeft * 1000));
+    } else {
+      this.timeLeft = Math.round((+localStorage.getItem(key) - new Date().getTime()) / 1000);
+    }
   }
 
   nextQuestion() {
     if (this.question.type == 'SELECT_SEQUENCE') {
+      this.answer.answer = '';
       for (let key of this.map.keys()) {
         this.answer.answer += key.toString() + '-' + this.map.get(key).toString() + ' ';
       }
+
       this.answer.answer.trim();
     }
 
@@ -64,12 +66,10 @@ export class PlayQuestionComponent implements OnInit {
       this.answer.answer = this.answerText;
     }
 
-    this.answer.questionId=this.question.id;
+    this.answer.questionId = this.question.id;
     this.answer.answer = this.question.type.toString() + ':' + this.answer.answer;
     this.answer.time = this.subscribeTimer;
     this.isSend = true;
-
-    console.log(this.answer);
 
     this.sendAnswer.emit(this.answer)
   }

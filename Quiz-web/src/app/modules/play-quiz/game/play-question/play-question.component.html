@@ -5,15 +5,12 @@
     <div class="form-control h-auto row mx-0 my-1 mt-5 p-4 border-dark border ">
       <div class="d-flex justify-content-end"><h5>{{ subscribeTimer | timerFormat}}</h5></div>
 
-      <div class="col p-md-3 d-flex justify-content-center">
-        <div *ngIf="question.content">
-          <h2 class="text-center">{{question.content}}</h2>
-        </div>
-
-        <img *ngIf="question.image && question.imageId!=-1" class="img-preview-container img-preview"
-             src="data:image/jpeg;base64,{{question.image.src}}"
-             alt="Card image cap">
+      <div class="col p-md-3" *ngIf="question.content">
+        <h2 class="text-center">{{question.content}}</h2>
       </div>
+
+        <img *ngIf="question.image && question.imageId!=-1" class="img-preview-container img-preview col p-md-3 d-flex justify-content-center"
+             src="data:image/jpeg;base64,{{question.image.src}}">
 
       <div class="p-3 m-2">
         <div *ngIf="question.type=='TRUE_FALSE'" class="row">
@@ -43,7 +40,7 @@
             <div class="form-check col p-1 md-2">
               <div *ngIf="questionOption.imageId!=-1">
                 <img class="img-preview-container img-preview "
-                     src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
+                     src="data:image/jpeg;base64,{{questionOption.image.src}}" >
               </div>
 
               <label class="btn bg-light btn-block p-3" (click)="setOption(questionOption.id.toString())">
@@ -66,7 +63,7 @@
             <div class="form-group row p-3 m-2 border border-light bg-light col">
               <div *ngIf="questionOption.imageId!=-1">
                 <img class="img-preview-container img-preview "
-                     src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
+                     src="data:image/jpeg;base64,{{questionOption.image.src}}" >
               </div>
 
               <select class="form-control col-1" [disabled]="isSend">
@@ -82,8 +79,8 @@
 
       </div>
 
-      <button type="button" (click)="nextQuestion()" class="btn btn-success btn-lg btn-block" [disabled]="isSend">Next
-        >
+      <button type="button" (click)="nextQuestion()" class="btn btn-success btn-lg btn-block" [disabled]="isSend">
+        Next >
       </button>
 
       <br>
