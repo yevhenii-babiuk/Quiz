@@ -188,9 +188,9 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
-    public void saveGame(int quizId, String gameId) {
+    public void saveGame(int quizId, String gameId, int hostId) {
         jdbcTemplate.update(queries.get("saveGame"),
-                gameId, quizId);
+                gameId, quizId, hostId);
     }
 
     @Override

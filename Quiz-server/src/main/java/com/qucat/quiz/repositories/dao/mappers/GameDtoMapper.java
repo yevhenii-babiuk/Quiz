@@ -10,7 +10,7 @@ public class GameDtoMapper implements RowMapper<GameDto> {
     @Override
     public GameDto mapRow(ResultSet resultSet, int i) throws SQLException {
         return GameDto.builder()
-                .gameId(resultSet.getString("id"))
+                .gameId(resultSet.getString("game_id"))
                 .quizId(resultSet.getInt("quiz_id"))
                 .hostId(resultSet.getInt("host_id"))
                 .combo(resultSet.getBoolean("combo"))

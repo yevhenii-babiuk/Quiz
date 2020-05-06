@@ -79,8 +79,9 @@ public class GameService {
                 .name(quiz.getName()).questionNumber(quiz.getQuestionNumber()).questions(quiz.getQuestions()).build();
         gameDao.saveImage(quiz.getImage());
         gameDao.saveQuiz(quizDto);
-        gameDao.saveGame(game.getQuizId(), game.getGameId());
+        gameDao.saveGame(game.getQuizId(), game.getGameId(), game.getHostId());
         gameDao.saveSettings(game);
+        gameDao.updateUserToHost(game.getHostId());
         for (Question question : quizDto.getQuestions()) {
             gameDao.saveQuestion(question);
             if (question.getImageId() != -1) {

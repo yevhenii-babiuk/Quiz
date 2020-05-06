@@ -51,6 +51,7 @@ CREATE TABLE game
 (
     game_id VARCHAR(25) PRIMARY KEY,
     quiz_id INT,
+    host_id INT,
     FOREIGN KEY (quiz_id)
         REFERENCES quiz (id)
         ON DELETE CASCADE

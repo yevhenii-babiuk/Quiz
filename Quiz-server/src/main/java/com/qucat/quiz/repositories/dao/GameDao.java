@@ -39,7 +39,7 @@ public interface GameDao {
 
     void deleteGame(String id);
 
-    void saveGame(int quizId, String gameId);
+    void saveGame(int quizId, String gameId, int hostId);
 
     GameDto getGame(String id);
 
