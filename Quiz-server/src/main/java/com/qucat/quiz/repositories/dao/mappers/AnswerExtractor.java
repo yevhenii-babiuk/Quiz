@@ -24,7 +24,6 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
             if (answer == null) {
                 answer = AnswerDto.builder()
                         .id(answerId)
-                        .isCorrect(rs.getBoolean("is_correct_answer"))
                         .questionId(rs.getInt("quiz_id"))
                         .time(rs.getInt("time"))
                         .answer(rs.getString("current_answer"))
@@ -34,6 +33,7 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
 
             UserDto user = answer.getUser();
             if (user == null) {
+                user = UserDto.builder().build();
                 user.setId(rs.getInt("user_id"));
                 user.setGameId(rs.getString("game_id"));
                 user.setRegisterId(rs.getInt("registered_id"));
@@ -46,13 +46,14 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
             int questionId = rs.getInt("question_id");
             Question question = answer.getQuestion();
             if (question == null) {
+                question = Question.builder().build();
                 question.setId(questionId);
                 question.setQuizId(rs.getInt("quiz_id"));
-                question.setType(QuestionType.valueOf(rs.getString("question_type").toUpperCase()));
-                question.setContent(rs.getString("question_content"));
+                question.setType(QuestionType.valueOf(rs.getString("type").toUpperCase()));
+                question.setContent(rs.getString("content"));
                 question.setScore(rs.getInt("question_score"));
-                question.setImageId(rs.getInt("question_image_id"));
-                question.setImage(new Image(rs.getInt("question_image_id"), rs.getString("question_image_src")));
+/*                question.setImageId(rs.getInt("question_image_id"));
+                question.setImage(new Image(rs.getInt("question_image_id"), rs.getString("question_image_src")));*/
             }
 
 

@@ -59,8 +59,8 @@ public class GameDaoImpl implements GameDao {
     @Override
     public Question getQuestionById(int id) {
         String selectQuery = queries.get("getQuestionById");
-        return jdbcTemplate.queryForObject(selectQuery,
-                new Object[]{id}, new QuestionMapper());
+        return jdbcTemplate.query(selectQuery,
+                new Object[]{id}, new QuestionExtractor()).get(0);
     }
 
     @Override
@@ -93,8 +93,8 @@ public class GameDaoImpl implements GameDao {
         try {
             return jdbcTemplate.update(
                     queries.get("saveAnswer"), answer.getUserId(),
-                    answer.getAnswer(), answer.getQuestion().getId(),
-                    answer.isCorrect(), answer.getTime());
+                    answer.getAnswer(), answer.getQuestionId(),
+                    answer.getTime());
         } catch (DuplicateKeyException e) {
             log.warn("image is already exist id={} ", answer.getId());
             return -1;

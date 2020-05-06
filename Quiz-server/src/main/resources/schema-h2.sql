@@ -19,7 +19,7 @@ CREATE TABLE question
 (
     id            INT PRIMARY KEY,
     quiz_id       INT,
-    question_type ENUM ('select_option', 'select_sequence', 'true_false', 'enter_answer'),
+    type ENUM ('select_option', 'select_sequence', 'true_false', 'enter_answer'),
     content       VARCHAR(255),
     score         INT,
     image_id      INT,
@@ -104,9 +104,8 @@ CREATE TABLE answer
 (
     id                INT AUTO_INCREMENT PRIMARY KEY,
     user_id           INT,
-    current_answer    VARCHAR(255),
+    current_answer    TEXT,
     question_id       INT,
-    is_correct_answer BOOLEAN,
     time              INT,
     FOREIGN KEY (user_id)
         REFERENCES user (id)

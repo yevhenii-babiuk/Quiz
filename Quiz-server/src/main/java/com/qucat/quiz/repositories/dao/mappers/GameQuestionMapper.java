@@ -14,7 +14,7 @@ public class GameQuestionMapper implements RowMapper<GameQuestionDto> {
                 .gameId(resultSet.getString("game_id"))
                 .questionId(resultSet.getInt("question_id"))
                 .isCurrent(resultSet.getBoolean("is_current"))
-                .finishTime(resultSet.getTimestamp("time"))
+                .finishTime(resultSet.getTimestamp("finish_time"))
                 .build();
     }
 }

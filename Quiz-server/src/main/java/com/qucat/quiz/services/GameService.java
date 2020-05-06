@@ -33,6 +33,9 @@ public class GameService {
     private UserService userService;
 
     @Autowired
+    private GameProcess gameProcess;
+
+    @Autowired
     private WebSocketSenderService socketSenderService;
 
     @Value("${url}")
@@ -54,7 +57,7 @@ public class GameService {
     }
 
     public void startGame(String gameId) {
-        GameProcess gameProcess = new GameProcess(gameId);
+        gameProcess.setGameId(gameId);
         gameProcess.run();
     }
 

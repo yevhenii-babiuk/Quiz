@@ -5,17 +5,23 @@ import com.qucat.quiz.repositories.dao.GameDao;
 import com.qucat.quiz.repositories.dto.*;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
+@Component
+@Data
+@Scope("prototype")
 public class GameProcess implements Runnable {
 
-    private final String gameId;
+    private String gameId;
 
     private final int COMBO_COUNT = 3;
 
@@ -25,10 +31,6 @@ public class GameProcess implements Runnable {
     @Autowired
     private GameDao gameDao;
 
-
-    public GameProcess(String gameId) {
-        this.gameId = gameId;
-    }
 
     @Override
     public void run() {
@@ -45,7 +47,7 @@ public class GameProcess implements Runnable {
                 question.setOptions(null);
                 socketSenderService.sendQuestion(question, gameDto.getGameId());
                 try {
-                    wait((secondLeft / 2) * 1000);
+                    Thread.currentThread().sleep((secondLeft / 2) * 1000);
                     secondLeft -= secondLeft / 2;
                 } catch (InterruptedException e) {
                     log.error("Thread was interrupted", e);
@@ -59,7 +61,7 @@ public class GameProcess implements Runnable {
 
             while (!checkAllSendAnswer() || secondLeft != -1) {
                 try {
-                    wait(1000);
+                    Thread.currentThread().sleep(1000);
                 } catch (InterruptedException e) {
                     log.error("Thread was interrupted", e);
                 }
@@ -71,9 +73,9 @@ public class GameProcess implements Runnable {
 
             for (AnswerDto answer : answers) {
                 answer.setCorrect(false);
-                UserDto user = answer.getUser();
+                UserDto user = gameDao.getUserById(answer.getUserId());
                 String answerStr = answer.getAnswer();
-                answerStr = answerStr.substring(answerStr.indexOf(':'));
+                answerStr = answerStr.substring(answerStr.indexOf(':')+1);
 
                 switch (question.getType()) {
                     case ENTER_ANSWER:
@@ -167,7 +169,7 @@ public class GameProcess implements Runnable {
                 Users users = Users.builder().users(gameDao.getUsersByGame(gameId)).build();
                 socketSenderService.sendResults(gameId, users);
                 try {
-                    wait((long) 1e4);
+                    Thread.currentThread().sleep((long) 1e4);
                 } catch (InterruptedException e) {
                     log.error("Thread was interrupted", e);
                 }

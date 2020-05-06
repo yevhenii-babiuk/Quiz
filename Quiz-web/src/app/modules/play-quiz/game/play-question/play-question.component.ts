@@ -69,6 +69,8 @@ export class PlayQuestionComponent implements OnInit {
     this.answer.time = this.subscribeTimer;
     this.isSend = true;
 
+    console.log(this.answer);
+
     this.sendAnswer.emit(this.answer)
   }
 
