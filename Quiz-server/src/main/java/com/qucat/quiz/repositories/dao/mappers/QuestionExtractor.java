@@ -14,14 +14,12 @@ import java.util.Map;
 public class QuestionExtractor implements ResultSetExtractor<List<Question>> {
     @Override
     public List<Question> extractData(ResultSet rs) throws SQLException, DataAccessException {
-        /*Map<Integer, Question> questionMap = new HashMap<>();*/
         Question question = null;
         Map<Integer, QuestionOption> optionMap = new HashMap<>();
 
         while (rs.next()) {
 
             int questionId = rs.getInt("question_id");
-            /*            Question question = questionMap.get(questionId);*/
             if (question == null) {
                 question = Question.builder()
                         .id(rs.getInt("question_id"))
@@ -32,7 +30,6 @@ public class QuestionExtractor implements ResultSetExtractor<List<Question>> {
                         .imageId(rs.getInt("question_image_id"))
                         .image(new Image(rs.getInt("question_image_id"), rs.getString("question_image_src")))
                         .build();
-                /*               questionMap.put(questionId, question);*/
             }
 
 

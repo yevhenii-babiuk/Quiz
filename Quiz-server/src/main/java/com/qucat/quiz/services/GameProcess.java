@@ -21,10 +21,8 @@ import java.util.List;
 @Scope("prototype")
 public class GameProcess implements Runnable {
 
-    private String gameId;
-
     private final int COMBO_COUNT = 3;
-
+    private String gameId;
     @Autowired
     private WebSocketSenderService socketSenderService;
 
@@ -59,7 +57,7 @@ public class GameProcess implements Runnable {
 
             socketSenderService.sendQuestion(question, gameDto.getGameId());
 
-            while (!checkAllSendAnswer() || secondLeft != -1) {
+            while (!checkAllSendAnswer() && secondLeft != -1) {
                 try {
                     Thread.currentThread().sleep(1000);
                 } catch (InterruptedException e) {
@@ -73,9 +71,9 @@ public class GameProcess implements Runnable {
 
             for (AnswerDto answer : answers) {
                 answer.setCorrect(false);
-                UserDto user = gameDao.getUserById(answer.getUserId());
+                UserDto user = answer.getUser();
                 String answerStr = answer.getAnswer();
-                answerStr = answerStr.substring(answerStr.indexOf(':')+1);
+                answerStr = answerStr.substring(answerStr.indexOf(':') + 1);
 
                 switch (question.getType()) {
                     case ENTER_ANSWER:
@@ -212,7 +210,6 @@ public class GameProcess implements Runnable {
     private boolean checkAllSendAnswer() {
         List<AnswerDto> answers = gameDao.getAnswersToCurrentQuestionByGameId(gameId);
         List<UserDto> users = gameDao.getUsersByGame(gameId);
-
         return answers.size() == users.size();
     }
 

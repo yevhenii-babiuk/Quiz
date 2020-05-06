@@ -24,9 +24,10 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
             if (answer == null) {
                 answer = AnswerDto.builder()
                         .id(answerId)
-                        .questionId(rs.getInt("quiz_id"))
+                        .questionId(rs.getInt("question_id"))
                         .time(rs.getInt("time"))
                         .answer(rs.getString("current_answer"))
+                        .userId(rs.getInt("user_id"))
                         .build();
                 answerMap.put(answerId, answer);
             }
@@ -40,7 +41,7 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
                 user.setLogin(rs.getString("login"));
                 user.setScore(rs.getInt("user_score"));
                 user.setComboAnswer(rs.getInt("combo_answer"));
-
+                answer.setUser(user);
             }
 
             int questionId = rs.getInt("question_id");
@@ -52,32 +53,8 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
                 question.setType(QuestionType.valueOf(rs.getString("type").toUpperCase()));
                 question.setContent(rs.getString("content"));
                 question.setScore(rs.getInt("question_score"));
-/*                question.setImageId(rs.getInt("question_image_id"));
-                question.setImage(new Image(rs.getInt("question_image_id"), rs.getString("question_image_src")));*/
+                answer.setQuestion(question);
             }
-
-
-/*            List<QuestionOption> options = question.getOptions();
-            if (options == null) {
-                options = new ArrayList<>();
-                question.setOptions(options);
-            }
-            int optionId = rs.getInt("option_id");
-            if (optionId != 0) {
-                QuestionOption option = optionMap.get(optionId);
-                if (option == null) {
-                    option = QuestionOption.builder()
-                            .id(rs.getInt("option_id"))
-                            .questionId(questionId)
-                            .content(rs.getString("option_content"))
-                            .isCorrect(rs.getBoolean("option_is_correct"))
-                            .sequenceOrder(rs.getInt("sequence_order"))
-                            .imageId(rs.getInt("option_image_id"))
-                            .image(new Image(rs.getInt("option_image_id"), rs.getString("option_image_src")))
-                            .build();
-                    options.add(option);
-                }
-            }*/
         }
         return new ArrayList<>(answerMap.values());
     }

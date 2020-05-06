@@ -97,28 +97,12 @@ export class GameComponent implements OnInit, OnDestroy {
 
       that.stompClient.subscribe("/game/" + that.gameId + "/play/results", (message) => {
         if (message.body) {
-          //  let json = JSON.parse(message.body);
+          let json = JSON.parse(message.body);
           that.isWaiting = false;
           that.question = null;
-          console.log("results " + that.question);
-          that.gameResults = {
-            users: [
-              {
-                login: "some login",
-                id: 2,
-                score: 20
-              }, {
-                login: "another login",
-                id: 5,
-                score: 35
-              }, {
-                login: "my login",
-                id: 10,
-                score: 30
-              }
-            ]
-          }
-          //that.gameResults.singleResult = json;
+          console.log("results " + json);
+          that.gameResults = json
+          console.log(that.gameResults);
         }
       });
     }, this);

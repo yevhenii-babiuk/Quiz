@@ -599,7 +599,7 @@
                         to report on unused import statements. Check Doc for details.
         Doc ref:        http://checkstyle.sourceforge.net/config_imports.html#UnusedImports
         -->
-        <module name="UnusedImports"/>
+        <!--<module name="UnusedImports"/>-->
 
         <!--
         Description:    Checks the number of parameters of a method or constructor.
