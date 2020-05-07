@@ -17,7 +17,7 @@
 
           <div class="form-check col p-3 m-2">
             <label class="btn bg-light btn-block p-3">
-              <input type="radio" class="form-check-input" name="optradio" (click)="setOption('true')"
+              <input type="radio" class="form-check-input" name="optradio" (click)="setTrueFalseOption(true)"
                      [disabled]="isSend">
               True
             </label>
@@ -25,7 +25,7 @@
 
           <div class="form-check col p-3 m-2">
             <label class="btn bg-light btn-block p-3">
-              <input type="radio" class="form-check-input" name="optradio" (click)="setOption('false')"
+              <input type="radio" class="form-check-input" name="optradio" (click)="setTrueFalseOption(false)"
                      [disabled]="isSend">
               False
             </label>
@@ -35,7 +35,7 @@
 
         <div *ngIf="question.type=='SELECT_OPTION'">
           <div class="row mx-0 d-flex justify-content-center"
-               *ngFor="let questionOption of question.options;">
+               *ngFor="let questionOption of question.options; let i = index">
 
             <div class="form-check col p-1 md-2">
               <div *ngIf="questionOption.imageId!=-1">
@@ -43,10 +43,23 @@
                      src="data:image/jpeg;base64,{{questionOption.image.src}}" >
               </div>
 
-              <label class="btn bg-light btn-block p-3" (click)="setOption(questionOption.id.toString())">
-                <input type="radio" class="form-check-input" name="optradio" [disabled]="isSend">
-                {{questionOption.content}}
-              </label>
+<!--              <label class="btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">-->
+<!--                <input type="radio" class="form-check-input" name="optradio" [disabled]="isSend">-->
+<!--                {{questionOption.content}}-->
+<!--              </label>-->
+
+<!--              <label class="btn bg-light btn-block p-3 form-check-label" (click)="setOption(questionOption.id)">-->
+              <!--                <input class="form-check-input" type="checkbox" value="" [disabled]="isSend" >-->
+              <!--                {{questionOption.content}}-->
+              <!--              </label>-->
+
+              <div class="form-check btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck{{i}}" [disabled]="isSend" >
+                <label class="form-check-label" for="defaultCheck{{i}}">
+                  {{questionOption.content}}
+                </label>
+              </div>
+
             </div>
 
           </div>

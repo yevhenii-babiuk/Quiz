@@ -3,6 +3,8 @@ import {Question} from '../../../core/models/question';
 
 import {timer} from 'rxjs';
 import {Answer} from "../../../core/models/answer";
+import {QuestionType} from "../../../core/models/questionType";
+import {QuestionOptions} from "../../../core/models/questionOptions";
 
 @Component({
   selector: 'app-play-question',
@@ -25,7 +27,6 @@ export class PlayQuestionComponent implements OnInit {
 
   answer: Answer = new Answer();
 
-  map = new Map();
   answerText = '';
 
   constructor() {
@@ -53,37 +54,37 @@ export class PlayQuestionComponent implements OnInit {
   }
 
   nextQuestion() {
-    if (this.question.type == 'SELECT_SEQUENCE') {
-      this.answer.answer = '';
-      for (let key of this.map.keys()) {
-        this.answer.answer += key.toString() + '-' + this.map.get(key).toString() + ' ';
-      }
-
-      this.answer.answer.trim();
-    }
-
     if (this.question.type == 'ENTER_ANSWER') {
-      this.answer.answer = this.answerText;
+      this.answer.fullAnswer = this.answerText;
     }
 
     this.answer.questionId = this.question.id;
-    this.answer.answer = this.question.type.toString() + ':' + this.answer.answer;
-    this.answer.time = this.subscribeTimer;
     this.isSend = true;
+
+    console.log(this.answer);
 
     this.sendAnswer.emit(this.answer)
   }
 
-  setOption(value: string) {
-    this.answer.answer = value;
+  setOption(optId: number) {
+    if (this.answer.options.indexOf(optId) == -1) {
+      this.answer.options.push(optId);
+    } else {
+      this.answer.options.splice(this.answer.options.indexOf(optId), 1);
+    }
+
+    console.log(this.answer.options);
+  }
+
+  setTrueFalseOption(value: boolean) {
+    this.answer.trueFalse = value;
   }
 
   setSequence(opId: number, seqId: number) {
-    if (this.map.has(opId)) {
-      this.map.delete(opId);
+    if (this.answer.sequence.has(opId)) {
+      this.answer.sequence.delete(opId);
     }
-    this.map.set(opId, seqId);
+    this.answer.sequence.set(opId, seqId);
   }
-
 
 }
