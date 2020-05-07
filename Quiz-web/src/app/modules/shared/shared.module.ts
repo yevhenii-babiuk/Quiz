@@ -7,6 +7,9 @@ import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {SidenavComponent} from './sidenav/sidenav.component';
 import {RouterModule} from "@angular/router";
+import { NotificationMenuComponent } from './notification-menu/notification-menu.component';
+import {MatBadgeModule} from "@angular/material/badge";
+import {MatIconModule} from "@angular/material/icon";
 
 
 @NgModule({
@@ -14,11 +17,14 @@ import {RouterModule} from "@angular/router";
     AlertComponent,
     HeaderComponent,
     FooterComponent,
-    SidenavComponent
+    SidenavComponent,
+    NotificationMenuComponent
   ],
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+    MatBadgeModule,
+    MatIconModule
   ],
   exports: [
     AlertComponent,

@@ -12,6 +12,8 @@ export class AppComponent {
   onSidebarClick() {
     this.isOpened = !this.isOpened;
   }
-
-
+  greeting : any;
+  handleMessage(message){
+    this.greeting = message;
+  }
 }

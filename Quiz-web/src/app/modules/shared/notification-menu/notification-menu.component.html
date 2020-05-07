@@ -1,0 +1,14 @@
+<div class="dropleft notification-wrapper"
+     type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+     *ngIf="authService.isAuthenticated()">
+      <div matBadge="{{notificationCount}}" matBadgeColor="warn" >
+        <span class="fas fa-bell"></span>
+      </div>
+  <div class="dropdown-menu notification-content" aria-labelledby="dropdownMenu2">
+    <button (click)="sendMessage()" class="btn btn-default" type="submit">sendMessage</button>
+    <p>Your friend added new quiz</p>
+    <span *ngFor="let notification of notifications">
+      {{notification}}
+    </span>
+  </div>
+</div>

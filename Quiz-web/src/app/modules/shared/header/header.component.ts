@@ -14,7 +14,6 @@ export class HeaderComponent implements OnInit {
   id: number;
   role: Role;
 
-
   constructor(
     private profileService: ProfileService,
     private securityService: SecurityService,

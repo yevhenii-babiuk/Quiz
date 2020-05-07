@@ -16,6 +16,7 @@ import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
 import {SecurityService} from "../../core/services/security.service";
+import {NotificationMenuComponent} from "../../shared/notification-menu/notification-menu.component";
 
 @Component({
   selector: 'app-create-quiz',
@@ -45,7 +46,8 @@ export class UpdateQuizComponent implements OnInit {
     private quizzesService: QuizzesService,
     private route: ActivatedRoute,
     private router: Router,
-    private securityService: SecurityService) {
+    private securityService: SecurityService,
+    public notificationMenuComponent: NotificationMenuComponent ) {
     const id = this.route.snapshot.paramMap.get('quizId');
     console.log(id);
     if (id) {
@@ -205,6 +207,7 @@ export class UpdateQuizComponent implements OnInit {
     if (!this.isValid()) {
       this.isInvalid = true;
     } else {
+      this.notificationMenuComponent.sendMessage();
       this.quizzesService.sendQuiz(this.quiz).subscribe(
         id => {
           console.log("id=" + id);

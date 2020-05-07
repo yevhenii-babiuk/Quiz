@@ -8,7 +8,6 @@ import {PlayGameService} from "../../core/services/play-game.service";
 import * as Stomp from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {UserDto} from "../../core/models/userDto";
-import {QuestionType} from "../../core/models/questionType";
 
 @Component({
   selector: 'app-game',

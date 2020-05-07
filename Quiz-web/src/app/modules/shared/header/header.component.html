@@ -39,7 +39,8 @@
     </form>
 
     <img src='../../../../assets/img/message.png' class="ml-3" *ngIf="authService.isAuthenticated()">
-    <img src='../../../../assets/img/notification.png' width="70" height="50" *ngIf="authService.isAuthenticated()">
-  </div>
 
+   <app-notification-menu></app-notification-menu>
+
+  </div>
 </nav>
