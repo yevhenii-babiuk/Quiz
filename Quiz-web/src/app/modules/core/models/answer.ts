@@ -1,7 +1,12 @@
 export class Answer {
-  userId:number;
+  userId: number;
   gameId: string;
-  questionId:number;
-  answer: string;
+  questionId: number;
+
+  options: number[] = [];
+  fullAnswer: string = '';
+  trueFalse: boolean;
+  sequence: Map<number, number> = new Map();
+
   time: number;
 }
