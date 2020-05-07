@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -93,8 +94,8 @@ public class QuizService {
         List<Question> afterUpdateQuestions = quiz.getQuestions();
         List<Question> beforeUpdateQuestions = beforeUpdateQuiz.getQuestions();
 
-        List<Question> toInsert = afterUpdateQuestions;
-        List<Question> toDelete = beforeUpdateQuestions;
+        List<Question> toInsert = new ArrayList<>(afterUpdateQuestions);
+        List<Question> toDelete = new ArrayList<>(beforeUpdateQuestions);
 
         for (Question buq : beforeUpdateQuestions) {
             for (Question auq : afterUpdateQuestions) {
