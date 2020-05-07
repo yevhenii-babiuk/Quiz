@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -60,7 +61,7 @@ public class QuizService {
         addQuizTags(quiz);
 
         log.info("createQuiz: Quiz successfully saved");
-        suggestionsService.sendSuggestion(quizId, quiz.getName(),quiz.getCategory().getName());
+        suggestionsService.sendSuggestion(quizId, quiz.getName(), quiz.getCategory().getName());
         return true;
     }
 
@@ -119,9 +120,15 @@ public class QuizService {
     }
 
     public Page<Quiz> showPage(int page, int size, String name, String author, List<String> category,
-                               Timestamp minDates, Timestamp maxDates, List<String> tags, QuizStatus status) {
+                               Date minDate, Date maxDate, List<String> tags, QuizStatus status) {
 
+        Timestamp tMinDate = null;
+        Timestamp tMaxDate = null;
+        if (minDate != null && maxDate != null) {
+            tMinDate = new Timestamp(minDate.getTime());
+            tMaxDate = new Timestamp(maxDate.getTime());
+        }
         return quizDao.findAllForPage(PageRequest.of(page, size, Sort.Direction.DESC, "id"),
-                name, author, category, minDates, maxDates, tags, status);
+                name, author, category, tMinDate, tMaxDate, tags, status);
     }
 }
