@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {AnnouncementService} from "../../core/services/announcement.service";
 import {Announcement} from "../../core/models/announcement";
+import {Role} from "../../core/models/role";
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-view-announcement',
@@ -11,11 +13,15 @@ import {Announcement} from "../../core/models/announcement";
 export class ViewAnnouncementComponent implements OnInit {
 
   announcement: Announcement;
+  role: Role;
+  roleEnum = Role;
 
   constructor(
     private announcementService: AnnouncementService,
     private route: ActivatedRoute,
-    private redirect: Router) {
+    private redirect: Router,
+    private securityService:SecurityService) {
+    this.role = this.securityService.getCurrentRole();
     const id = this.route.snapshot.paramMap.get('announcementId');
     console.log(id);
     if (id) {
@@ -36,4 +42,13 @@ export class ViewAnnouncementComponent implements OnInit {
   }
 
 
+  publish() {
+    this.announcement.isPublished = !this.announcement.isPublished;
+    this.announcementService.updateAnnouncement(this.announcement).subscribe(
+      get => {
+        console.log("id = " + get);
+      },
+      error => {
+        console.log(error);
+      });  }
 }

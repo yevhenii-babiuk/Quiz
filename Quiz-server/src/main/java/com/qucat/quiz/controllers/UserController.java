@@ -18,9 +18,9 @@ public class UserController {
         return userService.getUserDataById(id);
     }
 
-    @PostMapping
-    public User updateUser(@RequestBody User editedUser) {
+    @PutMapping
+    public void updateUser(@RequestBody User editedUser) {
         userService.updateUserProfile(editedUser);
-        return editedUser;
     }
+
 }

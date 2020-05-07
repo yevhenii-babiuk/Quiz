@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -96,6 +97,22 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                     quizId, tagId
             );
         } catch (DuplicateKeyException e) {
+            return true;
+        }
+        return true;
+    }
+
+    @Override
+    public void removeTag(int quizId, int tagId) {
+        jdbcTemplate.update(quizQueries.get("removeTag"), quizId, tagId);
+    }
+
+    @Override
+    public boolean isUsersFavorite(int userId, int quizId) {
+        try {
+         jdbcTemplate.queryForObject(quizQueries.get("isUsersFavorite"),
+                 new Object[]{userId, quizId}, Integer.class);
+        } catch (EmptyResultDataAccessException e) {
             return false;
         }
         return true;
@@ -213,7 +230,6 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             return getParamForPreparedStatement(query.toString(), null, pageable, name, author, category,
                     minDate, maxDate, tags, status);
         }
-
 
         if (name != null) {
             name = '%' + name + '%';

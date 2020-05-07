@@ -16,11 +16,20 @@ import {QuizRoutingModule} from './modules/quiz/quiz-routing.module'
 import {QuizModule} from './modules/quiz/quiz.module';
 import {ProfileModule} from './modules/profile/profile.module';
 import {ProfileRoutingModule} from './modules/profile/profile-routing.module';
+import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatDatepickerModule} from "@angular/material/datepicker";
 import {BasicAuthHtppInterceptorService} from "./modules/core/services/auth-http-interceptor.service";
 import {AuthGuardService} from "./modules/core/services/auth-guard.service";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {AnnouncementModule} from "./modules/announcement/announcement.module";
 import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
+import {DashboardModule} from "./modules/dashboard/dashboard.module";
+import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.module";
+import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
+import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
+import {WebsocketModule} from "./modules/websocket/websocket.module";
+
 @NgModule({
   declarations: [
     AppComponent
@@ -40,9 +49,21 @@ import {AnnouncementRoutingModule} from "./modules/announcement/announcement-rou
     QuizModule,
     ProfileRoutingModule,
     ProfileModule,
+    MatFormFieldModule,
+    MatDatepickerModule,
+    BrowserAnimationsModule,
+    ProfileModule,
     QuizModule,
     AnnouncementModule,
-    AnnouncementRoutingModule
+    AnnouncementRoutingModule,
+    ProfileModule,
+    DashboardModule,
+    DashboardRoutingModule,
+    PlayQuizModule,
+    PlayQuizRoutingModule,
+    WebsocketModule.config({
+      url: 'wss://echo.websocket.org'
+    })
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},

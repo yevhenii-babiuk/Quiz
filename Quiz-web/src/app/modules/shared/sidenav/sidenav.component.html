@@ -28,7 +28,7 @@
   <!-- Sidebar Holder -->
   <nav id="sidebar">
     <div class="sidebar-brand">
-      <img src='assets/img/Qucat.png' class="logo-image" alt="Qucat">
+      <img src='assets/img/Qucat.png' routerLink="../home" class="logo-image" alt="Qucat">
     </div>
 <hr>
     <ul class="sidebar-nav components">
@@ -39,9 +39,22 @@
         <a routerLink="../quizzes">Список вікторин</a>
       </li>
       <li>
+        <a routerLink="../announcements">Новини</a>
+      </li>
+      <li>
         <a href="#">Рейтинг учасників</a>
       </li>
+
     </ul>
 
+   <!-- <ul class="list-unstyled CTAs">
+      <li>
+        <a href="https://github.com/Yevhenii-Babiuk/Quiz" class="article">Go to source</a>
+      </li>
+    </ul>-->
+
+    <div id="scrollTop" (click)= "onScrollClick()">
+
+    </div>
   </nav>
 </div>

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class Statistics {
+public class QuizStatistics {
     private String name;
-    private double count;
+    private double value;
 }

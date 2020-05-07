@@ -1,52 +1,42 @@
-<table>
-  <tr>
-    <td align="left" width="250">
-      <div class="menu" >
-        <div><img src="../../assets/img/avatar.png" width="250" height="270"></div>
+<div class="row">
+
+  <div class="row mx-0 w-30">
+      <div class="menu">
+        <div align="bottom"><img src="../../assets/img/main.png" width="250" height="270">
+          <h3>
+            <p>  {{userData.login}}</p>
+            <p> {{userData.firstName}} {{userData.secondName}}</p>
+          </h3>
+          <h5><p> {{userData.profile}} </p></h5>
+          <div align="bottom" *ngIf="role == roleEnum.USER"> <img src="../../assets/img/score.png" width="80" height="92" align="bottom"/>
+            Мурри: {{userData.score}}</div>
+        </div>
       </div>
-      <h3>
-        <p>  {{userData.login}}</p>
-        <p> {{userData.firstName}} {{userData.secondName}}</p>
-      </h3>
-      <div align="top"> <img src="../../assets/img/score.png" width="80" height="92" align="top"/>
-        Мурри: {{userData.score}}</div>
-    </td>
-    <td align="center" *ngIf="role == roleEnum.USER">
-      <h4><p style="margin-left: 40px">Рекомендовані вікторини</p></h4>
+
+  </div>
+
+  <div class="row mx-xl-5 w-60" align="center">
+    <div class="col-sm" *ngIf="role == roleEnum.USER">
+    <h4><p style="margin-left: 40px" align="center">Рекомендовані вікторини</p></h4>
+    <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+    <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+    <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+    <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-      <h4><p style="margin-left: 40px">Досягнення</p></h4>
+    <h4><p style="margin-left: 40px">Досягнення</p></h4>
       <img src="../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/award.jpg" width="80" height="92" align="middle" class="leftpic" />
-    </td>
-    <td align="center" *ngIf="role == roleEnum.ADMIN">
-      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
-
-      <h4><p style="margin-left: 40px">Модератори</p></h4>
-
-    </td>
-    <td align="center" *ngIf="role == roleEnum.MODERATOR">
-      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
-    </td>
-    <td align="center" *ngIf="role == roleEnum.SUPER_ADMIN">
-      <h4><p style="margin-left: 40px">Запити на розгляд</p></h4>
-
-      <h4><p style="margin-left: 40px">Адміни</p></h4>
-
-      <h4><p style="margin-left: 40px">Модератори</p></h4>
-
-    </td>
-    <td align="right" width="200">
-      <h5>
-        <a class="act" routerLink="/edit"><b>Редагувати</b></a>
-<!--        <a class="act" routerLink="/registration" *ngIf="role != roleEnum.SUPER_ADMIN"><b>Активувати/деактивувати</b></a>-->
-      </h5>
-    </td>
-  </tr>
-</table>
+  </div>
+    <div class="col-sm" *ngIf="role == roleEnum.ADMIN"></div>
+    <div class="col-sm" *ngIf="role == roleEnum.SUPER_ADMIN"></div>
+    <div class="col-sm" *ngIf="role == roleEnum.MODERATOR"></div>
+  </div>
+  <div class="ml-xl-5 w-20">
+    <button class="btn btn-warning btn-block col-sm-12" routerLink="../edit">
+      Редагувати
+    </button>
+  </div>
+</div>

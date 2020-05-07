@@ -58,6 +58,13 @@ public class AnnouncementService {
         return announcementPage;
     }
 
+    public Page<Announcement> getPageForAllAnnouncements(boolean isPublished, Optional<Integer> page, Optional<Integer> size) {
+        Page<Announcement> announcementPage = announcementDao.getAllInfoForPage(isPublished,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "created_date"));
+        return announcementPage;
+    }
+
     public Page<Announcement> getPageByAuthorLogin(String login, Optional<Integer> page, Optional<Integer> size) {
         Page<Announcement> announcementPage = announcementDao.getPageByAuthorLogin(login,
                 PageRequest.of(page.orElse(0), size.orElse(10),
@@ -71,4 +78,6 @@ public class AnnouncementService {
                         Sort.Direction.DESC, "id"));
         return announcementPage;
     }
+
+
 }

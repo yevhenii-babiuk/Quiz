@@ -1,0 +1,55 @@
+<div class="card mx-auto mt-5 w-75">
+  <div class="card-header text-center bg-warning">
+    <h3>Name - налаштування</h3>
+  </div>
+  <ul class="list-group list-group-flush">
+    <li class="list-group-item">
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="settingsModel.isTimeForAnswerChosen" id="checkbox1" type="checkbox" class="styled">
+        <label for="checkbox1">
+          Час на відповідь
+          <input [(ngModel)]="settingsModel.timeForAnswer" type="number" class="border border-dark rounded w-25"
+                 value="15" min="5" max="60">
+        </label>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="settingsModel.isQuestionThenAnswerChosen" id="checkbox2" type="checkbox" class="styled">
+        <label for="checkbox2">
+          Спочатку питання, потім відповіді
+        </label>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="settingsModel.isQuickAnswerBonusChosen" id="checkbox3" type="checkbox" class="styled">
+        <label for="checkbox3">
+          Бонус гравцю, який відповів першим
+        </label>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="settingsModel.isComboBonusChosen" id="checkbox4" type="checkbox" class="styled">
+        <label for="checkbox4">
+          Бонус за декілька послідовних правильних відповідей
+        </label>
+      </div>
+    </li>
+    <li class="list-group-item">
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="settingsModel.isIntermediateResultChosen" id="checkbox5" type="checkbox" class="styled">
+        <label for="checkbox5">
+          Показувати проміжні результати
+        </label>
+      </div>
+    </li>
+  </ul>
+</div>
+<div *ngIf="isInvalid" class="w-100 alert border-danger my-4 text-center">
+  {{message}}
+</div>
+<div class="text-center">
+  <button class="btn btn-warning w-50 mt-4" (click)="submit()">PLAY</button>
+</div>

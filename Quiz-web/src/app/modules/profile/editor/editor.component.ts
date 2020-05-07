@@ -42,6 +42,10 @@ export class EditorComponent implements OnInit {
       this.alertService.error('passwords don`t match');
       return;
     }
+    if(firstname=="" || secondname=="" || email=="" || password=="" || confirmPassword==""){
+      this.alertService.error('fill all required fields');
+      return;
+    }
     let editedUser: User = {
       id: id,
       firstName:firstname,
@@ -53,9 +57,10 @@ export class EditorComponent implements OnInit {
       score:this.userData.score,
       role:this.userData.role
     };
-    this.profileService.postUser(editedUser).subscribe(data => {
+    this.profileService.updateUser(editedUser).subscribe(data => {
       editedUser=data;
     });
+    this.alertService.success('You have successfully edited your profile');
   }
 
 }
