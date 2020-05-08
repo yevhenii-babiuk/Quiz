@@ -2,6 +2,7 @@ package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Category;
 import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.repositories.entities.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
 import com.qucat.quiz.services.CategoryService;
 import com.qucat.quiz.services.QuizService;
@@ -53,9 +54,10 @@ public class QuizController {
             @RequestParam(value = "minDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minDate,
             @RequestParam(value = "maxDate", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate) {
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate,
+            @RequestParam(required = false) QuizStatus status) {
         return quizService.showPage(pageNumber, countOnPage, quizName, authorName,
-                categories, null, tags).toList().toArray(Quiz[]::new);//todo set min and max dates
+                categories, minDate, maxDate, tags, status).toList().toArray(Quiz[]::new);
     }
 
     @GetMapping("/categories")
