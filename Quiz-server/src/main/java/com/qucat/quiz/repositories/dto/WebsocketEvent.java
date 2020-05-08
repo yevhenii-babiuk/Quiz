@@ -9,14 +9,15 @@ import java.util.List;
 @Data
 @Builder
 public class WebsocketEvent {
-    public enum EventType{
-        RESULTS,
-        QUESTION,
-        PLAYERS
-    }
     private EventType type;
     private List<String> players;
     private Question question;
     private Users results;
+
+    public enum EventType {
+        RESULTS,
+        QUESTION,
+        PLAYERS
+    }
 
 }
