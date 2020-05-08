@@ -1,12 +1,7 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.GameDao;
-
-import com.qucat.quiz.repositories.dto.AnswerDto;
-import com.qucat.quiz.repositories.dto.GameDto;
-import com.qucat.quiz.repositories.dto.GameQuestionDto;
-import com.qucat.quiz.repositories.dto.UserDto;
-import com.qucat.quiz.repositories.dto.Users;
+import com.qucat.quiz.repositories.dto.*;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import lombok.Data;
@@ -15,9 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -26,7 +20,9 @@ import java.util.List;
 public class GameProcess implements Runnable {
 
     private final int COMBO_COUNT = 3;
+
     private String gameId;
+
     @Autowired
     private WebSocketSenderService socketSenderService;
 
@@ -34,110 +30,68 @@ public class GameProcess implements Runnable {
     private GameDao gameDao;
 
 
+    private void questionAnswerSequence(Question question, int secondLeft) {
+        socketSenderService.sendQuestion(question, gameId);
+        try {
+            Thread.sleep((secondLeft / 2) * 1000);
+        } catch (InterruptedException e) {
+            log.error("Thread was interrupted", e);
+        }
+    }
+
+    private void waitAllAnswer(int secondLeft) {
+        while (!checkAllSendAnswer() && secondLeft != -1) {
+            try {
+                Thread.sleep(1000);
+                secondLeft--;
+            } catch (InterruptedException e) {
+                log.error("Thread was interrupted", e);
+            }
+        }
+    }
+
+    private void sendResults() {
+        Users users = new Users(gameDao.getUsersByGame(gameId));
+        socketSenderService.sendResults(gameId, users);
+        try {
+            Thread.sleep((long) 1e4);
+        } catch (InterruptedException e) {
+            log.error("Thread was interrupted", e);
+        }
+    }
+
     @Override
     public void run() {
         GameDto gameDto = gameDao.getGame(gameId);
 
         while (gameDao.getCountGameQuestion(gameId) != 0) {
+
             int count = gameDao.getCountGameQuestion(gameId);
             GameQuestionDto questionDto = gameDao.getGameQuestion(gameId, (int) (Math.random() * count));
             Question question = gameDao.getQuestionById(questionDto.getQuestionId());
             gameDao.updateGameQuestionToCurrent(questionDto.getId());
+
             int secondLeft = gameDto.getTime();
 
             if (gameDto.isQuestionAnswerSequence()) {
                 question.setOptions(null);
-                socketSenderService.sendQuestion(question, gameDto.getGameId());
-                try {
-                    Thread.currentThread().sleep((secondLeft / 2) * 1000);
-                    secondLeft -= secondLeft / 2;
-                } catch (InterruptedException e) {
-                    log.error("Thread was interrupted", e);
-                }
+                questionAnswerSequence(question, secondLeft);
+                secondLeft -= secondLeft / 2;
                 question = gameDao.getQuestionById(questionDto.getQuestionId());
             }
 
             clearRightAnswer(question);
-
             socketSenderService.sendQuestion(question, gameDto.getGameId());
 
-            while (!checkAllSendAnswer() && secondLeft != -1) {
-                try {
-                    Thread.currentThread().sleep(1000);
-                } catch (InterruptedException e) {
-                    log.error("Thread was interrupted", e);
-                }
-                secondLeft--;
-            }
+            waitAllAnswer(secondLeft);
+
 
             question = gameDao.getQuestionById(questionDto.getQuestionId());
             List<AnswerDto> answers = gameDao.getAnswersToCurrentQuestionByGameId(gameId);
 
             for (AnswerDto answer : answers) {
-                answer.setCorrect(false);
                 UserDto user = answer.getUser();
-                String answerStr = answer.getAnswer();
-                answerStr = answerStr.substring(answerStr.indexOf(':') + 1);
-
-                switch (question.getType()) {
-                    case ENTER_ANSWER:
-                        List<QuestionOption> options = question.getOptions();
-                        answer.setCorrect(options.get(0).getContent().toLowerCase().trim()
-                                .equals(answerStr.toLowerCase().trim()));
-                        if (answer.isCorrect()) {
-                            user.setScore(user.getScore() + question.getScore());
-                        }
-                        break;
-
-                    case TRUE_FALSE:
-                        List<QuestionOption> questionOptions = question.getOptions();
-                        answer.setCorrect(questionOptions.get(0).isCorrect() == answerStr.equals("true"));
-                        if (answer.isCorrect()) {
-                            user.setScore(user.getScore() + question.getScore());
-                        }
-                        break;
-
-                    case SELECT_OPTION:
-                        String[] userAnswers = answerStr.split(" ");
-                        List<Integer> chosenAnswers = new ArrayList<>();
-                        for (String currAnswer : userAnswers) {
-                            chosenAnswers.add(Integer.parseInt(currAnswer));
-                        }
-                        int correctAnswer = 0;
-                        for (QuestionOption option : question.getOptions()) {
-                            if (option.isCorrect() == chosenAnswers.contains(option.getId())) {
-                                correctAnswer++;
-                            }
-                        }
-                        if (correctAnswer == question.getOptions().size()) {
-                            answer.setCorrect(true);
-                        }
-                        user.setScore(user.getScore() + question.getScore() * correctAnswer / question.getOptions().size());
-                        break;
-
-                    case SELECT_SEQUENCE:
-                        String[] currAnswers = answerStr.split(" ");
-                        HashMap<Integer, Integer> useranswers = new HashMap<>();
-                        for (String currAnswer : currAnswers) {
-                            String[] oneUserAnswer = currAnswer.split("-");
-                            useranswers.put(Integer.parseInt(oneUserAnswer[0]), Integer.parseInt(oneUserAnswer[1]));
-                        }
-                        int correct = 0;
-                        for (QuestionOption option : question.getOptions()) {
-                            if (option.getSequenceOrder() == useranswers.get(option.getId())) {
-                                correct++;
-                            }
-                        }
-                        if (correct == question.getOptions().size()) {
-                            answer.setCorrect(true);
-                        }
-                        user.setScore(user.getScore() + question.getScore() * correct / question.getOptions().size());
-
-                        break;
-
-                    default:
-                        break;
-                }
+                user.setScore(user.getScore() + question.getScore() * answer.getPercent() / 100);
 
                 if (gameDto.isCombo() && answer.isCorrect()) {
                     user.setComboAnswer(user.getComboAnswer() + 1);
@@ -152,34 +106,25 @@ public class GameProcess implements Runnable {
             }
 
             if (gameDto.isQuickAnswerBonus()) {
-                int minTime = Integer.MAX_VALUE;
-                for (AnswerDto answer : answers) {
-                    if (answer.isCorrect()) {
-                        minTime = Integer.min(minTime, answer.getTime());
-                    }
-                }
-                for (AnswerDto answer : answers) {
-                    if (answer.getTime() == minTime) {
-                        UserDto user = answer.getUser();
-                        user.setScore(user.getScore() + answer.getQuestion().getScore());
-                        gameDao.updateUserDto(user);
-                    }
+                Optional<AnswerDto> firstCorrectAnswer = answers.stream()
+                        .filter(AnswerDto::isCorrect)
+                        .findFirst();
+                if (firstCorrectAnswer.isPresent()) {
+                    UserDto user = firstCorrectAnswer.get().getUser();
+                    user.setScore(user.getScore() + firstCorrectAnswer.get().getQuestion().getScore());
                 }
             }
 
-            if (gameDto.isIntermediateResult()) {
-                Users users = Users.builder().users(gameDao.getUsersByGame(gameId)).build();
-                socketSenderService.sendResults(gameId, users);
-                try {
-                    Thread.currentThread().sleep((long) 1e4);
-                } catch (InterruptedException e) {
-                    log.error("Thread was interrupted", e);
-                }
+            if (gameDto.isIntermediateResult() && count != 1) {
+                sendResults();
+
             }
 
             gameDao.deleteGameQuestion(questionDto.getId());
         }
-        //todo send results, and send end command
+        sendResults();
+        //todo send end command
+        //todo save
         gameDao.deleteGame(gameId);
     }
 
