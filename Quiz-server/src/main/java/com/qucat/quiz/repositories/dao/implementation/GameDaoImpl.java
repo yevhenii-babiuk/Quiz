@@ -380,7 +380,7 @@ public class GameDaoImpl implements GameDao {
             }
         }
 
-        if (images.isEmpty()) {
+        if (images.size() != 0) {
             return;
         }
 
@@ -391,7 +391,7 @@ public class GameDaoImpl implements GameDao {
                 images.remove(imageId);
             }
         }
-        if (!images.isEmpty()) {
+        if (images.size() != 0) {
             jdbcTemplate.update(getQueryForInsertImages(new ArrayList<>(images.values())),
                     getParamsToInsertImage(new ArrayList<>(images.values())));
         }

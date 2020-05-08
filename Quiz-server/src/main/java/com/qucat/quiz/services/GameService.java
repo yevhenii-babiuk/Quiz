@@ -137,7 +137,9 @@ public class GameService {
 
     public Question getCurrentQuestion(String gameId, int userId) {
         GameQuestionDto gameQuestionDto = gameDao.getCurrentQuestionByGameId(gameId);
-        if (gameQuestionDto == null || gameQuestionDto.getQuestionId() == 0) return null;
+        if (gameQuestionDto == null || gameQuestionDto.getQuestionId() == 0) {
+            return null;
+        }
         return gameDao.getQuestionById(gameQuestionDto.getQuestionId());//todo check timer. check answer
     }
 
@@ -161,24 +163,9 @@ public class GameService {
         }
         gameDao.saveQuestionOptions(questionOptions);
 
-        for (Question question : quizDto.getQuestions()) {//todo save gameQuestions
-            gameDao.saveGameQuestion(game.getGameId(), question.getId());
+        for (Question question : quizDto.getQuestions()) {
+            gameDao.saveGameQuestion(game.getGameId(), question.getId());//todo save gameQuestions
         }
-
-
-        /*for (Question question : quizDto.getQuestions()) {
-            gameDao.saveQuestion(question);
-            if (question.getImageId() != -1) {
-                gameDao.saveImage(question.getImage());
-            }
-
-            for (QuestionOption option : question.getOptions()) {
-                gameDao.saveOption(option);
-                if (option.getImageId() != -1) {
-                    gameDao.saveImage(option.getImage());
-                }
-            }
-        }*/
 
     }
 
