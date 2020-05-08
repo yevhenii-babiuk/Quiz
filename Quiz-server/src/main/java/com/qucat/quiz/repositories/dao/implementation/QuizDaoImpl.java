@@ -154,7 +154,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     private PreparedStatement getParamForPreparedStatement(String query, List<Integer> id, Pageable pageable,
                                                            String name, String author, List<String> category,
                                                            Timestamp minDate, Timestamp maxDate, List<String> tags,
-                                                           QuizStatus status) {
+                                                           QuizStatus[] status) {
 
         PreparedStatement preparedStatement = null;
 
@@ -189,7 +189,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             }
 
             if (status != null) {
-                preparedStatement.setString(paramIndex++, status.toString());
+                for (QuizStatus statusItem : status) {
+                    preparedStatement.setString(paramIndex++, statusItem.toString());
+                }
             }
 
             if (pageable != null) {
@@ -210,7 +212,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     }
 
     private PreparedStatement getQuizIdQuery(Pageable pageable, String name, String author, List<String> category,
-                                             Timestamp minDate, Timestamp maxDate, List<String> tags, QuizStatus status) {
+                                             Timestamp minDate, Timestamp maxDate, List<String> tags, QuizStatus[] status) {
 
         StringBuilder query = new StringBuilder(quizQueries.get("getQuizId"));
         boolean anotherParameter = false;
@@ -279,6 +281,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             }
             anotherParameter = true;
             query.append(quizQueries.get("caseStatus"));
+            String insertion = makeInsertion(status.length);
+
+            query.replace(query.lastIndexOf("(") + 1, query.lastIndexOf(")") - 1, insertion);
         }
         query.append(quizQueries.get("caseAll"));
         return getParamForPreparedStatement(query.toString(), null, pageable, name, author, category,
@@ -286,7 +291,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     }
 
     private PreparedStatement getQuizCount(String query, String name, String author, List<String> category,
-                                           Timestamp minDate, Timestamp maxDate, List<String> tags, QuizStatus status) {
+                                           Timestamp minDate, Timestamp maxDate, List<String> tags, QuizStatus[] status) {
         StringBuilder countQuery = new StringBuilder(quizQueries.get("quizCount"));
         if (author != null) {
             countQuery.append(quizQueries.get("authorJoin"));
@@ -301,10 +306,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
     }
 
-
     @Override
     public Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category,
-                                     Timestamp minDate, Timestamp maxDate, List<String> tags, QuizStatus status) {
+                                     Timestamp minDate, Timestamp maxDate, List<String> tags, QuizStatus[] status) {
         List<Integer> id = new ArrayList<>();
         List<Quiz> quizzes = new ArrayList<>();
         int quizCount = 0;
