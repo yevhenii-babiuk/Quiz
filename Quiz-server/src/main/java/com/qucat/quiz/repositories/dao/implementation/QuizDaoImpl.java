@@ -306,7 +306,6 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
     }
 
-
     @Override
     public Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category,
                                      Timestamp minDate, Timestamp maxDate, List<String> tags, QuizStatus[] status) {
