@@ -17,11 +17,9 @@ import java.util.List;
 @Service
 public class WebSocketSenderService {
 
+    private final Gson gson = new Gson();
     @Autowired
     private SimpMessagingTemplate template;
-
-    private Gson gson = new Gson();
-
 
     public void sendResults(String gameId, Users users) {
         log.info("send results");
@@ -36,23 +34,13 @@ public class WebSocketSenderService {
                 g.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.QUESTION).question(question).build()));
     }
 
-    public void sendUsers(String gameId, Users users) {
-     /*   JSONStringer stringer = new JSONStringer();
-        try {
-            stringer.array();
-            for (UserDto user : users.getUsers()) {
-                stringer.value(user.getLogin());
-            }
-            stringer.endArray();*/
+    public void sendUsers(String gameId, List<UserDto> users) {
         List<String> players = new ArrayList<>();
-        for (UserDto user : users.getUsers()) {
+        for (UserDto user : users) {
             players.add(user.getLogin());
         }
         this.template.convertAndSend(String.format("/game/%s/play", gameId),
                 gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.PLAYERS).players(players).build()));
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
     }
 
 
