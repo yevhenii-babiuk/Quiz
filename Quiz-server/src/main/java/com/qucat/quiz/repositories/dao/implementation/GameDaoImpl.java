@@ -1,18 +1,8 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.GameDao;
-import com.qucat.quiz.repositories.dao.mappers.AnswerExtractor;
-import com.qucat.quiz.repositories.dao.mappers.GameDtoMapper;
-import com.qucat.quiz.repositories.dao.mappers.GameQuestionMapper;
-import com.qucat.quiz.repositories.dao.mappers.ImageMapper;
-import com.qucat.quiz.repositories.dao.mappers.QuestionExtractor;
-import com.qucat.quiz.repositories.dao.mappers.QuestionMapper;
-import com.qucat.quiz.repositories.dao.mappers.UserDtoMapper;
-import com.qucat.quiz.repositories.dto.AnswerDto;
-import com.qucat.quiz.repositories.dto.GameDto;
-import com.qucat.quiz.repositories.dto.GameQuestionDto;
-import com.qucat.quiz.repositories.dto.QuizDto;
-import com.qucat.quiz.repositories.dto.UserDto;
+import com.qucat.quiz.repositories.dao.mappers.*;
+import com.qucat.quiz.repositories.dto.*;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
@@ -29,11 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Slf4j
 @Repository
@@ -161,7 +147,7 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
-    public void saveQuestion(List<Question> questions) {
+    public void saveQuestions(List<Question> questions) {
         saveQuestionsImage(questions);
         try {
             jdbcTemplate.update(getQueryForInsertQuestions(questions),
@@ -309,39 +295,45 @@ public class GameDaoImpl implements GameDao {
                 images.put(option.getImage().getId(), option.getImage());
             }
         }
-
+        if (images.isEmpty()) {
+            return;
+        }
         List<Integer> existId = getAlreadyExistImage(new ArrayList<>(images.keySet()));
 
-        for (Integer imageId: existId){
-            if(images.get(imageId)!= null){
+
+        for (Integer imageId : existId) {
+            if (images.get(imageId) != null) {
                 images.remove(imageId);
             }
         }
-        jdbcTemplate.update(getQueryForInsertImages(new ArrayList<>(images.values())),
-                getParamsToInsertImage(new ArrayList<>(images.values())));
+
+        if (!images.isEmpty()) {
+            jdbcTemplate.update(getQueryForInsertImages(new ArrayList<>(images.values())),
+                    getParamsToInsertImage(new ArrayList<>(images.values())));
+        }
     }
 
-    private Object[] getParamsToInsertImage(List<Image> images){
+    private Object[] getParamsToInsertImage(List<Image> images) {
         List<Object> params = new ArrayList<>();
-        for(Image image : images){
+        for (Image image : images) {
             params.add(image.getId());
             params.add(image.getSrc());
         }
         return params.toArray();
     }
 
-    private String getQueryForInsertImages(List<Image> images){
+    private String getQueryForInsertImages(List<Image> images) {
         String query = queries.get("multipleSaveOptionsImage");
 
         for (int i = 0; i < images.size() - 1; i++) {
-            query = query.concat("(?, ?,), ");
+            query = query.concat("(?, ?), ");
         }
         return query.concat("(?, ?);");
     }
 
-    private List<Integer> getAlreadyExistImage(List<Integer> imagesId){
+    private List<Integer> getAlreadyExistImage(List<Integer> imagesId) {
         String query = queries.get("getExistImage").concat("( ");
-        for (int i = 0; i < imagesId.size()-1; i++){
+        for (int i = 0; i < imagesId.size() - 1; i++) {
             query = query.concat("?, ");
         }
         query = query.concat("?)");
@@ -351,7 +343,7 @@ public class GameDaoImpl implements GameDao {
 
         List<Integer> existId = new ArrayList<>();
 
-        for (Image image : existImages){
+        for (Image image : existImages) {
             existId.add(image.getId());
         }
         return existId;
@@ -362,7 +354,7 @@ public class GameDaoImpl implements GameDao {
         for (Question question : questions) {
             params.add(question.getId());
             params.add(question.getQuizId());
-            params.add(question.getType());
+            params.add(question.getType().name().toLowerCase());
             params.add(question.getContent());
             params.add(question.getScore());
             params.add(question.getImageId());
@@ -390,12 +382,14 @@ public class GameDaoImpl implements GameDao {
 
         List<Integer> existId = getAlreadyExistImage(new ArrayList<>(images.keySet()));
 
-        for (Integer imageId: existId){
-            if(images.get(imageId)!= null){
+        for (Integer imageId : existId) {
+            if (images.get(imageId) != null) {
                 images.remove(imageId);
             }
         }
-        jdbcTemplate.update(getQueryForInsertImages(new ArrayList<>(images.values())),
-                getParamsToInsertImage(new ArrayList<>(images.values())));
+        if (!images.isEmpty()) {
+            jdbcTemplate.update(getQueryForInsertImages(new ArrayList<>(images.values())),
+                    getParamsToInsertImage(new ArrayList<>(images.values())));
+        }
     }
 }

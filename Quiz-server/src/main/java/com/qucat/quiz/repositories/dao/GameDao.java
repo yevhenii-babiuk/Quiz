@@ -35,7 +35,7 @@ public interface GameDao {
 
     void saveOption(QuestionOption option);
 
-    void saveQuestion(List<Question> questions);
+    void saveQuestions(List<Question> questions);
 
     void saveQuestionOptions(List<QuestionOption> questionOptions);
 
