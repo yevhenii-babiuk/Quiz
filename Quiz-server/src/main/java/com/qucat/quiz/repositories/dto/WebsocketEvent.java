@@ -12,7 +12,7 @@ public class WebsocketEvent {
     private EventType type;
     private List<String> players;
     private Question question;
-    private Users results;
+    private Users gameResults;
 
     public enum EventType {
         RESULTS,

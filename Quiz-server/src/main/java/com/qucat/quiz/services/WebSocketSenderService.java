@@ -24,7 +24,7 @@ public class WebSocketSenderService {
     public void sendResults(String gameId, Users users) {
         log.info("send results");
         this.template.convertAndSend(String.format("/game/%s/play", gameId),
-                gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.RESULTS).results(users).build()));
+                gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.RESULTS).gameResults(users).build()));
     }
 
     public void sendQuestion(Question question, String gameId) {

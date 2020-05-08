@@ -65,7 +65,6 @@ export class GameComponent implements OnInit, OnDestroy {
           players => {
             if (players)
               this.players = players;
-            else this.players.push(this.currentUser.login);
           }, err => {
             console.log(err);
             this.redirect.navigate(['home']);
@@ -122,6 +121,7 @@ export class GameComponent implements OnInit, OnDestroy {
             }
           }
           if (that.receivedEvent.type == that.eventType.RESULTS) {
+            if (that.question != null) localStorage.removeItem("endTime" + that.question.id);
             that.isWaiting = false;
             that.question = null;
             that.gameResults = that.receivedEvent.gameResults;
