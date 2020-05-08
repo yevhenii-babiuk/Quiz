@@ -48,10 +48,10 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
-    public Question getCurrentQuestionByGameId(String id) {
+    public GameQuestionDto getCurrentQuestionByGameId(String id) {
         String selectQuery = queries.get("getCurrentQuestionByGameId");
         return jdbcTemplate.queryForObject(selectQuery,
-                new Object[]{id}, new QuestionMapper());
+                new Object[]{id}, new GameQuestionMapper());
     }
 
     @Override
@@ -378,6 +378,10 @@ public class GameDaoImpl implements GameDao {
             if (question.getImage() != null) {
                 images.put(question.getImage().getId(), question.getImage());
             }
+        }
+
+        if (images.isEmpty()) {
+            return;
         }
 
         List<Integer> existId = getAlreadyExistImage(new ArrayList<>(images.keySet()));

@@ -17,7 +17,7 @@ public interface GameDao {
 
     List<AnswerDto> getAnswersToCurrentQuestionByGameId(String id);
 
-    Question getCurrentQuestionByGameId(String id);
+    GameQuestionDto getCurrentQuestionByGameId(String id);
 
     Question getQuestionById(int id);
 
