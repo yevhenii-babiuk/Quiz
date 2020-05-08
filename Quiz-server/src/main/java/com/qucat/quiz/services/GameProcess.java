@@ -6,26 +6,20 @@ import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
-@Component
 @Data
-@Scope("prototype")
 public class GameProcess implements Runnable {
 
     private final int COMBO_COUNT = 3;
 
     private String gameId;
 
-    @Autowired
     private WebSocketSenderService socketSenderService;
 
-    @Autowired
     private GameDao gameDao;
 
 
@@ -61,9 +55,10 @@ public class GameProcess implements Runnable {
 
     @Override
     public void run() {
+        log.info("start game " + gameId);
         GameDto gameDto = gameDao.getGame(gameId);
         while (gameDao.getCountGameQuestion(gameId) != 0) {
-
+            log.info(gameId);
             int count = gameDao.getCountGameQuestion(gameId);
             GameQuestionDto questionDto = gameDao.getGameQuestion(gameId, (int) (Math.random() * count));
             Question question = gameDao.getQuestionById(questionDto.getQuestionId());
@@ -86,6 +81,9 @@ public class GameProcess implements Runnable {
 
             question = gameDao.getQuestionById(questionDto.getQuestionId());
             List<AnswerDto> answers = gameDao.getAnswersToCurrentQuestionByGameId(gameId);
+
+            log.info("answers" + answers);
+
             for (AnswerDto answer : answers) {
                 UserDto user = answer.getUser();
                 user.setScore(user.getScore() + question.getScore() * answer.getPercent() / 100);
@@ -103,13 +101,12 @@ public class GameProcess implements Runnable {
             }
 
             if (gameDto.isQuickAnswerBonus()) {
-                AnswerDto firstCorrectAnswer = answers.stream()//todo
+                Optional<AnswerDto> firstCorrectAnswer = answers.stream()
                         .filter(answerDto -> answerDto.getPercent() == 100)
-                        .findFirst()
-                        .orElse(AnswerDto.builder().build());
-                if (firstCorrectAnswer.getPercent() == 100) {
-                    UserDto user = firstCorrectAnswer.getUser();
-                    user.setScore(user.getScore() + firstCorrectAnswer.getQuestion().getScore());
+                        .findFirst();
+                if (firstCorrectAnswer.isPresent()) {
+                    UserDto user = firstCorrectAnswer.get().getUser();
+                    user.setScore(user.getScore() + firstCorrectAnswer.get().getQuestion().getScore());
                     gameDao.updateUserDto(user);
                 }
             }

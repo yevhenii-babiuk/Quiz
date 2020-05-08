@@ -22,7 +22,7 @@ public class WebSocketSenderService {
     private SimpMessagingTemplate template;
 
     public void sendResults(String gameId, Users users) {
-        log.info("send results");
+        log.info("send results " + users);
         this.template.convertAndSend(String.format("/game/%s/play", gameId),
                 gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.RESULTS).gameResults(users).build()));
     }

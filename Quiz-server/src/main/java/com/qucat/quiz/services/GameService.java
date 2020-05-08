@@ -33,9 +33,6 @@ public class GameService {
     private UserService userService;
 
     @Autowired
-    private GameProcess gameProcess;
-
-    @Autowired
     private WebSocketSenderService socketSenderService;
 
     @Value("${url}")
@@ -63,6 +60,9 @@ public class GameService {
     }
 
     public void startGame(String gameId) {
+        GameProcess gameProcess = new GameProcess();
+        gameProcess.setGameDao(gameDao);
+        gameProcess.setSocketSenderService(socketSenderService);
         gameProcess.setGameId(gameId);
         gameProcess.run();
     }
@@ -95,7 +95,7 @@ public class GameService {
             case SELECT_OPTION:
                 List<Integer> chosenAnswers = answer.getOptions();
                 log.info("options " + question.getOptions().toString());
-                log.info("chosenAnswers " + chosenAnswers);
+                log.info("chosenAnswers " + chosenAnswers.toString());
                 for (QuestionOption option : question.getOptions()) {
                     if (option.isCorrect() == chosenAnswers.contains(option.getId())) {
                         correctAnswer++;
@@ -108,7 +108,7 @@ public class GameService {
             case SELECT_SEQUENCE:
                 Map<Integer, Integer> sequence = answer.getSequence();
                 log.info("sequence" + sequence.toString());
-                log.info(" question.getOptions()" +  question.getOptions());
+                log.info(" question.getOptions()" + question.getOptions());
                 for (QuestionOption option : question.getOptions()) {
                     if (option.getSequenceOrder() == sequence.get(option.getId())) {
                         correctAnswer++;
@@ -129,7 +129,7 @@ public class GameService {
         answer.setTime(new Timestamp(new Date().getTime()));
         GameQuestionDto gameQuestionDto = gameDao.getCurrentQuestionByGameId(gameID);
         Question question = gameDao.getQuestionById(gameQuestionDto.getQuestionId());
-        calculateCorrectForAnswer(answer, question);//todo smth with time
+        calculateCorrectForAnswer(answer, question);
         gameDao.saveAnswer(answer);
     }
 
