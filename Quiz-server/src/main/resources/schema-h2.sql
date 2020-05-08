@@ -106,7 +106,7 @@ CREATE TABLE answer
     user_id           INT,
     question_id       INT,
     percent           INT(3),
-    time              INT,
+    time              TIMESTAMP,
     FOREIGN KEY (user_id)
         REFERENCES user (id)
         ON DELETE CASCADE,
