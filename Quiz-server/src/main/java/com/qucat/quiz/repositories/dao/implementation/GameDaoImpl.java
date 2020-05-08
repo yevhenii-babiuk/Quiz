@@ -161,6 +161,17 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
+    public void saveQuestion(List<Question> questions) {
+        saveQuestionsImage(questions);
+        try {
+            jdbcTemplate.update(getQueryForInsertQuestions(questions),
+                    getParamsToInsertQuestions(questions));
+        } catch (DuplicateKeyException e) {
+            log.warn("question options is already exist");
+        }
+    }
+
+    @Override
     public void saveQuestionOptions(List<QuestionOption> questionOptions) {
         saveQuestionOptionsImage(questionOptions);
         try {
@@ -344,5 +355,47 @@ public class GameDaoImpl implements GameDao {
             existId.add(image.getId());
         }
         return existId;
+    }
+
+    private Object[] getParamsToInsertQuestions(List<Question> questions) {
+        List<Object> params = new ArrayList<>();
+        for (Question question : questions) {
+            params.add(question.getId());
+            params.add(question.getQuizId());
+            params.add(question.getType());
+            params.add(question.getContent());
+            params.add(question.getScore());
+            params.add(question.getImageId());
+        }
+        return params.toArray();
+    }
+
+    private String getQueryForInsertQuestions(List<Question> questions) {
+        String query = queries.get("multipleSaveQuestion");
+
+        for (int i = 0; i < questions.size() - 1; i++) {
+            query = query.concat("(?, ?, ?, ?, ?, ?), ");
+        }
+        return query.concat("(?, ?, ?, ?, ?, ?);");
+    }
+
+    private void saveQuestionsImage(List<Question> questions) {
+        Map<Integer, Image> images = new HashMap<>();
+
+        for (Question question : questions) {
+            if (question.getImage() != null) {
+                images.put(question.getImage().getId(), question.getImage());
+            }
+        }
+
+        List<Integer> existId = getAlreadyExistImage(new ArrayList<>(images.keySet()));
+
+        for (Integer imageId: existId){
+            if(images.get(imageId)!= null){
+                images.remove(imageId);
+            }
+        }
+        jdbcTemplate.update(getQueryForInsertImages(new ArrayList<>(images.values())),
+                getParamsToInsertImage(new ArrayList<>(images.values())));
     }
 }
