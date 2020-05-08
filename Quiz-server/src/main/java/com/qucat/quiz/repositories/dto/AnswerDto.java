@@ -6,6 +6,9 @@ import lombok.Data;
 
 import java.sql.Timestamp;
 
+import java.util.HashMap;
+import java.util.List;
+
 @Data
 @Builder
 public class AnswerDto {
@@ -17,4 +20,12 @@ public class AnswerDto {
     private Question question;
     private boolean isCorrect;
     private Timestamp time;
+
+
+    private String gameId;
+
+    private List<Integer> options;
+    private String fullAnswer;
+    private boolean trueFalse;
+    private HashMap<Integer, Integer> sequence;
 }
