@@ -8,8 +8,8 @@ import {PlayGameService} from "../../core/services/play-game.service";
 import * as Stomp from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import {UserDto} from "../../core/models/userDto";
-import {QuestionType} from "../../core/models/questionType";
 import {socket} from "../../../../environments/environment.prod";
+import {EventType, WebsocketEvent} from "../../core/models/websocketEvent";
 
 @Component({
   selector: 'app-game',
@@ -19,24 +19,29 @@ import {socket} from "../../../../environments/environment.prod";
 export class GameComponent implements OnInit, OnDestroy {
 
   question: Question;
+  receivedQuestion: Question;
   players: String[] = [];
   hostId: number;
   time: number;
   image: string;
-  //private serverUrl = 'http://localhost:8080/socket';
   private stompClient;
   public gameResults: Users;
+  eventType = EventType;
+  receivedEvent: WebsocketEvent;
 
   public currentUser: UserDto;
   public gameId: string = this.route.snapshot.paramMap.get('gameId');
-  isWaiting: boolean = true;
+  isWaiting: boolean;
 
   constructor(private route: ActivatedRoute,
               private redirect: Router,
               private securityService: SecurityService,
               private playGameService: PlayGameService) {
     let userId = securityService.getCurrentId();
-    if (!userId) userId = 0;
+    if (!userId) {
+      userId = localStorage.getItem("playerId");
+      if (!userId) userId = 0;
+    }
     this.initializeWebSocketConnection();
 
     this.playGameService.getGame(this.gameId).subscribe(
@@ -44,6 +49,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.hostId = game.hostId;
         this.time = game.time;
         this.image = game.image;
+        this.isWaiting = true;
         console.log(game);
       }, err => {
         console.log(err);
@@ -52,18 +58,32 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.playGameService.sendJoinedUser(userId, this.gameId).subscribe(
       user => {
-        console.log("userJoined");
         this.currentUser = user;
-        /*this.playGameService.getJoinedPlayers(this.gameId).subscribe(
+        if (!securityService.getCurrentId() && !localStorage.getItem("playerId"))
+          localStorage.setItem("playerId", String(this.currentUser.id));
+        this.playGameService.getJoinedPlayers(this.gameId).subscribe(
           players => {
             if (players)
               this.players = players;
-            else players.push(this.currentUser.login);
+            else this.players.push(this.currentUser.login);
           }, err => {
             console.log(err);
             this.redirect.navigate(['home']);
           }
-        );*/
+        );
+        this.playGameService.getCurrentQuestion(this.gameId, this.currentUser.id).subscribe(
+          question => {
+            if (question) {
+              this.isWaiting = false;
+              this.gameResults = null;
+              this.question = this.receivedEvent.question;
+            }
+          }, err => {
+            console.log(err);
+            this.redirect.navigate(['home']);
+          }
+        );
+
       }, err => {
         console.log(err);
         this.redirect.navigate(['home']);
@@ -78,33 +98,57 @@ export class GameComponent implements OnInit, OnDestroy {
     let that = this;
 
     this.stompClient.connect({}, function () {
-      that.stompClient.subscribe("/game/" + that.gameId + "/players", (message) => {
+      that.stompClient.subscribe("/game/" + that.gameId + "/play", async (message) => {
         if (message.body) {
-          let json = JSON.parse(message.body);
-          console.log(json);
-          that.players = json;
+          that.receivedEvent = JSON.parse(message.body);
+          if (that.receivedEvent.type == that.eventType.PLAYERS) {
+            that.players = that.receivedEvent.players;
+          }
+          if (that.receivedEvent.type == that.eventType.QUESTION) {
+            that.isWaiting = false;
+            that.gameResults = null;
+            that.receivedQuestion = that.receivedEvent.question;
+            if (that.question && that.receivedQuestion.id == that.question.id) that.question = that.receivedQuestion;
+            else {
+              if (that.question != null) localStorage.removeItem("endTime" + that.question.id);
+              that.question = null;
+              await sleep(500);
+              that.question = that.receivedEvent.question;
+            }
+          }
+          if (that.receivedEvent.type == that.eventType.RESULTS) {
+            that.isWaiting = false;
+            that.question = null;
+            that.gameResults = that.receivedEvent.gameResults;
+          }
         }
       });
 
-      that.stompClient.subscribe("/game/" + that.gameId + "/play/question", (message) => {
-        if (message.body) {
-          let json = JSON.parse(message.body);
-          that.isWaiting = false;
-          that.gameResults = null;
-          that.question = json;
-        }
-      });
+      /* that.stompClient.subscribe("/game/" + that.gameId + "/play/question", async (message) => {
+         if (message.body) {
+           let json = JSON.parse(message.body);
+           that.isWaiting = false;
+           that.gameResults = null;
+           that.receivedQuestion = json;
+           if (that.question && that.receivedQuestion.id == that.question.id) that.question = that.receivedQuestion;
+           else {
+             that.question = null;
+             await sleep(1000);
+             that.question = json;
+           }
+         }
+       });
 
-      that.stompClient.subscribe("/game/" + that.gameId + "/play/results", (message) => {
-        if (message.body) {
-          let json = JSON.parse(message.body);
-          that.isWaiting = false;
-          that.question = null;
-          console.log("results " + json);
-          that.gameResults = json
-          console.log(that.gameResults);
-        }
-      });
+       that.stompClient.subscribe("/game/" + that.gameId + "/play/results", (message) => {
+         if (message.body) {
+           let json = JSON.parse(message.body);
+           that.isWaiting = false;
+           that.question = null;
+           console.log("results " + json);
+           that.gameResults = json;
+           console.log(that.gameResults);
+         }
+       });*/
     }, this);
 
   }
@@ -126,4 +170,9 @@ export class GameComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.stompClient.disconnect();
   }
+
+}
+
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

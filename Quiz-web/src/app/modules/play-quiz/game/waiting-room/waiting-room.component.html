@@ -4,7 +4,7 @@
       <img src="data:image/png;base64,{{image}}" alt="image">
     </div>
     <div class="text-center">
-      <input class="border border-warning rounded" value="https://qucat.herokuapp.com/qame/{{gameId}}" readonly #link>
+      <input class="border border-warning rounded" value="https://qucat.herokuapp.com{{route.url}}" readonly #link>
       <button class="btn btn-outline-dark ml-1 mb-2 btn-sm" (click)="copy(link)">Copy to clipboard</button>
     </div>
     <div class="text-center">

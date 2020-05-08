@@ -29,11 +29,7 @@ export class WaitingRoomComponent implements OnInit {
 
   gameId: string = this.route.snapshot.paramMap.get('gameId');
 
-  constructor(private route: ActivatedRoute,
-              private redirect: Router,
-              private securityService: SecurityService,
-              private playGameService: PlayGameService) {
-
+  constructor(public route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
