@@ -53,7 +53,7 @@ public class PlayGameController {
 
     @PostMapping("api/v1/game/{gameId}/joinedUser")
     public UserDto addJoinedUser(@PathVariable String gameId, @RequestBody int userId) {
-        log.info("get by api/v1/game/"+ gameId+"/joinedUser " + userId);
+        log.info("get by api/v1/game/" + gameId + "/joinedUser " + userId);
         return gameService.connectUser(gameId, userId);
     }
 

@@ -1,10 +1,7 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.implementation.GameDaoImpl;
-import com.qucat.quiz.repositories.dto.AnswerDto;
-import com.qucat.quiz.repositories.dto.GameDto;
-import com.qucat.quiz.repositories.dto.QuizDto;
-import com.qucat.quiz.repositories.dto.UserDto;
+import com.qucat.quiz.repositories.dto.*;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import com.qucat.quiz.repositories.entities.Quiz;
@@ -125,7 +122,8 @@ public class GameService {
     public void setAnswer(AnswerDto answer) {
         String gameID = answer.getGameId();
         answer.setTime(new Timestamp(new Date().getTime()));
-        Question question = gameDao.getCurrentQuestionByGameId(gameID);
+        GameQuestionDto gameQuestionDto = gameDao.getCurrentQuestionByGameId(gameID);
+        Question question = gameDao.getQuestionById(gameQuestionDto.getQuestionId());
         calculateCorrectForAnswer(answer, question);//todo smth with time
         gameDao.saveAnswer(answer);
     }
@@ -138,7 +136,9 @@ public class GameService {
 
 
     public Question getCurrentQuestion(String gameId, int userId) {
-        return gameDao.getCurrentQuestionByGameId(gameId);//todo check timer. check answer
+        GameQuestionDto gameQuestionDto = gameDao.getCurrentQuestionByGameId(gameId);
+        if (gameQuestionDto == null || gameQuestionDto.getQuestionId() == 0) return null;
+        return gameDao.getQuestionById(gameQuestionDto.getQuestionId());//todo check timer. check answer
     }
 
     private String generateAccessCode() {
