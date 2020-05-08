@@ -3,6 +3,7 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.repositories.dao.QuizDao;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.repositories.entities.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +61,7 @@ public class QuizService {
         addQuizTags(quiz);
 
         log.info("createQuiz: Quiz successfully saved");
-        suggestionsService.sendSuggestion(quizId, quiz.getName(),quiz.getCategory().getName());
+        suggestionsService.sendSuggestion(quizId, quiz.getName(), quiz.getCategory().getName());
         return true;
     }
 
@@ -118,17 +119,16 @@ public class QuizService {
         return quizDao.getFullInfo(id);
     }
 
-    public Page<Quiz> showPage(int page, int size, String name, String author,
-                               List<String> category, Date[] dates, List<String> tags) {
+    public Page<Quiz> showPage(int page, int size, String name, String author, List<String> category,
+                               Date minDate, Date maxDate, List<String> tags, QuizStatus status) {
+
         Timestamp tMinDate = null;
         Timestamp tMaxDate = null;
-        if (dates != null && dates.length == 2) {
-            tMinDate = new Timestamp(dates[0].getTime());
-            tMaxDate = new Timestamp(dates[1].getTime());
+        if (minDate != null && maxDate != null) {
+            tMinDate = new Timestamp(minDate.getTime());
+            tMaxDate = new Timestamp(maxDate.getTime());
         }
-
-        return quizDao.findAllForPage(
-                PageRequest.of(page, size,
-                        Sort.Direction.DESC, "id"), name, author, category, tMinDate, tMaxDate, tags);
+        return quizDao.findAllForPage(PageRequest.of(page, size, Sort.Direction.DESC, "id"),
+                name, author, category, tMinDate, tMaxDate, tags, status);
     }
 }
