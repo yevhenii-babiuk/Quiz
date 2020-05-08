@@ -55,9 +55,9 @@ public class QuizController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minDate,
             @RequestParam(value = "maxDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate,
-            @RequestParam(required = false) QuizStatus[] status) {
+            @RequestParam(required = false) QuizStatus[] statuses) {
         return quizService.showPage(pageNumber, countOnPage, quizName, authorName,
-                categories, minDate, maxDate, tags, status).toList().toArray(Quiz[]::new);
+                categories, minDate, maxDate, tags, statuses).toList().toArray(Quiz[]::new);
     }
 
     @GetMapping("/categories")
