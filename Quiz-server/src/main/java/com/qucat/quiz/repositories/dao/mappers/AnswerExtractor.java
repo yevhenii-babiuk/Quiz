@@ -26,7 +26,7 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
                 answer = AnswerDto.builder()
                         .id(answerId)
                         .questionId(rs.getInt("question_id"))
-                        .time(rs.getInt("time"))
+                        .time(rs.getTimestamp("time"))
                         .percent(rs.getInt("percent"))
                         .userId(rs.getInt("user_id"))
                         .build();
