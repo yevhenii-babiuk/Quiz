@@ -380,7 +380,7 @@ public class GameDaoImpl implements GameDao {
             }
         }
 
-        if (images.size() != 0) {
+        if (images.size() == 0) {
             return;
         }
 

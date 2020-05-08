@@ -11,7 +11,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @Component
@@ -63,7 +62,6 @@ public class GameProcess implements Runnable {
     @Override
     public void run() {
         GameDto gameDto = gameDao.getGame(gameId);
-
         while (gameDao.getCountGameQuestion(gameId) != 0) {
 
             int count = gameDao.getCountGameQuestion(gameId);
@@ -88,12 +86,11 @@ public class GameProcess implements Runnable {
 
             question = gameDao.getQuestionById(questionDto.getQuestionId());
             List<AnswerDto> answers = gameDao.getAnswersToCurrentQuestionByGameId(gameId);
-
             for (AnswerDto answer : answers) {
                 UserDto user = answer.getUser();
                 user.setScore(user.getScore() + question.getScore() * answer.getPercent() / 100);
 
-                if (gameDto.isCombo() && answer.isCorrect()) {
+                if (gameDto.isCombo() && answer.getPercent() == 100) {
                     user.setComboAnswer(user.getComboAnswer() + 1);
                     if (user.getComboAnswer() >= COMBO_COUNT) {
                         user.setScore(user.getScore() + question.getScore() * (user.getComboAnswer() - COMBO_COUNT + 1));
@@ -106,18 +103,18 @@ public class GameProcess implements Runnable {
             }
 
             if (gameDto.isQuickAnswerBonus()) {
-                Optional<AnswerDto> firstCorrectAnswer = answers.stream()
-                        .filter(AnswerDto::isCorrect)
-                        .findFirst();
-                if (firstCorrectAnswer.isPresent()) {
-                    UserDto user = firstCorrectAnswer.get().getUser();
-                    user.setScore(user.getScore() + firstCorrectAnswer.get().getQuestion().getScore());
+                AnswerDto firstCorrectAnswer = answers.stream()//todo
+                        .filter(answerDto -> answerDto.getPercent() == 100)
+                        .findFirst()
+                        .orElse(AnswerDto.builder().build());
+                if (firstCorrectAnswer.getPercent() == 100) {
+                    UserDto user = firstCorrectAnswer.getUser();
+                    user.setScore(user.getScore() + firstCorrectAnswer.getQuestion().getScore());
                 }
             }
 
             if (gameDto.isIntermediateResult() && count != 1) {
                 sendResults();
-
             }
 
             gameDao.deleteGameQuestion(questionDto.getId());

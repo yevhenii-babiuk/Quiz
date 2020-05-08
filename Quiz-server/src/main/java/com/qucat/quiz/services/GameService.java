@@ -94,6 +94,8 @@ public class GameService {
 
             case SELECT_OPTION:
                 List<Integer> chosenAnswers = answer.getOptions();
+                log.info("options " + question.getOptions().toString());
+                log.info("chosenAnswers " + chosenAnswers);
                 for (QuestionOption option : question.getOptions()) {
                     if (option.isCorrect() == chosenAnswers.contains(option.getId())) {
                         correctAnswer++;
@@ -104,7 +106,9 @@ public class GameService {
                 break;
 
             case SELECT_SEQUENCE:
-                HashMap<Integer, Integer> sequence = answer.getSequence();
+                Map<Integer, Integer> sequence = answer.getSequence();
+                log.info("sequence" + sequence.toString());
+                log.info(" question.getOptions()" +  question.getOptions());
                 for (QuestionOption option : question.getOptions()) {
                     if (option.getSequenceOrder() == sequence.get(option.getId())) {
                         correctAnswer++;
@@ -117,6 +121,7 @@ public class GameService {
             default:
                 break;
         }
+        log.info("answer " + answer);
     }
 
     public void setAnswer(AnswerDto answer) {
@@ -170,6 +175,7 @@ public class GameService {
     }
 
     public String createRoom(GameDto game) {
+        log.info("game" + game);
         String gameId = generateAccessCode();
         game.setGameId(gameId);
 

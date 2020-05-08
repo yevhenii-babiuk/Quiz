@@ -1,16 +1,18 @@
 package com.qucat.quiz.repositories.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.qucat.quiz.repositories.entities.Question;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
 import java.sql.Timestamp;
-
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class AnswerDto {
     private int id;
     private int userId;
@@ -27,5 +29,6 @@ public class AnswerDto {
     private List<Integer> options;
     private String fullAnswer;
     private boolean trueFalse;
-    private HashMap<Integer, Integer> sequence;
+    @JsonProperty("sequence")
+    private Map<Integer, Integer> sequence;
 }
