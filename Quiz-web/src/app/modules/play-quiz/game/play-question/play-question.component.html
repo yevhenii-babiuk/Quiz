@@ -9,7 +9,7 @@
         <h2 class="text-center">{{question.content}}</h2>
       </div>
 
-        <img *ngIf="question.image && question.imageId!=-1" class="img-preview-container img-preview col p-md-3 d-flex justify-content-center"
+        <img *ngIf="question.image && question.imageId!=-1" [width]="100" class="img-preview-container img-preview col p-md-3 d-flex justify-content-center"
              src="data:image/jpeg;base64,{{question.image.src}}">
 
       <div class="p-3 m-2">

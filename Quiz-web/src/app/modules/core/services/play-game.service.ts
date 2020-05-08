@@ -7,6 +7,7 @@ import {catchError} from "rxjs/operators";
 import {url} from "../../../../environments/environment.prod";
 import {GameDto} from "../models/gameDto";
 import {UserDto} from "../models/userDto";
+import {Question} from "../models/question";
 
 @Injectable({
   providedIn: 'root'
@@ -83,6 +84,13 @@ export class PlayGameService {
     return this.http.get<GameDto>(`${url}/game/${gameId}`)
       .pipe(
         catchError(this.handleError<GameDto>(null))
+      );
+  }
+
+  getCurrentQuestion(gameId: string, id: number) {
+    return this.http.get<Question>(`${url}/game/${gameId}/user/${id}`)
+      .pipe(
+        catchError(this.handleError<Question>(null))
       );
   }
 }
