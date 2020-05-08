@@ -2,7 +2,8 @@ package com.qucat.quiz.repositories.dao.mappers;
 
 import com.qucat.quiz.repositories.dto.AnswerDto;
 import com.qucat.quiz.repositories.dto.UserDto;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.QuestionType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -26,7 +27,7 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
                         .id(answerId)
                         .questionId(rs.getInt("question_id"))
                         .time(rs.getInt("time"))
-                        .answer(rs.getString("current_answer"))
+                        .percent(rs.getInt("percent"))
                         .userId(rs.getInt("user_id"))
                         .build();
                 answerMap.put(answerId, answer);

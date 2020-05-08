@@ -1,6 +1,10 @@
 package com.qucat.quiz.repositories.dao;
 
-import com.qucat.quiz.repositories.dto.*;
+import com.qucat.quiz.repositories.dto.AnswerDto;
+import com.qucat.quiz.repositories.dto.GameDto;
+import com.qucat.quiz.repositories.dto.GameQuestionDto;
+import com.qucat.quiz.repositories.dto.QuizDto;
+import com.qucat.quiz.repositories.dto.UserDto;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
@@ -30,6 +34,8 @@ public interface GameDao {
     void saveQuestion(Question question);
 
     void saveOption(QuestionOption option);
+
+    void saveQuestionOptions(List<QuestionOption> questionOptions);
 
     void saveImage(Image image);
 

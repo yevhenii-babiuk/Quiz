@@ -1,6 +1,13 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.Category;
+import com.qucat.quiz.repositories.entities.Image;
+import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.QuestionOption;
+import com.qucat.quiz.repositories.entities.QuestionType;
+import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.repositories.entities.QuizStatus;
+import com.qucat.quiz.repositories.entities.Tag;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 

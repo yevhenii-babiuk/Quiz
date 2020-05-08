@@ -1,8 +1,18 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.GameDao;
-import com.qucat.quiz.repositories.dao.mappers.*;
-import com.qucat.quiz.repositories.dto.*;
+import com.qucat.quiz.repositories.dao.mappers.AnswerExtractor;
+import com.qucat.quiz.repositories.dao.mappers.GameDtoMapper;
+import com.qucat.quiz.repositories.dao.mappers.GameQuestionMapper;
+import com.qucat.quiz.repositories.dao.mappers.ImageMapper;
+import com.qucat.quiz.repositories.dao.mappers.QuestionExtractor;
+import com.qucat.quiz.repositories.dao.mappers.QuestionMapper;
+import com.qucat.quiz.repositories.dao.mappers.UserDtoMapper;
+import com.qucat.quiz.repositories.dto.AnswerDto;
+import com.qucat.quiz.repositories.dto.GameDto;
+import com.qucat.quiz.repositories.dto.GameQuestionDto;
+import com.qucat.quiz.repositories.dto.QuizDto;
+import com.qucat.quiz.repositories.dto.UserDto;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
@@ -19,6 +29,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -93,7 +105,7 @@ public class GameDaoImpl implements GameDao {
         try {
             return jdbcTemplate.update(
                     queries.get("saveAnswer"), answer.getUserId(),
-                    answer.getAnswer(), answer.getQuestionId(),
+                    answer.getPercent(), answer.getQuestionId(),
                     answer.getTime());
         } catch (DuplicateKeyException e) {
             log.warn("image is already exist id={} ", answer.getId());
@@ -149,6 +161,17 @@ public class GameDaoImpl implements GameDao {
     }
 
     @Override
+    public void saveQuestionOptions(List<QuestionOption> questionOptions) {
+        saveQuestionOptionsImage(questionOptions);
+        try {
+            jdbcTemplate.update(getQueryForInsertOptions(questionOptions),
+                    getParamsToInsertOptions(questionOptions));
+        } catch (DuplicateKeyException e) {
+            log.warn("question options is already exist");
+        }
+    }
+
+    @Override
     public void saveImage(Image image) {
         try {
             jdbcTemplate.update(queries.get("saveImage"),
@@ -179,7 +202,8 @@ public class GameDaoImpl implements GameDao {
     public void updateGameQuestion(GameQuestionDto gameQuestion) {
         jdbcTemplate.update(queries.get("updateGameQuestion"),
                 gameQuestion.getGameId(), gameQuestion.getQuestionId(),
-                gameQuestion.isCurrent(), gameQuestion.getId());
+                gameQuestion.isCurrent(), gameQuestion.getFinishTime(),
+                gameQuestion.getId());
     }
 
     @Override
@@ -242,5 +266,83 @@ public class GameDaoImpl implements GameDao {
     public UserDto getUserById(int id) {
         return jdbcTemplate.queryForObject(queries.get("getUserById"), new Object[]{id},
                 new UserDtoMapper());
+    }
+
+    private Object[] getParamsToInsertOptions(List<QuestionOption> questionOptions) {
+        List<Object> params = new ArrayList<>();
+        for (QuestionOption options : questionOptions) {
+            params.add(options.getId());
+            params.add(options.getQuestionId());
+            params.add(options.getContent());
+            params.add(options.isCorrect());
+            params.add(options.getSequenceOrder());
+            params.add(options.getImageId());
+        }
+        return params.toArray();
+    }
+
+    private String getQueryForInsertOptions(List<QuestionOption> questionOptions) {
+        String query = queries.get("multipleSaveOption");
+
+        for (int i = 0; i < questionOptions.size() - 1; i++) {
+            query = query.concat("(?, ?, ?, ?, ?, ?), ");
+        }
+        return query.concat("(?, ?, ?, ?, ?, ?);");
+    }
+
+    private void saveQuestionOptionsImage(List<QuestionOption> questionOptions) {
+        Map<Integer, Image> images = new HashMap<>();
+
+        for (QuestionOption option : questionOptions) {
+            if (option.getImage() != null) {
+                images.put(option.getImage().getId(), option.getImage());
+            }
+        }
+
+        List<Integer> existId = getAlreadyExistImage(new ArrayList<>(images.keySet()));
+
+        for (Integer imageId: existId){
+            if(images.get(imageId)!= null){
+                images.remove(imageId);
+            }
+        }
+        jdbcTemplate.update(getQueryForInsertImages(new ArrayList<>(images.values())),
+                getParamsToInsertImage(new ArrayList<>(images.values())));
+    }
+
+    private Object[] getParamsToInsertImage(List<Image> images){
+        List<Object> params = new ArrayList<>();
+        for(Image image : images){
+            params.add(image.getId());
+            params.add(image.getSrc());
+        }
+        return params.toArray();
+    }
+
+    private String getQueryForInsertImages(List<Image> images){
+        String query = queries.get("multipleSaveOptionsImage");
+
+        for (int i = 0; i < images.size() - 1; i++) {
+            query = query.concat("(?, ?,), ");
+        }
+        return query.concat("(?, ?);");
+    }
+
+    private List<Integer> getAlreadyExistImage(List<Integer> imagesId){
+        String query = queries.get("getExistImage").concat("( ");
+        for (int i = 0; i < imagesId.size()-1; i++){
+            query = query.concat("?, ");
+        }
+        query = query.concat("?)");
+
+        List<Image> existImages = jdbcTemplate.query(query, imagesId.toArray(Object[]::new),
+                new ImageMapper());
+
+        List<Integer> existId = new ArrayList<>();
+
+        for (Image image : existImages){
+            existId.add(image.getId());
+        }
+        return existId;
     }
 }

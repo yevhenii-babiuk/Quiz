@@ -104,8 +104,8 @@ CREATE TABLE answer
 (
     id                INT AUTO_INCREMENT PRIMARY KEY,
     user_id           INT,
-    current_answer    TEXT,
     question_id       INT,
+    percent           INT(3),
     time              INT,
     FOREIGN KEY (user_id)
         REFERENCES user (id)

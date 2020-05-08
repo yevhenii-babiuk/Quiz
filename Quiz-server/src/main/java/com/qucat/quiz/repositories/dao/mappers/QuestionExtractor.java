@@ -1,6 +1,9 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.Image;
+import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.QuestionOption;
+import com.qucat.quiz.repositories.entities.QuestionType;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 
@@ -38,18 +41,18 @@ public class QuestionExtractor implements ResultSetExtractor<List<Question>> {
                 options = new ArrayList<>();
                 question.setOptions(options);
             }
-            int optionId = rs.getInt("option_id");
+            int optionId = rs.getInt("id_option");
             if (optionId != 0) {
                 QuestionOption option = optionMap.get(optionId);
                 if (option == null) {
                     option = QuestionOption.builder()
-                            .id(rs.getInt("option_id"))
+                            .id(rs.getInt("id_option"))
                             .questionId(questionId)
-                            .content(rs.getString("option_content"))
-                            .isCorrect(rs.getBoolean("option_is_correct"))
-                            .sequenceOrder(rs.getInt("sequence_order"))
-                            .imageId(rs.getInt("option_image_id"))
-                            .image(new Image(rs.getInt("option_image_id"), rs.getString("option_image_src")))
+                            .content(rs.getString("content_option"))
+                            .isCorrect(rs.getBoolean("is_correct_option"))
+                            .sequenceOrder(rs.getInt("sequence"))
+                            .imageId(rs.getInt("option_id_image"))
+                            .image(new Image(rs.getInt("option_id_image"), rs.getString("option_image")))
                             .build();
                     options.add(option);
                     optionMap.put(optionId, option);
