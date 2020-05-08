@@ -120,7 +120,7 @@ public class QuizService {
     }
 
     public Page<Quiz> showPage(int page, int size, String name, String author, List<String> category,
-                               Date minDate, Date maxDate, List<String> tags, QuizStatus status) {
+                               Date minDate, Date maxDate, List<String> tags, QuizStatus[] status) {
 
         Timestamp tMinDate = null;
         Timestamp tMaxDate = null;
