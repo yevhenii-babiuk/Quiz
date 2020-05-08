@@ -110,6 +110,7 @@ public class GameProcess implements Runnable {
                 if (firstCorrectAnswer.getPercent() == 100) {
                     UserDto user = firstCorrectAnswer.getUser();
                     user.setScore(user.getScore() + firstCorrectAnswer.getQuestion().getScore());
+                    gameDao.updateUserDto(user);
                 }
             }
 
