@@ -3,6 +3,6 @@
 </div>
 
 <ng-template #playQuiz>
-  <app-results *ngIf="gameResults" [gameResults]="gameResults"></app-results>
+  <app-results *ngIf="gameResults" [currentUser]="currentUser" [gameResults]="gameResults"></app-results>
   <app-play-question *ngIf="question" [question]="question" [timeLeft]="time" (sendAnswer)="sendAnswer($event)" ></app-play-question>
 </ng-template>
