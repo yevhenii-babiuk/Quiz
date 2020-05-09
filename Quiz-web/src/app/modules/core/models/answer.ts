@@ -6,7 +6,7 @@ export class Answer {
   options: number[] = [];
   fullAnswer: string = '';
   trueFalse: boolean;
-  sequence: Map<number, number> = new Map();
+  sequence = {};
 
   time: number;
 }
