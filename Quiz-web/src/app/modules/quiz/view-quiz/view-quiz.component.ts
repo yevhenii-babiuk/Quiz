@@ -3,6 +3,7 @@ import {QuizzesService} from "../../core/services/quizzes.service";
 import {Quiz} from "../../core/models/quiz";
 import {ActivatedRoute, Route, Router} from "@angular/router";
 import {SecurityService} from "../../core/services/security.service";
+import {COLORS} from '../../../../environments/environment.prod';
 
 
 @Component({
@@ -13,6 +14,7 @@ import {SecurityService} from "../../core/services/security.service";
 export class ViewQuizComponent implements OnInit {
 
   quiz: Quiz;
+  COLORS: any = COLORS;
 
   constructor(
     public securityService: SecurityService,

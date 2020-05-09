@@ -15,6 +15,10 @@ public enum MessageInfo {
     passwordRecover(
             new MessageInfoItem(Lang.UA, "mail/passwordRecovery-ua.html", "Скидання паролю на QuCat"),
             new MessageInfoItem(Lang.EN, "mail/passwordRecovery-en.html", "Confirm reset password on QuCat")
+    ),
+    suggestion(
+            new MessageInfoItem(Lang.UA, "mail/suggestions-ua.html", "Пропозиції від QuCat"),
+            new MessageInfoItem(Lang.EN, "mail/suggestions-en.html", "Suggestions from QuCat")
     );
 
 

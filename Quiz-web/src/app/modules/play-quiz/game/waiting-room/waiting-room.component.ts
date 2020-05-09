@@ -21,14 +21,15 @@ export class WaitingRoomComponent implements OnInit {
   @Input()
   currentUser: UserDto;
 
-  hostId: number = 0;
+  @Input()
+  hostId: number;
+
+  @Input()
+  image: string;
+
   gameId: string = this.route.snapshot.paramMap.get('gameId');
 
-  constructor(private route: ActivatedRoute,
-              private redirect: Router,
-              private securityService: SecurityService,
-              private playGameService: PlayGameService) {
-
+  constructor(public route: ActivatedRoute) {
   }
 
   ngOnInit(): void {

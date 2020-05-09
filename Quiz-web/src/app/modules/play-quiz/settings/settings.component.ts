@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../../core/services/security.service";
-import {Game} from "../../core/models/game";
+import {GameDto} from "../../core/models/gameDto";
 import {PlayGameService} from "../../core/services/play-game.service";
 
 @Component({
@@ -10,7 +10,7 @@ import {PlayGameService} from "../../core/services/play-game.service";
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  game: Game;
+  game: GameDto;
 
   message: string = "";
   isInvalid: boolean = false;
@@ -19,12 +19,11 @@ export class SettingsComponent implements OnInit {
               private redirect: Router,
               private securityService: SecurityService,
               private playGameService: PlayGameService) {
-    this.game = new Game();
+    this.game = new GameDto();
     this.game.quizId = this.route.snapshot.paramMap.get('quizId');
     this.game.hostId = securityService.getCurrentId();
 
   }
-
 
   ngOnInit(): void {
   }

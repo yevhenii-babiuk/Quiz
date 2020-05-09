@@ -8,7 +8,7 @@ import { WaitingRoomComponent } from './game/waiting-room/waiting-room.component
 import { PlayQuestionComponent } from './game/play-question/play-question.component';
 import {MatSortModule} from "@angular/material/sort";
 import {TimerPipe} from "./game/play-question/timer-pipe";
-// import { GameComponent } from './game/game.component';
+import { GameComponent } from './game/game.component';
 import { ResultsComponent } from './game/results/results.component';
 
 
@@ -18,7 +18,7 @@ import { ResultsComponent } from './game/results/results.component';
     WaitingRoomComponent,
     PlayQuestionComponent,
     TimerPipe,
-   // GameComponent,
+    GameComponent,
     ResultsComponent
   ],
     imports: [

@@ -1,10 +1,10 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Question} from '../../../core/models/question';
-import {GameResults, SingleResult} from "../../../core/models/gameResults";
-import {Sort} from "@angular/material/sort";
 
 import {timer} from 'rxjs';
 import {Answer} from "../../../core/models/answer";
+import {QuestionType} from "../../../core/models/questionType";
+import {QuestionOptions} from "../../../core/models/questionOptions";
 
 @Component({
   selector: 'app-play-question',
@@ -15,7 +15,9 @@ export class PlayQuestionComponent implements OnInit {
   public isSend: boolean = false;
 
   public subscribeTimer: number;
-  public timeLeft: number = 15;
+
+  @Input()
+  timeLeft: number;
 
   @Input()
   question: Question;
@@ -25,7 +27,6 @@ export class PlayQuestionComponent implements OnInit {
 
   answer: Answer = new Answer();
 
-  map = new Map();
   answerText = '';
 
   constructor() {
@@ -43,43 +44,47 @@ export class PlayQuestionComponent implements OnInit {
   }
 
   ngOnInit(): void {
-   /* this.answer = {
-      userId: 2,
-      result: '',
-      time: this.timeLeft
-    };*/
+    let key = 'endTime' + this.question.id;
+
+    if (!localStorage.getItem(key)) {
+      localStorage.setItem(key, '' + (new Date().getTime() + this.timeLeft * 1000));
+    } else {
+      this.timeLeft = Math.round((+localStorage.getItem(key) - new Date().getTime()) / 1000);
+    }
   }
 
   nextQuestion() {
-    if (this.question.type == 'SELECT_SEQUENCE') {
-      for (let key of this.map.keys()) {
-        this.answer.answer += key.toString() + '-' + this.map.get(key).toString() + ' ';
-      }
-      this.answer.answer.trim();
-    }
-
     if (this.question.type == 'ENTER_ANSWER') {
-      this.answer.answer = this.answerText;
+      this.answer.fullAnswer = this.answerText;
     }
 
-    this.answer.questionId=this.question.id;
-    this.answer.answer = this.question.type.toString() + ':' + this.answer.answer;
-    this.answer.time = this.subscribeTimer;
+    this.answer.questionId = this.question.id;
     this.isSend = true;
+
+    console.log(this.answer);
 
     this.sendAnswer.emit(this.answer)
   }
 
-  setOption(value: string) {
-    this.answer.answer = value;
+  setOption(optId: number) {
+    if (this.answer.options.indexOf(optId) == -1) {
+      this.answer.options.push(optId);
+    } else {
+      this.answer.options.splice(this.answer.options.indexOf(optId), 1);
+    }
+
+    console.log(this.answer.options);
+  }
+
+  setTrueFalseOption(value: boolean) {
+    this.answer.trueFalse = value;
   }
 
   setSequence(opId: number, seqId: number) {
-    if (this.map.has(opId)) {
-      this.map.delete(opId);
+    if (this.answer.sequence.has(opId)) {
+      this.answer.sequence.delete(opId);
     }
-    this.map.set(opId, seqId);
+    this.answer.sequence.set(opId, seqId);
   }
-
 
 }
