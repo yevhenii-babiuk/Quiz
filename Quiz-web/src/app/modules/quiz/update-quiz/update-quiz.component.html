@@ -143,9 +143,9 @@
             <div [ngSwitch]="question.type">
               <div *ngSwitchCase="'SELECT_OPTION'">
                 <div class="row mx-0" *ngFor="let questionOption of question.options">
-                  <input [(ngModel)]="questionOption.content"
-                         placeholder="{{questionOption.isCorrect? 'Correct' : 'Wrong'}} answer"
-                         class="questionOption w-50 form-control col m-1 border border-{{questionOption.isCorrect? 'success':'danger'}}"/>
+                  <input type="checkbox" class="questionOption" [(ngModel)]="questionOption.isCorrect">
+                  <input [(ngModel)]="questionOption.content" placeholder="Input answer"
+                         class="questionOption w-50 form-control col m-1 border"/>
                   <div>
                     <label *ngIf="questionOption.imageId==-1" class="image-upload-container btn btn-bwm btn-warning">
                       <span>Select Image</span>

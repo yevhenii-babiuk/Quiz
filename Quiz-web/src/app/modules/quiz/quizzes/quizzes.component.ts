@@ -1,4 +1,4 @@
-import {Component, OnInit, HostListener} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {QuizzesService} from "../../core/services/quizzes.service";
 import {Quiz} from "../../core/models/quiz";
 import {KeywordFilter} from "./vertical-filter-bar/keyword-filter/keyword-filter.model";
@@ -7,8 +7,8 @@ import {FBFilter} from "./vertical-filter-bar/fb-filter.interface";
 import {ActivatedRoute, Router} from "@angular/router";
 import {DateFilter} from "./vertical-filter-bar/date-filter/date-filter.model";
 import {countOnPage} from "../../../../environments/environment.prod";
-import {TagFilterComponent} from "./vertical-filter-bar/tag-filter/tag-filter.component";
 import {TagFilter} from "./vertical-filter-bar/tag-filter/tag-filter.model";
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-quizzes',
@@ -18,6 +18,13 @@ export class QuizzesComponent implements OnInit {
   quizzes: Quiz[] = [new Quiz(), new Quiz(), new Quiz(), new Quiz(), new Quiz()];
   tags: string[] = [];
   categories: string[] = [];
+  quizStatuses: string[] = [
+    'ACTIVATED',
+    'UNPUBLISHED',
+    'UNVALIDATED',
+    'UNSAVED',
+    'DEACTIVATED'
+  ];
   isWaiting: boolean = false;
 
   params: string;
@@ -26,7 +33,8 @@ export class QuizzesComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private quizzesService: QuizzesService
+    private quizzesService: QuizzesService,
+    private securityService: SecurityService
   ) {
   }
 
@@ -35,8 +43,10 @@ export class QuizzesComponent implements OnInit {
     new KeywordFilter('authorName', 'Author name'),
     new CheckboxFilter('category', 'Categories', this.categories),
     new TagFilter('tag', 'Tags', this.tags),
-    new DateFilter("date", "Date", new Date(2020, 3, 20), new Date()),
+    new DateFilter("date", "Date", new Date(2020, 3, 20), new Date())
   ]
+
+  quizStatusesFilter: FBFilter = new CheckboxFilter('status', 'Status', this.quizStatuses);
 
 
   @HostListener("window:scroll", ["$event"])
@@ -98,18 +108,27 @@ export class QuizzesComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(_params => {
-      console.log(this.router.url.substring(this.router.url.indexOf("?") + 1));
       this.quizzes = [];
       this.isWaiting = false;
       this.params = "?";
-      if (this.router.url.indexOf("?"))
+      if (!this.securityService.getCurrentRole() || this.securityService.getCurrentRole()=='USER'){
+        this.params +='status=ACTIVATED&'
+      }
+      if (this.router.url.indexOf("?")!=-1){
         this.params += this.router.url.substring(this.router.url.indexOf("?") + 1);
+      }
+
       this.getQuizzes();
 
     });
 
+    if(this.securityService.getCurrentRole() && this.securityService.getCurrentRole()!='USER'){
+      this.verticalBarFilters.push(this.quizStatusesFilter);
+    }
+
     this.getTags();
     this.getCategories();
+
   }
 
 }
