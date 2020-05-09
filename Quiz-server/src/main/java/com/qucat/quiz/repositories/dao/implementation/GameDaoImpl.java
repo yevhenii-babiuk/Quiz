@@ -224,7 +224,6 @@ public class GameDaoImpl implements GameDao {
 
     @Override
     public void updateUserDto(UserDto user) {
-        log.info("updateUserDto " + user);
         jdbcTemplate.update(queries.get("updateUser"),
                 user.getGameId(), user.getLogin(), user.getRegisterId(), user.getScore(),
                 user.getComboAnswer(), user.getId());

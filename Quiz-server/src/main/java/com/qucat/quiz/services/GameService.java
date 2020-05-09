@@ -69,6 +69,7 @@ public class GameService {
 
 
     private void calculateCorrectForAnswer(AnswerDto answer, Question question) {
+        log.info("answer input" + answer);
         List<QuestionOption> options = question.getOptions();
         int correctAnswer = 0;
         switch (question.getType()) {
@@ -94,8 +95,8 @@ public class GameService {
 
             case SELECT_OPTION:
                 List<Integer> chosenAnswers = answer.getOptions();
-                log.info("options " + question.getOptions().toString());
-                log.info("chosenAnswers " + chosenAnswers.toString());
+                /*log.info("options " + question.getOptions().toString());
+                log.info("chosenAnswers " + chosenAnswers.toString());*/
                 for (QuestionOption option : question.getOptions()) {
                     if (option.isCorrect() == chosenAnswers.contains(option.getId())) {
                         correctAnswer++;
@@ -175,7 +176,6 @@ public class GameService {
     }
 
     public String createRoom(GameDto game) {
-        log.info("game" + game);
         String gameId = generateAccessCode();
         game.setGameId(gameId);
 

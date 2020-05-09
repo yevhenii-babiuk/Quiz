@@ -55,10 +55,8 @@ public class GameProcess implements Runnable {
 
     @Override
     public void run() {
-        log.info("start game " + gameId);
         GameDto gameDto = gameDao.getGame(gameId);
         while (gameDao.getCountGameQuestion(gameId) != 0) {
-            log.info(gameId);
             int count = gameDao.getCountGameQuestion(gameId);
             GameQuestionDto questionDto = gameDao.getGameQuestion(gameId, (int) (Math.random() * count));
             Question question = gameDao.getQuestionById(questionDto.getQuestionId());
@@ -81,8 +79,6 @@ public class GameProcess implements Runnable {
 
             question = gameDao.getQuestionById(questionDto.getQuestionId());
             List<AnswerDto> answers = gameDao.getAnswersToCurrentQuestionByGameId(gameId);
-
-            log.info("answers" + answers);
 
             for (AnswerDto answer : answers) {
                 UserDto user = answer.getUser();
