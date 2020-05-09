@@ -1,0 +1,34 @@
+<div class="row">
+  <div class="col">
+    <div class="text-center">
+      <img src="data:image/png;base64,{{image}}" alt="image">
+    </div>
+    <div class="text-center">
+      <input class="border border-warning rounded" value="https://qucat.herokuapp.com{{route.url}}" readonly #link>
+      <button class="btn btn-outline-dark ml-1 mb-2 btn-sm" (click)="copy(link)">Copy to clipboard</button>
+    </div>
+    <div class="text-center">
+      <input class="border border-warning rounded" value="{{gameId}}" readonly #code>
+      <button class="btn btn-outline-dark ml-1 mb-2 btn-sm" (click)="copy(code)">Copy to clipboard</button>
+    </div>
+  </div>
+  <div class="col">
+    <ng-container *ngFor="let player of players">
+      <div class="row border border-dark rounded w-75 mx-auto mb-2">
+        <div class="col-1">
+        <span style="font-size: 4vh;">
+          <i class="fa fa-user"></i>
+        </span>
+        </div>
+        <div class="col-8 mt-1">
+        <span style="font-size: 3vh;">
+          {{player}}
+        </span>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+<div *ngIf="currentUser.registerId==hostId" class="text-center">
+  <button (click)="start()" class="btn btn-warning my-4 w-50">START GAME</button>
+</div>

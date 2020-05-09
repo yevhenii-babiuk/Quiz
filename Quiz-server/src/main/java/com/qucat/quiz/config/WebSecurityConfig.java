@@ -56,6 +56,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/api/v1/login",
                         "/home",
+                        "/socket/**",
+                        "/api/v1/game/**",
+                        "/game/**",
                         "/api/v1/registration/**",
                         "/api/v1/pass-recovery/**",
                         "/api/v1/quizzes",

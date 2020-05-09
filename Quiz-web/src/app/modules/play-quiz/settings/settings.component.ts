@@ -1,6 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {WebsocketService} from "../../core/services/websocket.service";
-import {SettingsModel} from "./settings.model";
+import {ActivatedRoute, Router} from "@angular/router";
+import {SecurityService} from "../../core/services/security.service";
+import {GameDto} from "../../core/models/gameDto";
+import {PlayGameService} from "../../core/services/play-game.service";
 
 @Component({
   selector: 'app-settings',
@@ -8,35 +10,49 @@ import {SettingsModel} from "./settings.model";
   styleUrls: ['./settings.component.css']
 })
 export class SettingsComponent implements OnInit {
-  settingsModel: SettingsModel;
+  game: GameDto;
 
   message: string = "";
   isInvalid: boolean = false;
 
-  constructor() {//private wsService: WebsocketService) {
-    this.settingsModel = new SettingsModel();
-    /* this.wsService.on<String>('messages')
-       .subscribe((messages: String) => {
-         console.log(messages);
-       });*/
+  constructor(private route: ActivatedRoute,
+              private redirect: Router,
+              private securityService: SecurityService,
+              private playGameService: PlayGameService) {
+    this.game = new GameDto();
+    this.game.quizId = this.route.snapshot.paramMap.get('quizId');
+    this.game.hostId = securityService.getCurrentId();
+
   }
+
 
   ngOnInit(): void {
   }
 
   isValid(): boolean {
-    if (this.settingsModel.isTimeForAnswerChosen && this.settingsModel.timeForAnswer
-      && this.settingsModel.timeForAnswer < 61 && this.settingsModel.timeForAnswer > 4) {
-      return true;
+    if (this.game.time) {
+      if (this.game.time < 61 && this.game.time > 4) return true;
+      else {
+        this.isInvalid = true;
+        this.message = "Час на відповідь має бути заповненим та знаходитись в межах від 5 до 60";
+        return false;
+      }
     } else {
-      this.isInvalid = true;
-      this.message = "Час на відповідь маєбути заповненим та знаходитись в межах від 5 до 60"
+      this.game.time = 15;
+      return true;
     }
   }
 
   submit() {
     if (this.isValid()) {
-      this.isInvalid = false;
+      this.playGameService.sendGame(this.game).subscribe(
+        gameId => {
+          this.redirect.navigate(['quiz/' + this.game.quizId + '/game/' + gameId + '/play']);
+        }, err => {
+          console.log(err);
+          this.redirect.navigate(['quiz/' + this.game.quizId]);
+        });
+
     }
   }
 }
