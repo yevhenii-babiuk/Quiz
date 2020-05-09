@@ -29,6 +29,7 @@ public class AnswerExtractor implements ResultSetExtractor<List<AnswerDto>> {
                         .time(rs.getTimestamp("time"))
                         .percent(rs.getInt("percent"))
                         .userId(rs.getInt("user_id"))
+                        .gameId(rs.getString("game_id"))
                         .build();
                 answerMap.put(answerId, answer);
             }

@@ -93,7 +93,7 @@ public class GameDaoImpl implements GameDao {
             return jdbcTemplate.update(
                     queries.get("saveAnswer"), answer.getUserId(),
                     answer.getPercent(), answer.getQuestionId(),
-                    answer.getTime());
+                    answer.getTime(), answer.getGameId());
         } catch (DuplicateKeyException e) {
             log.warn("image is already exist id={} ", answer.getId());
             return -1;

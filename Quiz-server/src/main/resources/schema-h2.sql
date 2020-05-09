@@ -105,6 +105,7 @@ CREATE TABLE answer
     id                INT AUTO_INCREMENT PRIMARY KEY,
     user_id           INT,
     question_id       INT,
+    game_id           VARCHAR(25),
     percent           INT(3),
     time              TIMESTAMP,
     FOREIGN KEY (user_id)
@@ -112,5 +113,8 @@ CREATE TABLE answer
         ON DELETE CASCADE,
     FOREIGN KEY (question_id)
         REFERENCES question (id)
+        ON DELETE CASCADE,
+    FOREIGN KEY (game_id)
+        REFERENCES game (game_id)
         ON DELETE CASCADE
 );
