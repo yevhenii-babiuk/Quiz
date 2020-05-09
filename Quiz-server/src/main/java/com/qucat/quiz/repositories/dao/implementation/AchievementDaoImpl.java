@@ -18,7 +18,7 @@ import java.util.Map;
 @PropertySource("classpath:achievement.properties")
 public class AchievementDaoImpl extends GenericDaoImpl<Achievement> implements AchievementDao {
 
-    @Value("#{${sql.achievements}}")
+    @Value("#{${sql.achievement}}")
     private Map<String, String> achievementQueries;
 
     protected AchievementDaoImpl() {
@@ -33,7 +33,7 @@ public class AchievementDaoImpl extends GenericDaoImpl<Achievement> implements A
     @Override
     protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Achievement achievement) throws SQLException {
         preparedStatement.setString(1, achievement.getDescription());
-        preparedStatement.setString(1, achievement.getName());
+        preparedStatement.setString(2, achievement.getName());
         return preparedStatement;
     }
 
