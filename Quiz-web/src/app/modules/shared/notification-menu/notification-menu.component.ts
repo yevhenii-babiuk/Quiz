@@ -16,8 +16,9 @@ export class NotificationMenuComponent implements OnInit {
   notificationCount = 3;
 
   constructor(public authService: AuthenticationService) {
-    this.initializeWebSocketConnection();
+
     }
+
 
   initializeWebSocketConnection() {
     let ws = new SockJS(this.serverUrl);
@@ -25,17 +26,24 @@ export class NotificationMenuComponent implements OnInit {
     let that = this;
 
     this.stompClient.connect({}, function () {
-      that.stompClient.subscribe("/event", (message) => {
+      that.stompClient.subscribe("/game", (message) => {
         if (message.body) {
           let json = JSON.parse(message.body);
           console.log(json);
-          that.notifications = json;
+
         }
       });
     } ,this);
   }
 
-  ngOnInit(): void {
+
+    ngOnInit(): void {
+      this.initializeWebSocketConnection();
+  }
+
+   disconnect() {
+    this.stompClient.disconnect();
+    console.log("Disconnected");
   }
 
   sendMessage() {
