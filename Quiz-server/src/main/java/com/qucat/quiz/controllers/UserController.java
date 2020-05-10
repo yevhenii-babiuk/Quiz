@@ -6,6 +6,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("api/v1/users")
@@ -23,4 +25,10 @@ public class UserController {
         userService.updateUserProfile(editedUser);
     }
 
+    @GetMapping
+    public List<User> getAnnouncements(@RequestParam(value = "pageNumber") double pageNumber,
+                                       @RequestParam(value = "allUsers") boolean isPublished) {
+
+        return userService.getAll();
+    }
 }

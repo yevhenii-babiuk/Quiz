@@ -5,12 +5,14 @@ import {FormsModule} from "@angular/forms";
 
 import {ViewProfile} from './view-profile/view-profile.component'
 import {EditorComponent} from './editor/editor.component'
-import {ProfileRoutingModule} from './profile-routing.module'
+import {ProfileRoutingModule} from './profile-routing.module';
+import { UserListComponent } from './user-list/user-list.component'
 
 @NgModule({
   declarations: [
     ViewProfile,
-    EditorComponent
+    EditorComponent,
+    UserListComponent
   ],
   imports: [
     CommonModule,

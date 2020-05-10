@@ -16,11 +16,9 @@
     <ng-container *ngFor="let player of players">
       <div class="row border border-dark rounded w-75 mx-auto mb-2">
         <div class="col-1">
-        <span style="font-size: 4vh;">
-          <i class="fa fa-user"></i>
-        </span>
+          <img src="assets/img/userIcons/{{(currentUser.id%50)+1}}.png" height="35" class="avatar" alt="Avatar">
         </div>
-        <div class="col-8 mt-1">
+        <div class="col-8 ml-2 mt-1">
         <span style="font-size: 3vh;">
           {{player}}
         </span>

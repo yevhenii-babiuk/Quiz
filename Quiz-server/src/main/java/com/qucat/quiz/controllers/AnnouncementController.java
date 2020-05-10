@@ -32,8 +32,8 @@ public class AnnouncementController {
     }
 
     @GetMapping("/announcements")
-    public List<Announcement> getAnnouncements(@RequestParam(value = "count") int currentCount,
+    public List<Announcement> getAnnouncements(@RequestParam(value = "pageNumber") int pageNumber,
                                                @RequestParam(value = "isPublished") boolean isPublished) {
-        return announcementService.getPageForAllAnnouncements(isPublished, Optional.of(currentCount), Optional.of(20)).toList();
+        return announcementService.getPageForAllAnnouncements(isPublished, Optional.of(pageNumber), Optional.of(20)).toList();
     }
 }

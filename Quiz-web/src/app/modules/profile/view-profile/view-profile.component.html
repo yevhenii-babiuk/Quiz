@@ -8,7 +8,7 @@
             <p> {{userData.firstName}} {{userData.secondName}}</p>
           </h3>
           <h5><p> {{userData.profile}} </p></h5>
-          <div align="bottom" *ngIf="role == roleEnum.USER"> <img src="../../assets/img/score.png" width="80" height="92" align="bottom"/>
+          <div align="bottom" *ngIf="role == roleEnum.USER"> <img src="../../assets/img/score.png" height="50" align="bottom"/>
             Мурри: {{userData.score}}</div>
         </div>
       </div>
@@ -34,8 +34,8 @@
     <div class="col-sm" *ngIf="role == roleEnum.SUPER_ADMIN"></div>
     <div class="col-sm" *ngIf="role == roleEnum.MODERATOR"></div>
   </div>
-  <div class="ml-xl-5 w-20">
-    <button class="btn btn-warning btn-block col-sm-12" routerLink="../edit">
+  <div  class="ml-xl-5 w-20">
+    <button *ngIf="isOwn" class="btn btn-warning btn-block col-sm-12" routerLink="../edit">
       Редагувати
     </button>
   </div>
