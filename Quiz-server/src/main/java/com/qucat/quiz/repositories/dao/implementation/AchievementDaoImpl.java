@@ -1,15 +1,18 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.AchievementDao;
+import com.qucat.quiz.repositories.dao.mappers.AchievementExtractor;
 import com.qucat.quiz.repositories.dao.mappers.AchievementMapper;
 import com.qucat.quiz.repositories.entities.Achievement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 
@@ -20,6 +23,14 @@ public class AchievementDaoImpl extends GenericDaoImpl<Achievement> implements A
 
     @Value("#{${sql.achievement}}")
     private Map<String, String> achievementQueries;
+
+
+    @Override
+    public List<Achievement> getAll() {
+        return jdbcTemplate.query(
+                achievementQueries.get("getAll"), new AchievementExtractor()
+        );
+    }
 
     protected AchievementDaoImpl() {
         super(new AchievementMapper(), TABLE_NAME);
