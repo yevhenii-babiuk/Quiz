@@ -22,7 +22,7 @@ public class UserAchievementExtractor implements ResultSetExtractor<List<User>> 
             User user = users.get(userId);
             if (user == null) {
                 user = User.builder()
-                        .userId(userId)
+                        .id(userId)
                         .achievements(new ArrayList<>())
                         .build();
                 users.put(userId, user);
