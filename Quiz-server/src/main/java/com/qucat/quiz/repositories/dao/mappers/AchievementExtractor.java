@@ -52,7 +52,7 @@ public class AchievementExtractor implements ResultSetExtractor<List<Achievement
                     .achievementId(achievementId)
                     .id(conditionId)
                     .operator(ConditionOperator.valueOf(rs.getString("operator")))
-                    .achievementCharacteristicId(characteristicId)
+                    .characteristicId(characteristicId)
                     .value(rs.getInt("value"))
                     .characteristic(characteristic)
                     .build();

@@ -15,7 +15,7 @@ public class AchievementConditionMapper implements RowMapper<AchievementConditio
                 .operator(ConditionOperator.valueOf(resultSet.getString("operator")))
                 .value(resultSet.getInt("value"))
                 .achievementId(resultSet.getInt("achievement_id"))
-                .achievementCharacteristicId(resultSet.getInt("achievement_characteristic_id"))
+                .characteristicId(resultSet.getInt("achievement_characteristic_id"))
                 .build();
     }
 }

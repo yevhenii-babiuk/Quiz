@@ -34,7 +34,7 @@ public class AchievementConditionDaoImpl extends GenericDaoImpl<AchievementCondi
         preparedStatement.setString(1, achievementCondition.getOperator().name().toLowerCase());
         preparedStatement.setInt(2, achievementCondition.getValue());
         preparedStatement.setInt(3, achievementCondition.getAchievementId());
-        preparedStatement.setInt(4, achievementCondition.getAchievementCharacteristicId());
+        preparedStatement.setInt(4, achievementCondition.getCharacteristicId());
         return preparedStatement;
     }
 
@@ -46,6 +46,6 @@ public class AchievementConditionDaoImpl extends GenericDaoImpl<AchievementCondi
     @Override
     protected Object[] getUpdateParameters(AchievementCondition achievementCondition) {
         return new Object[]{achievementCondition.getOperator().name().toLowerCase(),achievementCondition.getValue(),
-                achievementCondition.getAchievementId(), achievementCondition.getAchievementCharacteristicId(), achievementCondition.getId()};
+                achievementCondition.getAchievementId(), achievementCondition.getCharacteristicId(), achievementCondition.getId()};
     }
 }

@@ -3,9 +3,9 @@ package com.qucat.quiz.repositories.entities;
 
 public enum ConditionOperator {
 
-    greater(">"),
-    equals("="),
-    less("<");
+    GREATER(">"),
+    EQUALS("="),
+    LESS("<");
 
     private String operator;
 

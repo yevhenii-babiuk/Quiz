@@ -12,6 +12,6 @@ public class AchievementCondition {
     private ConditionOperator operator;
     private int value;
     private int achievementId;
-    private int achievementCharacteristicId;
+    private int characteristicId;
     private AchievementCharacteristic characteristic;
 }
