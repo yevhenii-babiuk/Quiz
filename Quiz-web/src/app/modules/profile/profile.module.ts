@@ -7,6 +7,7 @@ import {ViewProfile} from './view-profile/view-profile.component'
 import {EditorComponent} from './editor/editor.component'
 import {ProfileRoutingModule} from './profile-routing.module';
 import { UserListComponent } from './user-list/user-list.component'
+import {AchievementModule} from "../achivement/achievement.module";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { UserListComponent } from './user-list/user-list.component'
     CommonModule,
     ProfileRoutingModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    AchievementModule
   ]
 })
 export class ProfileModule { }
