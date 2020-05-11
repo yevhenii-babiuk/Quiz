@@ -53,7 +53,15 @@ public class UserAchievementsDaoImpl extends GenericDaoImpl<UserAchievement> imp
 
     @Override
     public List<Achievement> getAchievementsByUserId(int userId) {
-        return jdbcTemplate.query(userAchievementsQueries.get("getAllByUserId"),
+        return jdbcTemplate.query(userAchievementsQueries.get("getAchievementsByUserId"),
                 new Object[]{userId}, new UserAchievementExtractor()).get(0).getAchievements();
     }
+
+    @Override
+    public List<User> getAchievementsForAllUser() {
+        return jdbcTemplate.query(userAchievementsQueries.get("getAchievementsForAll"),
+                new UserAchievementExtractor());
+    }
+
+
 }

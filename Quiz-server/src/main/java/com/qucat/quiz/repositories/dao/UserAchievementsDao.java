@@ -10,4 +10,6 @@ public interface UserAchievementsDao extends GenericDao<UserAchievement> {
     String TABLE_NAME = "user_achievements_list";
 
     List<Achievement> getAchievementsByUserId(int userId);
+
+    List<User> getAchievementsForAllUser();
 }
