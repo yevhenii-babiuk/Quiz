@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.entities.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 
 public interface UserDao extends GenericDao<User> {
 
@@ -19,4 +20,14 @@ public interface UserDao extends GenericDao<User> {
     User getUserByLogin(String login);
 
     boolean markQuizAsFavorite(int userId, int quizId);
+
+    void unmarkQuizAsFavorite(int userId, int quizId);
+
+    boolean addUserFriend(int userId, int friendId);
+
+    void deleteUserFriend(int userId, int friendId);
+
+    List<User> getUserFriends(int userId);
+
+    Page<User> getUserFriendsPage(int userId, Pageable pageable);
 }
