@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 public class DataSourceConfiguration {
 
     @Autowired
-    Environment environment;
+    private Environment environment;
 
     @Primary
     @Bean
