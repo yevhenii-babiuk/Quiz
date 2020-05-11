@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -20,5 +21,5 @@ public class User {
     private int score;
     private UserAccountStatus status;
     private Role role;
-
+    private List<Achievement> achievements;
 }
