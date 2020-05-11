@@ -1,46 +1,19 @@
 import { Component, OnInit } from '@angular/core';
+import {Achievement} from "../../core/models/achievement";
+import {AchievementService} from "../../core/services/achievement.service";
 
 @Component({
-  selector: 'app-achivements-list',
-  templateUrl: './achivements-list.component.html',
-  styleUrls: ['./achivements-list.component.css']
+  selector: 'app-achievements-list',
+  templateUrl: './achievements-list.component.html',
+  styleUrls: ['./achievements-list.component.scss']
 })
-export class AchivementsListComponent implements OnInit {
-  cards = [
-    {
-      title: 'Card Title 1',
-      description: 'Some quick example text to build on the card title and make up the bulk of the card content'
-    },
-    {
-      title: 'Card Title 2',
-      description: 'Some quick example text to build on the card title and make up the bulk of the card content'
-    },
-    {
-      title: 'Card Title 3',
-      description: 'Some quick example text to build on the card title and make up the bulk of the card content'
-    },
-    {
-      title: 'Card Title 4',
-      description: 'Some quick example text to build on the card title and make up the bulk of the card content'
-    },
-    {
-      title: 'Card Title 5',
-      description: 'Some quick example text to build on the card title and make up the bulk of the card content'
-    },
-    {
-      title: 'Card Title 6',
-      description: 'Some quick example text to build on the card title and make up the bulk of the card content'
-    },
-    {
-      title: 'Card Title 7',
-      description: 'Some quick example text to build on the card title and make up the bulk of the card content'
-    },
-    {
-      title: 'Card Title 8',
-      description: 'Some quick example text to build on the card title and make up the bulk of the card content'
-    }
-  ];
+export class AchievementsListComponent implements OnInit {
+  cards: Achievement[];
   slides: any = [[]];
+
+  constructor(private achievementService: AchievementService) {
+  }
+
   chunk(arr, chunkSize) {
     let R = [];
     for (let i = 0, len = arr.length; i < len; i += chunkSize) {
@@ -48,7 +21,18 @@ export class AchivementsListComponent implements OnInit {
     }
     return R;
   }
+
   ngOnInit() {
-    this.slides = this.chunk(this.cards, 4);
+    this.getCharacteristics();
+  }
+
+  getCharacteristics() {
+    this.achievementService.getUserAchievements().subscribe(achivement => {
+        this.cards = achivement;
+        this.slides = this.chunk(this.cards, 4);
+      },
+      err => {
+        console.log(err);
+      });
   }
 }

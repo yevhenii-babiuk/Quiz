@@ -6,22 +6,19 @@ import {FormsModule} from "@angular/forms";
 import {ViewProfile} from './view-profile/view-profile.component'
 import {EditorComponent} from './editor/editor.component'
 import {ProfileRoutingModule} from './profile-routing.module';
-import { AchivementsListComponent } from './achivements-list/achivements-list.component'
-import {CardsModule, CarouselModule} from "angular-bootstrap-md";
+import {AchievementModule} from "../achivement/achievement.module";
 
 @NgModule({
   declarations: [
     ViewProfile,
-    EditorComponent,
-    AchivementsListComponent
+    EditorComponent
   ],
   imports: [
     CommonModule,
     ProfileRoutingModule,
     RouterModule,
     FormsModule,
-    CarouselModule,
-    CardsModule
+    AchievementModule
   ]
 })
 export class ProfileModule { }
