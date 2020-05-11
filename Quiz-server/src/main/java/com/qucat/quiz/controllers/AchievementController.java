@@ -29,17 +29,17 @@ public class AchievementController {
     private AchievementCharacteristicService achievementCharacteristicService;
 
     @GetMapping("/profile/{id}/achievements/")
-    public List<Achievement> getUserAchievement(@PathVariable int id){
+    public List<Achievement> getUserAchievement(@PathVariable int id) {
         return userAchievementsService.getAchievementsByUserId(id);
     }
 
     @GetMapping("/achievement/characteristics")
-    public List<AchievementCharacteristic> getAchievementCharacteristics(){
+    public List<AchievementCharacteristic> getAchievementCharacteristics() {
         return achievementCharacteristicService.getAll();
     }
 
     @PostMapping("/achievement/create")
-    public boolean createAchievement(@RequestBody Achievement achievement){
+    public boolean createAchievement(@RequestBody Achievement achievement) {
         return achievementService.createAchievement(achievement);
     }
 }
