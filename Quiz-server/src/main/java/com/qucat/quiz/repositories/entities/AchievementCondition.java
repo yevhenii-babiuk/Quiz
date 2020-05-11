@@ -8,7 +8,7 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class AchievementCondition {
-    int id;
+    private int id;
     private ConditionOperator operator;
     private int value;
     private int achievementId;
