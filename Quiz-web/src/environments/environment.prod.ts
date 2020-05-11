@@ -3,6 +3,7 @@ export const environment = {
 };
 
 export const url = '/api/v1';
+export const socket = 'https://qucat.herokuapp.com//socket';
 export const countOnPage = 20;
 
 export const COLORS = {

@@ -3,6 +3,9 @@
       rel="stylesheet">
 -->
 <div class="container" *ngIf="quiz">
+  <button [ngStyle]="{'background-color': COLORS.AMBER}" class="btn form-control mb-3"  routerLink="gameSettings">
+    Play quiz
+  </button>
   <p class="text-center">{{quiz.name | uppercase}}</p>
 
   <div class="row mx-0">
