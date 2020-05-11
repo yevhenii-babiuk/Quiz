@@ -29,7 +29,7 @@ export class CreateAchievementComponent implements OnInit {
   }
 
   ngOnInit() {
-  this.getCharacteristics();
+    this.getCharacteristics();
   }
 
   addCondition() {
