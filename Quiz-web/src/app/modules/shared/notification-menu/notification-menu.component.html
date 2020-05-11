@@ -1,12 +1,39 @@
-<div class="dropleft notification-wrapper"
-     type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
-     *ngIf="authService.isAuthenticated()">
-      <div matBadge="{{notificationCount}}" matBadgeColor="warn" >
-        <span class="fas fa-bell"></span>
-      </div>
-  <div class="dropdown-menu notification-content" aria-labelledby="dropdownMenu2">
-    <button (click)="sendMessage()" class="btn btn-default" type="submit">sendMessage</button>
-    <p>Your friend added new quiz</p>
+<div class="notification-wrapper" *ngIf="authService.isAuthenticated()">
+  <div matBadge="{{notificationCount}}" matBadgeColor="warn" class="notification-btn" (click)="openNotification(!showNotification)">
+    <span class="fas fa-bell"></span>
+  </div>
+
+  <div *ngIf="showNotification" class="notification-content" >
+    <div class="notification-header" >
+     <div>
+       <span (click)="openSettings(!showSettings)">
+         <div class="fas fa-settings"> </div>
+       </span>
+       <span class="label">Повідомлення</span>
+     </div>
+
+    </div>
+    <div *ngIf="showSettings" class="notification-setting">
+        <div>
+          Отримувати повідомлення про:
+          <mat-checkbox>Створення друзями новини </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox>Створення друзями вікторини</mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox>Запрошення друзями до гри</mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox>Додавання у друзі </mat-checkbox>
+        </div>
+        <div>
+          <mat-checkbox>Check me 5 </mat-checkbox>
+        </div>
+
+
+    </div>
+
     <span *ngFor="let notification of notifications">
       {{notification}}
     </span>

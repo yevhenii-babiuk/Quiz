@@ -10,7 +10,7 @@ import {RouterModule} from "@angular/router";
 import { NotificationMenuComponent } from './notification-menu/notification-menu.component';
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatIconModule} from "@angular/material/icon";
-
+import {MatCheckboxModule} from "@angular/material/checkbox";
 
 @NgModule({
   declarations: [
@@ -24,7 +24,8 @@ import {MatIconModule} from "@angular/material/icon";
     CommonModule,
     RouterModule,
     MatBadgeModule,
-    MatIconModule
+    MatIconModule,
+    MatCheckboxModule
   ],
   exports: [
     AlertComponent,

@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.qucat.quiz.repositories.dto.UserDto;
 import com.qucat.quiz.repositories.dto.Users;
 import com.qucat.quiz.repositories.dto.WebsocketEvent;
+import com.qucat.quiz.repositories.entities.Notification;
+import com.qucat.quiz.repositories.entities.NotificationType;
 import com.qucat.quiz.repositories.entities.Question;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ public class WebSocketSenderService {
     private final Gson gson = new Gson();
     @Autowired
     private SimpMessagingTemplate template;
+
+    @Autowired
+    private NotificationService notificationService;
 
     public void sendResults(String gameId, Users users) {
         log.info("send results " + users);
@@ -43,5 +48,13 @@ public class WebSocketSenderService {
                 gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.PLAYERS).players(players).build()));
     }
 
+    public void sendNotification(int authorId, int objectId, NotificationType notificationType) {
+        Notification notification = notificationService.generateNotification(authorId, objectId, notificationType);
+        this.template.convertAndSend("/notification",
+                gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
+                        .notification(notification).build()));
 
+        System.out.println( "notification \""+ notification.getAuthor() + " " + notification.getAction()
+                + " " + " " + notification.getLink() + "\" sanded");
+    }
 }

@@ -59,7 +59,7 @@ import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.modul
     DashboardModule,
     DashboardRoutingModule,
     PlayQuizModule,
-    PlayQuizRoutingModule,
+    PlayQuizRoutingModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
