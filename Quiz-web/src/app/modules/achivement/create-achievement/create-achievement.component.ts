@@ -22,9 +22,9 @@ export class CreateAchievementComponent implements OnInit {
   conditions: AchievementCondition[] = [new AchievementCondition];
   message: string = "";
   isInvalid: boolean = false;
-  router: Router;
 
-  constructor(private achievementService: AchievementService) {
+  constructor(private achievementService: AchievementService,
+              private router: Router) {
     this.operatorName = Object.keys(ConditionOperator).filter(x => !(parseInt(x) >= 0));
   }
 
@@ -79,7 +79,7 @@ export class CreateAchievementComponent implements OnInit {
       this.achievementService.sendAchievement(this.achievement).subscribe(
         data => {
           this.isInvalid = false;
-          this.router.navigate(['achievement/create']).then()
+          this.router.navigate(['../achievements/create'])
         },
         error => {
           this.message = `cant add achievement`;
