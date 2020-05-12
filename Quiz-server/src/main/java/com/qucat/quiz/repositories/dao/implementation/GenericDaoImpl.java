@@ -2,6 +2,7 @@ package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.GenericDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -23,6 +24,7 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
     private Map<String, String> genericQueries;
 
     @Autowired
+    @Qualifier("postgresJdbcTemplate")
     protected JdbcTemplate jdbcTemplate;
 
     private final String tableName;

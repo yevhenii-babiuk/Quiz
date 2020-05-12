@@ -1,0 +1,16 @@
+<mdb-carousel [isControls]="true" class="carousel-multi-item multi-animation" [type]="'carousel-multi-item'"
+              [animation]="'slide'">
+  <mdb-carousel-item  *ngFor="let item of slides; let i = index">
+    <div class="col-md-3" *ngFor="let card of item; let cardIndex = index">
+      <mdb-card class="my-2">
+        <mdb-card-img src="../../../../assets/img/achivement.png" class="m-4"></mdb-card-img>
+        <mdb-card-body>
+          <mdb-card-title>
+            <h4>{{card.name}}</h4>
+          </mdb-card-title>
+          <p>{{card.description}}</p>
+        </mdb-card-body>
+      </mdb-card>
+    </div>
+  </mdb-carousel-item>
+</mdb-carousel>

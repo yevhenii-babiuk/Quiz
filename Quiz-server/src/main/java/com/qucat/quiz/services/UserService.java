@@ -4,6 +4,8 @@ import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
 import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
 import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -17,10 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -28,7 +27,6 @@ import java.util.UUID;
 public class UserService {
 
     private final String REGISTRATION = "registration/";
-
     private final String PASS_RECOVERY = "pass-recovery/";
 
     @Autowired
@@ -46,9 +44,11 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
+    @Autowired
+    private ImageService imageService;
+
     @Value("${url}")
     private String URL;
-
 
     @Transactional
     public boolean registerUser(User user) {
@@ -60,6 +60,8 @@ public class UserService {
         int id;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userByMail = userDao.getUserByMail(user.getMail());
+
+        user.setImageId(imageService.addUserProfileImage());
 
         if (userByMail != null) {
             Token token = tokenDao.get(userByMail.getUserId());
@@ -161,6 +163,17 @@ public class UserService {
         return userDao.getUserByRole(role, pageable);
     }
 
+    public Page<User> getAllUsersPage(Pageable pageable) {
+        return userDao.getAllUsersPage(pageable);
+    }
+
+    public Page<User> getAllUsersPage(Optional<Integer> page, Optional<Integer> size) {
+        Page<User> allUsersPage = userDao.getAllUsersPage(
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return allUsersPage;
+    }
+
     public User getUserDataById(int id) {
         User user = userDao.get(id);
 
@@ -184,8 +197,8 @@ public class UserService {
     }
 
     public void authenticate(String username, String password) throws Exception {
-                Objects.requireNonNull(username);
-                Objects.requireNonNull(password);
+        Objects.requireNonNull(username);
+        Objects.requireNonNull(password);
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -200,5 +213,61 @@ public class UserService {
         return userDao.markQuizAsFavorite(userId, quizId);
     }
 
+    public void unmarkQuizAsFavorite(int userId, int quizId) {
+        userDao.unmarkQuizAsFavorite(userId, quizId);
+    }
+
+    public boolean addUserFriend(int userId, int friendId) {
+        return userDao.addUserFriend(userId, friendId);
+    }
+
+    void deleteUserFriend(int userId, int friendId) {
+        userDao.deleteUserFriend(userId, friendId);
+    }
+
+    List<User> getUserFriends(int userId) {
+        return userDao.getUserFriends(userId);
+    }
+
+    public Page<User> getUserFriendsPage(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<User> friendsPage = userDao.getUserFriendsPage(userId,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsPage;
+    }
+
+    List<FriendActivity> getAllFriendsActivity(int userId) {
+        return userDao.getAllFriendsActivity(userId);
+    }
+
+    public Page<FriendActivity> getAllFriendsActivityPage(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<FriendActivity> friendsActivityPage = userDao.getAllFriendsActivityPage(userId,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsActivityPage;
+    }
+
+    List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                    boolean publishQuiz, boolean achievement) {
+        if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
+            log.info("getFilteredFriendsActivity: Nothing to get");
+            return null;
+        }
+        return getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+    }
+
+    Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                        boolean publishQuiz, boolean achievement,
+                                                        Optional<Integer> page, Optional<Integer> size) {
+        if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
+            log.info("getFilteredFriendsActivityPage: Nothing to get");
+            return null;
+        }
+        Page<FriendActivity> friendsActivityPage = userDao.getFilteredFriendsActivityPage(
+                userId, addFriend, markQuizAsFavorite, publishQuiz, achievement,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsActivityPage;
+    }
 
 }

@@ -1,0 +1,108 @@
+<div *ngIf="subscribeTimer>-1" class="container">
+
+
+  <ng-container *ngIf="question">
+    <div class="form-control h-auto row mx-0 my-1 mt-5 p-4 border-dark border ">
+      <div class="d-flex justify-content-end"><h5>{{ subscribeTimer | timerFormat}}</h5></div>
+
+      <div class="col p-md-3" *ngIf="question.content">
+        <h2 class="text-center">{{question.content}}</h2>
+      </div>
+
+        <img *ngIf="question.image && question.imageId!=-1" [width]="100" class="img-preview-container img-preview col p-md-3 d-flex justify-content-center"
+             src="data:image/jpeg;base64,{{question.image.src}}">
+
+      <div class="p-3 m-2">
+        <div *ngIf="question.type=='TRUE_FALSE'" class="row">
+
+          <div class="form-check col p-3 m-2">
+            <label class="btn bg-light btn-block p-3">
+              <input type="radio" class="form-check-input" name="optradio" (click)="setTrueFalseOption(true)"
+                     [disabled]="isSend">
+              True
+            </label>
+          </div>
+
+          <div class="form-check col p-3 m-2">
+            <label class="btn bg-light btn-block p-3">
+              <input type="radio" class="form-check-input" name="optradio" (click)="setTrueFalseOption(false)"
+                     [disabled]="isSend">
+              False
+            </label>
+          </div>
+
+        </div>
+
+        <div *ngIf="question.type=='SELECT_OPTION'">
+          <div class="row mx-0 d-flex justify-content-center"
+               *ngFor="let questionOption of question.options; let i = index">
+
+            <div class="form-check col p-1 md-2">
+              <div *ngIf="questionOption.imageId!=-1">
+                <img class="img-preview-container img-preview "
+                     src="data:image/jpeg;base64,{{questionOption.image.src}}" >
+              </div>
+
+<!--              <label class="btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">-->
+<!--                <input type="radio" class="form-check-input" name="optradio" [disabled]="isSend">-->
+<!--                {{questionOption.content}}-->
+<!--              </label>-->
+
+<!--              <label class="btn bg-light btn-block p-3 form-check-label" (click)="setOption(questionOption.id)">-->
+              <!--                <input class="form-check-input" type="checkbox" value="" [disabled]="isSend" >-->
+              <!--                {{questionOption.content}}-->
+              <!--              </label>-->
+
+              <div class="form-check btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck{{i}}" [disabled]="isSend" >
+                <label class="form-check-label" for="defaultCheck{{i}}">
+                  {{questionOption.content}}
+                </label>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div *ngIf="question.type=='ENTER_ANSWER'" class="form-group">
+          <input type="text" class="form-control" placeholder="Enter your answer here" [(ngModel)]="answerText"
+                 [disabled]="isSend">
+        </div>
+
+        <div *ngIf="question.type=='SELECT_SEQUENCE'">
+          <div class="row mx-0" *ngFor="let questionOption of question.options">
+
+            <div class="form-group row p-3 m-2 border border-light bg-light col">
+              <div *ngIf="questionOption.imageId!=-1">
+                <img class="img-preview-container img-preview "
+                     src="data:image/jpeg;base64,{{questionOption.image.src}}" >
+              </div>
+
+              <select class="form-control col-1" [disabled]="isSend">
+                <option></option>
+                <option *ngFor="let qo of question.options; let i = index"
+                        (click)="setSequence(questionOption.id, i+1)">{{i + 1}}</option>
+              </select>
+              <label class="col">{{questionOption.content}}</label>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <button type="button" (click)="nextQuestion()" class="btn btn-success btn-lg btn-block" [disabled]="isSend">
+        Next >
+      </button>
+
+      <br>
+
+      <div class="p-m-3" *ngIf="isSend">
+        <h5 class="text-center">Waiting for other players...</h5>
+      </div>
+
+    </div>
+  </ng-container>
+</div>
+
