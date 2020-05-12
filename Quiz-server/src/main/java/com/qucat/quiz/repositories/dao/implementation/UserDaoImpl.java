@@ -219,7 +219,6 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 friendsActivityQueries.get("getAllFriendsActivity"),
                 new Object[]{userId}, new FriendActivityExtractor()
         );
-
     }
 
     @Override
@@ -259,6 +258,61 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
                 new FriendActivityExtractor());
         return new PageImpl<>(activities, pageable, total);
+    }
+
+    @Override
+    public List<User> searchUsersByLogin(String login) {
+        login = '%' + login + '%';
+        return jdbcTemplate.query(
+                usersQueries.get("searchUsersByLogin"),
+                new Object[]{login}, new UserMapper()
+        );
+    }
+
+    @Override
+    public List<User> searchUsersByLogin(String login, Role role) {
+        login = '%' + login + '%';
+        return jdbcTemplate.query(
+                usersQueries.get("searchUsersByLogin").replace(";", " AND role = cast(? AS user_role);"),
+                new Object[]{login, role.name().toLowerCase()}, new UserMapper()
+        );
+    }
+
+    @Override
+    public Page<User> searchUsersByLogin(String login, Pageable pageable) {
+        login = '%' + login + '%';
+
+        int total = jdbcTemplate.queryForObject(usersQueries.get("countRowsForSearchByLogin"),
+                new Object[]{login},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<User> users = jdbcTemplate.query(
+                usersQueries.get("searchUsersByLogin").replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{login, pageable.getPageSize(), pageable.getOffset()},
+                new UserMapper());
+        return new PageImpl<>(users, pageable, total);
+    }
+
+    @Override
+    public Page<User> searchUsersByLogin(String login, Role role, Pageable pageable) {
+        login = '%' + login + '%';
+
+        int total = jdbcTemplate.queryForObject(usersQueries.get("countRowsForSearchByLogin").replace(";", " AND role = cast(? AS user_role);"),
+                new Object[]{login, role.name().toLowerCase()},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<User> users = jdbcTemplate.query(
+                usersQueries.get("searchUsersByLogin").replace(";", " AND role = cast(? AS user_role) LIMIT ? OFFSET ?;"),
+                new Object[]{login, role.name().toLowerCase(), pageable.getPageSize(), pageable.getOffset()},
+                new UserMapper());
+        return new PageImpl<>(users, pageable, total);
+    }
+
+    @Override
+    public boolean checkUsersFriendship(int firstUserId, int secondUserId) {
+        return jdbcTemplate.queryForObject(friendsQueries.get("checkFriendship"),
+                new Object[]{firstUserId, secondUserId, secondUserId, firstUserId},
+                (resultSet, number) -> resultSet.getInt("row_count")) > 0 ? true : false;
     }
 
     private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {

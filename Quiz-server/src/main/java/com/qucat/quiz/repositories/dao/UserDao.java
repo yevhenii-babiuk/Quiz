@@ -46,4 +46,14 @@ public interface UserDao extends GenericDao<User> {
                                                         boolean addFriend, boolean markQuizAsFavorite,
                                                         boolean publishQuiz, boolean achievement,
                                                         Pageable pageable);
+
+    List<User> searchUsersByLogin(String login);
+
+    List<User> searchUsersByLogin(String login, Role role);
+
+    Page<User> searchUsersByLogin(String login, Pageable pageable);
+
+    Page<User> searchUsersByLogin(String login, Role role, Pageable pageable);
+
+    boolean checkUsersFriendship(int firstUserId, int secondUserId);
 }
