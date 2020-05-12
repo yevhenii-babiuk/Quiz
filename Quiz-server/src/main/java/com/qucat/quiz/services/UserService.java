@@ -64,14 +64,14 @@ public class UserService {
         user.setImageId(imageService.addUserProfileImage());
 
         if (userByMail != null) {
-            Token token = tokenDao.get(userByMail.getUserId());
+            Token token = tokenDao.get(userByMail.getId());
             if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
                 return false;
             } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
                 return false;
             } else {
-                id = userByMail.getUserId();
-                user.setUserId(id);
+                id = userByMail.getId();
+                user.setId(id);
                 userDao.update(user);
             }
         } else {
@@ -100,7 +100,7 @@ public class UserService {
         Token token = Token.builder()
                 .token(UUID.randomUUID().toString())
                 .tokenType(TokenType.PASSWORD_RECOVERY)
-                .userId(user.getUserId())
+                .userId(user.getId())
                 .build();
         tokenDao.save(token);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));
