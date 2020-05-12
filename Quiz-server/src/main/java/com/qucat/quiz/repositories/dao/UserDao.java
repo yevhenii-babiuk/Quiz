@@ -18,6 +18,8 @@ public interface UserDao extends GenericDao<User> {
 
     Page<User> getUserByRole(Role role, Pageable pageable);
 
+    Page<User> getAllUsersPage(Pageable pageable);
+
     User getUserByLogin(String login);
 
     boolean markQuizAsFavorite(int userId, int quizId);

@@ -163,6 +163,17 @@ public class UserService {
         return userDao.getUserByRole(role, pageable);
     }
 
+    public Page<User> getAllUsersPage(Pageable pageable) {
+        return userDao.getAllUsersPage(pageable);
+    }
+
+    public Page<User> getAllUsersPage(Optional<Integer> page, Optional<Integer> size) {
+        Page<User> allUsersPage = userDao.getAllUsersPage(
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return allUsersPage;
+    }
+
     public User getUserDataById(int id) {
         User user = userDao.get(id);
 

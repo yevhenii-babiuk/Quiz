@@ -3,10 +3,7 @@ package com.qucat.quiz.repositories.dao.implementation;
 import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.dao.mappers.FriendActivityExtractor;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
-import com.qucat.quiz.repositories.entities.FriendActivity;
-import com.qucat.quiz.repositories.entities.Role;
-import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -123,6 +120,18 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 new Object[]{role.name().toLowerCase(), pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
         return new PageImpl<>(users, pageable, rowTotal);
+    }
+
+    @Override
+    public Page<User> getAllUsersPage(Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(usersQueries.get("allUsersCount"),
+                new Object[]{},
+                (resultSet, number) -> resultSet.getInt(1));
+        List<User> users = jdbcTemplate.query(
+                usersQueries.get("getAllUsersPage"),
+                new Object[]{pageable.getPageSize(), pageable.getOffset()},
+                new UserMapper());
+        return new PageImpl<>(users, pageable, total);
     }
 
     @Override
