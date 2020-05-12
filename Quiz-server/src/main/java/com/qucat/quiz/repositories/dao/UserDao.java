@@ -50,4 +50,6 @@ public interface UserDao extends GenericDao<User> {
     List<User> searchUsersByLogin(String login);
 
     Page<User> searchUsersByLogin(String login, Pageable pageable);
+
+    boolean checkUsersFriendship(int firstUserId, int secondUserId);
 }

@@ -225,6 +225,10 @@ public class UserService {
         return userDao.getUserFriends(userId);
     }
 
+    boolean checkUsersFriendship(int firstUserId, int secondUserId){
+        return userDao.checkUsersFriendship(firstUserId, secondUserId);
+    }
+
     public Page<User> getUserFriendsPage(int userId, Optional<Integer> page, Optional<Integer> size) {
         Page<User> friendsPage = userDao.getUserFriendsPage(userId,
                 PageRequest.of(page.orElse(0), size.orElse(10),

@@ -282,6 +282,13 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return new PageImpl<>(users, pageable, total);
     }
 
+    @Override
+    public boolean checkUsersFriendship(int firstUserId, int secondUserId) {
+        return jdbcTemplate.queryForObject(friendsQueries.get("checkFriendship"),
+                new Object[]{firstUserId, secondUserId, secondUserId, firstUserId},
+                (resultSet, number) -> resultSet.getInt("row_count")) > 0 ? true : false;
+    }
+
     private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
         String query = "";
         boolean isUnion = false;
