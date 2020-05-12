@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -16,9 +17,7 @@ public class AchievementConditionService {
     private AchievementConditionDao achievementConditionDao;
 
     public void addConditions(List<AchievementCondition> conditions) {
-        for (AchievementCondition condition : conditions) {
-            addCondition(condition);//todo change
-        }
+        achievementConditionDao.insert(conditions);
     }
 
     public int addCondition(AchievementCondition achievementCondition) {
@@ -26,9 +25,9 @@ public class AchievementConditionService {
     }
 
     public void removeConditions(List<AchievementCondition> conditions) {
-        for (AchievementCondition condition : conditions) {
-            removeCondition(condition);//todo change
-        }
+        achievementConditionDao.delete(conditions.stream()
+                .map(AchievementCondition::getId)
+                .collect(Collectors.toList()));
     }
 
     public void removeCondition(AchievementCondition achievementCondition) {
