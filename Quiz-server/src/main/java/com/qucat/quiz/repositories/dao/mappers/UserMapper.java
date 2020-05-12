@@ -25,7 +25,7 @@ public class UserMapper implements RowMapper<User> {
                 .status(UserAccountStatus.valueOf(resultSet.getString("status").toUpperCase()))
                 .role(Role.valueOf(resultSet.getString("role").toUpperCase()))
                 .imageId(resultSet.getInt("image_id"))
-//                .image(new Image(resultSet.getInt("image_id"), resultSet.getString("src")))
+                //.image(new Image(resultSet.getInt("image_id"), resultSet.getString("src")))
                 .build();
     }
 }
