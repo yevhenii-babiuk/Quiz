@@ -225,7 +225,7 @@ public class UserService {
         return userDao.getUserFriends(userId);
     }
 
-    boolean checkUsersFriendship(int firstUserId, int secondUserId){
+    boolean checkUsersFriendship(int firstUserId, int secondUserId) {
         return userDao.checkUsersFriendship(firstUserId, secondUserId);
     }
 
@@ -253,7 +253,7 @@ public class UserService {
             log.info("getFilteredFriendsActivity: Nothing to get");
             return null;
         }
-        return getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        return userDao.getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
     }
 
     public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
@@ -276,6 +276,17 @@ public class UserService {
 
     public Page<User> searchUsersByLogin(String login, Optional<Integer> page, Optional<Integer> size) {
         Page<User> users = userDao.searchUsersByLogin(login,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return users;
+    }
+
+    public List<User> searchUsersByLogin(String login, Role role) {
+        return userDao.searchUsersByLogin(login, role);
+    }
+
+    public Page<User> searchUsersByLogin(String login, Role role, Optional<Integer> page, Optional<Integer> size) {
+        Page<User> users = userDao.searchUsersByLogin(login, role,
                 PageRequest.of(page.orElse(0), size.orElse(10),
                         Sort.Direction.DESC, "id"));
         return users;
