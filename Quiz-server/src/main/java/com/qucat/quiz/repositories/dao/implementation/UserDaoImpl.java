@@ -231,4 +231,69 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 new FriendActivityExtractor());
         return new PageImpl<>(activities, pageable, total);
     }
+
+    @Override
+    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
+        String query = buildActivityFilterQuery(addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        query = friendsActivityQueries.get("activitySelectStart") + query + friendsActivityQueries.get("activitySelectEnd");
+        return jdbcTemplate.query(query,
+                new Object[]{userId}, new FriendActivityExtractor()
+        );
+    }
+
+    @Override
+    public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement, Pageable pageable) {
+        String innerQuery = buildActivityFilterQuery(addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        String query = friendsActivityQueries.get("activitySelectStart") + innerQuery + friendsActivityQueries.get("activitySelectEnd");
+        String countQuery = friendsActivityQueries.get("activityCountStart") + innerQuery + friendsActivityQueries.get("activityCountEnd");
+
+        int total = jdbcTemplate.queryForObject(countQuery,
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<FriendActivity> activities = jdbcTemplate.query(
+                query.replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new FriendActivityExtractor());
+        return new PageImpl<>(activities, pageable, total);
+    }
+
+    private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
+        String query = "";
+        boolean isUnion = false;
+
+        if (addFriend) {
+            if (isUnion) {
+                query += " UNION ";
+            }
+            isUnion = true;
+            query += friendsActivityQueries.get("addFriendPart");
+        }
+
+        if (markQuizAsFavorite) {
+            if (isUnion) {
+                query += " UNION ";
+            }
+            isUnion = true;
+            query += friendsActivityQueries.get("markQuizPart");
+        }
+
+        if (publishQuiz) {
+            if (isUnion) {
+                query += " UNION ";
+            }
+            isUnion = true;
+            query += friendsActivityQueries.get("publishQuizPart");
+        }
+
+        if (achievement) {
+            if (isUnion) {
+                query += " UNION ";
+            }
+            isUnion = true;
+            query += friendsActivityQueries.get("achievementPart");
+        }
+
+        return query;
+    }
 }

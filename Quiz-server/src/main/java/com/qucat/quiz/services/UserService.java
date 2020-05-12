@@ -247,4 +247,27 @@ public class UserService {
         return friendsActivityPage;
     }
 
+    List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                    boolean publishQuiz, boolean achievement) {
+        if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
+            log.info("getFilteredFriendsActivity: Nothing to get");
+            return null;
+        }
+        return getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+    }
+
+    Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                        boolean publishQuiz, boolean achievement,
+                                                        Optional<Integer> page, Optional<Integer> size) {
+        if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
+            log.info("getFilteredFriendsActivityPage: Nothing to get");
+            return null;
+        }
+        Page<FriendActivity> friendsActivityPage = userDao.getFilteredFriendsActivityPage(
+                userId, addFriend, markQuizAsFavorite, publishQuiz, achievement,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsActivityPage;
+    }
+
 }

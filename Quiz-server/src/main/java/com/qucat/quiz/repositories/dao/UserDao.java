@@ -37,4 +37,13 @@ public interface UserDao extends GenericDao<User> {
     List<FriendActivity> getAllFriendsActivity(int userId);
 
     Page<FriendActivity> getAllFriendsActivityPage(int userId, Pageable pageable);
+
+    List<FriendActivity> getFilteredFriendsActivity(int userId,
+                                                    boolean addFriend, boolean markQuizAsFavorite,
+                                                    boolean publishQuiz, boolean achievement);
+
+    Page<FriendActivity> getFilteredFriendsActivityPage(int userId,
+                                                        boolean addFriend, boolean markQuizAsFavorite,
+                                                        boolean publishQuiz, boolean achievement,
+                                                        Pageable pageable);
 }
