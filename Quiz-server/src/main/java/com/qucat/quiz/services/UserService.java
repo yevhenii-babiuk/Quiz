@@ -47,6 +47,9 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
+    @Autowired
+    private ImageService imageService;
+
     @Value("${url}")
     private String URL;
 
@@ -60,6 +63,8 @@ public class UserService {
         int id;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userByMail = userDao.getUserByMail(user.getMail());
+
+        user.setImageId(imageService.addUserProfileImage());
 
         if (userByMail != null) {
             Token token = tokenDao.get(userByMail.getId());
@@ -161,6 +166,17 @@ public class UserService {
         return userDao.getUserByRole(role, pageable);
     }
 
+    public Page<User> getAllUsersPage(Pageable pageable) {
+        return userDao.getAllUsersPage(pageable);
+    }
+
+    public Page<User> getAllUsersPage(Optional<Integer> page, Optional<Integer> size) {
+        Page<User> allUsersPage = userDao.getAllUsersPage(
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return allUsersPage;
+    }
+
     public User getUserDataById(int id) {
         User user = userDao.get(id);
 
@@ -224,6 +240,40 @@ public class UserService {
     }
     public List<User> getAll() {
         return userDao.getAll();
+    }
+
+    List<FriendActivity> getAllFriendsActivity(int userId) {
+        return userDao.getAllFriendsActivity(userId);
+    }
+
+    public Page<FriendActivity> getAllFriendsActivityPage(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<FriendActivity> friendsActivityPage = userDao.getAllFriendsActivityPage(userId,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsActivityPage;
+    }
+
+    List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                    boolean publishQuiz, boolean achievement) {
+        if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
+            log.info("getFilteredFriendsActivity: Nothing to get");
+            return null;
+        }
+        return getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+    }
+
+    Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                        boolean publishQuiz, boolean achievement,
+                                                        Optional<Integer> page, Optional<Integer> size) {
+        if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
+            log.info("getFilteredFriendsActivityPage: Nothing to get");
+            return null;
+        }
+        Page<FriendActivity> friendsActivityPage = userDao.getFilteredFriendsActivityPage(
+                userId, addFriend, markQuizAsFavorite, publishQuiz, achievement,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsActivityPage;
     }
 
 }

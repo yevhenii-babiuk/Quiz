@@ -22,4 +22,7 @@ public class User {
     private UserAccountStatus status;
     private Role role;
     private List<Achievement> achievements;
+    private int imageId;
+    private Image image;
+
 }

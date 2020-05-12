@@ -1,10 +1,9 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.UserDao;
+import com.qucat.quiz.repositories.dao.mappers.FriendActivityExtractor;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
-import com.qucat.quiz.repositories.entities.Role;
-import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -23,7 +22,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
-@PropertySource("classpath:database.properties")
+@PropertySource("classpath:user.properties")
 public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Value("#{${sql.users}}")
@@ -31,6 +30,9 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Value("#{${sql.friends}}")
     private Map<String, String> friendsQueries;
+
+    @Value("#{${sql.friendsActivity}}")
+    private Map<String, String> friendsActivityQueries;
 
     protected UserDaoImpl() {
         super(new UserMapper(), TABLE_NAME);
@@ -66,6 +68,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         } else {
             preparedStatement.setNull(9, Types.INTEGER);
         }
+        preparedStatement.setInt(10, user.getImageId());
         return preparedStatement;
     }
 
@@ -79,7 +82,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return new Object[]{user.getLogin(), user.getPassword(), user.getMail(),
                 user.getStatus().name().toLowerCase(), user.getRole().name().toLowerCase(),
                 user.getFirstName(), user.getSecondName(), user.getRegistrationDate(),
-                user.getProfile(), user.getScore(), user.getId()};
+                user.getProfile(), user.getScore(), user.getId(), user.getImageId()};
     }
 
 
@@ -117,6 +120,18 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 new Object[]{role.name().toLowerCase(), pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
         return new PageImpl<>(users, pageable, rowTotal);
+    }
+
+    @Override
+    public Page<User> getAllUsersPage(Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(usersQueries.get("allUsersCount"),
+                new Object[]{},
+                (resultSet, number) -> resultSet.getInt(1));
+        List<User> users = jdbcTemplate.query(
+                usersQueries.get("getAllUsersPage"),
+                new Object[]{pageable.getPageSize(), pageable.getOffset()},
+                new UserMapper());
+        return new PageImpl<>(users, pageable, total);
     }
 
     @Override
@@ -193,5 +208,92 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
         return new PageImpl<>(friends, pageable, total);
+    }
+
+    @Override
+    public List<FriendActivity> getAllFriendsActivity(int userId) {
+        return jdbcTemplate.query(
+                friendsActivityQueries.get("getAllFriendsActivity"),
+                new Object[]{userId}, new FriendActivityExtractor()
+        );
+
+    }
+
+    @Override
+    public Page<FriendActivity> getAllFriendsActivityPage(int userId, Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(friendsActivityQueries.get("allRowCount"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<FriendActivity> activities = jdbcTemplate.query(
+                friendsActivityQueries.get("getAllFriendsActivity").replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new FriendActivityExtractor());
+        return new PageImpl<>(activities, pageable, total);
+    }
+
+    @Override
+    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
+        String query = buildActivityFilterQuery(addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        query = friendsActivityQueries.get("activitySelectStart") + query + friendsActivityQueries.get("activitySelectEnd");
+        return jdbcTemplate.query(query,
+                new Object[]{userId}, new FriendActivityExtractor()
+        );
+    }
+
+    @Override
+    public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement, Pageable pageable) {
+        String innerQuery = buildActivityFilterQuery(addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        String query = friendsActivityQueries.get("activitySelectStart") + innerQuery + friendsActivityQueries.get("activitySelectEnd");
+        String countQuery = friendsActivityQueries.get("activityCountStart") + innerQuery + friendsActivityQueries.get("activityCountEnd");
+
+        int total = jdbcTemplate.queryForObject(countQuery,
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<FriendActivity> activities = jdbcTemplate.query(
+                query.replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new FriendActivityExtractor());
+        return new PageImpl<>(activities, pageable, total);
+    }
+
+    private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
+        String query = "";
+        boolean isUnion = false;
+
+        if (addFriend) {
+            if (isUnion) {
+                query += " UNION ";
+            }
+            isUnion = true;
+            query += friendsActivityQueries.get("addFriendPart");
+        }
+
+        if (markQuizAsFavorite) {
+            if (isUnion) {
+                query += " UNION ";
+            }
+            isUnion = true;
+            query += friendsActivityQueries.get("markQuizPart");
+        }
+
+        if (publishQuiz) {
+            if (isUnion) {
+                query += " UNION ";
+            }
+            isUnion = true;
+            query += friendsActivityQueries.get("publishQuizPart");
+        }
+
+        if (achievement) {
+            if (isUnion) {
+                query += " UNION ";
+            }
+            isUnion = true;
+            query += friendsActivityQueries.get("achievementPart");
+        }
+
+        return query;
     }
 }
