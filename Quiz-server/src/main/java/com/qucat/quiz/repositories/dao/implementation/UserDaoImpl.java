@@ -3,7 +3,10 @@ package com.qucat.quiz.repositories.dao.implementation;
 import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.dao.mappers.FriendActivityExtractor;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.FriendActivity;
+import com.qucat.quiz.repositories.entities.Role;
+import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -185,7 +188,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public void deleteUserFriend(int userId, int friendId) {
         jdbcTemplate.update(
                 friendsQueries.get("deleteUserFriend"),
-                userId, friendId
+                userId, friendId, friendId, userId
         );
     }
 
@@ -193,7 +196,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public List<User> getUserFriends(int userId) {
         return jdbcTemplate.query(
                 friendsQueries.get("getUserFriends"),
-                new Object[]{userId}, new UserMapper()
+                new Object[]{userId, userId}, new UserMapper()
         );
     }
 

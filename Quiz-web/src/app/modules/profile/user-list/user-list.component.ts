@@ -15,6 +15,7 @@ export class UserListComponent implements OnInit {
   users: User[] = [];
   isWaiting: boolean = false;
   role: Role;
+  roleEnum = Role;
   allUsers: boolean;
   private keyUpTimeout: any;
 

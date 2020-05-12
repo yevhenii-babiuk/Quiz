@@ -1,12 +1,4 @@
 <div class="container">
-  <input
-    type="text"
-    placeholder="Search user"
-    [(ngModel)]="filter"
-    (keyup)="onKeyUp($event)"
-    (change)="onChange($event)"
-    class="form-control border border-warning"
-  >
 
   <div class="table-wrapper">
 
@@ -17,7 +9,6 @@
         <th>Login</th>
         <th>Name</th>
         <th>Registered date</th>
-        <th *ngIf="role!=roleEnum.USER">Role</th>
       </tr>
       </thead>
       <tbody>
@@ -27,8 +18,6 @@
           <td><a routerLink="/users/{{user.id}}" > {{user.login}}</a></td>
           <td>{{user.firstName}} {{user.secondName}}</td>
           <td>{{user.registrationDate | date:'MMMM d, yyyy'}}</td>
-          <td *ngIf="role!=roleEnum.USER">{{user.role}}</td>
-
         </tr>
       </ng-container>
       </tbody>

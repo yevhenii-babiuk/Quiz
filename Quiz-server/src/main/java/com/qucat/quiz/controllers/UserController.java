@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -26,9 +27,26 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAnnouncements(@RequestParam(value = "pageNumber") double pageNumber,
-                                       @RequestParam(value = "allUsers") boolean isPublished) {
+    public List<User> getUsers(@RequestParam(value = "pageNumber") int pageNumber,
+                               @RequestParam(value = "allUsers") boolean allUsers) {
 
-        return userService.getAll();
+        return userService.getAllUsersPage(Optional.of(pageNumber), Optional.of(10)).toList();//allUsers? userService.getAllUsersPage(Optional.of(pageNumber),Optional.of(10)): userService.;
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> getFriends(@PathVariable int id) {
+        return userService.getUserFriends(id);
+    }
+
+    @PostMapping("/{id}/addFriend")
+    public boolean addFriend(@PathVariable int id,
+                             @RequestBody int friendId) {
+        return userService.addUserFriend(id, friendId);
+    }
+
+    @PostMapping("/{id}/removeFriend")
+    public boolean removeFriend(@PathVariable int id,
+                                @RequestBody int friendId) {
+        return userService.deleteUserFriend(id, friendId);
     }
 }

@@ -8,12 +8,14 @@ import {EditorComponent} from './editor/editor.component'
 import {ProfileRoutingModule} from './profile-routing.module';
 import { UserListComponent } from './user-list/user-list.component'
 import {AchievementModule} from "../achivement/achievement.module";
+import { FriendListComponent } from './friend-list/friend-list.component';
 
 @NgModule({
   declarations: [
     ViewProfile,
     EditorComponent,
-    UserListComponent
+    UserListComponent,
+    FriendListComponent
   ],
   imports: [
     CommonModule,

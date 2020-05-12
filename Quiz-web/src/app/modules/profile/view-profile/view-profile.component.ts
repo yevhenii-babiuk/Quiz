@@ -18,6 +18,7 @@ export class ViewProfile implements OnInit {
   role: Role;
   roleEnum = Role;
   isOwn: boolean;
+  isFriend:boolean;
 
   constructor(
     private route: ActivatedRoute,
@@ -41,6 +42,13 @@ export class ViewProfile implements OnInit {
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.role = this.securityService.getCurrentRole();
+    });
+  }
+
+  friendship() {
+    let visitorId=this.securityService.getCurrentId();
+    this.profileService.addFriend(visitorId,this.id).subscribe(data => {
+      this.isFriend = true
     });
   }
 }

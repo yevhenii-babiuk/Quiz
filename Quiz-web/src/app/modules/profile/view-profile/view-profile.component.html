@@ -39,6 +39,9 @@
         <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
           Редагувати
         </button>
+        <button *ngIf="!isOwn" class="btn btn-warning btn-block" (click)="friendship()">
+          Додати до друзів
+        </button>
       </div>
     </div>
   </div>

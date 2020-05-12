@@ -14,9 +14,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -224,11 +221,12 @@ public class UserService {
         return userDao.addUserFriend(userId, friendId);
     }
 
-    void deleteUserFriend(int userId, int friendId) {
+    public boolean deleteUserFriend(int userId, int friendId) {
         userDao.deleteUserFriend(userId, friendId);
+        return true;
     }
 
-    List<User> getUserFriends(int userId) {
+    public List<User> getUserFriends(int userId) {
         return userDao.getUserFriends(userId);
     }
 
@@ -238,6 +236,7 @@ public class UserService {
                         Sort.Direction.DESC, "id"));
         return friendsPage;
     }
+
     public List<User> getAll() {
         return userDao.getAll();
     }

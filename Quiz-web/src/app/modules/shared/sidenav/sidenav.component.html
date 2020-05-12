@@ -36,6 +36,9 @@
         <a routerLink="../profile">Профіль</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
+        <a routerLink="../friends">Друзі</a>
+      </li>
+      <li *ngIf="authenticationService.isAuthenticated()">
         <a routerLink="../profile/dashboard">Статистика</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
