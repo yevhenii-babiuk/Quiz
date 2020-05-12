@@ -11,5 +11,5 @@ public interface UserAchievementsDao extends GenericDao<UserAchievement> {
 
     List<Achievement> getAchievementsByUserId(int userId);
 
-    List<User> getAchievementsForAllUser();
+    List<Achievement> getAchievementsForAllUser();
 }

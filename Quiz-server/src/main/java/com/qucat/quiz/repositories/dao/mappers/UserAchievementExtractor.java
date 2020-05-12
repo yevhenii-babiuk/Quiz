@@ -12,28 +12,31 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class UserAchievementExtractor implements ResultSetExtractor<List<User>> {
+public class UserAchievementExtractor implements ResultSetExtractor<List<Achievement>> {
 
     @Override
-    public List<User> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-        Map<Integer, User> users = new HashMap<>();
+    public List<Achievement> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
+        Map<Integer, Achievement> achievements = new HashMap<>();
         while (resultSet.next()) {
-            int userId = resultSet.getInt("user_id");
-            User user = users.get(userId);
-            if (user == null) {
-                user = User.builder()
-                        .userId(userId)
-                        .achievements(new ArrayList<>())
+            int achievementId = resultSet.getInt("achievement_id");
+            Achievement achievement = achievements.get(achievementId);
+            if (achievement == null) {
+                achievement = Achievement.builder()
+                        .id(achievementId)
+                        .name(resultSet.getString("achievement_name"))
+                        .users(new ArrayList<>())
+                        .description(resultSet.getString("description"))
                         .build();
-                users.put(userId, user);
+                achievements.put(achievementId, achievement);
             }
-            user.getAchievements().add(Achievement.builder()
-                    .description(resultSet.getString("description"))
-                    .name(resultSet.getString("achievement_name"))
-                    .id(resultSet.getInt("achievement_id"))
+
+            achievement.getUsers().add(User.builder()
+                    .userId(resultSet.getInt("user_id"))
                     .build());
+
+
         }
 
-        return new ArrayList<>(users.values());
+        return new ArrayList<>(achievements.values());
     }
 }

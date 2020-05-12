@@ -14,4 +14,5 @@ public class Achievement {
     private String name;
     private String description;
     private List<AchievementCondition> conditions;
+    private List<User> users;
 }

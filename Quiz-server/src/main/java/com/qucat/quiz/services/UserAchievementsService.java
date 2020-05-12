@@ -16,7 +16,7 @@ public class UserAchievementsService {
     @Autowired
     private UserAchievementsDao userAchievementsDao;
 
-    public List<User> getAchievementsForAll() {
+    public List<Achievement> getAchievementsForAll() {
         return userAchievementsDao.getAchievementsForAllUser();
     }
 
