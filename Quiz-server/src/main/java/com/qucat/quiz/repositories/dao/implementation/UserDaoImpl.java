@@ -1,7 +1,9 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.UserDao;
+import com.qucat.quiz.repositories.dao.mappers.FriendActivityExtractor;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
+import com.qucat.quiz.repositories.entities.FriendActivity;
 import com.qucat.quiz.repositories.entities.Role;
 import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.repositories.entities.UserAccountStatus;
@@ -23,7 +25,7 @@ import java.util.Map;
 
 @Slf4j
 @Repository
-@PropertySource("classpath:database.properties")
+@PropertySource("classpath:user.properties")
 public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Value("#{${sql.users}}")
@@ -31,6 +33,9 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Value("#{${sql.friends}}")
     private Map<String, String> friendsQueries;
+
+    @Value("#{${sql.friendsActivity}}")
+    private Map<String, String> friendsActivityQueries;
 
     protected UserDaoImpl() {
         super(new UserMapper(), TABLE_NAME);
@@ -66,6 +71,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         } else {
             preparedStatement.setNull(9, Types.INTEGER);
         }
+        preparedStatement.setInt(10, user.getImageId());
         return preparedStatement;
     }
 
@@ -79,7 +85,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return new Object[]{user.getLogin(), user.getPassword(), user.getMail(),
                 user.getStatus().name().toLowerCase(), user.getRole().name().toLowerCase(),
                 user.getFirstName(), user.getSecondName(), user.getRegistrationDate(),
-                user.getProfile(), user.getScore(), user.getUserId()};
+                user.getProfile(), user.getScore(), user.getUserId(), user.getImageId()};
     }
 
 
@@ -193,5 +199,27 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
         return new PageImpl<>(friends, pageable, total);
+    }
+
+    @Override
+    public List<FriendActivity> getAllFriendsActivity(int userId) {
+        return jdbcTemplate.query(
+                friendsActivityQueries.get("getAllFriendsActivity"),
+                new Object[]{userId}, new FriendActivityExtractor()
+        );
+
+    }
+
+    @Override
+    public Page<FriendActivity> getAllFriendsActivityPage(int userId, Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(friendsActivityQueries.get("allRowCount"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<FriendActivity> activities = jdbcTemplate.query(
+                friendsActivityQueries.get("getAllFriendsActivity").replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new FriendActivityExtractor());
+        return new PageImpl<>(activities, pageable, total);
     }
 }

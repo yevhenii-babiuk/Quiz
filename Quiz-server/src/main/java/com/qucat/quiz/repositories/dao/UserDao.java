@@ -1,5 +1,6 @@
 package com.qucat.quiz.repositories.dao;
 
+import com.qucat.quiz.repositories.entities.FriendActivity;
 import com.qucat.quiz.repositories.entities.Role;
 import com.qucat.quiz.repositories.entities.User;
 import org.springframework.data.domain.Page;
@@ -30,4 +31,8 @@ public interface UserDao extends GenericDao<User> {
     List<User> getUserFriends(int userId);
 
     Page<User> getUserFriendsPage(int userId, Pageable pageable);
+
+    List<FriendActivity> getAllFriendsActivity(int userId);
+
+    Page<FriendActivity> getAllFriendsActivityPage(int userId, Pageable pageable);
 }

@@ -2,13 +2,7 @@ package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
 import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
-import com.qucat.quiz.repositories.entities.Lang;
-import com.qucat.quiz.repositories.entities.MessageInfo;
-import com.qucat.quiz.repositories.entities.Role;
-import com.qucat.quiz.repositories.entities.Token;
-import com.qucat.quiz.repositories.entities.TokenType;
-import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -50,6 +44,9 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
+    @Autowired
+    private ImageService imageService;
+
     @Value("${url}")
     private String URL;
 
@@ -63,6 +60,8 @@ public class UserService {
         int id;
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userByMail = userDao.getUserByMail(user.getMail());
+
+        user.setImageId(imageService.addUserProfileImage());
 
         if (userByMail != null) {
             Token token = tokenDao.get(userByMail.getUserId());
@@ -224,6 +223,17 @@ public class UserService {
                 PageRequest.of(page.orElse(0), size.orElse(10),
                         Sort.Direction.DESC, "id"));
         return friendsPage;
+    }
+
+    List<FriendActivity> getAllFriendsActivity(int userId) {
+        return userDao.getAllFriendsActivity(userId);
+    }
+
+    public Page<FriendActivity> getAllFriendsActivityPage(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<FriendActivity> friendsActivityPage = userDao.getAllFriendsActivityPage(userId,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsActivityPage;
     }
 
 }

@@ -20,5 +20,7 @@ public class User {
     private int score;
     private UserAccountStatus status;
     private Role role;
+    private int imageId;
+    private Image image;
 
 }
