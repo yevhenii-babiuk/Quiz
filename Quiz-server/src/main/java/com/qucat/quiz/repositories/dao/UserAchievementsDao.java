@@ -1,7 +1,6 @@
 package com.qucat.quiz.repositories.dao;
 
 import com.qucat.quiz.repositories.entities.Achievement;
-import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.repositories.entities.UserAchievement;
 
 import java.util.List;
@@ -11,5 +10,8 @@ public interface UserAchievementsDao extends GenericDao<UserAchievement> {
 
     List<Achievement> getAchievementsByUserId(int userId);
 
-    List<Achievement> getAchievementsForAllUser();
+    void delete(List<Integer> userAchievements);
+
+    void insert(List<UserAchievement> userAchievements);
+
 }
