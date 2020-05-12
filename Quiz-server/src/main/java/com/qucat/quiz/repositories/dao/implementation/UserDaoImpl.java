@@ -29,10 +29,12 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     @Value("#{${sql.users}}")
     private Map<String, String> usersQueries;
 
+    @Value("#{${sql.friends}}")
+    private Map<String, String> friendsQueries;
+
     protected UserDaoImpl() {
         super(new UserMapper(), TABLE_NAME);
     }
-
 
     @Override
     protected String getInsertQuery() {
@@ -141,5 +143,55 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public void unmarkQuizAsFavorite(int userId, int quizId) {
+        jdbcTemplate.update(
+                usersQueries.get("unmarkAsFavorite"),
+                quizId, userId
+        );
+    }
+
+    @Override
+    public boolean addUserFriend(int userId, int friendId) {
+        try {
+            jdbcTemplate.update(
+                    friendsQueries.get("addUserFriend"),
+                    userId, friendId
+            );
+        } catch (DuplicateKeyException e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public void deleteUserFriend(int userId, int friendId) {
+        jdbcTemplate.update(
+                friendsQueries.get("deleteUserFriend"),
+                userId, friendId
+        );
+    }
+
+    @Override
+    public List<User> getUserFriends(int userId) {
+        return jdbcTemplate.query(
+                friendsQueries.get("getUserFriends"),
+                new Object[]{userId}, new UserMapper()
+        );
+    }
+
+    @Override
+    public Page<User> getUserFriendsPage(int userId, Pageable pageable) {
+        int total = jdbcTemplate.queryForObject(friendsQueries.get("rowCount"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<User> friends = jdbcTemplate.query(
+                friendsQueries.get("getUserFriends").replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new UserMapper());
+        return new PageImpl<>(friends, pageable, total);
     }
 }
