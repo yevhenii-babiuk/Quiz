@@ -258,6 +258,30 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return new PageImpl<>(activities, pageable, total);
     }
 
+    @Override
+    public List<User> searchUsersByLogin(String login) {
+        login = '%' + login + '%';
+        return jdbcTemplate.query(
+                usersQueries.get("searchUsersByLogin"),
+                new Object[]{login}, new UserMapper()
+        );
+    }
+
+    @Override
+    public Page<User> searchUsersByLogin(String login, Pageable pageable) {
+        login = '%' + login + '%';
+
+        int total = jdbcTemplate.queryForObject(usersQueries.get("countRowsForSearchByLogin"),
+                new Object[]{login},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<User> users = jdbcTemplate.query(
+                usersQueries.get("searchUsersByLogin").replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{login, pageable.getPageSize(), pageable.getOffset()},
+                new UserMapper());
+        return new PageImpl<>(users, pageable, total);
+    }
+
     private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
         String query = "";
         boolean isUnion = false;
