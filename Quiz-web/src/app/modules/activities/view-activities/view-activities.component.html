@@ -11,19 +11,6 @@
 </div>
 
 <div class="row">
- <!-- <div class="btn-group-vertical">-->
-  <!--<div class="btn-group-vertical">
-    <button type="button" class="btn btn-warning dropdown-toggle mr-2" data-toggle="dropdown">
-      Обрати категорію
-    </button>
-
-    <div class="dropdown-menu dropdown-menu-right">
-      <ng-container *ngFor="let activity of activityCategories">
-      <div class="dropdown-item checkbox">
-        <label><input [(ngModel)]="activity.selected" type="checkbox" value={{activity.value}}>{{activity.value}}</label>
-      </div>
-      </ng-container>
-    </div>-->
   <button type="button" class="btn btn-warning btn btn-block mt-2 mb-3" (click)="getSelected()">Відфільтрувати</button>
   </div>
 
@@ -32,29 +19,32 @@
     <div class="col-lg-10 col-md-10 mx-auto m-2">
       <div class="post-preview">
         <!-- Preview Image -->
-        <img *ngIf="activity.imageId!=-1" class="img-responsive img-left"
+        <!--<img *ngIf="activity.imageId!=-1" class="img-responsive img-left"
              src="data:image/jpeg;base64,{{activity.image.src}}" alt="logo" width="70" height="70">
         <img *ngIf="activity.imageId==-1" class="img-responsive img-left" src="../../assets/img/logo.png" alt="logo"
+             width="70" height="70">-->
+        <img class="img-responsive img-left" src="../../assets/img/main.png" alt="logo"
              width="70" height="70">
         <!--achievement-->
-        <h5 *ngIf="activity.achievementName!=null">
+        <h5 *ngIf="activity.type==category.ACHIEVEMENT">
           Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> отримав нагороду
-          <q>{{activity.achievementName}}</q>.
+          <q>{{activity.activityContent}}</q>.
         </h5>
         <!--added new quiz-->
-        <h5 *ngIf="!activity.markedFavourite && activity.quizName!=null">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> створив нову вікторину <a routerLink="../quiz/{{activity.quizId}}" class="text-dark"><q>{{activity.quizName}}</q></a>
-          в категорії <q>{{activity.quizCategoryName}}</q>.
+        <h5 *ngIf="activity.type==category.PUBLISH_QUIZ">
+          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> створив нову вікторину <a routerLink="../quiz/{{activity.activityId}}" class="text-dark"><q>{{activity.activityContent}}</q></a>
+          .
         </h5>
         <!--mark quiz as favourite-->
-        <h5 *ngIf="activity.markedFavourite">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> додав вікторину <a routerLink="../quiz/{{activity.quizId}}" class="text-dark"><q>{{activity.quizName}}</q></a> з категорії
-          <q>{{activity.quizCategoryName}}</q> в список улюблених.
+        <h5 *ngIf="activity.type==category.MARK_AS_FAVORITE">
+          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a>
+          додав вікторину <a routerLink="../quiz/{{activity.activityId}}" class="text-dark"><q>{{activity.activityContent}}</q></a>
+          в список улюблених.
         </h5>
         <!--add to friends-->
-        <h5 *ngIf="activity.friendOfFriendLogin!=null">
+        <h5 *ngIf="activity.type==category.ADD_FRIEND">
           Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> додав користувача
-          <a routerLink="../users/{{activity.friendOfFriendId}}" class="text-dark">{{activity.friendOfFriendLogin}}</a>
+          <a routerLink="../users/{{activity.activityId}}" class="text-dark">{{activity.activityContent}}</a>
           в друзі.
         </h5>
 

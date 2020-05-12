@@ -6,6 +6,7 @@ import {catchError} from "rxjs/operators";
 
 import {url} from "../../../../environments/environment.prod";
 import {Activity} from "../models/activity";
+import {Announcement} from "../models/announcement";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +21,8 @@ export class ActivitiesService {
   constructor(private http: HttpClient) {
   }
 
-  getFilterActivities(categoryName:string[]): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${url}/activities/filter?count=${categoryName}`)
+  getFilterActivities(id: number, categoryFilter: boolean[]): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${url}/activities?id=${id}&categoryFilter=${categoryFilter}`)
       .pipe(
         catchError(this.handleError<Activity[]>([]))
       );

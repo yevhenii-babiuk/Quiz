@@ -3,6 +3,8 @@ import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {ActivitiesService} from "../../core/services/activities.service";
 import {Activity} from "../../core/models/activity";
+import {FriendActivityType} from "../../core/models/friendActivityType";
+import {Image} from "../../core/models/image";
 
 
 @Component({
@@ -11,21 +13,22 @@ import {Activity} from "../../core/models/activity";
   styleUrls: ['./view-activities.component.css']
 })
 export class ViewActivitiesComponent implements OnInit {
+  category = FriendActivityType;
   activityCategories = [
     {
-      value: 'Досягнення',
+      value: this.category.ADD_FRIEND,
       selected: false
     },
     {
-      value: 'Нові створені вікторини',
+      value: this.category.MARK_AS_FAVORITE,
       selected: false
     },
     {
-      value: 'Додані до списку улюблених вікторини',
+      value: this.category.PUBLISH_QUIZ,
       selected: false
     },
     {
-      value: 'Додані друзі',
+      value: this.category.ACHIEVEMENT,
       selected: false
     }
   ]
@@ -33,8 +36,6 @@ export class ViewActivitiesComponent implements OnInit {
   activities: Activity[] = [];
   userId: number;
   role: Role;
-
-  todayDate: Date = new Date();
 
 
   constructor(private activitiesService: ActivitiesService,
@@ -44,99 +45,9 @@ export class ViewActivitiesComponent implements OnInit {
   }
 
   getActivities(): void {
-    let activity: Activity = {
-      id: 1,
-      friendId: 43,
-      friendLogin: "login1",
-      achievementName: "achievement",
-      quizId: 0,
-      quizName: null,
-      quizCategoryName: null,
-      markedFavourite: false,
-      friendOfFriendId: null,
-      friendOfFriendLogin: null,
-      activityDate: this.todayDate,
-      imageId: -1,
-      image: null
-    };
-    let activity2: Activity = {
-      id: 2,
-      friendId: 43,
-      friendLogin: "login1",
-      achievementName: null,
-      quizId: 15,
-      quizName: "quizName",
-      quizCategoryName: "quizCategoryName",
-      markedFavourite: false,
-      friendOfFriendId: null,
-      friendOfFriendLogin: null,
-      activityDate: this.todayDate,
-      imageId: -1,
-      image: null
-    };
-    let activity3: Activity = {
-      id: 3,
-      friendId: 43,
-      friendLogin: "login1",
-      achievementName: null,
-      quizId: 15,
-      quizName: "quizName",
-      quizCategoryName: "quizCategoryName",
-      markedFavourite: true,
-      friendOfFriendId: null,
-      friendOfFriendLogin: null,
-      activityDate: this.todayDate,
-      imageId: -1,
-      image: null
-    };
-    let activity4: Activity = {
-      id: 4,
-      friendId: 43,
-      friendLogin: "login1",
-      achievementName: null,
-      quizId: 0,
-      quizName: null,
-      quizCategoryName: null,
-      markedFavourite: false,
-      friendOfFriendId: 67,
-      friendOfFriendLogin: "friendLogin",
-      activityDate: this.todayDate,
-      imageId: -1,
-      image: null
-    };
-    this.activities[0] = activity;
-    this.activities[1] = activity2;
-    this.activities[2] = activity3;
-    this.activities[3] = activity4;
-
     this.userId = this.securityService.getCurrentId();
     console.log(this.userId);
-    /*this.activitiesService.getActivitiesByUserId(this.userId)
-      .subscribe(
-        activities => {
-          if (activities.length == 0) {
-            return;
-          }
-
-          this.activities = this.activities.concat(activities);
-        },
-        err => {
-          console.log(err);
-        })*/
-
-  }
-
-
-  public getSelected() {
-    let result = this.activityCategories.filter((ch) => {
-      return ch.selected
-    })
-      .map((ch) => {
-        return ch.value
-      });
-    console.log(result);
-    this.activities=[];
-    this.activitiesService.getFilterActivities(result)
+    this.activitiesService.getActivitiesByUserId(this.userId)
       .subscribe(
         activities => {
           if (activities.length == 0) {
@@ -148,12 +59,34 @@ export class ViewActivitiesComponent implements OnInit {
         err => {
           console.log(err);
         })
-    console.log("done")
+
+  }
+
+
+  public getSelected() {
+    let resultSelected=[];
+    this.userId = this.securityService.getCurrentId();
+    this.activityCategories.forEach(function (value) {
+      resultSelected.push(value.selected);
+    });
+
+    this.activities = [];
+    this.activitiesService.getFilterActivities(this.userId,resultSelected)
+      .subscribe(
+        activities => {
+          if (activities.length == 0) {
+            return;
+          }
+
+          this.activities = this.activities.concat(activities);
+        },
+        err => {
+          console.log(err);
+        })
   }
 
   ngOnInit(): void {
-    this.role = this.securityService.getCurrentRole();
-    this.getActivities();
+     this.getActivities();
   }
 
 }

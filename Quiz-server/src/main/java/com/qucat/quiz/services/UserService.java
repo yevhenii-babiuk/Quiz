@@ -236,7 +236,7 @@ public class UserService {
         return friendsPage;
     }
 
-    List<FriendActivity> getAllFriendsActivity(int userId) {
+    public List<FriendActivity> getAllFriendsActivity(int userId) {
         return userDao.getAllFriendsActivity(userId);
     }
 
@@ -247,13 +247,13 @@ public class UserService {
         return friendsActivityPage;
     }
 
-    List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
                                                     boolean publishQuiz, boolean achievement) {
         if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
             log.info("getFilteredFriendsActivity: Nothing to get");
             return null;
         }
-        return getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        return userDao.getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
     }
 
     Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
