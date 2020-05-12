@@ -16,15 +16,15 @@ import {AchievementService} from "../../core/services/achievement.service";
 export class CreateAchievementComponent implements OnInit {
 
   achievement: Achievement = new Achievement();
-  characteristics: AchievementCharacteristic[] = [new AchievementCharacteristic];
+  characteristics: AchievementCharacteristic[]=[];
   operators = ConditionOperator;
   operatorName: any;
-  conditions: AchievementCondition[] = [new AchievementCondition()];
+  conditions: AchievementCondition[] = [new AchievementCondition];
   message: string = "";
   isInvalid: boolean = false;
-  router: Router;
 
-  constructor(private achievementService: AchievementService) {
+  constructor(private achievementService: AchievementService,
+              private router: Router) {
     this.operatorName = Object.keys(ConditionOperator).filter(x => !(parseInt(x) >= 0));
   }
 
@@ -41,7 +41,6 @@ export class CreateAchievementComponent implements OnInit {
   }
 
   isValid(): boolean {
-    console.log(this.achievement);
     if (this.achievement.name == null || this.achievement.name.length == 0) {
       this.message = "Please enter name of achievement";
       return false
@@ -56,7 +55,7 @@ export class CreateAchievementComponent implements OnInit {
     }
     for (let i = 0; i < this.achievement.conditions.length; i++) {
       let condition = this.achievement.conditions[i];
-      if (condition.characteristicId == 0) {
+      if (condition.characteristicId==null) {
         this.message = `Please choose characteristic of your condition ${i + 1}`;
         return false
       }
@@ -64,8 +63,8 @@ export class CreateAchievementComponent implements OnInit {
         this.message = `Please choose operator of your condition ${i + 1} `;
         return false
       }
-      if (condition.value == 0) {
-        this.message = `Please enter value of your condition${i + 1} `;
+      if (condition.value == null || condition.value == 0) {
+        this.message = `Please enter value of your condition ${i + 1} `;
         return false
       }
     }
@@ -73,13 +72,14 @@ export class CreateAchievementComponent implements OnInit {
   }
 
   send() {
+    this.achievement.conditions=this.conditions;
     if (!this.isValid()) {
       this.isInvalid = true;
     } else {
       this.achievementService.sendAchievement(this.achievement).subscribe(
         data => {
           this.isInvalid = false;
-          this.router.navigate(['achievement/create']).then()
+          this.router.navigate(['../achievements/create'])
         },
         error => {
           this.message = `cant add achievement`;
@@ -89,12 +89,11 @@ export class CreateAchievementComponent implements OnInit {
   }
 
   getCharacteristics() {
-    this.characteristics=[{id: 1, name: "name"}]
-/*    this.achievementService.getCharacteristics().subscribe(characteristics => {
+    this.achievementService.getCharacteristics().subscribe(characteristics => {
         this.characteristics = characteristics;
       },
       err => {
         console.log(err);
-      });*/
+      });
   }
 }
