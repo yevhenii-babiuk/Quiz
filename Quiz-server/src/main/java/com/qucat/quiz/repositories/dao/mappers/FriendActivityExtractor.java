@@ -8,14 +8,12 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FriendActivityExtractor implements ResultSetExtractor<List<FriendActivity>> {
     @Override
     public List<FriendActivity> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-        Map<Integer, FriendActivity> activities = new HashMap<>();
+        List<FriendActivity> activities = new ArrayList<>();
 
         while (resultSet.next()) {
             String type = resultSet.getString("type");
@@ -46,9 +44,9 @@ public class FriendActivityExtractor implements ResultSetExtractor<List<FriendAc
                     .activityDate(resultSet.getTimestamp("date"))
                     .type(activityType)
                     .build();
-            activities.put(resultSet.getInt("id"), activity);
+            activities.add(activity);
         }
 
-        return new ArrayList<>(activities.values());
+        return activities;
     }
 }
