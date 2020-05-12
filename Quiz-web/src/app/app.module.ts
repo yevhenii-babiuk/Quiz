@@ -29,6 +29,8 @@ import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.modu
 import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
 import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
 import {WebsocketModule} from "./modules/websocket/websocket.module";
+import {ActivitiesRoutingModule} from "./modules/activities/activities-routing.module";
+import {ActivitiesModule} from "./modules/activities/activities.module";
 
 @NgModule({
   declarations: [
@@ -61,6 +63,8 @@ import {WebsocketModule} from "./modules/websocket/websocket.module";
     DashboardRoutingModule,
     PlayQuizModule,
     PlayQuizRoutingModule,
+    ActivitiesModule,
+    ActivitiesRoutingModule,
     WebsocketModule.config({
       url: 'wss://echo.websocket.org'
     })

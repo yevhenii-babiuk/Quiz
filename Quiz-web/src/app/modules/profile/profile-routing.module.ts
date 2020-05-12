@@ -5,7 +5,8 @@ import {EditorComponent} from "./editor/editor.component";
 import {AuthGuardService as AuthGuard} from "../core/services/auth-guard.service";
 
 const routes: Routes = [
-  {path: 'profile', component: ViewProfile, canActivate: [AuthGuard]},
+  //{path: 'profile', component: ViewProfile, canActivate: [AuthGuard]},
+  {path: 'profile', component: ViewProfile},
   {path: 'edit', component: EditorComponent, canActivate: [AuthGuard]}
 ]
 

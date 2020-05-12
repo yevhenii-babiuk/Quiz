@@ -2,7 +2,22 @@
 
   <div class="row mx-0 w-30">
       <div class="menu">
-        <div align="bottom"><img src="../../assets/img/main.png" width="250" height="270">
+        <div align="bottom">
+          <label class="image-upload-container btn btn-bwm">
+            <input class="d-none" #imageInput
+                   type="file"
+                   accept="image/*"
+                   (change)="processFile(imageInput, userData)">
+            <div class="img-preview-container img-preview"
+                 *ngIf="userData.imageId==-1"
+                 [ngStyle]="{'background-image': 'url(../../assets/img/main.png'}">
+            </div>
+            <div class="img-preview-container img-preview"
+                 *ngIf="userData.imageId!=-1"
+                 [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
+            </div>
+          </label>
+          <!--<img src="../../assets/img/main.png" width="250" height="270">-->
           <h3>
             <p>  {{userData.login}}</p>
             <p> {{userData.firstName}} {{userData.secondName}}</p>
@@ -40,3 +55,28 @@
     </button>
   </div>
 </div>
+
+
+<!--<div class="container">
+  <p class="text-center">Create quiz</p>
+
+  <div class="row mx-0">
+
+    <div class="col-sm-3">
+      <label class="image-upload-container btn btn-bwm">
+        <input class="d-none" #imageInput
+               type="file"
+               accept="image/*"
+               (change)="processFile(imageInput, userData)">
+        <div class="img-preview-container img-preview"
+             *ngIf="userData.imageId==-1"
+             [ngStyle]="{'background-image': 'url(../../assets/img/main.png'}">
+        </div>
+        <div class="img-preview-container img-preview"
+             *ngIf="userData.imageId!=-1"
+             [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
+        </div>
+      </label>
+    </div>
+  </div>
+</div>-->

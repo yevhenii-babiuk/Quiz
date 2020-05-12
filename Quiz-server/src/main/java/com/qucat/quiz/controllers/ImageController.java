@@ -19,4 +19,11 @@ public class ImageController {
     public int saveImage(@RequestParam("myFile") MultipartFile file) {
         return imageService.addImage(file);
     }
+
+    @PutMapping("/profile")
+    public int saveImageForProfile(@RequestParam("myFile") MultipartFile file) {
+        System.out.println("loaded");
+        return 0;
+        //return imageService.addImage(file);
+    }
 }
