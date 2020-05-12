@@ -14,7 +14,7 @@ public class SchedulerService {
     @Autowired
     private AchievementService achievementService;
 
-    @Scheduled(fixedRate = 5000)//todo change time
+    @Scheduled(cron = "0 0 * * * *")
     public void reportCurrentTime() {
         achievementService.updateUserAchievementLists();
     }

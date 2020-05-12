@@ -95,13 +95,10 @@ public class AchievementService {
         List<UserAchievement> beforeUpdateAchievements = userAchievementsService.getAchievementsForAll();
         List<UserAchievement> afterUpdateAchievements = achievementDao.getNewUserAchievements(achievements);
 
-        log.info("achievements: " + achievements);
-        log.info("beforeUpdateAchievements: " + beforeUpdateAchievements);
-        log.info("afterUpdateAchievements: " + afterUpdateAchievements);
-
         if (afterUpdateAchievements.equals(beforeUpdateAchievements)) {
             return;
         }
+
         List<UserAchievement> toInsert = afterUpdateAchievements.stream()
                 .filter(userAchievement -> !beforeUpdateAchievements.contains(userAchievement))
                 .collect(Collectors.toList());
