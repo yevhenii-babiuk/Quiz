@@ -1,23 +1,17 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
-import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
-import com.qucat.quiz.repositories.entities.Lang;
-import com.qucat.quiz.repositories.entities.MessageInfo;
-import com.qucat.quiz.repositories.entities.Role;
-import com.qucat.quiz.repositories.entities.Token;
-import com.qucat.quiz.repositories.entities.TokenType;
-import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.dao.TokenDao;
+import com.qucat.quiz.repositories.dao.UserDao;
+import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -47,10 +41,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
 
     @Autowired
-    private TokenDaoImpl tokenDao;
+    private TokenService tokenService;
 
     @Value("${url}")
     private String URL;
@@ -68,7 +62,7 @@ public class UserService {
         User userByMail = userDao.getUserByMail(user.getMail());
 
         if (userByMail != null) {
-            Token token = tokenDao.get(userByMail.getUserId());
+            Token token = tokenService.getTokenByUserId(userByMail.getUserId());
             if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
                 return false;
             } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
@@ -90,7 +84,7 @@ public class UserService {
                 .tokenType(TokenType.REGISTRATION)
                 .userId(id)
                 .build();
-        tokenDao.save(tokenForNewUser);
+        tokenService.saveToken(tokenForNewUser);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + tokenForNewUser.getToken(), MessageInfo.registration.findByLang(Lang.EN));
         //todo get Lang
         return true;
@@ -106,7 +100,7 @@ public class UserService {
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .userId(user.getUserId())
                 .build();
-        tokenDao.save(token);
+        tokenService.saveToken(token);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));
         //todo get Lang
         return true;
@@ -117,7 +111,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.REGISTRATION)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         if (id == 0) {
             return false;
         }
@@ -140,7 +134,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         return id != 0;
     }
 
@@ -149,7 +143,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         if (id == 0) {
             return false;
         }
@@ -205,6 +199,5 @@ public class UserService {
     public boolean markQuizAsFavorite(int userId, int quizId) {
         return userDao.markQuizAsFavorite(userId, quizId);
     }
-
 
 }

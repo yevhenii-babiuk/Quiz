@@ -14,8 +14,12 @@ public class SchedulerService {
     @Autowired
     private AchievementService achievementService;
 
+    @Autowired
+    private TokenService tokenService;
+
     @Scheduled(cron = "0 0 * * * *")
     public void reportCurrentTime() {
+        tokenService.deleteOldTokens();
         achievementService.updateUserAchievementLists();
     }
 

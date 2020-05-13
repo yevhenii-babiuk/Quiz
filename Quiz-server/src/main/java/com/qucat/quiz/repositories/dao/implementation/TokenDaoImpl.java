@@ -59,6 +59,11 @@ public class TokenDaoImpl implements TokenDao {
     }
 
     @Override
+    public void deleteOldTokens() {
+        jdbcTemplate.update(tokensQueries.get("deleteOld"));
+    }
+
+    @Override
     public List<Token> getAll() {
         return null;
     }
