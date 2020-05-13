@@ -66,7 +66,11 @@ public class ImageService {
             return imageId;
         }
 
-        return imageDao.save(Image.builder().src(encodedFile).build());
+        return imageDao.save(
+                Image.builder()
+                        .src(encodedFile)
+                        .build()
+        );
     }
 
     public Image getImage(int imageId) {

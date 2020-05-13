@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -155,16 +154,13 @@ public class UserService {
         return true;
     }
 
-    public Page<User> getPageUserByRole(Role role, Pageable pageable) {
+    public Page<User> getPageUserByRole(Role role, Optional<Integer> page, Optional<Integer> size) {
         if (role == null) {
             log.warn("Null id passed to find users by role");
             throw new IllegalArgumentException("Null id passed to find users by role");
         }
-        return userDao.getUserByRole(role, pageable);
-    }
-
-    public Page<User> getAllUsersPage(Pageable pageable) {
-        return userDao.getAllUsersPage(pageable);
+        return userDao.getUserByRole(role, PageRequest.of(page.orElse(0), size.orElse(10),
+                Sort.Direction.DESC, "id"));
     }
 
     public Page<User> getAllUsersPage(Optional<Integer> page, Optional<Integer> size) {
@@ -178,7 +174,7 @@ public class UserService {
         User user = userDao.get(id);
 
         if (user == null) {
-            throw new NoSuchElementException("Such user not exist");
+            return null;//throw new NoSuchElementException("Such user not exist");
         }
 
         return user;
@@ -221,12 +217,17 @@ public class UserService {
         return userDao.addUserFriend(userId, friendId);
     }
 
-    void deleteUserFriend(int userId, int friendId) {
+    public boolean deleteUserFriend(int userId, int friendId) {
         userDao.deleteUserFriend(userId, friendId);
+        return true;
     }
 
-    List<User> getUserFriends(int userId) {
+    public List<User> getUserFriends(int userId) {
         return userDao.getUserFriends(userId);
+    }
+
+    public boolean checkUsersFriendship(int firstUserId, int secondUserId) {
+        return userDao.checkUsersFriendship(firstUserId, secondUserId);
     }
 
     public Page<User> getUserFriendsPage(int userId, Optional<Integer> page, Optional<Integer> size) {
@@ -236,7 +237,7 @@ public class UserService {
         return friendsPage;
     }
 
-    List<FriendActivity> getAllFriendsActivity(int userId) {
+    public List<FriendActivity> getAllFriendsActivity(int userId) {
         return userDao.getAllFriendsActivity(userId);
     }
 
@@ -247,18 +248,18 @@ public class UserService {
         return friendsActivityPage;
     }
 
-    List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
-                                                    boolean publishQuiz, boolean achievement) {
+    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                           boolean publishQuiz, boolean achievement) {
         if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
             log.info("getFilteredFriendsActivity: Nothing to get");
             return null;
         }
-        return getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        return userDao.getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
     }
 
-    Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
-                                                        boolean publishQuiz, boolean achievement,
-                                                        Optional<Integer> page, Optional<Integer> size) {
+    public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                               boolean publishQuiz, boolean achievement,
+                                                               Optional<Integer> page, Optional<Integer> size) {
         if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
             log.info("getFilteredFriendsActivityPage: Nothing to get");
             return null;
@@ -268,6 +269,28 @@ public class UserService {
                 PageRequest.of(page.orElse(0), size.orElse(10),
                         Sort.Direction.DESC, "id"));
         return friendsActivityPage;
+    }
+
+    public List<User> searchUsersByLogin(String login) {
+        return userDao.searchUsersByLogin(login);
+    }
+
+    public Page<User> searchUsersByLogin(String login, Optional<Integer> page, Optional<Integer> size) {
+        Page<User> users = userDao.searchUsersByLogin(login,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return users;
+    }
+
+    public List<User> searchUsersByLogin(String login, Role role) {
+        return userDao.searchUsersByLogin(login, role);
+    }
+
+    public Page<User> searchUsersByLogin(String login, Role role, Optional<Integer> page, Optional<Integer> size) {
+        Page<User> users = userDao.searchUsersByLogin(login, role,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return users;
     }
 
     public void updateUserImage(User user) {

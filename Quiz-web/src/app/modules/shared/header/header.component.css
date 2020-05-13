@@ -1,7 +1,9 @@
 
 .logo-image{
-  width: 46px;
-  height: 46px;
+  margin: -5px;
+  width: 65px;
+  height: 60px;
+  z-index: 3;
   overflow: hidden;
 }
 

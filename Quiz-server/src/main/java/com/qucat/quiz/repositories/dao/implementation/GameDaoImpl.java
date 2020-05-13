@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
@@ -50,8 +51,14 @@ public class GameDaoImpl implements GameDao {
     @Override
     public GameQuestionDto getCurrentQuestionByGameId(String id) {
         String selectQuery = queries.get("getCurrentQuestionByGameId");
-        return jdbcTemplate.queryForObject(selectQuery,
-                new Object[]{id}, new GameQuestionMapper());
+        GameQuestionDto g;
+        try {
+            g = jdbcTemplate.queryForObject(selectQuery,
+                    new Object[]{id}, new GameQuestionMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return g;
     }
 
     @Override

@@ -1,5 +1,4 @@
-<div *ngIf="subscribeTimer>-1" class="container">
-
+<div *ngIf="subscribeTimer>-1" class="container" (keydown.enter)="nextQuestion()">
 
   <ng-container *ngIf="question">
     <div class="form-control h-auto row mx-0 my-1 mt-5 p-4 border-dark border ">
@@ -9,8 +8,8 @@
         <h2 class="text-center">{{question.content}}</h2>
       </div>
 
-        <img *ngIf="question.image && question.imageId!=-1" [width]="100" class="img-preview-container img-preview col p-md-3 d-flex justify-content-center"
-             src="data:image/jpeg;base64,{{question.image.src}}">
+      <img *ngIf="question.image && question.imageId!=-1" class="w-75 mh-100 mx-auto d-block p-3"
+           src="data:image/jpeg;base64,{{question.image.src}}">
 
       <div class="p-3 m-2">
         <div *ngIf="question.type=='TRUE_FALSE'" class="row">
@@ -37,24 +36,24 @@
           <div class="row mx-0 d-flex justify-content-center"
                *ngFor="let questionOption of question.options; let i = index">
 
-            <div class="form-check col p-1 md-2">
-              <div *ngIf="questionOption.imageId!=-1">
-                <img class="img-preview-container img-preview "
-                     src="data:image/jpeg;base64,{{questionOption.image.src}}" >
-              </div>
+            <div class="col p-1 md-2">
 
-<!--              <label class="btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">-->
-<!--                <input type="radio" class="form-check-input" name="optradio" [disabled]="isSend">-->
-<!--                {{questionOption.content}}-->
-<!--              </label>-->
+              <!--              <label class="btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">-->
+              <!--                <input type="radio" class="form-check-input" name="optradio" [disabled]="isSend">-->
+              <!--                {{questionOption.content}}-->
+              <!--              </label>-->
 
-<!--              <label class="btn bg-light btn-block p-3 form-check-label" (click)="setOption(questionOption.id)">-->
+              <!--              <label class="btn bg-light btn-block p-3 form-check-label" (click)="setOption(questionOption.id)">-->
               <!--                <input class="form-check-input" type="checkbox" value="" [disabled]="isSend" >-->
               <!--                {{questionOption.content}}-->
               <!--              </label>-->
 
               <div class="form-check btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">
-                <input class="form-check-input" type="checkbox" value="" id="defaultCheck{{i}}" [disabled]="isSend" >
+                <img src="data:image/jpeg;base64,{{questionOption.image.src}}" class="w-75 mx-auto d-block p-3"
+                     *ngIf="questionOption.imageId!=-1 && questionOption.image">
+
+                <input class="form-check-input" type="checkbox" value="" id="defaultCheck{{i}}" [disabled]="isSend"
+                       [checked]="this.answer.options.indexOf(questionOption.id) != -1">
                 <label class="form-check-label" for="defaultCheck{{i}}">
                   {{questionOption.content}}
                 </label>
@@ -74,10 +73,8 @@
           <div class="row mx-0" *ngFor="let questionOption of question.options">
 
             <div class="form-group row p-3 m-2 border border-light bg-light col">
-              <div *ngIf="questionOption.imageId!=-1">
-                <img class="img-preview-container img-preview "
-                     src="data:image/jpeg;base64,{{questionOption.image.src}}" >
-              </div>
+              <img *ngIf="questionOption.imageId!=-1 && questionOption.image "
+                   src="data:image/jpeg;base64,{{questionOption.image.src}}" class="w-75 mx-auto d-block p-3">
 
               <select class="form-control col-1" [disabled]="isSend">
                 <option></option>
@@ -92,7 +89,8 @@
 
       </div>
 
-      <button type="button" (click)="nextQuestion()" class="btn btn-success btn-lg btn-block" [disabled]="isSend">
+      <button type="button" (click)="nextQuestion()" class="btn btn-success btn-lg btn-block" *ngIf="question.options"
+              [disabled]="isSend">
         Next >
       </button>
 
@@ -100,9 +98,9 @@
 
       <div class="p-m-3" *ngIf="isSend">
         <h5 class="text-center">Waiting for other players...</h5>
+        <img class="w-25 mx-auto d-block p-5 spincat" src='assets/img/uroboros-cat.png'>
       </div>
 
     </div>
   </ng-container>
 </div>
-

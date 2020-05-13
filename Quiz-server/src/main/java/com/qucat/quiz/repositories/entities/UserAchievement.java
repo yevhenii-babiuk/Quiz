@@ -3,6 +3,7 @@ package com.qucat.quiz.repositories.entities;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
 
@@ -11,9 +12,10 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 public class UserAchievement {
+    @EqualsAndHashCode.Exclude private int id;
     private int userId;
-    private User user;
+    @EqualsAndHashCode.Exclude private User user;
     private int achievementId;
-    private Achievement achievement;
-    private Date date;
+    @EqualsAndHashCode.Exclude private Achievement achievement;
+    @EqualsAndHashCode.Exclude private Date date;
 }

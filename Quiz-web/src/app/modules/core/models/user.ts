@@ -8,4 +8,5 @@ export class User{
   profile:string;
   score:number;
   role:string;
+  registrationDate: Date;
 }
