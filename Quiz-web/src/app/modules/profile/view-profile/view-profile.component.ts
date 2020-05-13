@@ -8,18 +8,18 @@ import {SecurityService} from "../../core/services/security.service";
 @Component({
   selector: 'app-profile',
   templateUrl: './view-profile.component.html',
-  styleUrls: ['./view-profile.component.css']
+  styleUrls: ['./view-profile.component.scss']
 })
 
 export class ViewProfile implements OnInit {
   userData: User;
-  id : number;
+  id: number;
   role: Role;
-  roleEnum= Role;
+  roleEnum = Role;
 
   constructor(
     private profileService: ProfileService,
-    private securityService : SecurityService
+    private securityService: SecurityService
   ) {
   }
 
@@ -31,7 +31,6 @@ export class ViewProfile implements OnInit {
     this.id = this.securityService.getCurrentId();
     console.log(this.id);
     this.profileService.getUser(this.id).subscribe(data => {
-      console.log(data)
       this.userData = data;
       this.role = this.securityService.getCurrentRole();
     });

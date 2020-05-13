@@ -1,6 +1,7 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.Announcement;
+import com.qucat.quiz.repositories.entities.Image;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
 

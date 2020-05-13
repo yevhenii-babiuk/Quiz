@@ -1,6 +1,10 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.AdminStatistics;
+import com.qucat.quiz.repositories.entities.CategoryStatistics;
+import com.qucat.quiz.repositories.entities.ComparedScores;
+import com.qucat.quiz.repositories.entities.QuizStatistics;
+import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.services.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../../../core/services/security.service";
 import {PlayGameService} from "../../../core/services/play-game.service";
 import {User} from "../../../core/models/user";
+import {UserDto} from "../../../core/models/userDto";
 
 
 @Component({
@@ -18,16 +19,17 @@ export class WaitingRoomComponent implements OnInit {
   public startGame: EventEmitter<any> = new EventEmitter();
 
   @Input()
-  currentUser: User;
+  currentUser: UserDto;
 
-  hostId: number = 0;
+  @Input()
+  hostId: number;
+
+  @Input()
+  image: string;
+
   gameId: string = this.route.snapshot.paramMap.get('gameId');
 
-  constructor(private route: ActivatedRoute,
-              private redirect: Router,
-              private securityService: SecurityService,
-              private playGameService: PlayGameService) {
-
+  constructor(public route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
@@ -38,4 +40,9 @@ export class WaitingRoomComponent implements OnInit {
     document.execCommand('copy');
     divElement.setSelectionRange(0, 0);
   }
+
+  start() {
+    this.startGame.emit();
+  }
+
 }
