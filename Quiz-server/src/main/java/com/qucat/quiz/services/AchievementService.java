@@ -3,6 +3,7 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.repositories.dao.AchievementDao;
 import com.qucat.quiz.repositories.entities.Achievement;
 import com.qucat.quiz.repositories.entities.AchievementCondition;
+import com.qucat.quiz.repositories.entities.UserAchievement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class AchievementService {
     @Autowired
     private AchievementConditionService achievementConditionService;
 
+    @Autowired
+    private UserAchievementsService userAchievementsService;
 
     @Transactional
     public boolean createAchievement(Achievement achievement) {
@@ -85,6 +88,34 @@ public class AchievementService {
 
     public List<Achievement> getAllAchievement() {
         return achievementDao.getAll();
+    }
+
+    public void updateUserAchievementLists() {
+        List<Achievement> achievements = getAllAchievement();
+        List<UserAchievement> beforeUpdateAchievements = userAchievementsService.getAchievementsForAll();
+        List<UserAchievement> afterUpdateAchievements = achievementDao.getNewUserAchievements(achievements);
+
+        if (afterUpdateAchievements.equals(beforeUpdateAchievements)) {
+            return;
+        }
+
+        List<UserAchievement> toInsert = afterUpdateAchievements.stream()
+                .filter(userAchievement -> !beforeUpdateAchievements.contains(userAchievement))
+                .collect(Collectors.toList());
+        List<UserAchievement> toDelete = beforeUpdateAchievements.stream()
+                .filter(userAchievement -> !afterUpdateAchievements.contains(userAchievement))
+                .collect(Collectors.toList());
+
+        log.info("toInsert: " + toInsert);
+        log.info("toDelete: " + toDelete);
+
+        if (!toDelete.isEmpty()) {
+            userAchievementsService.deleteUserAchievements(toDelete);
+        }
+        if (!toInsert.isEmpty()) {
+            userAchievementsService.insertUserAchievements(toInsert);
+        }
+
     }
 
 }
