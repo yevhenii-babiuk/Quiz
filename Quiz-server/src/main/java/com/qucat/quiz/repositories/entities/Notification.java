@@ -1,5 +1,7 @@
 package com.qucat.quiz.repositories.entities;
 
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Notification {
+    private int id;
+    private int userId;
     private String author;
     private String action;
-    private String actionLink;
     private String authorLink;
-    private Boolean isViewed;
+    private String actionLink;
+
+    @JsonProperty("isViewed")
+    private boolean isViewed;
 
 }
