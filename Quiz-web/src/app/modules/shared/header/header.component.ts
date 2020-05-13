@@ -27,7 +27,7 @@ export class HeaderComponent implements OnInit {
   }
 
   search(event: any) {
-    this.redirect.navigate(['Quizzes?quizName=' + event.target.value]);
+    this.redirect.navigate(['/quizzes?quizName=' + event.target.value]);
   }
   logout(){
     this.authService.logOut();

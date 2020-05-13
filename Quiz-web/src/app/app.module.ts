@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import { NgModule} from '@angular/core';
+import {NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
@@ -28,6 +28,8 @@ import {DashboardModule} from "./modules/dashboard/dashboard.module";
 import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.module";
 import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
 import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
+import {AchievementRoutingModule} from "./modules/achivement/achievement-routing.module";
+import {AchievementModule} from "./modules/achivement/achievement.module";
 
 @NgModule({
   declarations: [
@@ -59,7 +61,9 @@ import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.modul
     DashboardModule,
     DashboardRoutingModule,
     PlayQuizModule,
-    PlayQuizRoutingModule
+    PlayQuizRoutingModule,
+    AchievementModule,
+    AchievementRoutingModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},

@@ -32,8 +32,17 @@
     </div>
 <hr>
     <ul class="sidebar-nav components">
-      <li *ngIf="!notProfile">
-        <a routerLink="../profile">Profile</a>
+      <li *ngIf="authenticationService.isAuthenticated()">
+        <a routerLink="../profile">Профіль</a>
+      </li>
+      <li *ngIf="securityService.getCurrentRole()==roleEnum.USER && authenticationService.isAuthenticated()">
+        <a routerLink="../friends">Друзі</a>
+      </li>
+      <li *ngIf="authenticationService.isAuthenticated()">
+        <a routerLink="../profile/dashboard">Статистика</a>
+      </li>
+      <li *ngIf="authenticationService.isAuthenticated()">
+        <a routerLink="../users">Користувачі</a>
       </li>
       <li>
         <a routerLink="../quizzes">Список вікторин</a>

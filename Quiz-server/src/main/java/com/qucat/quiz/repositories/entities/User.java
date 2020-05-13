@@ -4,12 +4,13 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
 public class User {
 
-    private int userId;
+    private int id;
     private String firstName;
     private String secondName;
     private String login;
@@ -20,5 +21,8 @@ public class User {
     private int score;
     private UserAccountStatus status;
     private Role role;
+    private List<Achievement> achievements;
+    private int imageId;
+    private Image image;
 
 }

@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {Users, UserDto} from "../../../core/models/gameResults";
+import {UserDto, Users} from "../../../core/models/gameResults";
 import {Sort} from "@angular/material/sort";
 
 @Component({
@@ -7,6 +7,9 @@ import {Sort} from "@angular/material/sort";
   templateUrl: './results.component.html',
 })
 export class ResultsComponent implements OnInit {
+
+  @Input()
+  currentUser: UserDto;
 
   @Input()
   gameResults: Users;

@@ -44,7 +44,7 @@ public class QuizService {
         }
 
         if (quiz.getImageId() == -1) {
-            quiz.setImageId(imageService.addImage(null));
+            quiz.setImageId(imageService.addLogoImage());
         }
 
         int quizId = quizDao.save(quiz);
