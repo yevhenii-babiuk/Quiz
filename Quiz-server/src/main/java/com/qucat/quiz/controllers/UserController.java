@@ -1,5 +1,6 @@
 package com.qucat.quiz.controllers;
 
+import com.qucat.quiz.repositories.entities.Role;
 import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.services.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -28,14 +29,20 @@ public class UserController {
 
     @GetMapping
     public List<User> getUsers(@RequestParam(value = "pageNumber") int pageNumber,
-                               @RequestParam(value = "allUsers") boolean allUsers) {
-
-        return userService.getAllUsersPage(Optional.of(pageNumber), Optional.of(10)).toList();//allUsers? userService.getAllUsersPage(Optional.of(pageNumber),Optional.of(10)): userService.;
+                               @RequestParam(value = "allUsers") boolean allUsers,
+                               @RequestParam(value = "filter", defaultValue = "") String filter) {
+        return allUsers ? userService.searchUsersByLogin(filter, Optional.of(pageNumber), Optional.of(10)).toList() :
+                userService.searchUsersByLogin(filter, Role.USER, Optional.of(pageNumber), Optional.of(10)).toList();
     }
 
     @GetMapping("/{id}/friends")
     public List<User> getFriends(@PathVariable int id) {
         return userService.getUserFriends(id);
+    }
+
+    @GetMapping("/{id}/checkFriend/{friendId}")
+    public boolean checkFriend(@PathVariable int id, @PathVariable int friendId) {
+        return userService.checkUsersFriendship(id, friendId);
     }
 
     @PostMapping("/{id}/addFriend")

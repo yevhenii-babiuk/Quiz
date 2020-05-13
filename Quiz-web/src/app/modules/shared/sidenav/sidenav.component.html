@@ -35,7 +35,7 @@
       <li *ngIf="authenticationService.isAuthenticated()">
         <a routerLink="../profile">Профіль</a>
       </li>
-      <li *ngIf="authenticationService.isAuthenticated()">
+      <li *ngIf="role==roleEnum.USER && authenticationService.isAuthenticated()">
         <a routerLink="../friends">Друзі</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">

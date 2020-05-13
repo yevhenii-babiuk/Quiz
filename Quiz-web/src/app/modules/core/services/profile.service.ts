@@ -33,7 +33,7 @@ export class ProfileService {
   }
 
   getFilterUsers(length: number, allUsers: boolean, filter: string) {
-    return this.http.get<User[]>(`${url}/users?pageNumber=${length / countOnPage}&allUsers=${allUsers}&like=${filter}`)
+    return this.http.get<User[]>(`${url}/users?pageNumber=${Math.floor((length + 1) / 10)}&allUsers=${allUsers}&filter=${filter}`)
       .pipe(
         catchError(this.handleError<User[]>([]))
       );
@@ -58,6 +58,13 @@ export class ProfileService {
     return this.http.get<User[]>(`${url}/users/${id}/friends`)
       .pipe(
         catchError(this.handleError<User[]>([]))
+      );
+  }
+
+  checkFriendship(id: number, visitorId: number) {
+    return this.http.get<boolean>(`${url}/users/${id}/checkFriend/${visitorId}`)
+      .pipe(
+        catchError(this.handleError<boolean>(false))
       );
   }
 }

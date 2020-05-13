@@ -18,7 +18,8 @@ export class ViewProfile implements OnInit {
   role: Role;
   roleEnum = Role;
   isOwn: boolean;
-  isFriend:boolean;
+  isFriend: boolean;
+  visitorId: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -29,8 +30,15 @@ export class ViewProfile implements OnInit {
 
   ngOnInit(): void {
     this.id = Number(this.route.snapshot.paramMap.get('userId'));
-    if (this.id) this.isOwn = false;
-    else  {
+    if (this.id) {
+      this.visitorId = this.securityService.getCurrentId();
+      if (this.visitorId != this.id) this.isOwn = false;
+      else this.isOwn = true;
+      this.profileService.checkFriendship(this.id, this.visitorId).subscribe(data => {
+        this.isFriend = data;
+        console.log(data);
+      });
+    } else {
       this.id = this.securityService.getCurrentId();
       this.isOwn = true;
     }
@@ -46,9 +54,13 @@ export class ViewProfile implements OnInit {
   }
 
   friendship() {
-    let visitorId=this.securityService.getCurrentId();
-    this.profileService.addFriend(visitorId,this.id).subscribe(data => {
-      this.isFriend = true
-    });
+    if (this.isFriend)
+      this.profileService.removeFriend(this.visitorId, this.id).subscribe(data => {
+        this.isFriend = false;
+      });
+    else
+      this.profileService.addFriend(this.visitorId, this.id).subscribe(data => {
+        this.isFriend = true
+      });
   }
 }
