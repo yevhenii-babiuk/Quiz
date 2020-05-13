@@ -16,19 +16,19 @@ export class ViewActivitiesComponent implements OnInit {
   category = FriendActivityType;
   activityCategories = [
     {
-      value: this.category.ADD_FRIEND,
+      value: 'Додані друзі',
       selected: false
     },
     {
-      value: this.category.MARK_AS_FAVORITE,
+      value: 'Додані до списку улюблених вікторини',
       selected: false
     },
     {
-      value: this.category.PUBLISH_QUIZ,
+      value: 'Створені вікторини',
       selected: false
     },
     {
-      value: this.category.ACHIEVEMENT,
+      value: 'Досягнення',
       selected: false
     }
   ]
@@ -63,7 +63,7 @@ export class ViewActivitiesComponent implements OnInit {
   }
 
 
-  public getSelected() {
+  public getFilteredActivities() {
     let resultSelected=[];
     this.userId = this.securityService.getCurrentId();
     this.activityCategories.forEach(function (value) {

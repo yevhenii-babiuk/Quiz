@@ -62,10 +62,10 @@ export class ProfileService {
       );
   }
 
-  putImage(image: File) {
+  putImage(userId: number, image: File) {
     const uploadData = new FormData();
     uploadData.append('myFile', image, "name");
-    return this.http.put(`${url}/image/profile`, uploadData);
+    return this.http.put(`${url}/users/image/${userId}`,uploadData,this.httpOptions);
   }
 
   checkFriendship(id: number, visitorId: number) {
