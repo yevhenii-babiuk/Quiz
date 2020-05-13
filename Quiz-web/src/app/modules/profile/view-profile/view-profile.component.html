@@ -42,7 +42,7 @@
             <td style="text-align: left"> {{userData.score}}</td>
           </tr>
           <tr *ngIf="role == roleEnum.USER">
-            <td style="text-align: left"><img src="../../assets/img/score.png" width="80" height="92" align="bottom"/></td>
+            <td style="text-align: left"><img src="../../assets/img/score.png" width="80" height="80" align="bottom"/></td>
             <td style="text-align: left"></td>
           </tr>
 
@@ -50,15 +50,21 @@
         </table>
       </div>
       <div class="col-md-auto  ">
-        <button class="btn btn-warning btn-block" routerLink="../edit">
+        <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
           Редагувати
+        </button>
+        <button *ngIf="!isOwn && !isFriend" class="btn btn-warning btn-block" (click)="friendship()">
+          Додати до друзів
+        </button>
+        <button *ngIf="!isOwn && isFriend" class="btn btn-warning btn-block" (click)="friendship()">
+          Видалити з друзів
         </button>
       </div>
     </div>
   </div>
 
-  <div class="row mx-xl-5 w-60" align="center">
-    <div class="col-sm" *ngIf="role == roleEnum.USER">
+  <div class="w-100" align="center">
+    <div *ngIf="role == roleEnum.USER">
       <!--<h4><p style="margin-left: 40px" align="center">Рекомендовані вікторини</p></h4>
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
@@ -66,7 +72,7 @@
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
         <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />-->
       <h4><p style="text-align:center">Досягнення</p></h4>
-      <app-achievements-list></app-achievements-list>
+      <app-achievements-list [currentId]="id"></app-achievements-list>
     </div>
     <!--    <div class="col-sm" *ngIf="role == roleEnum.ADMIN"></div>
         <div class="col-sm" *ngIf="role == roleEnum.SUPER_ADMIN"></div>

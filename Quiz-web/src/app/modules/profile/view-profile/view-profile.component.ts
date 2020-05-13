@@ -1,11 +1,11 @@
-import {Component, Injectable, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {Imaged} from "../../core/models/imaged";
 import {Image} from "../../core/models/image";
-import {ActivatedRoute, Router} from "@angular/router";
+import {ActivatedRoute} from "@angular/router";
 
 
 @Component({
@@ -19,11 +19,14 @@ export class ViewProfile implements OnInit {
   id: number;
   role: Role;
   roleEnum = Role;
+  isOwn: boolean;
+  isFriend: boolean;
+  visitorId: number;
 
   constructor(
+    private route: ActivatedRoute,
     private profileService: ProfileService,
-    private securityService: SecurityService,
-    private route: ActivatedRoute
+    private securityService: SecurityService
   ) {
   }
 
@@ -65,10 +68,23 @@ export class ViewProfile implements OnInit {
     };
     this.userData = editedUser;*/
     console.log("imadeId " + this.userData.imageId);
+    this.id = Number(this.route.snapshot.paramMap.get('userId'));
+    if (this.id) {
+      this.visitorId = this.securityService.getCurrentId();
+      if (this.visitorId != this.id) this.isOwn = false;
+      else this.isOwn = true;
+      this.profileService.checkFriendship(this.id, this.visitorId).subscribe(data => {
+        this.isFriend = data;
+        console.log(data);
+      });
+    } else {
+      this.id = this.securityService.getCurrentId();
+      this.isOwn = true;
+    }
+    this.getUser();
   }
 
   private getUser() {
-    this.id = this.securityService.getCurrentId();
     console.log(this.id);
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
@@ -97,5 +113,16 @@ export class ViewProfile implements OnInit {
     });
 
     reader.readAsDataURL(file);
+  }
+
+  friendship() {
+    if (this.isFriend)
+      this.profileService.removeFriend(this.visitorId, this.id).subscribe(data => {
+        this.isFriend = false;
+      });
+    else
+      this.profileService.addFriend(this.visitorId, this.id).subscribe(data => {
+        this.isFriend = true
+      });
   }
 }

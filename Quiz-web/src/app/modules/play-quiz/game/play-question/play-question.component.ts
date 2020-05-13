@@ -27,6 +27,7 @@ export class PlayQuestionComponent implements OnInit {
 
   answer: Answer = new Answer();
 
+  sequence: Map<number, number> = new Map();
   answerText = '';
 
   constructor() {
@@ -58,6 +59,12 @@ export class PlayQuestionComponent implements OnInit {
       this.answer.fullAnswer = this.answerText;
     }
 
+    if (this.question.type == 'SELECT_SEQUENCE') {
+      this.sequence.forEach((val: number, key: number) => {
+        this.answer.sequence[key] = val;
+      });
+    }
+
     this.answer.questionId = this.question.id;
     this.isSend = true;
 
@@ -81,10 +88,10 @@ export class PlayQuestionComponent implements OnInit {
   }
 
   setSequence(opId: number, seqId: number) {
-    if (this.answer.sequence.has(opId)) {
-      this.answer.sequence.delete(opId);
+    if (this.sequence.has(opId)) {
+      this.sequence.delete(opId);
     }
-    this.answer.sequence.set(opId, seqId);
+    this.sequence.set(opId, seqId);
   }
 
 }

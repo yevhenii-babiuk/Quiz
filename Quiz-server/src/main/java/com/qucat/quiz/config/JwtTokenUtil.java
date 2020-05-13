@@ -61,7 +61,7 @@ public class JwtTokenUtil implements Serializable {
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
         User user = uDao.getUserByLogin(userDetails.getUsername());
-        claims.put("userId", user.getUserId());
+        claims.put("userId", user.getId());
         claims.put("role", user.getRole());
         return doGenerateToken(claims, user.getLogin());
     }

@@ -50,17 +50,19 @@ export class EditorComponent implements OnInit {
     }
     let editedUser: User = {
       id: id,
-      firstName: firstname,
-      secondName: secondname,
-      login: this.userData.login,
-      mail: email,
-      password: password,
-      profile: profile,
-      score: this.userData.score,
-      role: this.userData.role,
-      imageId: 1,
-      image: null
+      firstName:firstname,
+      secondName:secondname,
+      login:this.userData.login,
+      mail:email,
+      password:password,
+      profile:profile,
+      score:this.userData.score,
+      role:this.userData.role,
+      registrationDate:this.userData.registrationDate,
+      imageId: this.userData.imageId,
+      image: this.userData.image
     };
+
     this.profileService.updateUser(editedUser).subscribe(data => {
       editedUser = data;
     });

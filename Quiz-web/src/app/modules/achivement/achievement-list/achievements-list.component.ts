@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {Achievement} from "../../core/models/achievement";
 import {AchievementService} from "../../core/services/achievement.service";
 
@@ -10,6 +10,7 @@ import {AchievementService} from "../../core/services/achievement.service";
 export class AchievementsListComponent implements OnInit {
   cards: Achievement[];
   slides: any = [[]];
+  @Input() currentId:number;
 
   constructor(private achievementService: AchievementService) {
   }
@@ -27,7 +28,7 @@ export class AchievementsListComponent implements OnInit {
   }
 
   getCharacteristics() {
-    this.achievementService.getUserAchievements().subscribe(achivement => {
+    this.achievementService.getUserAchievements(this.currentId).subscribe(achivement => {
         this.cards = achivement;
         this.slides = this.chunk(this.cards, 4);
       },

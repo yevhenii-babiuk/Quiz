@@ -28,6 +28,7 @@ export class GameComponent implements OnInit, OnDestroy {
   public gameResults: Users;
   eventType = EventType;
   receivedEvent: WebsocketEvent;
+  s:any;
 
   public currentUser: UserDto;
   public gameId: string = this.route.snapshot.paramMap.get('gameId');
@@ -97,7 +98,7 @@ export class GameComponent implements OnInit, OnDestroy {
     let that = this;
 
     this.stompClient.connect({}, function () {
-      that.stompClient.subscribe("/game/" + that.gameId + "/play", async (message) => {
+      this.s = that.stompClient.subscribe("/game/" + that.gameId + "/play", async (message) => {
         if (message.body) {
           console.log(message.body)
           that.receivedEvent = JSON.parse(message.body);
@@ -173,6 +174,7 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.s.unsubscribe();
     this.stompClient.disconnect();
   }
 

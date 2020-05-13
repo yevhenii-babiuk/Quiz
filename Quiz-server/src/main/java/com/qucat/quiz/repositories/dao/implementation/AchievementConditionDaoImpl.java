@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -17,6 +19,7 @@ import java.util.Map;
 @PropertySource("classpath:achievement.properties")
 public class AchievementConditionDaoImpl extends GenericDaoImpl<AchievementCondition> implements AchievementConditionDao {
 
+    private final String insertQuery = "(cast(? AS condition_operator), ?, ?, ?)";
     @Value("#{${sql.achievementCondition}}")
     private Map<String, String> achievementConditionQueries;
 
@@ -45,7 +48,44 @@ public class AchievementConditionDaoImpl extends GenericDaoImpl<AchievementCondi
 
     @Override
     protected Object[] getUpdateParameters(AchievementCondition achievementCondition) {
-        return new Object[]{achievementCondition.getOperator().name().toLowerCase(),achievementCondition.getValue(),
+        return new Object[]{achievementCondition.getOperator().name().toLowerCase(), achievementCondition.getValue(),
                 achievementCondition.getAchievementId(), achievementCondition.getCharacteristicId(), achievementCondition.getId()};
+    }
+
+
+    @Override
+    public void delete(List<Integer> achievementConditions) {
+        String sql = achievementConditionQueries.get("deleteAchievementConditions");
+        List<String> mark = new ArrayList<>();
+        for (int i = 0; i < achievementConditions.size(); i++) {
+            mark.add("?");
+        }
+        sql = String.format(sql, String.join(", ", mark));
+        jdbcTemplate.update(sql, achievementConditions.toArray());
+    }
+
+    private String getQueryForInsert(List<AchievementCondition> userAchievements) {
+        String query = achievementConditionQueries.get("insertAchievementConditions");
+        for (int i = 0; i < userAchievements.size() - 1; i++) {
+            query = query.concat(insertQuery + ", ");
+        }
+        return query.concat(insertQuery);
+    }
+
+    private Object[] getParamsToInsertQuestions(List<AchievementCondition> achievementConditions) {
+        List<Object> params = new ArrayList<>();
+        for (AchievementCondition achievementCondition : achievementConditions) {
+            params.add(achievementCondition.getOperator().name().toLowerCase());
+            params.add(achievementCondition.getValue());
+            params.add(achievementCondition.getAchievementId());
+            params.add(achievementCondition.getCharacteristicId());
+        }
+        return params.toArray();
+    }
+
+    @Override
+    public void insert(List<AchievementCondition> achievementConditions) {
+        jdbcTemplate.update(getQueryForInsert(achievementConditions),
+                getParamsToInsertQuestions(achievementConditions));
     }
 }
