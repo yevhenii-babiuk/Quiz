@@ -27,3 +27,18 @@
   cursor: pointer;
 }
 
+.changeLangEvent{
+  color: blue;
+}
+
+.changeLangEvent:hover{
+  cursor: pointer;
+}
+
+.active{
+  color: black;
+}
+
+.active:hover{
+  cursor: auto;
+}
