@@ -35,9 +35,8 @@ export class AchievementService {
       );
   }
 
-  getUserAchievements(): Observable<Achievement[]> {
-    let id=this.securityService.getCurrentId();
-    return this.http.get<Achievement[]>(`${url}/profile/${id}/achievements/`)
+  getUserAchievements(currentId: number): Observable<Achievement[]> {
+    return this.http.get<Achievement[]>(`${url}/profile/${currentId}/achievements/`)
       .pipe(
         catchError(this.handleError<Achievement[]>([]))
       );

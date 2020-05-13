@@ -44,7 +44,7 @@ public class GameService {
             User registerUser = userService.getUserDataById(userId);
             user = UserDto.builder()
                     .login(registerUser.getLogin())
-                    .registerId(registerUser.getUserId())
+                    .registerId(registerUser.getId())
                     .gameId(gameId)
                     .build();
         } else {

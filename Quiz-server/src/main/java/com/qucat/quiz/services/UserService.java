@@ -2,14 +2,10 @@ package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
 import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
-import com.qucat.quiz.repositories.entities.Lang;
-import com.qucat.quiz.repositories.entities.MessageInfo;
-import com.qucat.quiz.repositories.entities.Role;
-import com.qucat.quiz.repositories.entities.Token;
-import com.qucat.quiz.repositories.entities.TokenType;
-import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -17,16 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -34,7 +26,6 @@ import java.util.UUID;
 public class UserService {
 
     private final String REGISTRATION = "registration/";
-
     private final String PASS_RECOVERY = "pass-recovery/";
 
     @Autowired
@@ -52,9 +43,11 @@ public class UserService {
     @Autowired
     private TokenDaoImpl tokenDao;
 
+    @Autowired
+    private ImageService imageService;
+
     @Value("${url}")
     private String URL;
-
 
     @Transactional
     public boolean registerUser(User user) {
@@ -67,15 +60,17 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         User userByMail = userDao.getUserByMail(user.getMail());
 
+        user.setImageId(imageService.addUserProfileImage());
+
         if (userByMail != null) {
-            Token token = tokenDao.get(userByMail.getUserId());
+            Token token = tokenDao.get(userByMail.getId());
             if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
                 return false;
             } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
                 return false;
             } else {
-                id = userByMail.getUserId();
-                user.setUserId(id);
+                id = userByMail.getId();
+                user.setId(id);
                 userDao.update(user);
             }
         } else {
@@ -104,7 +99,7 @@ public class UserService {
         Token token = Token.builder()
                 .token(UUID.randomUUID().toString())
                 .tokenType(TokenType.PASSWORD_RECOVERY)
-                .userId(user.getUserId())
+                .userId(user.getId())
                 .build();
         tokenDao.save(token);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));
@@ -159,19 +154,27 @@ public class UserService {
         return true;
     }
 
-    public Page<User> getPageUserByRole(Role role, Pageable pageable) {
+    public Page<User> getPageUserByRole(Role role, Optional<Integer> page, Optional<Integer> size) {
         if (role == null) {
             log.warn("Null id passed to find users by role");
             throw new IllegalArgumentException("Null id passed to find users by role");
         }
-        return userDao.getUserByRole(role, pageable);
+        return userDao.getUserByRole(role, PageRequest.of(page.orElse(0), size.orElse(10),
+                Sort.Direction.DESC, "id"));
+    }
+
+    public Page<User> getAllUsersPage(Optional<Integer> page, Optional<Integer> size) {
+        Page<User> allUsersPage = userDao.getAllUsersPage(
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return allUsersPage;
     }
 
     public User getUserDataById(int id) {
         User user = userDao.get(id);
 
         if (user == null) {
-            throw new NoSuchElementException("Such user not exist");
+            return null;//throw new NoSuchElementException("Such user not exist");
         }
 
         return user;
@@ -190,8 +193,8 @@ public class UserService {
     }
 
     public void authenticate(String username, String password) throws Exception {
-                Objects.requireNonNull(username);
-                Objects.requireNonNull(password);
+        Objects.requireNonNull(username);
+        Objects.requireNonNull(password);
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
@@ -206,5 +209,88 @@ public class UserService {
         return userDao.markQuizAsFavorite(userId, quizId);
     }
 
+    public void unmarkQuizAsFavorite(int userId, int quizId) {
+        userDao.unmarkQuizAsFavorite(userId, quizId);
+    }
+
+    public boolean addUserFriend(int userId, int friendId) {
+        return userDao.addUserFriend(userId, friendId);
+    }
+
+    public boolean deleteUserFriend(int userId, int friendId) {
+        userDao.deleteUserFriend(userId, friendId);
+        return true;
+    }
+
+    public List<User> getUserFriends(int userId) {
+        return userDao.getUserFriends(userId);
+    }
+
+    public boolean checkUsersFriendship(int firstUserId, int secondUserId) {
+        return userDao.checkUsersFriendship(firstUserId, secondUserId);
+    }
+
+    public Page<User> getUserFriendsPage(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<User> friendsPage = userDao.getUserFriendsPage(userId,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsPage;
+    }
+
+    public List<FriendActivity> getAllFriendsActivity(int userId) {
+        return userDao.getAllFriendsActivity(userId);
+    }
+
+    public Page<FriendActivity> getAllFriendsActivityPage(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<FriendActivity> friendsActivityPage = userDao.getAllFriendsActivityPage(userId,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsActivityPage;
+    }
+
+    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                           boolean publishQuiz, boolean achievement) {
+        if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
+            log.info("getFilteredFriendsActivity: Nothing to get");
+            return null;
+        }
+        return userDao.getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+    }
+
+    public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                               boolean publishQuiz, boolean achievement,
+                                                               Optional<Integer> page, Optional<Integer> size) {
+        if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
+            log.info("getFilteredFriendsActivityPage: Nothing to get");
+            return null;
+        }
+        Page<FriendActivity> friendsActivityPage = userDao.getFilteredFriendsActivityPage(
+                userId, addFriend, markQuizAsFavorite, publishQuiz, achievement,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return friendsActivityPage;
+    }
+
+    public List<User> searchUsersByLogin(String login) {
+        return userDao.searchUsersByLogin(login);
+    }
+
+    public Page<User> searchUsersByLogin(String login, Optional<Integer> page, Optional<Integer> size) {
+        Page<User> users = userDao.searchUsersByLogin(login,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return users;
+    }
+
+    public List<User> searchUsersByLogin(String login, Role role) {
+        return userDao.searchUsersByLogin(login, role);
+    }
+
+    public Page<User> searchUsersByLogin(String login, Role role, Optional<Integer> page, Optional<Integer> size) {
+        Page<User> users = userDao.searchUsersByLogin(login, role,
+                PageRequest.of(page.orElse(0), size.orElse(10),
+                        Sort.Direction.DESC, "id"));
+        return users;
+    }
 
 }

@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
+import {AuthenticationService} from "../../core/services/authentication.service";
 
 @Component({
   selector: 'app-sidenav',
@@ -11,13 +12,15 @@ import {SecurityService} from "../../core/services/security.service";
 export class SidenavComponent implements OnInit {
   id: number;
   role: String;
+  roleEnum = Role;
   isUser: boolean;
   isAdmin: boolean;
   notProfile: boolean;
 
   constructor(
     private profileService: ProfileService,
-    private securityService: SecurityService
+    public securityService: SecurityService,
+    public authenticationService: AuthenticationService
   ) {
 
   }
@@ -30,6 +33,7 @@ export class SidenavComponent implements OnInit {
 
   private getUser() {
     this.id = this.securityService.getCurrentId();
+    this.role = this.securityService.getCurrentRole();
     this.profileService.getUser(this.id).subscribe(data => {
       this.setCondition(data.role);
     });
@@ -47,6 +51,6 @@ export class SidenavComponent implements OnInit {
 
 
   onScrollClick() {
-    window.scroll(0,0);
+    window.scroll(0, 0);
   }
 }
