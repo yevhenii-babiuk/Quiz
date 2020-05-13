@@ -3,6 +3,8 @@ import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
+import {Imaged} from "../../core/models/imaged";
+import {Image} from "../../core/models/image";
 import {ActivatedRoute} from "@angular/router";
 
 
@@ -51,6 +53,29 @@ export class ViewProfile implements OnInit {
       this.userData = data;
       this.role = this.securityService.getCurrentRole();
     });
+  }
+
+  processFile(imageInput: any, imaged: Imaged) {
+    //this.id=this.securityService.getCurrentId();
+    const file: File = imageInput.files[0];
+    const reader = new FileReader();
+
+    reader.addEventListener('load', (event: any) => {
+      imaged.image.src = event.target.result.substring(23);
+      this.profileService.putImage(this.id,file).subscribe(
+        id => {
+          console.log("id=" + id);
+          if (typeof id === "number") {
+            imaged.imageId = id;
+          }
+        },
+        error => {
+          imaged.image.src = null;
+          console.log(error);
+        });
+    });
+
+    reader.readAsDataURL(file);
   }
 
   friendship() {
