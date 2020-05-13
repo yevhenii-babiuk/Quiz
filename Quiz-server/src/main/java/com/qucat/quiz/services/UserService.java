@@ -226,7 +226,7 @@ public class UserService {
         return userDao.getUserFriends(userId);
     }
 
-    public boolean checkUsersFriendship(int firstUserId, int secondUserId) {
+    boolean checkUsersFriendship(int firstUserId, int secondUserId) {
         return userDao.checkUsersFriendship(firstUserId, secondUserId);
     }
 
