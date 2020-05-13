@@ -55,7 +55,7 @@ public class GameDaoImpl implements GameDao {
         try {
             g = jdbcTemplate.queryForObject(selectQuery,
                     new Object[]{id}, new GameQuestionMapper());
-        } catch (EmptyResultDataAccessException e){
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
         return g;

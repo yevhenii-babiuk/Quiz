@@ -19,7 +19,7 @@ export class SidenavComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private securityService: SecurityService,
+    public securityService: SecurityService,
     public authenticationService: AuthenticationService
   ) {
 
