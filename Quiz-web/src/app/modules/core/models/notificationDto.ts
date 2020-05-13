@@ -1,5 +1,7 @@
-export class NotificationDto{
+export class NotificationDto {
   author: string;
   action: string;
-  link: string;
+  authorLink: string;
+  actionLink: string;
+  isViewed: boolean;
 }

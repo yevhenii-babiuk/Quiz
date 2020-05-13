@@ -5,6 +5,7 @@ import {socket} from "../../../../environments/environment.prod";
 import * as Stomp from "@stomp/stompjs";
 import * as SockJS from 'sockjs-client';
 import {WebsocketEvent} from "../../core/models/websocketEvent";
+import {SecurityService} from "../../core/services/security.service";
 
 @Component({
   selector: 'app-notification-menu',
@@ -15,35 +16,72 @@ import {WebsocketEvent} from "../../core/models/websocketEvent";
 export class NotificationMenuComponent implements OnInit {
 
   public stompClient;
-  public notifications:  String[] = [];
-  notificationCount = 2;
+  notifications = [];
+  notificationCount = 0;
+  unviewedNotificationCount = 0;
   receivedEvent: WebsocketEvent;
+  userId = this.securityService.getCurrentId();
 
-  constructor(public authService: AuthenticationService) {
+  newsChanel = true;
+  playChanel: false;
+  quizChanel: boolean;
+  invitationChanel: boolean;
+
+  showNotification: boolean;
+  showSettings: boolean;
+  newsSubscription: any;
+  constructor( public securityService: SecurityService,
+               public authService: AuthenticationService) {
     }
 
   initializeWebSocketConnection() {
     let ws = new SockJS(socket);
     this.stompClient = Stomp.Stomp.over(ws);
     let that = this;
-
     this.stompClient.connect({}, function () {
-      that.stompClient.subscribe("/notification", async (message) => {
+      that.stompClient.subscribe("/notification"+ that.userId, async (message) => {
         if (message.body) {
-          console.log("message.body: " + message.body);
           that.receivedEvent = JSON.parse(message.body);
-          console.log("received notification: " + that.receivedEvent);
-          console.log(that.receivedEvent.notification);
-          that.notifications.push(message.body);
+          that.notifications.push(that.receivedEvent.notification);
           that.notificationCount++;
+          that.unviewedNotificationCount++;
+          console.log(that.notifications[that.notificationCount]);
         }
       });
     } ,this);
   }
 
-  showNotification: boolean;
-  showSettings: boolean;
+  turnOffNews(flag: boolean) {
+    if(flag == false) {
+      console.log(flag);
+      this.newsSubscription.unsubscribe(this.stompClient.sessionId);
+    } else {
+      this.initializeWebSocketConnection();
+    }
+  }
 
+
+  setViewed(linkAction: string) {
+    // if(this.notifications[this.notifications.indexOf(linkAction)].isViewed == false) {
+         //this.notifications[this.notifications.indexOf(linkAction)].isViewed =  true;
+    //   if(this.unviewedNotificationCount > 0) {
+    //     this.unviewedNotificationCount--;
+    //   }
+    // }
+
+    if(this.unviewedNotificationCount > 0) {
+      this.unviewedNotificationCount--;
+    }
+  }
+
+  deleteNotification(linkAction: string) {
+    this.notifications.splice( this.notifications.indexOf(linkAction));
+    this.notificationCount--;
+  }
+  deleteAllNotification() {
+    this.notifications = [];
+    this.notificationCount = 0;
+  }
   openSettings(state: boolean) {
     this.showSettings = state;
   }

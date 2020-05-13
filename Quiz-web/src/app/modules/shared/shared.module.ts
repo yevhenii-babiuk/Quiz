@@ -11,6 +11,7 @@ import { NotificationMenuComponent } from './notification-menu/notification-menu
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCheckboxModule} from "@angular/material/checkbox";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -20,13 +21,14 @@ import {MatCheckboxModule} from "@angular/material/checkbox";
     SidenavComponent,
     NotificationMenuComponent
   ],
-  imports: [
-    CommonModule,
-    RouterModule,
-    MatBadgeModule,
-    MatIconModule,
-    MatCheckboxModule
-  ],
+    imports: [
+        CommonModule,
+        RouterModule,
+        MatBadgeModule,
+        MatIconModule,
+        MatCheckboxModule,
+        FormsModule
+    ],
   exports: [
     AlertComponent,
     HeaderComponent,

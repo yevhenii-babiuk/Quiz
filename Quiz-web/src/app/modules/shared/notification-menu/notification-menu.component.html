@@ -1,6 +1,12 @@
 <div class="notification-wrapper" *ngIf="authService.isAuthenticated()">
-  <div matBadge="{{notificationCount}}" matBadgeColor="warn" class="notification-btn" (click)="openNotification(!showNotification)">
-    <span class="fas fa-bell"></span>
+  <div  class="notification-btn" (click)="openNotification(!showNotification)">
+    <div  matBadge="{{unviewedNotificationCount}}" matBadgeColor="warn" *ngIf="unviewedNotificationCount > 0">
+      <span class="fas fa-bell"></span>
+    </div>
+    <div  *ngIf="unviewedNotificationCount == 0">
+      <span class="fas fa-bell"></span>
+    </div>
+
   </div>
 
   <div *ngIf="showNotification" class="notification-content" >
@@ -10,32 +16,56 @@
          <div class="fas fa-settings"> </div>
        </span>
        <span class="label">Повідомлення</span>
+       <span (click)="deleteAllNotification()">
+         <div class="fas fa-trash"> </div>
+       </span>
      </div>
 
     </div>
     <div *ngIf="showSettings" class="notification-setting">
-        <div>
-          Отримувати повідомлення про:
-          <mat-checkbox>Створення друзями новини </mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox>Створення друзями вікторини</mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox>Запрошення друзями до гри</mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox>Додавання у друзі </mat-checkbox>
-        </div>
-        <div>
-          <mat-checkbox>Check me 5 </mat-checkbox>
-        </div>
-
-
+      <div>
+        Отримувати повідомлення про:
+      </div>
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="newsChanel" (click)="(turnOffNews(newsChanel))" id="checkbox1" type="checkbox" class="styled">
+        <label for="checkbox1">
+          Створення друзями новини
+        </label>
+      </div>
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="quizChanel" id="checkbox2" type="checkbox" class="styled">
+        <label for="checkbox2">
+          Створення друзями вікторини
+        </label>
+      </div>
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="playChanel" id="checkbox3" type="checkbox" class="styled">
+        <label for="checkbox3">
+          Запрошення друзями до гри
+        </label>
+      </div>
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="invitationChanel" id="checkbox4" type="checkbox" class="styled">
+        <label for="checkbox4">
+          Додавання у друзі
+        </label>
+      </div>
     </div>
-
-    <span *ngFor="let notification of notifications">
-      {{notification}}
-    </span>
+    <div class="notification-container">
+      <ng-container *ngFor="let notification of notifications">
+        <div class="notification-item" (mouseover)="setViewed(notification.actionLink)">
+          <button type="button" (click)="deleteNotification(notification.action)" class="close"
+                  data-dismiss="modal" aria-hidden="true">×</button>
+          <a routerLink="{{notification.authorLink}}" class="post-title mt-4 authorLinkFont" >
+            {{notification.author}}
+            <br>
+          </a>
+          <span class="lead">
+           {{notification.action}}<br>
+        </span>
+          <a routerLink="{{notification.actionLink}}" class="linkFont">Переглянути<br></a>
+        </div>
+      </ng-container>
+    </div>
   </div>
 </div>

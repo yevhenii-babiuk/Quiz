@@ -1,6 +1,7 @@
 package com.qucat.quiz.services;
 
 import com.google.gson.Gson;
+import com.qucat.quiz.repositories.dao.implementation.FriendListDaoImpl;
 import com.qucat.quiz.repositories.dto.UserDto;
 import com.qucat.quiz.repositories.dto.Users;
 import com.qucat.quiz.repositories.dto.WebsocketEvent;
@@ -26,6 +27,9 @@ public class WebSocketSenderService {
     @Autowired
     private NotificationService notificationService;
 
+    @Autowired
+    private FriendListDaoImpl friendListDao;
+
     public void sendResults(String gameId, Users users) {
         log.info("send results " + users);
         this.template.convertAndSend(String.format("/game/%s/play", gameId),
@@ -50,11 +54,11 @@ public class WebSocketSenderService {
 
     public void sendNotification(int authorId, int objectId, NotificationType notificationType) {
         Notification notification = notificationService.generateNotification(authorId, objectId, notificationType);
-        this.template.convertAndSend("/notification",
-                gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
-                        .notification(notification).build()));
-
-        System.out.println( "notification \""+ notification.getAuthor() + " " + notification.getAction()
-                + " " + " " + notification.getLink() + "\" sanded");
+        List<Integer> friendsId = friendListDao.getForNotification(authorId, notificationType);
+        for (int friendId : friendsId) {
+            this.template.convertAndSend("/notification" + friendId,
+                    gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
+                            .notification(notification).build()));
+        }
     }
 }

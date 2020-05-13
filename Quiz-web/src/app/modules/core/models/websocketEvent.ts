@@ -7,7 +7,7 @@ export class WebsocketEvent {
   question: Question;
   gameResults: Users;
   type:EventType;
-  notification: NotificationDto;
+  notification: NotificationDto[];
 }
 
 export enum EventType {
