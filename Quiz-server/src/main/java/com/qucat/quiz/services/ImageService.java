@@ -60,13 +60,17 @@ public class ImageService {
         return saveImage(userProfileImage);
     }
 
-    private int saveImage(String encodedFile) {
+    public int saveImage(String encodedFile) {
         int imageId = imageDao.getIdBySrc(encodedFile);
         if (imageId != -1) {
             return imageId;
         }
 
-        return imageDao.save(Image.builder().src(encodedFile).build());
+        return imageDao.save(
+                Image.builder()
+                        .src(encodedFile)
+                        .build()
+        );
     }
 
     public Image getImage(int imageId) {

@@ -88,6 +88,22 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 user.getProfile(), user.getScore(), user.getId(), user.getImageId()};
     }
 
+    @Override
+    public List<User> getAll() {
+        return jdbcTemplate.query(usersQueries.get("getAllUsers"), new UserMapper());
+    }
+
+    @Override
+    public User get(int id) {
+        User user;
+        try {
+            user = jdbcTemplate.queryForObject(usersQueries.get("getUser"),
+                    new Object[]{id}, new UserMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return user;
+    }
 
     @Override
     public User getUserByLoginAndPassword(String login, String password) {
