@@ -28,7 +28,7 @@ export class AnnouncementService {
   }
 
   getAnnouncementsByRole(currentCount: number, isPublished:boolean): Observable<Announcement[]> {
-    return this.http.get<Announcement[]>(`${url}/announcements?count=${currentCount}&isPublished=${isPublished}`)
+    return this.http.get<Announcement[]>(`${url}/announcements?pageNumber=${currentCount/10}&isPublished=${isPublished}`)
       .pipe(
         catchError(this.handleError<Announcement[]>([]))
       );

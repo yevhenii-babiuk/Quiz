@@ -10,7 +10,7 @@ import java.util.List;
 @Builder
 public class User {
 
-    private int userId;
+    private int id;
     private String firstName;
     private String secondName;
     private String login;
@@ -22,4 +22,7 @@ public class User {
     private UserAccountStatus status;
     private Role role;
     private List<Achievement> achievements;
+    private int imageId;
+    private Image image;
+
 }

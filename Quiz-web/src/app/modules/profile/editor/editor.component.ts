@@ -55,7 +55,8 @@ export class EditorComponent implements OnInit {
       password:password,
       profile:profile,
       score:this.userData.score,
-      role:this.userData.role
+      role:this.userData.role,
+      registrationDate:this.userData.registrationDate
     };
     this.profileService.updateUser(editedUser).subscribe(data => {
       editedUser=data;
