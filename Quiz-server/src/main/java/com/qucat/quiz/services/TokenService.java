@@ -15,19 +15,19 @@ public class TokenService {
     private TokenDao tokenDao;
 
 
-    public void deleteOldTokens(){
+    public void deleteOldTokens() {
         tokenDao.deleteOldTokens();
     }
 
-    public void saveToken(Token tokenForNewUser){
+    public void saveToken(Token tokenForNewUser) {
         tokenDao.save(tokenForNewUser);
     }
 
-    public int getUserId(Token token){
+    public int getUserId(Token token) {
         return tokenDao.getUserId(token);
     }
 
-    public Token getTokenByUserId(int id){
+    public Token getTokenByUserId(int id) {
         return tokenDao.get(id);
     }
 

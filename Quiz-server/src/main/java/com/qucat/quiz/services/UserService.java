@@ -1,23 +1,17 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
-import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
-import com.qucat.quiz.repositories.entities.Lang;
-import com.qucat.quiz.repositories.entities.MessageInfo;
-import com.qucat.quiz.repositories.entities.Role;
-import com.qucat.quiz.repositories.entities.Token;
-import com.qucat.quiz.repositories.entities.TokenType;
-import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.dao.UserDao;
+import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.DisabledException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -70,7 +64,7 @@ public class UserService {
         user.setImageId(imageService.addUserProfileImage());
 
         if (userByMail != null) {
-            Token token = tokenService.getTokenByUserId(userByMail.getUserId());
+            Token token = tokenService.getTokenByUserId(userByMail.getId());
             if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
                 return false;
             } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
@@ -180,9 +174,7 @@ public class UserService {
     public User getUserDataById(int id) {
         User user = userDao.get(id);
 
-        if (user == null) {
-            return null;//throw new NoSuchElementException("Such user not exist");
-        }
+        //throw new NoSuchElementException("Such user not exist");
 
         return user;
     }
