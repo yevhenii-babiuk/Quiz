@@ -1,5 +1,6 @@
 package com.qucat.quiz.services;
 
+import com.qucat.quiz.repositories.dao.NotificationDao;
 import com.qucat.quiz.repositories.entities.Notification;
 import com.qucat.quiz.repositories.entities.NotificationType;
 import com.qucat.quiz.repositories.entities.User;
@@ -7,11 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.qucat.quiz.repositories.dao.NotificationDao;
-import com.qucat.quiz.repositories.entities.Notification;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Slf4j
@@ -21,7 +17,6 @@ public class NotificationService {
     private NotificationDao notificationDao;
 
     @Autowired
-<<<<<<< HEAD
     private UserService userService;
 
     public Notification generateNotification(int authorId, int objectId, NotificationType notificationType) {
@@ -53,8 +48,6 @@ public class NotificationService {
         }
         return notification;
     }
-=======
-
 
     public boolean createNotification(Notification notification) {
         int notificationId = notificationDao.save(notification);

@@ -1,27 +1,26 @@
 package com.qucat.quiz.controllers;
 
-import com.google.gson.Gson;
+import com.qucat.quiz.repositories.entities.Notification;
+import com.qucat.quiz.services.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.boot.autoconfigure.ImportAutoConfiguration;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class NotificationController {
 
     @Autowired
-    private SimpMessagingTemplate template;
+    NotificationService notificationService;
 
-    @MessageMapping("/notify")
-    public void onReceiveNotification(String message) {
-       // Gson g = new Gson();
-        //String answer = g.fromJson(message, String.class);
-        System.out.println("message: " );
-
-      this.template.convertAndSend("/event","new notification" );
-
+    @PutMapping("/notifications")
+    public List<Notification> getNotifications(@RequestParam int userId) {
+        return notificationService.getNotificationsByUserId(userId);
     }
-
 
 }
