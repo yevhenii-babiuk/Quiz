@@ -2,7 +2,10 @@
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
 -->
-<div class="container">
+<div class="container" *ngIf="quiz">
+  <button [ngStyle]="{'background-color': COLORS.AMBER}" class="btn form-control mb-3"  routerLink="gameSettings">
+    Play quiz
+  </button>
   <p class="text-center">{{quiz.name | uppercase}}</p>
 
   <div class="row mx-0">
@@ -15,13 +18,20 @@
     <div class="col-sm-9">
 
       <div class="row mx-0">
-        <label class="col-sm m-3">{{quiz.name}}</label>
-        <label *ngIf="quiz.category" class="col-sm m-3">{{quiz.category.name}}</label>
+        <label class="col-sm m-3 border-0">
+          Quiz name
+          <label class="form-control h-auto">{{quiz.name}}</label>
+        </label>
+
+        <label class="col-sm m-3 border-0">
+          Category
+          <label class="form-control">{{quiz.category.name}}</label>
+        </label>
       </div>
 
-      <div class="mat-app-background">
+      <div class="mat-app-background" *ngIf="quiz.tags.length>0">
         <mat-form-field class="example-chip-list w-100">
-          <mat-chip-list aria-label="Fruit selection w-100">
+          <mat-chip-list aria-label="Fruit selection w-100" placeholder="Tags" >
             <mat-chip
               *ngFor="let tag of quiz.tags">
               {{tag.name}}
@@ -30,24 +40,33 @@
         </mat-form-field>
       </div>
 
+      <div class="w-100 h-auto">
+        <label class="w-100 h-auto">Description:
+          <label class="form-control h-auto w-100">{{quiz.description}}</label>
+        </label>
+      </div>
+
     </div>
 
   </div>
 
-  <div *ngIf="quiz.questions">
+  <div *ngIf="securityService.getCurrentId() &&
+  (securityService.getCurrentRole()!='USER'|| securityService.getCurrentId()==quiz.authorId)">
     <ng-container *ngFor="let question of quiz.questions">
-      <div class="row mx-0 my-1 p-4 border-dark border">
+      <div class="form-control h-auto row mx-0 my-1 p-4 border-dark border">
 
         <div class="col-sm-3">
-          <img *ngIf="question.imageId!=-1" class="img-preview-container img-preview" src="data:image/jpeg;base64,{{question.image.src}}"
+          <img *ngIf="question.imageId!=-1" class="img-preview-container img-preview"
+               src="data:image/jpeg;base64,{{question.image.src}}"
                alt="Card image cap">
         </div>
 
         <div class="col-sm-9">
 
           <div>
-            <label class="col-sm m-1">{{question.type}}</label>
+            <label class="col-sm m-1">Type: {{question.type}}</label>
           </div>
+          <br>
           <div>
             <h2 class="col-sm  m-1">{{question.content}}</h2>
           </div>
@@ -90,7 +109,7 @@
           </div>
 
           <div *ngIf="question.type=='ENTER_ANSWER'">
-            <input [(ngModel)]="question.options[0].content" class="w-75 m-1" readonly>
+            <input [(ngModel)]="question.options[0].content" class="form-control w-75 m-1" readonly>
           </div>
         </div>
 

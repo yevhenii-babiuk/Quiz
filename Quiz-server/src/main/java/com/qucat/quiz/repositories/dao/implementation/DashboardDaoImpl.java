@@ -2,9 +2,15 @@ package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.DashboardDao;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.AdminStatistics;
+import com.qucat.quiz.repositories.entities.BestQuiz;
+import com.qucat.quiz.repositories.entities.CategoryStatistics;
+import com.qucat.quiz.repositories.entities.ComparedScores;
+import com.qucat.quiz.repositories.entities.QuizStatistics;
+import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,10 +27,8 @@ public class DashboardDaoImpl implements DashboardDao {
     @Value("#{${sql.dashboard}}")
     private Map<String, String> dashboardQueries;
 
-    protected DashboardDaoImpl() {
-    }
-
     @Autowired
+    @Qualifier("postgresJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
 
@@ -47,8 +51,8 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<CategoryStatistics> getStatisticInTheCategory(int id) {
-        return jdbcTemplate.query(dashboardQueries.get("getStatisticInTheCategoryById"), new Object[]{id}, (rs, rowNum) ->
+    public List<CategoryStatistics> getStatisticInTheCategory(int userId) {
+        return jdbcTemplate.query(dashboardQueries.get("getStatisticInTheCategoryById"), new Object[]{userId}, (rs, rowNum) ->
                 new CategoryStatistics(
                         rs.getInt("category_id"),
                         rs.getString("name"),
@@ -58,18 +62,18 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<Statistics> getPercentOfCorrectAnswers(int id) {
-        return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersById"), new Object[]{id}, (rs, rowNum) ->
-                new Statistics(
+    public List<QuizStatistics> getPercentOfCorrectAnswers(int userId) {
+        return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersById"), new Object[]{userId}, (rs, rowNum) ->
+                new QuizStatistics(
                         rs.getString("name"),
                         rs.getDouble("correct_answers_persentage")
                 ));
     }
 
     @Override
-    public BestQuiz getTheMostSuccessfulQuiz(int id) {
+    public BestQuiz getTheMostSuccessfulQuiz(int userId) {
         try {
-            return jdbcTemplate.queryForObject(dashboardQueries.get("getMaxScoreById"), new Object[]{id}, (rs, rowNum) ->
+            return jdbcTemplate.queryForObject(dashboardQueries.get("getMaxScoreById"), new Object[]{userId}, (rs, rowNum) ->
                     new BestQuiz(
                             rs.getString("name"),
                             rs.getTimestamp("take_date"),
@@ -93,18 +97,18 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    public List<Statistics> getFriendsPreferences(int userId) {
+    public List<QuizStatistics> getFriendsPreferences(int userId) {
         return jdbcTemplate.query(dashboardQueries.get("getFriendsPreferences"), new Object[]{userId}, (rs, rowNum) ->
-                new Statistics(
+                new QuizStatistics(
                         rs.getString("name"),
                         rs.getDouble("count")
                 ));
     }
 
     @Override
-    public List<Statistics> getStatisticOfQuizzesPlayed() {
+    public List<QuizStatistics> getStatisticOfQuizzesPlayed() {
         return jdbcTemplate.query(dashboardQueries.get("getStatisticOfQuizzesPlayed"), (rs, rowNum) ->
-                new Statistics(
+                new QuizStatistics(
                         rs.getString("name"),
                         rs.getDouble("count")
                 ));

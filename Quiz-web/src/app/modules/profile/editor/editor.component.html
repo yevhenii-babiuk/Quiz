@@ -1,33 +1,33 @@
-<div class="container" align="center">
-  <div class="form-horizontal">
-    <h3 class="col-sm-9 text-center">Редагувати профіль</h3>
-    <div class="form-group">
+<div class="container">
+  <h3 class="col-sm-9 text-center">Редагувати профіль</h3>
+  <div class="form-horizontal align-content-center">
+    <div class="form-group required"><label class="col-md-2 control-label">Ім'я</label>
       <div class="col-sm-9">
         <input type="text" placeholder="First Name" class="form-control" autofocus #firstname value={{userData.firstName}}>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group required"><label class="col-md-2 control-label">Прізвище</label>
       <div class="col-sm-9">
         <input type="text" placeholder="Last Name" class="form-control" autofocus #lastname value={{userData.secondName}}>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group required"><label class="col-md-2 control-label">E-mail</label>
       <div class="col-sm-9">
         <input type="email" placeholder="Email" class="form-control" name= "email" autofocus #email value={{userData.mail}}>
       </div>
     </div>
-    <div class="form-group">
+    <div class="form-group"><label class="col-md-2 control-label">Опис профілю</label>
       <div class="col-sm-9">
         <input type="text" placeholder="Profile" class="form-control" autofocus #profile value={{userData.profile}}>
       </div>
     </div>
-    <div class="form-group">
-      <div class="col-sm-9">
+    <div class="form-group required"><label class="col-md-2 control-label">Пароль</label>
+      <div class="col-sm-9" >
         <input type="password" placeholder="Password" class="form-control" autofocus #password>
       </div>
     </div>
 
-    <div class="form-group">
+    <div class="form-group required"><label class="col-md-2 control-label">Підтвердити пароль</label>
       <div class="col-sm-9">
         <input type="password" placeholder="Confirm password" class="form-control" autofocus #confirmPassword>
       </div>
@@ -40,4 +40,3 @@
   </div>
 
 </div>
-

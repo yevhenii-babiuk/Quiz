@@ -24,6 +24,9 @@ public class ImageService {
     @Value("${logo.src}")
     private String logo;
 
+    @Value("${user.image.src}")
+    private String userProfileImage;
+
     public Image getImageById(@RequestParam int id) {
         return imageDao.get(id);
     }
@@ -32,7 +35,8 @@ public class ImageService {
         String encodedFile;
 
         if (multipartFile == null) {
-            encodedFile = logo;
+            log.error("addImage: multipartFile is null");
+            return -1;
         } else {
             byte[] fileBytes;
             try {
@@ -45,6 +49,18 @@ public class ImageService {
             encodedFile = Base64.getEncoder().encodeToString(fileBytes);
         }
 
+        return saveImage(encodedFile);
+    }
+
+    public int addLogoImage() {
+        return saveImage(logo);
+    }
+
+    public int addUserProfileImage() {
+        return saveImage(userProfileImage);
+    }
+
+    public int saveImage(String encodedFile) {
         int imageId = imageDao.getIdBySrc(encodedFile);
         if (imageId != -1) {
             return imageId;

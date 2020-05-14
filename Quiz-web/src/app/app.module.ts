@@ -26,6 +26,15 @@ import {AnnouncementModule} from "./modules/announcement/announcement.module";
 import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
 import {DashboardModule} from "./modules/dashboard/dashboard.module";
 import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.module";
+import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
+import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
+
+/*import {WebsocketModule} from "./modules/websocket/websocket.module";*/
+import {ActivitiesRoutingModule} from "./modules/activities/activities-routing.module";
+import {ActivitiesModule} from "./modules/activities/activities.module";
+
+import {AchievementRoutingModule} from "./modules/achivement/achievement-routing.module";
+import {AchievementModule} from "./modules/achivement/achievement.module";
 
 @NgModule({
   declarations: [
@@ -55,7 +64,13 @@ import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.modu
     AnnouncementRoutingModule,
     ProfileModule,
     DashboardModule,
-    DashboardRoutingModule
+    DashboardRoutingModule,
+    PlayQuizModule,
+    PlayQuizRoutingModule,
+    ActivitiesModule,
+    ActivitiesRoutingModule,
+    AchievementModule,
+    AchievementRoutingModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},

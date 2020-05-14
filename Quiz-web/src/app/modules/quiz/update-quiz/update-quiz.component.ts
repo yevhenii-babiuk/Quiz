@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 
 import {COMMA, ENTER} from '@angular/cdk/keycodes';
 import {FormControl} from '@angular/forms';
-import {MatAutocompleteSelectedEvent, MatAutocomplete} from '@angular/material/autocomplete';
+import {MatAutocomplete, MatAutocompleteSelectedEvent} from '@angular/material/autocomplete';
 import {MatChipInputEvent} from '@angular/material/chips';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
@@ -46,9 +46,6 @@ export class UpdateQuizComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService) {
-    this.getCategories();
-    this.getTags();
-
     const id = this.route.snapshot.paramMap.get('quizId');
     console.log(id);
     if (id) {
@@ -63,6 +60,9 @@ export class UpdateQuizComponent implements OnInit {
       this.createNewQuiz();
     }
 
+    this.getCategories();
+    this.getTags();
+
 
     this.filteredTags = this.tagCtrl.valueChanges.pipe(
       startWith(null),
@@ -72,6 +72,9 @@ export class UpdateQuizComponent implements OnInit {
   getCategories() {
     this.quizzesService.getCategories().subscribe(categories => {
         this.categories = categories;
+        if (!this.quiz.id) {
+          this.setCategory(categories[0].name)
+        }
       },
       err => {
         console.log(err);
@@ -107,8 +110,7 @@ export class UpdateQuizComponent implements OnInit {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      console.log("in reader.addEventListener")
-      imaged.image.src = event.target.result;
+      imaged.image.src = event.target.result.substring(23);
       this.quizzesService.putImage(file).subscribe(
         id => {
           console.log("id=" + id);
@@ -169,6 +171,10 @@ export class UpdateQuizComponent implements OnInit {
       this.message = "Please enter name of quiz";
       return false
     }
+    if (this.quiz.description == null || this.quiz.description.length == 0) {
+      this.message = "Please enter description of quiz";
+      return false
+    }
     if (this.quiz.questions.length < 1) {
       this.message = "Please add one or more question";
       return false
@@ -179,16 +185,36 @@ export class UpdateQuizComponent implements OnInit {
         this.message = `Please enter name or add image of your ${i + 1} question`;
         return false
       }
-      for (let j = 0; j < question.options.length; j++) {
-        if (question.type != "TRUE_FALSE")
-          if (question.options[i].content.length == 0 && question.options[j].imageId == -1) {
+      let countCorrectAnswer = 0;
+
+      if (question.type != "TRUE_FALSE")
+        for (let j = 0; j < question.options.length; j++) {
+          if (question.options[j].isCorrect) {
+            countCorrectAnswer++;
+          }
+          if (question.options[j].content.length == 0 && question.options[j].imageId == -1) {
             this.message = `Please enter name ${(question.type == "ENTER_ANSWER" ? '' : ' or add image')}
              for your ${j + 1} option ${i + 1} question`;
             return false
           }
+        }
+      if (question.type == "SELECT_OPTION") {
+        if (countCorrectAnswer == 0) {
+          this.message = `Please chose one or more correct answer for your ${i + 1} question`;
+          return false
+        }
+        if (countCorrectAnswer == question.options.length) {
+          this.message = `Please chose less correct answer for your ${i + 1} question`;
+          return false
+        }
       }
+
     }
     return true;
+  }
+
+  removeQuestion(deletedQuestion: Question) {
+    this.quiz.questions = this.quiz.questions.filter(question => question !== deletedQuestion);
   }
 
   send() {
@@ -202,7 +228,7 @@ export class UpdateQuizComponent implements OnInit {
           this.router.navigate(['quiz/' + id])
         },
         error => {
-          this.message=`cant ${this.quiz.id? 'update': 'add'} quiz`;
+          this.message = `cant ${this.quiz.id ? 'update' : 'add'} quiz`;
           console.log(error);
         });
     }
@@ -216,7 +242,7 @@ export class UpdateQuizComponent implements OnInit {
 
     // Add our tag
     if ((value || '').trim()) {
-      if (!this.quiz.tags.includes(new Tag(value))) {
+      if (!this.quiz.tags.find(value1 => value1.name == value)) {
         this.quiz.tags.push(new Tag(value.trim()));
       }
     }
@@ -237,7 +263,7 @@ export class UpdateQuizComponent implements OnInit {
   }
 
   selected(event: MatAutocompleteSelectedEvent): void {
-    if (!this.quiz.tags.includes(new Tag(event.option.viewValue))) {
+    if (!this.quiz.tags.find(value => value.name == event.option.viewValue)) {
       this.quiz.tags.push(new Tag(event.option.viewValue));
     }
     this.fruitInput.nativeElement.value = '';

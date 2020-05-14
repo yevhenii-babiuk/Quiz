@@ -1,6 +1,10 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.AdminStatistics;
+import com.qucat.quiz.repositories.entities.CategoryStatistics;
+import com.qucat.quiz.repositories.entities.ComparedScores;
+import com.qucat.quiz.repositories.entities.QuizStatistics;
+import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.services.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +23,7 @@ public class DashboardController {
 
     @GetMapping("/top")
     public List<User> getTopPlayers() {
-        return dashboardService.getTopUsers(10);
+        return dashboardService.getTopUsers(7);
     }
 
     @GetMapping("/{id}/quizzes/played/categories")
@@ -28,7 +32,7 @@ public class DashboardController {
     }
 
     @GetMapping("/{id}/quizzes/played/percent")
-    public List<Statistics> getPercentOfCorrectAnswers(@PathVariable int id) {
+    public List<QuizStatistics> getPercentOfCorrectAnswers(@PathVariable int id) {
         return dashboardService.getPercentOfCorrectAnswers(id);
     }
 
@@ -38,12 +42,12 @@ public class DashboardController {
     }
 
     @GetMapping("/{id}/friends/preferences")
-    public List<Statistics> getFriendsPreferences(@PathVariable int id) {
+    public List<QuizStatistics> getFriendsPreferences(@PathVariable int id) {
         return dashboardService.getFriendsPreferences(id);
     }
 
     @GetMapping("/quizzes/played/amount")
-    public List<Statistics> getStatisticOfQuizzesPlayed() {
+    public List<QuizStatistics> getStatisticOfQuizzesPlayed() {
         return dashboardService.getStatisticOfQuizzesPlayed();
     }
 

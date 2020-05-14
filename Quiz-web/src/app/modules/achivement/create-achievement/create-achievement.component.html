@@ -1,0 +1,73 @@
+<div class="container mt-3">
+  <div *ngIf="isInvalid" class="w-100 alert border-danger">
+    {{message}}
+  </div>
+  <div class="row">
+    <div class="col-6">
+      <div class="form-group">
+        <label>Achievement name</label>
+        <input type="text" class="form-control" [(ngModel)]="achievement.name" placeholder="Top achievement"/>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="form-group">
+        <label>Description</label>
+        <input type="text" class="form-control" [(ngModel)]="achievement.description" placeholder="For the best"/>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-9 m-2">
+    <button class="btn btn-primary btn-block" (click)="addCondition()">Add Condition</button>
+    </div>
+        <div class="col-9">
+      <section class="container border mb-4 p-3" *ngFor="let condition of conditions; let i = index;">
+        <div class="row">
+          <div class="col-4">
+            <h4>Condition {{i + 1}}</h4>
+          </div>
+          <div class="col-4 text-right offset-4">
+            <button type="button" class="btn btn-danger btn-sm" (click)="removeCondition(i)">Remove</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <div class="form-group">
+              <label>Characteristic</label>
+              <select [(ngModel)]="condition.characteristicId" class="form-control">
+                <option *ngFor="let characteristic of characteristics; let i = index" [value]="characteristic.id">
+                  {{characteristic.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-3">
+            <div class="form-group">
+              <label>Operator</label>
+              <select class="form-control" [(ngModel)]="condition.operator">
+                <option [value]="operatorName[0]">{{operators.LESS}}</option>
+                <option [value]="operatorName[1]">{{operators.EQUALS}}</option>
+                <option [value]="operatorName[2]">{{operators.GREATER}}</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-4">
+            <div class="form-group">
+              <label>Value</label>
+              <input type="text" class="form-control" [(ngModel)]="condition.value"/>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+      <button
+        (click)="send()"
+        class="btn btn-warning btn-block">
+        Create
+      </button>
+    </div>
+  </div>
+
+</div>

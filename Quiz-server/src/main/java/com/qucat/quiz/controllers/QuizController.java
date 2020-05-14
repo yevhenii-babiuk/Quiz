@@ -2,6 +2,7 @@ package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Category;
 import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.repositories.entities.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
 import com.qucat.quiz.services.CategoryService;
 import com.qucat.quiz.services.QuizService;
@@ -29,8 +30,7 @@ public class QuizController {
 
     @PostMapping("/quiz")
     public boolean addQuiz(@RequestBody Quiz quiz) {
-        System.out.println(quiz.getImageId());
-        return true;//quizService.createQuiz(quiz);
+        return quizService.createQuiz(quiz);
     }
 
     @PutMapping("/quiz")
@@ -51,11 +51,13 @@ public class QuizController {
             @RequestParam(value = "tag", required = false) ArrayList<String> tags,
             @RequestParam(value = "quizName", required = false) String quizName,
             @RequestParam(value = "authorName", required = false) String authorName,
-            @RequestParam(value = "date", required = false)
-            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date[] dates) {
+            @RequestParam(value = "minDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minDate,
+            @RequestParam(value = "maxDate", required = false)
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate,
+            @RequestParam(required = false) QuizStatus[] statuses) {
         return quizService.showPage(pageNumber, countOnPage, quizName, authorName,
-                categories, dates, tags).toList().toArray(Quiz[]::new);
-
+                categories, minDate, maxDate, tags, statuses).toList().toArray(Quiz[]::new);
     }
 
     @GetMapping("/categories")

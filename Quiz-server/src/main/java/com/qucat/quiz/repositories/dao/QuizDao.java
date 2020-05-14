@@ -18,8 +18,12 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     boolean addTag(int quizId, int tagId);
 
+    void removeTag(int quizId, int tagId);
+
+    boolean isUsersFavorite(int userId, int quizId);
+
     Page<Quiz> getQuizByStatus(QuizStatus status, Pageable pageable);
 
-    Page<Quiz> findAllForPage(Pageable pageable, String name, String author,
-                              List<String> category, Timestamp minDate, Timestamp maxDate, List<String> tags);
+    Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category, Timestamp minDate,
+                              Timestamp maxDate, List<String> tags, QuizStatus[] status);
 }

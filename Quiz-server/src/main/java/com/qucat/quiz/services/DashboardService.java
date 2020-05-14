@@ -1,7 +1,12 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.DashboardDaoImpl;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.dao.DashboardDao;
+import com.qucat.quiz.repositories.entities.AdminStatistics;
+import com.qucat.quiz.repositories.entities.BestQuiz;
+import com.qucat.quiz.repositories.entities.CategoryStatistics;
+import com.qucat.quiz.repositories.entities.ComparedScores;
+import com.qucat.quiz.repositories.entities.QuizStatistics;
+import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +18,7 @@ import java.util.List;
 @Service
 public class DashboardService {
     @Autowired
-    private DashboardDaoImpl dashboardDao;
+    private DashboardDao dashboardDao;
 
     public List<User> getTopUsers(int limit) {
         List<User> users = dashboardDao.getTopUsers(limit);
@@ -28,37 +33,37 @@ public class DashboardService {
     public User getBestUserInTheQuiz(int quizId) {
         User user = dashboardDao.getBestUserByQuizId(quizId);
         if (user == null) {
-            log.error("Such user doesn`t exist");
+            log.error("There is no the best user in the quiz with id={}", quizId);
             return null;
         } else {
             return user;
         }
     }
 
-    public List<CategoryStatistics> getStatisticInTheCategory(int id) {
-        List<CategoryStatistics> categoryStatistics = dashboardDao.getStatisticInTheCategory(id);
+    public List<CategoryStatistics> getStatisticInTheCategory(int userId) {
+        List<CategoryStatistics> categoryStatistics = dashboardDao.getStatisticInTheCategory(userId);
         if (categoryStatistics.isEmpty()) {
-            log.warn("Statistic is empty");
+            log.warn("Statistic for user with id={} is empty", userId);
             return Collections.emptyList();
         } else {
             return categoryStatistics;
         }
     }
 
-    public List<Statistics> getPercentOfCorrectAnswers(int id) {
-        List<Statistics> correctAnswers = dashboardDao.getPercentOfCorrectAnswers(id);
+    public List<QuizStatistics> getPercentOfCorrectAnswers(int userId) {
+        List<QuizStatistics> correctAnswers = dashboardDao.getPercentOfCorrectAnswers(userId);
         if (correctAnswers.isEmpty()) {
-            log.warn("Can`t get information about correct answers");
+            log.warn("Can`t get information about correct user answers with id={} ", userId);
             return Collections.emptyList();
         } else {
             return correctAnswers;
         }
     }
 
-    public BestQuiz getTheMostSuccessQuiz(int id) {
-        BestQuiz bestQuiz = dashboardDao.getTheMostSuccessfulQuiz(id);
+    public BestQuiz getTheMostSuccessQuiz(int userId) {
+        BestQuiz bestQuiz = dashboardDao.getTheMostSuccessfulQuiz(userId);
         if (bestQuiz == null) {
-            log.error("Such user doesn`t exist");
+            log.error("There is no the most successful quiz for user with id = {}", userId);
             return null;
         } else {
             return bestQuiz;
@@ -68,25 +73,25 @@ public class DashboardService {
     public List<ComparedScores> getComparedScores(int userId) {
         List<ComparedScores> comparedScores = dashboardDao.getComparedScores(userId);
         if (comparedScores.isEmpty()) {
-            log.warn("Can`t get information about scores");
+            log.warn("Can`t get information about scores of user with id={}",userId);
             return Collections.emptyList();
         } else {
             return comparedScores;
         }
     }
 
-    public List<Statistics> getFriendsPreferences(int userId) {
-        List<Statistics> friendsPreferences = dashboardDao.getFriendsPreferences(userId);
+    public List<QuizStatistics> getFriendsPreferences(int userId) {
+        List<QuizStatistics> friendsPreferences = dashboardDao.getFriendsPreferences(userId);
         if (friendsPreferences.isEmpty()) {
-            log.warn("Can`t get information about friends` preferences");
+            log.warn("Can`t get information about about the preferences of friends of a user with id = {}",userId);
             return Collections.emptyList();
         } else {
             return friendsPreferences;
         }
     }
 
-    public List<Statistics> getStatisticOfQuizzesPlayed() {
-        List<Statistics> playedQuizzes = dashboardDao.getStatisticOfQuizzesPlayed();
+    public List<QuizStatistics> getStatisticOfQuizzesPlayed() {
+        List<QuizStatistics> playedQuizzes = dashboardDao.getStatisticOfQuizzesPlayed();
         if (playedQuizzes.isEmpty()) {
             log.warn("There are no quizzes played");
             return Collections.emptyList();
