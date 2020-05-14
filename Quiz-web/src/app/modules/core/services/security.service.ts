@@ -12,7 +12,7 @@ export class SecurityService {
   }
 
   public getCurrentId() {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       const tokenPayload = decode(token);
       return this.id = tokenPayload.userId;
@@ -22,7 +22,7 @@ export class SecurityService {
   }
 
   public getCurrentRole() {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     if (token) {
       const tokenPayload = decode(token);
       return this.role = tokenPayload.role;
