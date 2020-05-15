@@ -36,7 +36,6 @@ export class ViewProfile implements OnInit {
       else this.isOwn = true;
       this.profileService.checkFriendship(this.id, this.visitorId).subscribe(data => {
         this.isFriend = data;
-        console.log(data);
       });
     } else {
       this.id = this.securityService.getCurrentId();
@@ -46,7 +45,6 @@ export class ViewProfile implements OnInit {
   }
 
   private getUser() {
-    console.log(this.id);
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.role = this.securityService.getCurrentRole();
