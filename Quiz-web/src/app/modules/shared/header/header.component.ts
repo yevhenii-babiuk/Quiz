@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {Router} from "@angular/router";
@@ -14,6 +14,9 @@ import {TranslateService} from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
   id: number;
   role: Role;
+  @Input() isOpened:boolean;
+  @Output()
+  public buttonClicked: EventEmitter<any> = new EventEmitter();
 
   constructor(
     private profileService: ProfileService,
@@ -34,5 +37,9 @@ export class HeaderComponent implements OnInit {
   logout(){
     this.authService.logOut();
     this.redirect.navigate(['home']);
+  }
+
+  clicked() {
+    this.buttonClicked.emit();
   }
 }
