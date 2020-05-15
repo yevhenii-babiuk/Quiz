@@ -5,5 +5,8 @@
   "HEADER": {
     "LOGIN": "Login",
     "SIGN UP": "Sign up"
+  },
+  "SIDENAV": {
+    "QUIZZES": "Quizzes"
   }
 }
