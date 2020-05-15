@@ -2,8 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from "rxjs";
 import {User} from "../models/user";
-//import {url} from "../../../../environments/environment.prod";
-import {countOnPage, url} from "../../../../environments/environment.prod";
+import {url} from "../../../../environments/environment.prod";
 import {catchError} from "rxjs/operators";
 
 @Injectable({
@@ -65,7 +64,7 @@ export class ProfileService {
   putImage(userId: number, image: File) {
     const uploadData = new FormData();
     uploadData.append('myFile', image, "name");
-    return this.http.put(`${url}/users/image/${userId}`,uploadData,this.httpOptions);
+    return this.http.put(`${url}/users/image/${userId}`, uploadData, this.httpOptions);
   }
 
   checkFriendship(id: number, visitorId: number) {
@@ -73,6 +72,10 @@ export class ProfileService {
       .pipe(
         catchError(this.handleError<boolean>(false))
       );
+  }
+
+  changeStatus(id: number, newStatus: boolean) {
+    return this.http.put(`${url}/users/${id}/status/change`, newStatus, this.httpOptions);
   }
 }
 

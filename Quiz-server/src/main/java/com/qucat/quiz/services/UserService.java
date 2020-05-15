@@ -297,4 +297,8 @@ public class UserService {
         currentUser.setImageId(imageService.saveImage(image.getSrc()));
         userDao.update(currentUser);
     }
+
+    public void updateUserStatus(int userId, UserAccountStatus status) {
+        userDao.updateUserStatus(userId, status);
+    }
 }

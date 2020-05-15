@@ -2,6 +2,7 @@ package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Role;
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.UserAccountStatus;
 import com.qucat.quiz.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,10 +59,15 @@ public class UserController {
         return userService.deleteUserFriend(id, friendId);
     }
 
-    @PutMapping("image/{id}")
+    @PutMapping("/image/{id}")
     public void saveImageForProfile(@PathVariable int id,
                                     @RequestBody MultipartFile file) {
         System.out.println("loaded " + id);
         //userService.updateUserImage(id, file);
+    }
+
+    @PutMapping("/users/{id}/status/change")
+    public void changeUserStatus(@PathVariable int id, @RequestBody UserAccountStatus newStatus) {
+        userService.updateUserStatus(id, newStatus);
     }
 }

@@ -3,6 +3,7 @@ package com.qucat.quiz.repositories.dao;
 import com.qucat.quiz.repositories.entities.FriendActivity;
 import com.qucat.quiz.repositories.entities.Role;
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.UserAccountStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -56,4 +57,6 @@ public interface UserDao extends GenericDao<User> {
     Page<User> searchUsersByLogin(String login, Role role, Pageable pageable);
 
     boolean checkUsersFriendship(int firstUserId, int secondUserId);
+
+    void updateUserStatus(int id, UserAccountStatus status);
 }

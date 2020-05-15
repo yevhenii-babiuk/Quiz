@@ -7,6 +7,7 @@ import {Imaged} from "../../core/models/imaged";
 import {Image} from "../../core/models/image";
 import {ActivatedRoute} from "@angular/router";
 import {AchievementService} from "../../core/services/achievement.service";
+import {Status} from "../../core/models/Status";
 
 
 @Component({
@@ -23,6 +24,8 @@ export class ViewProfile implements OnInit {
   isOwn: boolean;
   isFriend: boolean;
   visitorId: number;
+  isActivated: boolean;
+  statusEnum = Status;
 
   constructor(
     private route: ActivatedRoute,
@@ -54,6 +57,7 @@ export class ViewProfile implements OnInit {
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.role = this.securityService.getCurrentRole();
+      this.isActivate();
     });
   }
 
@@ -94,4 +98,19 @@ export class ViewProfile implements OnInit {
   recalculateAchievement() {
     this.achievementService.recalculateAchievements().subscribe();
   }
+
+  isActivate(){
+    if(this.userData.status &&
+      this.userData.status==this.statusEnum.ACTIVATED){
+      this.isActivated = true;
+    }else {
+      this.isActivated = false;
+    }
+  }
+
+  changeStatus() {
+      this.isActivated = !this.isActivated;
+      this.profileService.changeStatus(this.visitorId, this.isActivated).subscribe();
+  }
+
 }
