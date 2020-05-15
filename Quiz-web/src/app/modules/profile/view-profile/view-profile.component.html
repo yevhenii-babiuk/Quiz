@@ -19,10 +19,10 @@
         <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
           Редагувати
         </button>
-        <button *ngIf="!isOwn && !isFriend" class="btn btn-warning btn-block" (click)="friendship()">
+        <button *ngIf="!isOwn && !isFriend && role == roleEnum.USER" class="btn btn-warning btn-block" (click)="friendship()">
           Додати до друзів
         </button>
-        <button *ngIf="!isOwn && isFriend" class="btn btn-warning btn-block" (click)="friendship()">
+        <button *ngIf="!isOwn && isFriend && role == roleEnum.USER" class="btn btn-warning btn-block" (click)="friendship()">
           Видалити з друзів
         </button>
         <button *ngIf="role == roleEnum.ADMIN && isOwn" class="btn btn-warning btn-block"
@@ -60,11 +60,11 @@
             <td style="text-align: left">Description:</td>
             <td style="text-align: left">{{userData.profile}}</td>
           </tr>
-          <tr *ngIf="role == roleEnum.USER">
+          <tr *ngIf="userData.role == roleEnum.USER">
             <td style="text-align: left">Murrs:</td>
             <td style="text-align: left"> {{userData.score}}</td>
           </tr>
-          <tr *ngIf="role == roleEnum.USER">
+          <tr *ngIf="userData.role == roleEnum.USER">
             <td style="text-align: left"><img src="../../assets/img/score.png" width="80" height="80" align="bottom"/>
             </td>
             <td style="text-align: left"></td>
@@ -73,14 +73,11 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-4 ">
-
-      </div>
     </div>
   </div>
 
   <div class="w-100" align="center">
-    <div *ngIf="role == roleEnum.USER || !isOwn">
+    <div *ngIf="userData.role == roleEnum.USER">
       <!--<h4><p style="margin-left: 40px" align="center">Рекомендовані вікторини</p></h4>
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />

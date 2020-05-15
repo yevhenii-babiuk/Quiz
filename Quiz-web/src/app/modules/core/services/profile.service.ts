@@ -4,6 +4,7 @@ import {Observable, of} from "rxjs";
 import {User} from "../models/user";
 import {url} from "../../../../environments/environment.prod";
 import {catchError} from "rxjs/operators";
+import {Status} from "../models/Status";
 
 @Injectable({
   providedIn: 'root'
@@ -74,8 +75,8 @@ export class ProfileService {
       );
   }
 
-  changeStatus(id: number, newStatus: boolean) {
-    return this.http.put(`${url}/users/${id}/status/change`, newStatus, this.httpOptions);
+  changeStatus(id: number, newStatus: Status) {
+    return this.http.put<string>(`${url}/users/${id}/status/change`, newStatus, this.httpOptions);
   }
 }
 

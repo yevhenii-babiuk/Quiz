@@ -66,8 +66,8 @@ public class UserController {
         //userService.updateUserImage(id, file);
     }
 
-    @PutMapping("/users/{id}/status/change")
-    public void changeUserStatus(@PathVariable int id, @RequestBody UserAccountStatus newStatus) {
-        userService.updateUserStatus(id, newStatus);
+    @PutMapping("/{id}/status/change")
+    public void changeUserStatus(@PathVariable int id, @RequestBody String newStatus) {
+        userService.updateUserStatus(id, UserAccountStatus.valueOf(newStatus));
     }
 }

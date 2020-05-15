@@ -4,7 +4,6 @@ import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {Imaged} from "../../core/models/imaged";
-import {Image} from "../../core/models/image";
 import {ActivatedRoute} from "@angular/router";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
@@ -109,8 +108,16 @@ export class ViewProfile implements OnInit {
   }
 
   changeStatus() {
-      this.isActivated = !this.isActivated;
-      this.profileService.changeStatus(this.visitorId, this.isActivated).subscribe();
+    this.isActivated = !this.isActivated;
+      let status: Status;
+      if(this.isActivated){
+        status = Status.ACTIVATED;
+      }else{
+        status = Status.UNACTIVATED;
+      }
+      this.userData.status=status;
+      this.profileService.changeStatus(this.userData.id, status)
+        .subscribe();
   }
 
 }
