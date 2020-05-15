@@ -23,7 +23,7 @@ public class DashboardController {
 
     @GetMapping("/top")
     public List<User> getTopPlayers() {
-        return dashboardService.getTopUsers(10);
+        return dashboardService.getTopUsers(7);
     }
 
     @GetMapping("/{id}/quizzes/played/categories")

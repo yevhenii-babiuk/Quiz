@@ -31,7 +31,7 @@
       <img src='assets/img/Qucat.png' routerLink="../home" class="logo-image" alt="Qucat">
     </div>
 <hr>
-    <ul class="sidebar-nav components ml-2">
+    <ul class="sidebar-nav components">
       <li *ngIf="authenticationService.isAuthenticated()">
         <a routerLink="../profile">Профіль</a>
       </li>
@@ -45,7 +45,7 @@
         <a routerLink="../users">Користувачі</a>
       </li>
       <li>
-        <a routerLink="../quizzes">Список вікторин</a>
+        <a routerLink="../quizzes">{{'SIDENAV.QUIZZES' | translate}}</a>
       </li>
       <li>
         <a routerLink="../announcements">Новини</a>

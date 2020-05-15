@@ -3,6 +3,7 @@ import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {AuthenticationService} from "../../core/services/authentication.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-sidenav',
@@ -20,6 +21,9 @@ export class SidenavComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     public securityService: SecurityService,
+    public authenticationService: AuthenticationService
+    public securityService: SecurityService,
+    public translate: TranslateService,
     public authenticationService: AuthenticationService
   ) {
 

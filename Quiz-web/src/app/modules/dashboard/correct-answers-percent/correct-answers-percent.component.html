@@ -4,6 +4,7 @@
     <div class="mt-4">
       <tabset>
         <tab heading="demo">-->
+<div *ngIf="stat.length!=0">
           <div echarts [options]="options" class="demo-chart"
                (chartInit)="onChartEvent($event, 'chartInit')"
                (chartClick)="onChartEvent($event, 'chartClick')"
@@ -16,6 +17,7 @@
                (chartContextMenu)="onChartEvent($event, 'chartContextMenu')"
                (chartDataZoom)="onChartEvent($event, 'chartDataZoom')"
           ></div>
+</div>
       <!--  </tab>
       </tabset>
     </div>

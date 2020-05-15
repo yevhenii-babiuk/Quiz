@@ -1,5 +1,6 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
+import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Role;
 import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.repositories.entities.UserAccountStatus;
@@ -25,7 +26,7 @@ public class UserMapper implements RowMapper<User> {
                 .status(UserAccountStatus.valueOf(resultSet.getString("status").toUpperCase()))
                 .role(Role.valueOf(resultSet.getString("role").toUpperCase()))
                 .imageId(resultSet.getInt("image_id"))
-                //.image(new Image(resultSet.getInt("image_id"), resultSet.getString("src")))
+                .image(new Image(resultSet.getInt("image_id"), resultSet.getString("src")))
                 .build();
     }
 }
