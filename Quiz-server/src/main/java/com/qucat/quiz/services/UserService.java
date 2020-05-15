@@ -292,10 +292,9 @@ public class UserService {
         return users;
     }
 
-    public void updateUserImage(User user) {
-        User currentUser = userDao.get(user.getId());
-
-        currentUser.setImageId(imageService.saveImage(user.getImage().getSrc()));
+    public void updateUserImage(int userId, Image image) {
+        User currentUser = userDao.get(userId);
+        currentUser.setImageId(imageService.saveImage(image.getSrc()));
         userDao.update(currentUser);
     }
 }

@@ -2,7 +2,21 @@
   <div class="container">
     <div class="row justify-content-md-left">
       <div class="col-md-auto">
-      <img src="../../assets/img/main.png" width="250" height="270">
+        <label class="image-upload-container btn btn-bwm">
+          <input class="d-none" #imageInput
+                 type="file"
+                 accept="image/*"
+                 (change)="processFile(imageInput, userData)">
+          <div class="img-preview-container img-preview"
+               *ngIf="userData.imageId==-1"
+               [ngStyle]="{'background-image': 'url(../../assets/img/main.png'}">
+          </div>
+          <div class="img-preview-container img-preview"
+               *ngIf="userData.imageId!=-1"
+               [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
+          </div>
+        </label>
+        <!--<img src="../../assets/img/main.png" width="250" height="270">-->
       </div>
       <div class="col-md-auto">
         <table class="table table-borderless h5">
@@ -51,17 +65,17 @@
 
   <div class="w-100" align="center">
     <div *ngIf="role == roleEnum.USER">
-    <!--<h4><p style="margin-left: 40px" align="center">Рекомендовані вікторини</p></h4>
-    <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-    <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-    <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-    <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
-      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />-->
-    <h4><p style="text-align:center">Досягнення</p></h4>
+      <!--<h4><p style="margin-left: 40px" align="center">Рекомендовані вікторини</p></h4>
+      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+      <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
+        <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />-->
+      <h4><p style="text-align:center">Досягнення</p></h4>
       <app-achievements-list [currentId]="id"></app-achievements-list>
-  </div>
-<!--    <div class="col-sm" *ngIf="role == roleEnum.ADMIN"></div>
-    <div class="col-sm" *ngIf="role == roleEnum.SUPER_ADMIN"></div>
-    <div class="col-sm" *ngIf="role == roleEnum.MODERATOR"></div>-->
+    </div>
+    <!--    <div class="col-sm" *ngIf="role == roleEnum.ADMIN"></div>
+        <div class="col-sm" *ngIf="role == roleEnum.SUPER_ADMIN"></div>
+        <div class="col-sm" *ngIf="role == roleEnum.MODERATOR"></div>-->
   </div>
 </div>
