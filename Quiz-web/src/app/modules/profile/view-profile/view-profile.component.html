@@ -25,7 +25,7 @@
         <button *ngIf="!isOwn && isFriend" class="btn btn-warning btn-block" (click)="friendship()">
           Видалити з друзів
         </button>
-        <button *ngIf="role == roleEnum.ADMIN" class="btn btn-warning btn-block"
+        <button *ngIf="role == roleEnum.ADMIN && isOwn" class="btn btn-warning btn-block"
                 (click)="recalculateAchievement()">
           Перерахувати досягення
         </button>
