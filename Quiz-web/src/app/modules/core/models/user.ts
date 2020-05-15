@@ -12,6 +12,7 @@ export class User implements Imaged {
   profile:string;
   score:number;
   role:string;
+  status:string;
   registrationDate: Date;
   imageId: number = -1;
   image: Image = new Image();

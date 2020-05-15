@@ -331,6 +331,12 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 (resultSet, number) -> resultSet.getInt("row_count")) > 0 ? true : false;
     }
 
+    @Override
+    public void updateUserStatus(int id, UserAccountStatus status) {
+        jdbcTemplate.update(usersQueries.get("updateUserStatus"),
+                status.name().toLowerCase(), id);
+    }
+
     private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
         String query = "";
         boolean isUnion = false;

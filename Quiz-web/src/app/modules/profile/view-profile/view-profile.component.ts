@@ -4,8 +4,9 @@ import {ProfileService} from "../../core/services/profile.service";
 import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {Imaged} from "../../core/models/imaged";
-import {Image} from "../../core/models/image";
 import {ActivatedRoute} from "@angular/router";
+import {AchievementService} from "../../core/services/achievement.service";
+import {Status} from "../../core/models/Status";
 
 
 @Component({
@@ -22,11 +23,14 @@ export class ViewProfile implements OnInit {
   isOwn: boolean;
   isFriend: boolean;
   visitorId: number;
+  isActivated: boolean;
+  statusEnum = Status;
 
   constructor(
     private route: ActivatedRoute,
     private profileService: ProfileService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private achievementService: AchievementService
   ) {
   }
 
@@ -52,6 +56,7 @@ export class ViewProfile implements OnInit {
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.role = this.securityService.getCurrentRole();
+      this.isActivate();
     });
   }
 
@@ -62,7 +67,7 @@ export class ViewProfile implements OnInit {
 
     reader.addEventListener('load', (event: any) => {
       imaged.image.src = event.target.result.substring(23);
-      this.profileService.putImage(this.id,file).subscribe(
+      this.profileService.putImage(this.id, file).subscribe(
         id => {
           console.log("id=" + id);
           if (typeof id === "number") {
@@ -88,4 +93,31 @@ export class ViewProfile implements OnInit {
         this.isFriend = true
       });
   }
+
+  recalculateAchievement() {
+    this.achievementService.recalculateAchievements().subscribe();
+  }
+
+  isActivate(){
+    if(this.userData.status &&
+      this.userData.status==this.statusEnum.ACTIVATED){
+      this.isActivated = true;
+    }else {
+      this.isActivated = false;
+    }
+  }
+
+  changeStatus() {
+    this.isActivated = !this.isActivated;
+      let status: Status;
+      if(this.isActivated){
+        status = Status.ACTIVATED;
+      }else{
+        status = Status.UNACTIVATED;
+      }
+      this.userData.status=status;
+      this.profileService.changeStatus(this.userData.id, status)
+        .subscribe();
+  }
+
 }
