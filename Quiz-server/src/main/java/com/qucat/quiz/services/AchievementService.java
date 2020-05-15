@@ -96,6 +96,7 @@ public class AchievementService {
         List<UserAchievement> afterUpdateAchievements = achievementDao.getNewUserAchievements(achievements);
 
         if (afterUpdateAchievements.equals(beforeUpdateAchievements)) {
+            log.info("here is no changes in userAchievementLists");
             return;
         }
 
