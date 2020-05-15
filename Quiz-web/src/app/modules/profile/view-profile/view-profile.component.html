@@ -16,6 +16,19 @@
                [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
           </div>
         </label>
+        <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
+          Редагувати
+        </button>
+        <button *ngIf="!isOwn && !isFriend" class="btn btn-warning btn-block" (click)="friendship()">
+          Додати до друзів
+        </button>
+        <button *ngIf="!isOwn && isFriend" class="btn btn-warning btn-block" (click)="friendship()">
+          Видалити з друзів
+        </button>
+        <button *ngIf="role == roleEnum.ADMIN" class="btn btn-warning btn-block"
+                (click)="recalculateAchievement()">
+          Перерахувати досягення
+        </button>
         <!--<img src="../../assets/img/main.png" width="250" height="270">-->
       </div>
       <div class="col-md-auto">
@@ -49,16 +62,8 @@
           </tbody>
         </table>
       </div>
-      <div class="col-md-auto  ">
-        <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
-          Редагувати
-        </button>
-        <button *ngIf="!isOwn && !isFriend" class="btn btn-warning btn-block" (click)="friendship()">
-          Додати до друзів
-        </button>
-        <button *ngIf="!isOwn && isFriend" class="btn btn-warning btn-block" (click)="friendship()">
-          Видалити з друзів
-        </button>
+      <div class="col-md-4 ">
+
       </div>
     </div>
   </div>

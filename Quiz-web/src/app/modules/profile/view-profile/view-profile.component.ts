@@ -6,6 +6,7 @@ import {SecurityService} from "../../core/services/security.service";
 import {Imaged} from "../../core/models/imaged";
 import {Image} from "../../core/models/image";
 import {ActivatedRoute} from "@angular/router";
+import {AchievementService} from "../../core/services/achievement.service";
 
 
 @Component({
@@ -26,7 +27,8 @@ export class ViewProfile implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private profileService: ProfileService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    private achievementService: AchievementService
   ) {
   }
 
@@ -62,7 +64,7 @@ export class ViewProfile implements OnInit {
 
     reader.addEventListener('load', (event: any) => {
       imaged.image.src = event.target.result.substring(23);
-      this.profileService.putImage(this.id,file).subscribe(
+      this.profileService.putImage(this.id, file).subscribe(
         id => {
           console.log("id=" + id);
           if (typeof id === "number") {
@@ -87,5 +89,9 @@ export class ViewProfile implements OnInit {
       this.profileService.addFriend(this.visitorId, this.id).subscribe(data => {
         this.isFriend = true
       });
+  }
+
+  recalculateAchievement() {
+    this.achievementService.recalculateAchievements().subscribe();
   }
 }
