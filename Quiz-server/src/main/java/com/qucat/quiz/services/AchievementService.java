@@ -83,7 +83,7 @@ public class AchievementService {
 
     @Transactional
     public void deleteAchievement(Achievement achievement) {
-        achievementDao.delete(achievement);
+        achievementDao.deleteById(achievement.getId());
     }
 
     public List<Achievement> getAllAchievement() {

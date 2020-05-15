@@ -84,11 +84,6 @@ public class TokenDaoImpl implements TokenDao {
     }
 
     @Override
-    public void delete(Token token) {
-
-    }
-
-    @Override
     public void deleteById(int id) {
 
     }
