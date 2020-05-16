@@ -35,6 +35,8 @@ import {ActivitiesModule} from "./modules/activities/activities.module";
 
 import {AchievementRoutingModule} from "./modules/achivement/achievement-routing.module";
 import {AchievementModule} from "./modules/achivement/achievement.module";
+import {ChatModule} from "./modules/chat/chat.module";
+import {ChatRoutingModule} from "./modules/chat/chat-routing.module";
 
 @NgModule({
   declarations: [
@@ -70,7 +72,9 @@ import {AchievementModule} from "./modules/achivement/achievement.module";
     ActivitiesModule,
     ActivitiesRoutingModule,
     AchievementModule,
-    AchievementRoutingModule
+    AchievementRoutingModule,
+    ChatModule,
+    ChatRoutingModule
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
