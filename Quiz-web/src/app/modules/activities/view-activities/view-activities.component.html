@@ -1,20 +1,3 @@
-<!--<div class="container">
-  <div class="well well-sm text-center">
-
-    <ng-container *ngFor="let activity of activityCategories">
-      &lt;!&ndash;<div class="btn-group" data-toggle="buttons">&ndash;&gt;
-        <div class="dropdown-item checkbox">
-          &lt;!&ndash;<label class="btn btn-default">&ndash;&gt;<input [(ngModel)]="activity.selected" id={{activity.id}}}}
-                                                       type="checkbox" (change)="getFilteredActivities()">
-          <label for="{{activity.id}}">
-            {{activity.value}}
-          </label>
-        </div>
-
-    </ng-container>
-
-  </div>
-</div>-->
 <div class="container">
   <div class="well well-sm text-center">
     <div class="checkbox checkbox-warning" >
@@ -30,9 +13,6 @@
     </div>
   </div>
 </div>
-<!--<div class="row">
-  <button type="button" class="btn btn-warning btn btn-block mt-2 mb-3" (click)="getFilteredActivities()">Відфільтрувати</button>
-  </div>-->
 
 <ng-container *ngFor="let activity of activities">
   <div class="row custom">
@@ -76,11 +56,3 @@
   </div>
 
 </ng-container>
-
-
-
-
-
-
-
-

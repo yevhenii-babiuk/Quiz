@@ -43,8 +43,8 @@ public class GameProcess implements Runnable {
         }
     }
 
-    private void sendResults() {
-        Users users = new Users(gameDao.getUsersByGame(gameId));
+    private void sendResults(boolean isFinal) {
+        Users users = new Users(gameDao.getUsersByGame(gameId), isFinal);
         socketSenderService.sendResults(gameId, users);
         try {
             Thread.sleep((long) 1e4);
@@ -108,13 +108,12 @@ public class GameProcess implements Runnable {
             }
 
             if (gameDto.isIntermediateResult() && count != 1) {
-                sendResults();
+                sendResults(false);
             }
 
             gameDao.deleteGameQuestion(questionDto.getId());
         }
-        sendResults();
-        //todo send end command
+        sendResults(true);
         //todo save
         gameDao.deleteGame(gameId);
     }

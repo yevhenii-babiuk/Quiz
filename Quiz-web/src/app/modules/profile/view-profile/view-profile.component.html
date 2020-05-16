@@ -2,15 +2,19 @@
   <div class="container">
     <div class="row justify-content-md-left">
       <div class="col-md-auto">
-        <label *ngIf="(userData.imageId==-1)" class="image-upload-container btn btn-bwm btn-warning">
+        <div  class="img-preview-container img-preview"
+             *ngIf="!isOwn"
+             [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}" width="280" height="300">
+        </div>
+        <!--<label *ngIf="(userData.imageId==-1) && isOwn" class="image-upload-container btn btn-bwm btn-warning">
           <span>Select Image</span>
           <input class="d-none" #imageInput
                  type="file"
                  accept="image/*"
                  (change)="processFile(imageInput, userData)">
-        </label>
+        </label>-->
 
-        <label *ngIf="userData.imageId!=-1" class="image-upload-container btn btn-bwm">
+        <label *ngIf="userData.imageId!=-1 && isOwn" class="image-upload-container btn btn-bwm">
           <input class="d-none" #imageInput
                  type="file"
                  accept="image/*"
@@ -21,11 +25,31 @@
                [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
           </div>
         </label>
-
-        <!--<img class="img-fluid rounded" src="../../assets/img/main.png" width="220" height="260">
-        <button (click)="update()" class="btn btn-warning form-control">Submit</button>-->
-        <button *ngIf="isOwn && loadedPhoto" (click)="update()" class="btn btn-warning form-control">Зберегти фото</button>
+        <button *ngIf="isOwn && loadedPhoto" (click)="update()" class="btn btn-warning form-control mb-3">Зберегти фото</button>
+        <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
+          Редагувати
+        </button>
+        <button *ngIf="!isOwn && !isFriend && role == roleEnum.USER" class="btn btn-warning btn-block" (click)="friendship()">
+          Додати до друзів
+        </button>
+        <button *ngIf="!isOwn && isFriend && role == roleEnum.USER" class="btn btn-warning btn-block" (click)="friendship()">
+          Видалити з друзів
+        </button>
+        <button *ngIf="role == roleEnum.ADMIN && isOwn" class="btn btn-warning btn-block"
+                (click)="recalculateAchievement()">
+          Перерахувати досягення
+        </button>
         <!--<img src="../../assets/img/main.png" width="250" height="270">-->
+        <button *ngIf="userData.status==statusEnum.ACTIVATED && !isOwn &&
+          (role == roleEnum.ADMIN || role == roleEnum.SUPER_ADMIN)" class="btn btn-warning btn-block"
+                (click)="changeStatus()">
+          Деактивувати
+        </button>
+        <button *ngIf="userData.status==statusEnum.UNACTIVATED && !isOwn &&
+          (role == roleEnum.ADMIN || role == roleEnum.SUPER_ADMIN)" class="btn btn-warning btn-block"
+                (click)="changeStatus()">
+          Активувати
+        </button>
       </div>
       <div class="col-md-auto">
         <table class="table table-borderless h5">
@@ -46,34 +70,24 @@
             <td style="text-align: left">Description:</td>
             <td style="text-align: left">{{userData.profile}}</td>
           </tr>
-          <tr *ngIf="role == roleEnum.USER">
+          <tr *ngIf="userData.role == roleEnum.USER">
             <td style="text-align: left">Murrs:</td>
             <td style="text-align: left"> {{userData.score}}</td>
           </tr>
-          <tr *ngIf="role == roleEnum.USER">
-            <td style="text-align: left"><img src="../../assets/img/score.png" width="80" height="80" align="bottom"/></td>
+          <tr *ngIf="userData.role == roleEnum.USER">
+            <td style="text-align: left"><img src="../../assets/img/score.png" width="80" height="80" align="bottom"/>
+            </td>
             <td style="text-align: left"></td>
           </tr>
 
           </tbody>
         </table>
       </div>
-      <div class="col-md-auto  ">
-        <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
-          Редагувати
-        </button>
-        <button *ngIf="!isOwn && !isFriend" class="btn btn-warning btn-block" (click)="friendship()">
-          Додати до друзів
-        </button>
-        <button *ngIf="!isOwn && isFriend" class="btn btn-warning btn-block" (click)="friendship()">
-          Видалити з друзів
-        </button>
-      </div>
     </div>
   </div>
 
   <div class="w-100" align="center">
-    <div *ngIf="role == roleEnum.USER">
+    <div *ngIf="userData.role == roleEnum.USER">
       <!--<h4><p style="margin-left: 40px" align="center">Рекомендовані вікторини</p></h4>
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
@@ -81,7 +95,7 @@
       <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />
         <img src="../../../../assets/img/quiz.jpg" width="90" height="92" align="middle" class="leftpic" />-->
       <h4><p style="text-align:center">Досягнення</p></h4>
-      <app-achievements-list [currentId]="id"></app-achievements-list>
+      <app-achievements-list [currentId]="id" ></app-achievements-list>
     </div>
     <!--    <div class="col-sm" *ngIf="role == roleEnum.ADMIN"></div>
         <div class="col-sm" *ngIf="role == roleEnum.SUPER_ADMIN"></div>

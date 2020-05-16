@@ -188,6 +188,7 @@ public class UserService {
         currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         currentUser.setProfile(user.getProfile());
         currentUser.setMail(user.getMail());
+
         userDao.update(currentUser);
     }
 
@@ -296,9 +297,9 @@ public class UserService {
         return users;
     }
 
-    /*public void updateUserImage(int userId, Image image) {
-        User currentUser = userDao.get(userId);
-        currentUser.setImageId(imageService.saveImage(image.getSrc()));
-        userDao.update(currentUser);
-    }*/
+
+
+    public void updateUserStatus(int userId, UserAccountStatus status) {
+        userDao.updateUserStatus(userId, status);
+    }
 }

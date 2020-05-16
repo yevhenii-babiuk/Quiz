@@ -68,7 +68,7 @@ export class ViewActivitiesComponent implements OnInit {
 
 
   public getFilteredActivities() {
-
+    this.activities = [];
     let resultSelected = [];
     this.userId = this.securityService.getCurrentId();
     this.activityCategories.forEach(function (value) {
@@ -80,7 +80,6 @@ export class ViewActivitiesComponent implements OnInit {
       return;
     }
 
-    this.activities = [];
     this.activitiesService.getFilterActivities(this.userId, resultSelected)
       .subscribe(
         activities => {

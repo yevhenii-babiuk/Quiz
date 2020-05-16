@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClient} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -35,6 +35,13 @@ import {ActivitiesModule} from "./modules/activities/activities.module";
 
 import {AchievementRoutingModule} from "./modules/achivement/achievement-routing.module";
 import {AchievementModule} from "./modules/achivement/achievement.module";
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 
 @NgModule({
   declarations: [
@@ -70,7 +77,14 @@ import {AchievementModule} from "./modules/achivement/achievement.module";
     ActivitiesModule,
     ActivitiesRoutingModule,
     AchievementModule,
-    AchievementRoutingModule
+    AchievementRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},

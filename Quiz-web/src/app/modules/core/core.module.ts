@@ -6,6 +6,7 @@ import {HomeComponent} from './pages/home/home.component';
 import {SharedModule} from "../shared/shared.module";
 import {ProfileService} from "./services/profile.service";
 import {PagesRoutingModule} from "./pages/pages-routing.module";
+import {CarouselModule} from "angular-bootstrap-md";
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import {PagesRoutingModule} from "./pages/pages-routing.module";
   imports: [
     CommonModule,
     SharedModule,
-    PagesRoutingModule
+    PagesRoutingModule,
+    CarouselModule
   ],
   providers: [
     AlertService,

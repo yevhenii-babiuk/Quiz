@@ -12,8 +12,6 @@ public interface GenericDao<T> {
 
     void update(T t);
 
-    void delete(T t);
-
     void deleteById(int id);
 
 }
