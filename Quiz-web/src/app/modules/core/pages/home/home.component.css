@@ -3,6 +3,17 @@
   margin-left: 200px;
 }
 
+#slider{
+  margin-left: -9.5%;
+}
+
+#carouselExampleIndicators{
+  /*margin-left: -5%;
+  margin-right: -5%;*/
+}
+
+#b{
+}
 
 .act {
   background: #FFA700;
