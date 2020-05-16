@@ -25,6 +25,9 @@ export class ProfileService {
   public updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${this.url}/users/`, user);
   }
+  public updateUserPhoto(user: User): Observable<User> {
+    return this.http.put<User>(`${this.url}/users/photo`, user);
+  }
 
   public getUsers(length: number, allUsers: boolean) {
     return this.http.get<User[]>(`${url}/users?pageNumber=${Math.floor((length + 1) / 10)}&allUsers=${allUsers}`)
@@ -65,7 +68,7 @@ export class ProfileService {
   putImage(image: File) {
     const uploadData = new FormData();
     uploadData.append('myFile', image, "name");
-    return this.http.put(`${url}/image`,uploadData,this.httpOptions);
+    return this.http.put(`${url}/image`, uploadData);
   }
 
   checkFriendship(id: number, visitorId: number) {

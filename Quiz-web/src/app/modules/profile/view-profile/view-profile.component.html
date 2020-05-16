@@ -2,20 +2,29 @@
   <div class="container">
     <div class="row justify-content-md-left">
       <div class="col-md-auto">
-        <label class="image-upload-container btn btn-bwm">
+        <label *ngIf="(userData.imageId==-1)" class="image-upload-container btn btn-bwm btn-warning">
+          <span>Select Image</span>
           <input class="d-none" #imageInput
                  type="file"
                  accept="image/*"
                  (change)="processFile(imageInput, userData)">
+        </label>
+
+        <label *ngIf="userData.imageId!=-1" class="image-upload-container btn btn-bwm">
+          <input class="d-none" #imageInput
+                 type="file"
+                 accept="image/*"
+                 (change)="processFile(imageInput, userData)">
+          <img *ngIf="updated" src="{{userData.image.src}}" width="230" height="250">
           <div class="img-preview-container img-preview"
-               *ngIf="userData.imageId==-1"
-               [ngStyle]="{'background-image': 'url(../../assets/img/main.png'}">
-          </div>
-          <div class="img-preview-container img-preview"
-               *ngIf="userData.imageId!=-1"
+               *ngIf="!updated"
                [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
           </div>
         </label>
+
+        <!--<img class="img-fluid rounded" src="../../assets/img/main.png" width="220" height="260">
+        <button (click)="update()" class="btn btn-warning form-control">Submit</button>-->
+        <button *ngIf="isOwn && loadedPhoto" (click)="update()" class="btn btn-warning form-control">Зберегти фото</button>
         <!--<img src="../../assets/img/main.png" width="250" height="270">-->
       </div>
       <div class="col-md-auto">

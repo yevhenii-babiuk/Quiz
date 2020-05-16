@@ -27,6 +27,11 @@ public class UserController {
         userService.updateUserProfile(editedUser);
     }
 
+    @PutMapping("/photo")
+    public void updateUserPhoto(@RequestBody User editedUser) {
+        userService.updateUserImage(editedUser);
+    }
+
     @GetMapping
     public List<User> getUsers(@RequestParam(value = "pageNumber") int pageNumber,
                                @RequestParam(value = "allUsers") boolean allUsers,

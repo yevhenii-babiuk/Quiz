@@ -56,4 +56,6 @@ public interface UserDao extends GenericDao<User> {
     Page<User> searchUsersByLogin(String login, Role role, Pageable pageable);
 
     boolean checkUsersFriendship(int firstUserId, int secondUserId);
+
+    void updateUserPhoto(int idImage, int userId);
 }

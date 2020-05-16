@@ -188,8 +188,11 @@ public class UserService {
         currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         currentUser.setProfile(user.getProfile());
         currentUser.setMail(user.getMail());
-
         userDao.update(currentUser);
+    }
+
+    public void updateUserImage(User user) {
+        userDao.updateUserPhoto(user.getImageId(), user.getId());
     }
 
     public void authenticate(String username, String password) throws Exception {
@@ -293,9 +296,9 @@ public class UserService {
         return users;
     }
 
-    public void updateUserImage(int userId, Image image) {
+    /*public void updateUserImage(int userId, Image image) {
         User currentUser = userDao.get(userId);
         currentUser.setImageId(imageService.saveImage(image.getSrc()));
         userDao.update(currentUser);
-    }
+    }*/
 }
