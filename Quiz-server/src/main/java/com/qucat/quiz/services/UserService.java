@@ -197,6 +197,13 @@ public class UserService {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            User user = userDao.getUserByLogin(username);
+            boolean isActivated = user
+                    .getStatus()
+                    .equals(UserAccountStatus.ACTIVATED);
+            if (!isActivated) {
+                throw new DisabledException("User " + username + "has UNACTIVATED account status");
+            }
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
