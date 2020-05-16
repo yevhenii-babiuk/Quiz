@@ -1,18 +1,38 @@
+<!--<div class="container">
+  <div class="well well-sm text-center">
+
+    <ng-container *ngFor="let activity of activityCategories">
+      &lt;!&ndash;<div class="btn-group" data-toggle="buttons">&ndash;&gt;
+        <div class="dropdown-item checkbox">
+          &lt;!&ndash;<label class="btn btn-default">&ndash;&gt;<input [(ngModel)]="activity.selected" id={{activity.id}}}}
+                                                       type="checkbox" (change)="getFilteredActivities()">
+          <label for="{{activity.id}}">
+            {{activity.value}}
+          </label>
+        </div>
+
+    </ng-container>
+
+  </div>
+</div>-->
 <div class="container">
   <div class="well well-sm text-center">
-    <div class="btn-group" data-toggle="buttons">
+    <div class="checkbox checkbox-warning" >
       <ng-container *ngFor="let activity of activityCategories">
-        <div class="dropdown-item checkbox">
-          <label class="btn btn-default"><input [(ngModel)]="activity.selected" type="checkbox" value={{activity.value}}>{{activity.value}}</label>
-        </div>
+
+        <input [(ngModel)]="activity.selected" id={{activity.id}} type="checkbox" class="styled"
+               (change)="getFilteredActivities()">
+        <label for={{activity.id}}>
+          {{activity.value}}
+        </label>
+
       </ng-container>
     </div>
   </div>
 </div>
-
-<div class="row">
+<!--<div class="row">
   <button type="button" class="btn btn-warning btn btn-block mt-2 mb-3" (click)="getFilteredActivities()">Відфільтрувати</button>
-  </div>
+  </div>-->
 
 <ng-container *ngFor="let activity of activities">
   <div class="row custom">
@@ -27,24 +47,25 @@
              width="70" height="70">
         <!--achievement-->
         <h5 *ngIf="activity.type==category.ACHIEVEMENT">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> отримав нагороду
+          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> отримав нагороду
           <q>{{activity.activityContent}}</q>.
         </h5>
         <!--added new quiz-->
         <h5 *ngIf="activity.type==category.PUBLISH_QUIZ">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> створив нову вікторину <a routerLink="../quiz/{{activity.activityId}}" class="text-dark"><q>{{activity.activityContent}}</q></a>
+          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> створив нову вікторину
+          <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
           .
         </h5>
         <!--mark quiz as favourite-->
         <h5 *ngIf="activity.type==category.MARK_AS_FAVORITE">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a>
-          додав вікторину <a routerLink="../quiz/{{activity.activityId}}" class="text-dark"><q>{{activity.activityContent}}</q></a>
+          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a>
+          додав вікторину <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
           в список улюблених.
         </h5>
         <!--add to friends-->
         <h5 *ngIf="activity.type==category.ADD_FRIEND">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> додав користувача
-          <a routerLink="../users/{{activity.activityId}}" class="text-dark">{{activity.activityContent}}</a>
+          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> додав користувача
+          <a routerLink="../users/{{activity.activityId}}">{{activity.activityContent}}</a>
           в друзі.
         </h5>
 
@@ -55,7 +76,6 @@
   </div>
 
 </ng-container>
-
 
 
 

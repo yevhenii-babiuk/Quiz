@@ -6,7 +6,6 @@ import com.qucat.quiz.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -56,12 +55,5 @@ public class UserController {
     public boolean removeFriend(@PathVariable int id,
                                 @RequestBody int friendId) {
         return userService.deleteUserFriend(id, friendId);
-    }
-
-    @PutMapping("image/{id}")
-    public void saveImageForProfile(@PathVariable int id,
-                                    @RequestBody MultipartFile file) {
-        System.out.println("loaded " + id);
-        //userService.updateUserImage(id, file);
     }
 }

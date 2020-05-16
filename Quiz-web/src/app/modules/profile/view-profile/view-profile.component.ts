@@ -62,7 +62,7 @@ export class ViewProfile implements OnInit {
 
     reader.addEventListener('load', (event: any) => {
       imaged.image.src = event.target.result.substring(23);
-      this.profileService.putImage(this.id,file).subscribe(
+      this.profileService.putImage(file).subscribe(
         id => {
           console.log("id=" + id);
           if (typeof id === "number") {

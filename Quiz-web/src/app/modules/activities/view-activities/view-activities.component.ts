@@ -5,6 +5,7 @@ import {ActivitiesService} from "../../core/services/activities.service";
 import {Activity} from "../../core/models/activity";
 import {FriendActivityType} from "../../core/models/friendActivityType";
 import {Image} from "../../core/models/image";
+import {GameDto} from "../../core/models/gameDto";
 
 
 @Component({
@@ -16,18 +17,22 @@ export class ViewActivitiesComponent implements OnInit {
   category = FriendActivityType;
   activityCategories = [
     {
+      id: '1',
       value: 'Додані друзі',
       selected: false
     },
     {
+      id: '2',
       value: 'Додані до списку улюблених вікторини',
       selected: false
     },
     {
+      id: '3',
       value: 'Створені вікторини',
       selected: false
     },
     {
+      id: '4',
       value: 'Досягнення',
       selected: false
     }
@@ -41,7 +46,6 @@ export class ViewActivitiesComponent implements OnInit {
   constructor(private activitiesService: ActivitiesService,
               private securityService: SecurityService,
   ) {
-
   }
 
   getActivities(): void {
@@ -64,14 +68,20 @@ export class ViewActivitiesComponent implements OnInit {
 
 
   public getFilteredActivities() {
-    let resultSelected=[];
+
+    let resultSelected = [];
     this.userId = this.securityService.getCurrentId();
     this.activityCategories.forEach(function (value) {
       resultSelected.push(value.selected);
     });
 
+    if (!resultSelected[0] && !resultSelected[1] && !resultSelected[2] && !resultSelected[3]) {
+      this.getActivities();
+      return;
+    }
+
     this.activities = [];
-    this.activitiesService.getFilterActivities(this.userId,resultSelected)
+    this.activitiesService.getFilterActivities(this.userId, resultSelected)
       .subscribe(
         activities => {
           if (activities.length == 0) {
@@ -86,7 +96,7 @@ export class ViewActivitiesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-     this.getActivities();
+    this.getActivities();
   }
 
 }
