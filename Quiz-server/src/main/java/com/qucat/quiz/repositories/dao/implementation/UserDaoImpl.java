@@ -331,6 +331,17 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 (resultSet, number) -> resultSet.getInt("row_count")) > 0 ? true : false;
     }
 
+    @Override
+    public void updateUserStatus(int id, UserAccountStatus status) {
+        jdbcTemplate.update(usersQueries.get("updateUserStatus"),
+                status.name().toLowerCase(), id);
+    }
+
+    @Override
+    public void updateUserScore(int userId, int score) {
+        jdbcTemplate.update(usersQueries.get("updateUserScore"), score, userId);
+    }
+
     private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
         String query = "";
         boolean isUnion = false;
@@ -368,5 +379,10 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         }
 
         return query;
+    }
+
+    @Override
+    public void updateUserPhoto(int imageId, int userId) {
+        jdbcTemplate.update(usersQueries.get("updateUserPhoto"), imageId, userId);
     }
 }

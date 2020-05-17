@@ -38,7 +38,7 @@ public class QuestionService {
     }
 
     public void deleteQuestion(Question question) {
-        questionDao.delete(question);
+        questionDao.deleteById(question.getId());
     }
 
     public void deleteQuestionsById(List<Integer> questionsId) {

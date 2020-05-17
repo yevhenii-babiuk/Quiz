@@ -1,0 +1,12 @@
+{
+  "HOME": {
+    "TITLE": "Hello Angular Українською!"
+  },
+  "HEADER": {
+    "LOGIN": "Увійти",
+    "SIGN UP": "Зареєструватись"
+  },
+  "SIDENAV": {
+    "QUIZZES": "Список вікторин"
+  }
+}
