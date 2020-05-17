@@ -30,6 +30,7 @@ import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
 import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
 import {AchievementRoutingModule} from "./modules/achivement/achievement-routing.module";
 import {AchievementModule} from "./modules/achivement/achievement.module";
+import {NotificationMenuComponent} from "./modules/shared/notification-menu/notification-menu.component";
 
 @NgModule({
   declarations: [
@@ -68,7 +69,7 @@ import {AchievementModule} from "./modules/achivement/achievement.module";
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
     AuthGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService],
+    JwtHelperService, NotificationMenuComponent],
   bootstrap: [AppComponent]
 })
 

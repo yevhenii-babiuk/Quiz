@@ -8,4 +8,6 @@ public interface FriendListDao {
 
     List<Integer> getForNotification(int id, NotificationType notificationType);
 
+    boolean isSendNotification(int userId, NotificationType notificationType);
+
 }

@@ -65,4 +65,10 @@ public class NotificationSettingsDaoImpl extends GenericDaoImpl<NotificationSett
         return jdbcTemplate.query(notificationSettingsQueries.get("getByUserId"),
                 new Object[]{id}, new NotificationMapper());
     }
+
+    @Override
+    public NotificationSettings getSettingsByUserId(int userId) {
+        return jdbcTemplate.queryForObject(notificationSettingsQueries.get("getSettingsByUserId"),
+                new Object[]{userId}, new NotificationSettingsMapper());
+    }
 }

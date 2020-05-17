@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
+import {NotificationMenuComponent} from "../../shared/notification-menu/notification-menu.component";
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { AlertService } from '../../core/services/alert.service';
 
@@ -15,6 +15,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private notificationMenuComponent: NotificationMenuComponent,
     private alertService: AlertService,
     private router: Router
   ) { }
@@ -33,12 +34,15 @@ export class LoginComponent implements OnInit {
     .subscribe(
                data => {
                  //this.router.navigate(['/']).then();
+                 this.notificationMenuComponent.initializeWebSocketConnection();
+                 this.notificationMenuComponent.getNotificationFromDB();
                  this.router.navigate(['profile']).then();
                },
                error => {
                    this.alertService.error('Error while login');
                    console.log(error);
                });
+
   }
 
 }

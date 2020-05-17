@@ -30,5 +30,7 @@ public class NotificationSettingsService {
         notificationSettingsDao.update(notificationSettings);
     }
 
-
+    public NotificationSettings getSettingsByUserId(int userId) {
+        return notificationSettingsDao.getSettingsByUserId(userId);
+    }
 }

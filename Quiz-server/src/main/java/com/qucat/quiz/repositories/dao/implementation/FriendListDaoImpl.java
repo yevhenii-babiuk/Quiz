@@ -24,15 +24,41 @@ public class FriendListDaoImpl implements FriendListDao {
     private Map<String, String> friendsListQueries;
 
     @Override
-    public List<Integer> getForNotification(int userId, NotificationType notificationType) {
-        List<Integer> friends = null;
+    public boolean isSendNotification(int userId, NotificationType notificationType) {
+        boolean isSend = false;
         switch (notificationType) {
             case CREATED_NEWS:
-                friends = jdbcTemplate.queryForList(friendsListQueries.get("caseNewQuiz"),
+                isSend = jdbcTemplate.queryForObject(friendsListQueries.get("caseIsNewAnnouncement"),
+                        new Object[]{userId}, boolean.class);
+                break;
+            case CREATED_QUIZ:
+                isSend = jdbcTemplate.queryForObject(friendsListQueries.get("caseIsCreatedQuiz"),
+                        new Object[]{userId}, boolean.class);
+                break;
+            case GAME_INVITATION:
+                isSend = jdbcTemplate.queryForObject(friendsListQueries.get("caseIsGameInvitation"),
+                        new Object[]{userId}, boolean.class);
+                break;
+            case FRIEND_INVITATION:
+                isSend = jdbcTemplate.queryForObject(friendsListQueries.get("caseIsFriendInvitation"),
+                        new Object[]{userId}, boolean.class);
+                break;
+            default:
+                return false;
+        }
+        return isSend;
+    }
+
+    @Override
+    public List<Integer> getForNotification(int userId, NotificationType notificationType) {
+        List<Integer> friends;
+        switch (notificationType) {
+            case CREATED_NEWS:
+                friends = jdbcTemplate.queryForList(friendsListQueries.get("caseNewAnnouncement"),
                         new Object[]{userId}, Integer.class);
                 break;
             case CREATED_QUIZ:
-                friends = jdbcTemplate.queryForList(friendsListQueries.get("caseNewAnnouncement"),
+                friends = jdbcTemplate.queryForList(friendsListQueries.get("caseNewQuiz"),
                         new Object[]{userId}, Integer.class);
                 break;
             case GAME_INVITATION:

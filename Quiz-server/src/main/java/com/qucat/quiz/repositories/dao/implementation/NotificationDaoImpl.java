@@ -60,5 +60,11 @@ public class NotificationDaoImpl extends GenericDaoImpl<Notification> implements
                 new Object[]{id}, new NotificationMapper());
     }
 
+    @Override
+    public void deleteAllByUserId(int id) {
+        jdbcTemplate.query(notificationQueries.get("deleteAllByUserId"),
+                new Object[]{id}, new NotificationMapper());
+    }
+
 
 }

@@ -13,7 +13,7 @@
     <div class="notification-header" >
      <div>
        <span (click)="openSettings(!showSettings)">
-         <div class="fas fa-settings"> </div>
+         <div class="fas fa-cog"> </div>
        </span>
        <span class="label">Повідомлення</span>
        <span (click)="deleteAllNotification()">
@@ -27,25 +27,25 @@
         Отримувати повідомлення про:
       </div>
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="newsChanel" (click)="(turnOffNews(newsChanel))" id="checkbox1" type="checkbox" class="styled">
+        <input [(ngModel)]="notificationFilters.newAnnouncement" (click)="(updateSettings(notificationFilters))" id="checkbox1" type="checkbox" class="styled">
         <label for="checkbox1">
           Створення друзями новини
         </label>
       </div>
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="quizChanel" id="checkbox2" type="checkbox" class="styled">
+        <input [(ngModel)]="notificationFilters.newQuiz"  (click)="(updateSettings(notificationFilters))" id="checkbox2" type="checkbox" class="styled">
         <label for="checkbox2">
           Створення друзями вікторини
         </label>
       </div>
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="playChanel" id="checkbox3" type="checkbox" class="styled">
+        <input [(ngModel)]="notificationFilters.gameInvitation"  (click)="(updateSettings(notificationFilters))" id="checkbox3" type="checkbox" class="styled">
         <label for="checkbox3">
           Запрошення друзями до гри
         </label>
       </div>
       <div class="checkbox checkbox-warning">
-        <input [(ngModel)]="invitationChanel" id="checkbox4" type="checkbox" class="styled">
+        <input [(ngModel)]="notificationFilters.friendInvitation" (click)="(updateSettings(notificationFilters))" id="checkbox4" type="checkbox" class="styled">
         <label for="checkbox4">
           Додавання у друзі
         </label>
@@ -53,8 +53,8 @@
     </div>
     <div class="notification-container">
       <ng-container *ngFor="let notification of notifications">
-        <div class="notification-item" (mouseover)="setViewed(notification.actionLink)">
-          <button type="button" (click)="deleteNotification(notification.action)" class="close"
+        <div class="notification-item" (mouseover)="setViewed(notification)">
+          <button type="button" (click)="deleteNotification(notification.linkAction, notification.id)" class="close"
                   data-dismiss="modal" aria-hidden="true">×</button>
           <a routerLink="{{notification.authorLink}}" class="post-title mt-4 authorLinkFont" >
             {{notification.author}}

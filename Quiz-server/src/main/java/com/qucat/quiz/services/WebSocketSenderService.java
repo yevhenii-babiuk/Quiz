@@ -53,12 +53,26 @@ public class WebSocketSenderService {
     }
 
     public void sendNotification(int authorId, int objectId, NotificationType notificationType) {
-        Notification notification = notificationService.generateNotification(authorId, objectId, notificationType);
-        List<Integer> friendsId = friendListDao.getForNotification(authorId, notificationType);
-        for (int friendId : friendsId) {
-            this.template.convertAndSend("/notification" + friendId,
-                    gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
-                            .notification(notification).build()));
+
+        if (notificationType == NotificationType.CREATED_NEWS | notificationType == NotificationType.CREATED_QUIZ) {
+            Notification notification;
+            List<Integer> friendsId = friendListDao.getForNotification(authorId, notificationType);
+            for (int friendId : friendsId) {
+                notification = notificationService.generateNotification(authorId, objectId, friendId, notificationType);
+                this.template.convertAndSend("/notification" + friendId,
+                        gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
+                                .notification(notification).build()));
+            }
         }
+        if (notificationType == NotificationType.FRIEND_INVITATION
+                | notificationType == NotificationType.GAME_INVITATION) {
+            Notification notification = notificationService.generateNotification(authorId, objectId, objectId, notificationType);
+            if (friendListDao.isSendNotification(objectId, notificationType)) {
+                this.template.convertAndSend("/notification" + objectId,
+                        gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
+                                .notification(notification).build()));
+            }
+        }
+
     }
 }

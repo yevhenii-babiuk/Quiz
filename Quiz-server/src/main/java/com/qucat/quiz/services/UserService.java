@@ -4,15 +4,15 @@ import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
 import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
 import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -45,6 +45,9 @@ public class UserService {
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private WebSocketSenderService webSocketSenderService;
 
     @Value("${url}")
     private String URL;
@@ -214,7 +217,10 @@ public class UserService {
     }
 
     public boolean addUserFriend(int userId, int friendId) {
-        return userDao.addUserFriend(userId, friendId);
+        boolean isAdded;
+        isAdded = userDao.addUserFriend(userId, friendId);
+        webSocketSenderService.sendNotification(friendId, userId, NotificationType.FRIEND_INVITATION);
+        return isAdded;
     }
 
     public boolean deleteUserFriend(int userId, int friendId) {
