@@ -337,6 +337,11 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 status.name().toLowerCase(), id);
     }
 
+    @Override
+    public void updateUserScore(int userId, int score) {
+        jdbcTemplate.update(usersQueries.get("updateUserScore"), score, userId);
+    }
+
     private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
         String query = "";
         boolean isUnion = false;

@@ -5,9 +5,9 @@ import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {Imaged} from "../../core/models/imaged";
 import {ActivatedRoute} from "@angular/router";
-import {AlertService} from "../../core/services/alert.service";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
+import {AlertService} from "../../core/services/alert.service";
 
 
 @Component({
@@ -33,8 +33,8 @@ export class ViewProfile implements OnInit {
     private route: ActivatedRoute,
     private profileService: ProfileService,
     private securityService: SecurityService,
-    private alertService:AlertService,
-    private achievementService: AchievementService
+    private achievementService: AchievementService,
+    private alertService: AlertService
   ) {
   }
 
@@ -51,7 +51,6 @@ export class ViewProfile implements OnInit {
       this.id = this.securityService.getCurrentId();
       this.isOwn = true;
     }
-
     this.getUser();
   }
 
@@ -110,29 +109,50 @@ export class ViewProfile implements OnInit {
   }
 
   recalculateAchievement() {
-    this.achievementService.recalculateAchievements().subscribe();
+    this.achievementService.recalculateAchievements().subscribe(
+      data => {
+        if (data) {
+          this.alertService.success('Recalculation is successful', false);
+        } else {
+          this.alertService.error('Recalculation is not successful', false);
+        }
+      },
+      error => {
+        this.alertService.error('Error while recalculation!');
+        console.log(error);
+      });
   }
 
-  isActivate(){
-    if(this.userData.status &&
-      this.userData.status==this.statusEnum.ACTIVATED){
+  isActivate() {
+    if (this.userData.status &&
+      this.userData.status == this.statusEnum.ACTIVATED) {
       this.isActivated = true;
-    }else {
+    } else {
       this.isActivated = false;
     }
   }
 
   changeStatus() {
     this.isActivated = !this.isActivated;
-      let status: Status;
-      if(this.isActivated){
-        status = Status.ACTIVATED;
-      }else{
-        status = Status.UNACTIVATED;
-      }
-      this.userData.status=status;
-      this.profileService.changeStatus(this.userData.id, status)
-        .subscribe();
+    let status: Status;
+    if (this.isActivated) {
+      status = Status.ACTIVATED;
+    } else {
+      status = Status.UNACTIVATED;
+    }
+    this.userData.status = status;
+    this.profileService.changeStatus(this.userData.id, status)
+      .subscribe(
+        data => {
+          if (data) {
+            this.alertService.success('Status was successfully changed', false);
+          } else {
+            this.alertService.error('Status was successfully changed', false);
+          }
+        },
+        error => {
+          this.alertService.error('Error while changing status!');
+          console.log(error);
+        });
   }
-
 }

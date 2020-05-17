@@ -61,4 +61,6 @@ public interface UserDao extends GenericDao<User> {
     void updateUserPhoto(int idImage, int userId);
 
     void updateUserStatus(int id, UserAccountStatus status);
+
+    void updateUserScore(int userId, int score);
 }
