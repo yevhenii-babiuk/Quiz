@@ -29,7 +29,7 @@ export class AuthenticationService {
       map(
         userData => {
           let tokenStr = 'Bearer ' + userData.token;
-          sessionStorage.setItem('token', tokenStr);
+          localStorage.setItem('token', tokenStr);
           return userData;
         }
       )
@@ -57,11 +57,11 @@ export class AuthenticationService {
   }
 
   logOut() {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
   }
 
   public isAuthenticated(): boolean {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     // Check whether the token is expired and return
     // true or false
     if (!token) {
