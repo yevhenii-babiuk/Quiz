@@ -5,8 +5,8 @@ import {ChatAreaComponent} from "./chat-area/chat-area.component";
 import {ChatListComponent} from "./chat-list/chat-list.component";
 
 const chatRoutes: Routes = [
-  {path: 'user/:userId/chats', component: ChatListComponent, canActivate: [AuthGuard]},
-  {path: 'user/:userId/chat/:chatId', component: ChatAreaComponent, canActivate: [AuthGuard]},
+  {path: 'user/:userId/chats', component: ChatListComponent, /*canActivate: [AuthGuard]*/},
+  {path: 'user/:userId/chat/:chatId', component: ChatAreaComponent, /*canActivate: [AuthGuard]*/},
 ];
 
 @NgModule({

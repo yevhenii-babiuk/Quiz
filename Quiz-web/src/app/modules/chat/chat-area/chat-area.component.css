@@ -6,6 +6,13 @@
   margin: 8px 0 0;
 }
 
+.login {
+  display: block;
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 1px;
+}
+
 .received_msg {
   background: #ebebeb none repeat scroll 0 0;
   border-radius: 3px;
@@ -26,24 +33,10 @@
   width: 100%;
 }
 
-.input_msg_write input {
-  background: rgba(0, 0, 0, 0) none repeat scroll 0 0;
-  border: medium none;
-  color: #4c4c4c;
-  font-size: 15px;
-  min-height: 48px;
-  width: 100%;
+.msg_history {
+  height: 80vh;
+  overflow-y: auto;
 }
-
-.type_msg {
-  border-top: 1px solid #c4c4c4;
-  position: relative;
-}
-
-/*.msg_history {*/
-/*  height: 516px;*/
-/*  overflow-y: auto;*/
-/*}*/
 
 .avatar {
   height: 100% !important;

@@ -1,11 +1,15 @@
 <div class="p-m-3">
-  <div>
+
+  <div class="msg_history">
 
     <ng-container *ngFor="let message of messages">
       <div *ngIf="message.authorId == 12; else incoming">
         <div class="d-flex justify-content-end row m-3">
           <div class="col-6">
-            <p class="sent_msg">{{message.messageText}}</p>
+            <p class="sent_msg">
+              <span class="login"> {{message.authorLogin}}</span>
+              {{message.messageText}}
+            </p>
             <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
           </div>
           <img src="assets/img/main.png" class="avatar rounded-circle col-1" alt="Avatar">
@@ -16,7 +20,10 @@
         <div class="row m-3">
           <img src="assets/img/main.png" class="avatar rounded-circle col-1" alt="Avatar">
           <div class="col-7">
-            <p class="received_msg">{{message.messageText}}</p>
+            <p class="received_msg">
+              <span class="login"> {{message.authorLogin}}</span>
+              {{message.messageText}}
+            </p>
             <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
           </div>
         </div>
@@ -24,10 +31,10 @@
     </ng-container>
   </div>
 
-  <div class="type_msg fixed-bottom">
-    <div class="input_msg_write row">
-      <input type="text" class="write_msg col" placeholder="Type a message"/>
-      <button class="btn btn-warning col-2 mt-2" type="button">Send</button>
+  <div class="input-group mt-3 mb-3">
+    <input type="text" class="form-control" placeholder="Type a message...">
+    <div class="input-group-append">
+      <button class="btn btn-warning pl-5 pr-5" type="Send">Send</button>
     </div>
   </div>
 
