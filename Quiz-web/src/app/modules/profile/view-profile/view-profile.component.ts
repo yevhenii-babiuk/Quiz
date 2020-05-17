@@ -5,6 +5,7 @@ import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {Imaged} from "../../core/models/imaged";
 import {ActivatedRoute} from "@angular/router";
+import {AlertService} from "../../core/services/alert.service";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
 
@@ -16,6 +17,8 @@ import {Status} from "../../core/models/Status";
 })
 
 export class ViewProfile implements OnInit {
+  loadedPhoto:boolean;
+  updated: boolean;
   userData: User;
   id: number;
   role: Role;
@@ -30,6 +33,7 @@ export class ViewProfile implements OnInit {
     private route: ActivatedRoute,
     private profileService: ProfileService,
     private securityService: SecurityService,
+    private alertService:AlertService,
     private achievementService: AchievementService
   ) {
   }
@@ -47,6 +51,7 @@ export class ViewProfile implements OnInit {
       this.id = this.securityService.getCurrentId();
       this.isOwn = true;
     }
+
     this.getUser();
   }
 
@@ -59,26 +64,38 @@ export class ViewProfile implements OnInit {
   }
 
   processFile(imageInput: any, imaged: Imaged) {
-    //this.id=this.securityService.getCurrentId();
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      imaged.image.src = event.target.result.substring(23);
-      this.profileService.putImage(this.id, file).subscribe(
+      imaged.image.src = event.target.result;
+      this.updated = true;
+      this.loadedPhoto=true;
+      this.profileService.putImage(file).subscribe(
         id => {
-          console.log("id=" + id);
+          console.log("id = " + id);
           if (typeof id === "number") {
             imaged.imageId = id;
           }
         },
         error => {
-          imaged.image.src = null;
           console.log(error);
         });
     });
-
     reader.readAsDataURL(file);
+  }
+
+  update() {
+    this.profileService.updateUserPhoto(this.userData).subscribe(
+      get => {
+      },
+      error => {
+        console.log(error);
+      });
+
+    this.loadedPhoto=false;
+    this.alertService.success("Photo is changed");
+
   }
 
   friendship() {

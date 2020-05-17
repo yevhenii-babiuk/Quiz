@@ -3,15 +3,15 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -48,7 +48,6 @@ public class UserService {
 
     @Value("${url}")
     private String URL;
-
 
     @Transactional
     public boolean registerUser(User user) {
@@ -292,10 +291,9 @@ public class UserService {
         return users;
     }
 
-    public void updateUserImage(int userId, Image image) {
-        User currentUser = userDao.get(userId);
-        currentUser.setImageId(imageService.saveImage(image.getSrc()));
-        userDao.update(currentUser);
+
+    public void updateUserImage(User user) {
+        userDao.updateUserPhoto(user.getImageId(), user.getId());
     }
 
     public void updateUserStatus(int userId, UserAccountStatus status) {
