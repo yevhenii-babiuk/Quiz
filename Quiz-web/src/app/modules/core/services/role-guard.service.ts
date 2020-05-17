@@ -15,7 +15,12 @@ export class RoleGuardService implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     // this will be passed from the route config
     // on the data property
-    const expectedRole = route.data.expectedRole;
+
+    const LIMIT = 3;
+    const REGEX = ", ";
+
+    const expectedRole = route.data.expectedRole.split(REGEX, LIMIT);
+
     const token = localStorage.getItem('token');
     // decode the token to get its payload
     const tokenPayload = decode(token);
@@ -23,10 +28,13 @@ export class RoleGuardService implements CanActivate {
       this.router.navigate(['login']);
       return false;
     }
-    if (tokenPayload.role !== expectedRole) {
-      this.router.navigate(['profile']);
-      return false;
+
+    for (let i = 0; i < expectedRole.length; i++) {
+      if (this.secur.getCurrentRole() == expectedRole[i]) {
+        return true;
+      }
     }
-    return true;
+    this.router.navigate(['profile']);
+    return false;
   }
 }

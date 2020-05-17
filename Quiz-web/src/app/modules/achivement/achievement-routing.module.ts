@@ -5,7 +5,7 @@ import {RoleGuardService as RoleGuard} from "../core/services/role-guard.service
 import {CreateAchievementComponent} from "./create-achievement/create-achievement.component";
 
 const pagesRoutes: Routes = [
-  { path: 'achievements/create', component: CreateAchievementComponent, canActivate: [RoleGuard], data: {expectedRole: 'ADMIN'}},
+  { path: 'achievements/create', component: CreateAchievementComponent, canActivate: [RoleGuard], data: {expectedRole: 'ADMIN, MODERATOR'}},
 ];
 
 @NgModule({
