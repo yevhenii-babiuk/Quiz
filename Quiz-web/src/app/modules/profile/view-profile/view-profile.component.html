@@ -2,20 +2,30 @@
   <div class="container">
     <div class="row justify-content-md-left">
       <div class="col-md-auto">
-        <label class="image-upload-container btn btn-bwm">
+        <div  class="img-preview-container img-preview"
+             *ngIf="!isOwn"
+             [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}" width="280" height="300">
+        </div>
+        <!--<label *ngIf="(userData.imageId==-1) && isOwn" class="image-upload-container btn btn-bwm btn-warning">
+          <span>Select Image</span>
           <input class="d-none" #imageInput
                  type="file"
                  accept="image/*"
                  (change)="processFile(imageInput, userData)">
+        </label>-->
+
+        <label *ngIf="userData.imageId!=-1 && isOwn" class="image-upload-container btn btn-bwm">
+          <input class="d-none" #imageInput
+                 type="file"
+                 accept="image/*"
+                 (change)="processFile(imageInput, userData)">
+          <img *ngIf="updated" src="{{userData.image.src}}" width="230" height="250">
           <div class="img-preview-container img-preview"
-               *ngIf="userData.imageId==-1"
-               [ngStyle]="{'background-image': 'url(../../assets/img/main.png'}">
-          </div>
-          <div class="img-preview-container img-preview"
-               *ngIf="userData.imageId!=-1"
+               *ngIf="!updated"
                [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
           </div>
         </label>
+        <button *ngIf="isOwn && loadedPhoto" (click)="update()" class="btn btn-warning form-control mb-3">Зберегти фото</button>
         <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
           Редагувати
         </button>
@@ -30,16 +40,16 @@
           Перерахувати досягення
         </button>
         <!--<img src="../../assets/img/main.png" width="250" height="270">-->
-          <button *ngIf="userData.status==statusEnum.ACTIVATED && !isOwn &&
+        <button *ngIf="userData.status==statusEnum.ACTIVATED && !isOwn &&
           (role == roleEnum.ADMIN || role == roleEnum.SUPER_ADMIN)" class="btn btn-warning btn-block"
-                  (click)="changeStatus()">
-            Деактивувати
-          </button>
-          <button *ngIf="userData.status==statusEnum.UNACTIVATED && !isOwn &&
+                (click)="changeStatus()">
+          Деактивувати
+        </button>
+        <button *ngIf="userData.status==statusEnum.UNACTIVATED && !isOwn &&
           (role == roleEnum.ADMIN || role == roleEnum.SUPER_ADMIN)" class="btn btn-warning btn-block"
-                  (click)="changeStatus()">
-            Активувати
-          </button>
+                (click)="changeStatus()">
+          Активувати
+        </button>
       </div>
       <div class="col-md-auto">
         <table class="table table-borderless h5">

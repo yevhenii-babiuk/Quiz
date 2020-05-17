@@ -7,6 +7,7 @@ import {Imaged} from "../../core/models/imaged";
 import {ActivatedRoute} from "@angular/router";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
+import {AlertService} from "../../core/services/alert.service";
 
 
 @Component({
@@ -16,6 +17,8 @@ import {Status} from "../../core/models/Status";
 })
 
 export class ViewProfile implements OnInit {
+  loadedPhoto:boolean;
+  updated: boolean;
   userData: User;
   id: number;
   role: Role;
@@ -30,7 +33,8 @@ export class ViewProfile implements OnInit {
     private route: ActivatedRoute,
     private profileService: ProfileService,
     private securityService: SecurityService,
-    private achievementService: AchievementService
+    private achievementService: AchievementService,
+    private alertService: AlertService
   ) {
   }
 
@@ -42,7 +46,6 @@ export class ViewProfile implements OnInit {
       else this.isOwn = true;
       this.profileService.checkFriendship(this.id, this.visitorId).subscribe(data => {
         this.isFriend = data;
-        console.log(data);
       });
     } else {
       this.id = this.securityService.getCurrentId();
@@ -52,7 +55,6 @@ export class ViewProfile implements OnInit {
   }
 
   private getUser() {
-    console.log(this.id);
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.role = this.securityService.getCurrentRole();
@@ -61,26 +63,38 @@ export class ViewProfile implements OnInit {
   }
 
   processFile(imageInput: any, imaged: Imaged) {
-    //this.id=this.securityService.getCurrentId();
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      imaged.image.src = event.target.result.substring(23);
-      this.profileService.putImage(this.id, file).subscribe(
+      imaged.image.src = event.target.result;
+      this.updated = true;
+      this.loadedPhoto=true;
+      this.profileService.putImage(file).subscribe(
         id => {
-          console.log("id=" + id);
+          console.log("id = " + id);
           if (typeof id === "number") {
             imaged.imageId = id;
           }
         },
         error => {
-          imaged.image.src = null;
           console.log(error);
         });
     });
-
     reader.readAsDataURL(file);
+  }
+
+  update() {
+    this.profileService.updateUserPhoto(this.userData).subscribe(
+      get => {
+      },
+      error => {
+        console.log(error);
+      });
+
+    this.loadedPhoto=false;
+    this.alertService.success("Photo is changed");
+
   }
 
   friendship() {
@@ -95,29 +109,50 @@ export class ViewProfile implements OnInit {
   }
 
   recalculateAchievement() {
-    this.achievementService.recalculateAchievements().subscribe();
+    this.achievementService.recalculateAchievements().subscribe(
+      data => {
+        if (data) {
+          this.alertService.success('Recalculation is successful', false);
+        } else {
+          this.alertService.error('Recalculation is not successful', false);
+        }
+      },
+      error => {
+        this.alertService.error('Error while recalculation!');
+        console.log(error);
+      });
   }
 
-  isActivate(){
-    if(this.userData.status &&
-      this.userData.status==this.statusEnum.ACTIVATED){
+  isActivate() {
+    if (this.userData.status &&
+      this.userData.status == this.statusEnum.ACTIVATED) {
       this.isActivated = true;
-    }else {
+    } else {
       this.isActivated = false;
     }
   }
 
   changeStatus() {
     this.isActivated = !this.isActivated;
-      let status: Status;
-      if(this.isActivated){
-        status = Status.ACTIVATED;
-      }else{
-        status = Status.UNACTIVATED;
-      }
-      this.userData.status=status;
-      this.profileService.changeStatus(this.userData.id, status)
-        .subscribe();
+    let status: Status;
+    if (this.isActivated) {
+      status = Status.ACTIVATED;
+    } else {
+      status = Status.UNACTIVATED;
+    }
+    this.userData.status = status;
+    this.profileService.changeStatus(this.userData.id, status)
+      .subscribe(
+        data => {
+          if (data) {
+            this.alertService.success('Status was successfully changed', false);
+          } else {
+            this.alertService.error('Status was successfully changed', false);
+          }
+        },
+        error => {
+          this.alertService.error('Error while changing status!');
+          console.log(error);
+        });
   }
-
 }

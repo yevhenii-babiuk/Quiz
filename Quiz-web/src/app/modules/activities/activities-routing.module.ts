@@ -4,7 +4,7 @@ import {ViewActivitiesComponent} from "./view-activities/view-activities.compone
 import {AuthGuardService as AuthGuard} from "../core/services/auth-guard.service";
 
 const routes: Routes = [
-  {path: 'activities', component: ViewActivitiesComponent}, //canActivate: [AuthGuard]
+  {path: 'activities', component: ViewActivitiesComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({
