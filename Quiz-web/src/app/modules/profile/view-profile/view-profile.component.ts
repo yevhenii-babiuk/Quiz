@@ -17,6 +17,8 @@ import {AlertService} from "../../core/services/alert.service";
 })
 
 export class ViewProfile implements OnInit {
+  loadedPhoto:boolean;
+  updated: boolean;
   userData: User;
   id: number;
   role: Role;
@@ -44,7 +46,6 @@ export class ViewProfile implements OnInit {
       else this.isOwn = true;
       this.profileService.checkFriendship(this.id, this.visitorId).subscribe(data => {
         this.isFriend = data;
-        console.log(data);
       });
     } else {
       this.id = this.securityService.getCurrentId();
@@ -54,7 +55,6 @@ export class ViewProfile implements OnInit {
   }
 
   private getUser() {
-    console.log(this.id);
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.role = this.securityService.getCurrentRole();
@@ -63,26 +63,38 @@ export class ViewProfile implements OnInit {
   }
 
   processFile(imageInput: any, imaged: Imaged) {
-    //this.id=this.securityService.getCurrentId();
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      imaged.image.src = event.target.result.substring(23);
-      this.profileService.putImage(this.id, file).subscribe(
+      imaged.image.src = event.target.result;
+      this.updated = true;
+      this.loadedPhoto=true;
+      this.profileService.putImage(file).subscribe(
         id => {
-          console.log("id=" + id);
+          console.log("id = " + id);
           if (typeof id === "number") {
             imaged.imageId = id;
           }
         },
         error => {
-          imaged.image.src = null;
           console.log(error);
         });
     });
-
     reader.readAsDataURL(file);
+  }
+
+  update() {
+    this.profileService.updateUserPhoto(this.userData).subscribe(
+      get => {
+      },
+      error => {
+        console.log(error);
+      });
+
+    this.loadedPhoto=false;
+    this.alertService.success("Photo is changed");
+
   }
 
   friendship() {
@@ -143,6 +155,4 @@ export class ViewProfile implements OnInit {
           console.log(error);
         });
   }
-
-
 }

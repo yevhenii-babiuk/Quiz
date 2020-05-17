@@ -58,6 +58,8 @@ public interface UserDao extends GenericDao<User> {
 
     boolean checkUsersFriendship(int firstUserId, int secondUserId);
 
+    void updateUserPhoto(int idImage, int userId);
+
     void updateUserStatus(int id, UserAccountStatus status);
 
     void updateUserScore(int userId, int score);

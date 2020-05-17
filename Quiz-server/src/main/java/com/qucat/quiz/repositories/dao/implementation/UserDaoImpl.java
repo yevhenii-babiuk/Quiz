@@ -380,4 +380,9 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
         return query;
     }
+
+    @Override
+    public void updateUserPhoto(int imageId, int userId) {
+        jdbcTemplate.update(usersQueries.get("updateUserPhoto"), imageId, userId);
+    }
 }
