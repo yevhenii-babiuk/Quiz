@@ -1,7 +1,6 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
-import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
+import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +25,7 @@ import java.util.*;
 public class UserService {
 
     private final String REGISTRATION = "registration/";
+
     private final String PASS_RECOVERY = "pass-recovery/";
 
     @Autowired
@@ -38,10 +38,10 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
 
     @Autowired
-    private TokenDaoImpl tokenDao;
+    private TokenService tokenService;
 
     @Autowired
     private ImageService imageService;
@@ -63,7 +63,7 @@ public class UserService {
         user.setImageId(imageService.addUserProfileImage());
 
         if (userByMail != null) {
-            Token token = tokenDao.get(userByMail.getId());
+            Token token = tokenService.getTokenByUserId(userByMail.getId());
             if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
                 return false;
             } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
@@ -85,7 +85,7 @@ public class UserService {
                 .tokenType(TokenType.REGISTRATION)
                 .userId(id)
                 .build();
-        tokenDao.save(tokenForNewUser);
+        tokenService.saveToken(tokenForNewUser);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + tokenForNewUser.getToken(), MessageInfo.registration.findByLang(Lang.EN));
         //todo get Lang
         return true;
@@ -101,7 +101,7 @@ public class UserService {
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .userId(user.getId())
                 .build();
-        tokenDao.save(token);
+        tokenService.saveToken(token);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));
         //todo get Lang
         return true;
@@ -112,7 +112,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.REGISTRATION)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         if (id == 0) {
             return false;
         }
@@ -135,7 +135,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         return id != 0;
     }
 
@@ -144,7 +144,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         if (id == 0) {
             return false;
         }
@@ -173,9 +173,7 @@ public class UserService {
     public User getUserDataById(int id) {
         User user = userDao.get(id);
 
-        if (user == null) {
-            return null;//throw new NoSuchElementException("Such user not exist");
-        }
+        //throw new NoSuchElementException("Such user not exist");
 
         return user;
     }
@@ -190,10 +188,6 @@ public class UserService {
         currentUser.setMail(user.getMail());
 
         userDao.update(currentUser);
-    }
-
-    public void updateUserImage(User user) {
-        userDao.updateUserPhoto(user.getImageId(), user.getId());
     }
 
     public void authenticate(String username, String password) throws Exception {
@@ -298,6 +292,9 @@ public class UserService {
     }
 
 
+    public void updateUserImage(User user) {
+        userDao.updateUserPhoto(user.getImageId(), user.getId());
+    }
 
     public void updateUserStatus(int userId, UserAccountStatus status) {
         userDao.updateUserStatus(userId, status);
