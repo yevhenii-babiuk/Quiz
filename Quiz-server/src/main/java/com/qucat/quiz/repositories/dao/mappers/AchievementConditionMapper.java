@@ -1,6 +1,6 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
-import com.qucat.quiz.repositories.entities.ConditionOperator;
+import com.qucat.quiz.repositories.entities.enums.ConditionOperator;
 import org.springframework.jdbc.core.RowMapper;
 import com.qucat.quiz.repositories.entities.AchievementCondition;
 

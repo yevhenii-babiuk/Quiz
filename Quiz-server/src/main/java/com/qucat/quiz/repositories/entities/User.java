@@ -1,5 +1,7 @@
 package com.qucat.quiz.repositories.entities;
 
+import com.qucat.quiz.repositories.entities.enums.Role;
+import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import lombok.Builder;
 import lombok.Data;
 

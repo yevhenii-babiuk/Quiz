@@ -2,7 +2,7 @@ package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.TokenDao;
 import com.qucat.quiz.repositories.entities.Token;
-import com.qucat.quiz.repositories.entities.TokenType;
+import com.qucat.quiz.repositories.entities.enums.TokenType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

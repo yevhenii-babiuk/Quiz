@@ -1,12 +1,12 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.UserDao;
-import com.qucat.quiz.repositories.dao.mappers.FriendActivityExtractor;
+import com.qucat.quiz.repositories.dao.mappers.extractors.FriendActivityExtractor;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
 import com.qucat.quiz.repositories.entities.FriendActivity;
-import com.qucat.quiz.repositories.entities.Role;
+import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
