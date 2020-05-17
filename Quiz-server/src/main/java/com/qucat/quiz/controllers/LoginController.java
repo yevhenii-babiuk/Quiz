@@ -1,8 +1,8 @@
 package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.config.JwtTokenUtil;
-import com.qucat.quiz.repositories.jwt.JwtRequest;
-import com.qucat.quiz.repositories.jwt.JwtResponse;
+import com.qucat.quiz.repositories.dto.jwt.JwtRequest;
+import com.qucat.quiz.repositories.dto.jwt.JwtResponse;
 import com.qucat.quiz.services.JwtUserDetailsService;
 import com.qucat.quiz.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

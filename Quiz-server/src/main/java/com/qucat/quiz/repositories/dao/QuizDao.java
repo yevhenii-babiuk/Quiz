@@ -1,7 +1,7 @@
 package com.qucat.quiz.repositories.dao;
 
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -2,6 +2,11 @@ package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.enums.Lang;
+import com.qucat.quiz.repositories.entities.enums.MessageInfo;
+import com.qucat.quiz.repositories.entities.enums.Role;
+import com.qucat.quiz.repositories.entities.enums.TokenType;
+import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -196,6 +201,13 @@ public class UserService {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            User user = userDao.getUserByLogin(username);
+            boolean isActivated = user
+                    .getStatus()
+                    .equals(UserAccountStatus.ACTIVATED);
+            if (!isActivated) {
+                throw new DisabledException("User " + username + "has UNACTIVATED account status");
+            }
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
@@ -298,5 +310,9 @@ public class UserService {
 
     public void updateUserStatus(int userId, UserAccountStatus status) {
         userDao.updateUserStatus(userId, status);
+    }
+
+    public void updateUsersScore(List<User> users) {
+
     }
 }

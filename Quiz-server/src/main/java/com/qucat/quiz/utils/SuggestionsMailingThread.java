@@ -1,6 +1,6 @@
 package com.qucat.quiz.utils;
 
-import com.qucat.quiz.repositories.entities.MessageInfo;
+import com.qucat.quiz.repositories.entities.enums.MessageInfo;
 import com.qucat.quiz.services.EmailSender;
 
 public class SuggestionsMailingThread implements Runnable {

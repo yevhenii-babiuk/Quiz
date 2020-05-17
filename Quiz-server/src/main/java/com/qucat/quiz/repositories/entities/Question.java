@@ -1,5 +1,6 @@
 package com.qucat.quiz.repositories.entities;
 
+import com.qucat.quiz.repositories.entities.enums.QuestionType;
 import lombok.Builder;
 import lombok.Data;
 

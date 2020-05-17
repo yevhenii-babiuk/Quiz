@@ -1,6 +1,6 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.entities.MessageInfo;
+import com.qucat.quiz.repositories.entities.enums.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
