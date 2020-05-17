@@ -1,6 +1,6 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
-import com.qucat.quiz.repositories.dto.GameDto;
+import com.qucat.quiz.repositories.dto.game.GameDto;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

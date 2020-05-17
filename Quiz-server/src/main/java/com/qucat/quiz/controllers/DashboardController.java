@@ -1,9 +1,9 @@
 package com.qucat.quiz.controllers;
 
-import com.qucat.quiz.repositories.entities.AdminStatistics;
-import com.qucat.quiz.repositories.entities.CategoryStatistics;
-import com.qucat.quiz.repositories.entities.ComparedScores;
-import com.qucat.quiz.repositories.entities.QuizStatistics;
+import com.qucat.quiz.repositories.dto.statistic.AdminStatistics;
+import com.qucat.quiz.repositories.dto.statistic.CategoryStatistics;
+import com.qucat.quiz.repositories.dto.statistic.ComparedScores;
+import com.qucat.quiz.repositories.dto.statistic.QuizStatistics;
 import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.services.DashboardService;
 import org.springframework.beans.factory.annotation.Autowired;

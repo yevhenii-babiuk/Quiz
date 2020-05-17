@@ -2,7 +2,7 @@ package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Category;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
 import com.qucat.quiz.services.CategoryService;
 import com.qucat.quiz.services.QuizService;
@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 
 @RestController
@@ -55,9 +56,39 @@ public class QuizController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minDate,
             @RequestParam(value = "maxDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate,
-            @RequestParam(required = false) QuizStatus[] statuses) {
+            @RequestParam(value = "status", required = false) QuizStatus[] statuses) {
         return quizService.showPage(pageNumber, countOnPage, quizName, authorName,
                 categories, minDate, maxDate, tags, statuses).toList().toArray(Quiz[]::new);
+    }
+
+    @GetMapping("/userFavoriteQuizzes")
+    public Quiz[] getUserFavoriteQuizzes(
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
+            @RequestParam(value = "userId") int userId) {
+        Quiz[] quizzes = new Quiz[countOnPage];
+        Arrays.fill(quizzes, quizService.getQuizById(22));
+        return quizzes;
+    }
+
+    @GetMapping("/userCompletedQuizzes")
+    public Quiz[] getUserCompletedQuizzes(
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
+            @RequestParam(value = "userId") int userId) {
+        Quiz[] quizzes = new Quiz[countOnPage];
+        Arrays.fill(quizzes, quizService.getQuizById(21));
+        return quizzes;
+    }
+
+    @GetMapping("/userCreatedQuizzes")
+    public Quiz[] getUserQuizzes(
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
+            @RequestParam(value = "userId") int userId) {
+        Quiz[] quizzes = new Quiz[countOnPage];
+        Arrays.fill(quizzes, quizService.getQuizById(20));
+        return quizzes;
     }
 
     @GetMapping("/categories")

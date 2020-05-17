@@ -23,6 +23,8 @@ import {TagFilterComponent} from './quizzes/vertical-filter-bar/tag-filter/tag-f
 import {VerticalFilterBarComponent} from './quizzes/vertical-filter-bar/vertical-filter-bar.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
+import { UserQuizzesComponent } from './user-quizzes/user-quizzes.component';
+import { QuizListComponent } from './quiz-list/quiz-list.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,8 @@ import {MatNativeDateModule} from '@angular/material/core';
     DateFilterComponent,
     TagFilterComponent,
     VerticalFilterBarComponent,
+    UserQuizzesComponent,
+    QuizListComponent,
   ],
   imports: [
     CommonModule,

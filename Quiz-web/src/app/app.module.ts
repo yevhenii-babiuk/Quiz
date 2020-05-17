@@ -21,6 +21,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {BasicAuthHtppInterceptorService} from "./modules/core/services/auth-http-interceptor.service";
 import {AuthGuardService} from "./modules/core/services/auth-guard.service";
+import {RoleGuardService} from "./modules/core/services/role-guard.service";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {AnnouncementModule} from "./modules/announcement/announcement.module";
 import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
@@ -28,6 +29,11 @@ import {DashboardModule} from "./modules/dashboard/dashboard.module";
 import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.module";
 import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
 import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
+
+/*import {WebsocketModule} from "./modules/websocket/websocket.module";*/
+import {ActivitiesRoutingModule} from "./modules/activities/activities-routing.module";
+import {ActivitiesModule} from "./modules/activities/activities.module";
+
 import {AchievementRoutingModule} from "./modules/achivement/achievement-routing.module";
 import {AchievementModule} from "./modules/achivement/achievement.module";
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
@@ -69,6 +75,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     DashboardRoutingModule,
     PlayQuizModule,
     PlayQuizRoutingModule,
+    ActivitiesModule,
+    ActivitiesRoutingModule,
     AchievementModule,
     AchievementRoutingModule,
     TranslateModule.forRoot({
@@ -81,7 +89,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
-    AuthGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    AuthGuardService, RoleGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService],
   bootstrap: [AppComponent]
 })

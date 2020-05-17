@@ -1,7 +1,7 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
 import com.qucat.quiz.repositories.entities.Question;
-import com.qucat.quiz.repositories.entities.QuestionType;
+import com.qucat.quiz.repositories.entities.enums.QuestionType;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

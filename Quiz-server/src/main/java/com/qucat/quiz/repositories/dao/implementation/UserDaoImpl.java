@@ -1,12 +1,12 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.UserDao;
-import com.qucat.quiz.repositories.dao.mappers.FriendActivityExtractor;
+import com.qucat.quiz.repositories.dao.mappers.extractors.FriendActivityExtractor;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
 import com.qucat.quiz.repositories.entities.FriendActivity;
-import com.qucat.quiz.repositories.entities.Role;
+import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -331,6 +331,17 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 (resultSet, number) -> resultSet.getInt("row_count")) > 0 ? true : false;
     }
 
+    @Override
+    public void updateUserStatus(int id, UserAccountStatus status) {
+        jdbcTemplate.update(usersQueries.get("updateUserStatus"),
+                status.name().toLowerCase(), id);
+    }
+
+    @Override
+    public void updateUserScore(int userId, int score) {
+        jdbcTemplate.update(usersQueries.get("updateUserScore"), score, userId);
+    }
+
     private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
         String query = "";
         boolean isUnion = false;
@@ -368,5 +379,10 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         }
 
         return query;
+    }
+
+    @Override
+    public void updateUserPhoto(int imageId, int userId) {
+        jdbcTemplate.update(usersQueries.get("updateUserPhoto"), imageId, userId);
     }
 }

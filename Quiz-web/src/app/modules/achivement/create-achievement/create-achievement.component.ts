@@ -7,6 +7,7 @@ import {
 } from "../../core/models/achievementCondition";
 import {Router} from "@angular/router";
 import {AchievementService} from "../../core/services/achievement.service";
+import {AlertService} from "../../core/services/alert.service";
 
 @Component({
   selector: 'app-create-achievement',
@@ -24,6 +25,7 @@ export class CreateAchievementComponent implements OnInit {
   isInvalid: boolean = false;
 
   constructor(private achievementService: AchievementService,
+              private alertService: AlertService,
               private router: Router) {
     this.operatorName = Object.keys(ConditionOperator).filter(x => !(parseInt(x) >= 0));
   }
@@ -78,10 +80,18 @@ export class CreateAchievementComponent implements OnInit {
     } else {
       this.achievementService.sendAchievement(this.achievement).subscribe(
         data => {
-          this.isInvalid = false;
-          this.router.navigate(['../achievements/create'])
+          if (data){
+            this.alertService.success('Adding successful', false);
+            this.isInvalid = false;
+            this.achievement.name="";
+            this.achievement.description="";
+            this.conditions = [new AchievementCondition];
+          } else {
+            this.alertService.error('Adding is not successful', false);
+          }
         },
         error => {
+          this.alertService.error('Error while adding achievement!');
           this.message = `cant add achievement`;
           console.log(error);
         });

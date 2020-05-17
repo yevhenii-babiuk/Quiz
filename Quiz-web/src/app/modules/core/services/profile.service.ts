@@ -2,8 +2,9 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable, of} from "rxjs";
 import {User} from "../models/user";
-import {countOnPage, url} from "../../../../environments/environment.prod";
+import {url} from "../../../../environments/environment.prod";
 import {catchError} from "rxjs/operators";
+import {Status} from "../models/Status";
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,9 @@ export class ProfileService {
 
   public updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${this.url}/users/`, user);
+  }
+  public updateUserPhoto(user: User): Observable<User> {
+    return this.http.put<User>(`${this.url}/users/photo`, user);
   }
 
   public getUsers(length: number, allUsers: boolean) {
@@ -61,11 +65,21 @@ export class ProfileService {
       );
   }
 
+  putImage(image: File) {
+    const uploadData = new FormData();
+    uploadData.append('myFile', image, "name");
+    return this.http.put(`${url}/image`, uploadData);
+  }
+
   checkFriendship(id: number, visitorId: number) {
     return this.http.get<boolean>(`${url}/users/${id}/checkFriend/${visitorId}`)
       .pipe(
         catchError(this.handleError<boolean>(false))
       );
+  }
+
+  changeStatus(id: number, newStatus: Status) {
+    return this.http.put<string>(`${url}/users/${id}/status/change`, newStatus, this.httpOptions);
   }
 }
 

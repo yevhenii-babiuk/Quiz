@@ -7,12 +7,14 @@ import {UserListComponent} from "./user-list/user-list.component";
 import {FriendListComponent} from "./friend-list/friend-list.component";
 
 const routes: Routes = [
+
   {path: 'profile', component: ViewProfile, canActivate: [AuthGuard]},
-  {path: 'edit', component: EditorComponent, canActivate: [AuthGuard]},
-  {path: 'friends', component: FriendListComponent, canActivate: [AuthGuard]},
-  {path: 'users', component: UserListComponent, canActivate: [AuthGuard]},
-  {path: 'users/:userId', component: ViewProfile, canActivate: [AuthGuard]}
+    {path: 'edit', component: EditorComponent, canActivate: [AuthGuard]},
+    {path: 'friends', component: FriendListComponent, canActivate: [AuthGuard]},
+    {path: 'users', component: UserListComponent, canActivate: [AuthGuard]},
+    {path: 'users/:userId', component: ViewProfile, canActivate: [AuthGuard]}
 ];
+
 
 @NgModule({
   declarations: [],

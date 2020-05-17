@@ -39,6 +39,9 @@
         <a routerLink="../friends">Друзі</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
+        <a routerLink="../activities">Діяльність друзів</a>
+      </li>
+      <li *ngIf="authenticationService.isAuthenticated()">
         <a routerLink="../profile/dashboard">Статистика</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
@@ -53,7 +56,6 @@
       <li>
         <a href="#">Рейтинг учасників</a>
       </li>
-
     </ul>
 
    <!-- <ul class="list-unstyled CTAs">

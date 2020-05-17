@@ -1,6 +1,7 @@
 package com.qucat.quiz.repositories.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import lombok.Builder;
 import lombok.Data;
 
