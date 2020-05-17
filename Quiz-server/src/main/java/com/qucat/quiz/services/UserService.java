@@ -307,7 +307,7 @@ public class UserService {
         userDao.updateUserStatus(userId, status);
     }
 
-    public void updateUsersScore(List<User> users){
+    public void updateUsersScore(List<User> users) {
 
     }
 }
