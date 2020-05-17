@@ -308,4 +308,8 @@ public class UserService {
     public void updateUserStatus(int userId, UserAccountStatus status) {
         userDao.updateUserStatus(userId, status);
     }
+
+    public void updateUsersScore(List<User> users){
+
+    }
 }
