@@ -1,9 +1,9 @@
 package com.qucat.quiz.repositories.dao.mappers;
 
 import com.qucat.quiz.repositories.entities.Image;
-import com.qucat.quiz.repositories.entities.Role;
+import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.UserAccountStatus;
+import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

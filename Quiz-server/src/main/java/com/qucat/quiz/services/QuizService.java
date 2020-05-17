@@ -3,7 +3,7 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.repositories.dao.QuizDao;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

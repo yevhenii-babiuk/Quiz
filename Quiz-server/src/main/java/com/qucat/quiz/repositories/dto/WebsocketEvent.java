@@ -1,5 +1,6 @@
 package com.qucat.quiz.repositories.dto;
 
+import com.qucat.quiz.repositories.dto.game.Users;
 import com.qucat.quiz.repositories.entities.Question;
 import lombok.Builder;
 import lombok.Data;
