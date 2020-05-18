@@ -1,8 +1,8 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.SuggestionDao;
-import com.qucat.quiz.repositories.entities.Lang;
-import com.qucat.quiz.repositories.entities.MessageInfo;
+import com.qucat.quiz.repositories.entities.enums.Lang;
+import com.qucat.quiz.repositories.entities.enums.MessageInfo;
 import com.qucat.quiz.utils.SuggestionsMailingThread;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -2,7 +2,7 @@ package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Category;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
 import com.qucat.quiz.services.CategoryService;
 import com.qucat.quiz.services.QuizService;

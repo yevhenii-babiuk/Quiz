@@ -1,9 +1,9 @@
 package com.qucat.quiz.controllers;
 
 import com.google.gson.Gson;
-import com.qucat.quiz.repositories.dto.AnswerDto;
-import com.qucat.quiz.repositories.dto.GameDto;
-import com.qucat.quiz.repositories.dto.UserDto;
+import com.qucat.quiz.repositories.dto.game.AnswerDto;
+import com.qucat.quiz.repositories.dto.game.GameDto;
+import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.services.GameService;
 import lombok.extern.slf4j.Slf4j;
