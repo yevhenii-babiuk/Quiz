@@ -6,6 +6,9 @@ import com.qucat.quiz.repositories.entities.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -28,6 +31,19 @@ public class MessageDaoImpl extends GenericDaoImpl<Message> implements MessageDa
     @Override
     public List<Message> getMessagesFromChat(int chatId) {
         return jdbcTemplate.query(messageQueries.get("getMessagesFromChat"),new Object[]{chatId}, new MessageMapper());
+    }
+
+    @Override
+    public Page<Message> getMessagesFromChat(int chatId, Pageable pageable) {
+        Number total = jdbcTemplate.queryForObject(messageQueries.get("rowCount"),
+                new Object[]{chatId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<Message> messages = jdbcTemplate.query(
+                messageQueries.get("getMessagesFromChat").replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{chatId, pageable.getPageSize(), pageable.getOffset()},
+                new MessageMapper());
+        return new PageImpl<>(messages, pageable, total != null ? total.intValue() : 0);
     }
 
     @Override
