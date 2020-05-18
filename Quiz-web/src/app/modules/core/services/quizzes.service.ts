@@ -78,6 +78,10 @@ export class QuizzesService {
     }
   }
 
+  updateQuizStatus(quiz: Quiz) {
+    return this.http.put(`${url}/quiz/${quiz.id}/setStatus`, quiz.status);
+  }
+
   getById(id: string) {
     return this.http.get<Quiz>(`${url}/quiz/${id}`).pipe(
       catchError(this.handleError<Quiz>())

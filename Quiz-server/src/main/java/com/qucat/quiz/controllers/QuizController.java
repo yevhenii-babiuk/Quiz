@@ -2,8 +2,8 @@ package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Category;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import com.qucat.quiz.services.CategoryService;
 import com.qucat.quiz.services.QuizService;
 import com.qucat.quiz.services.TagService;
@@ -42,6 +42,12 @@ public class QuizController {
     @GetMapping("/quiz/{id}")
     public Quiz getQuiz(@PathVariable int id) {
         return quizService.getQuizById(id);
+    }
+
+    @PutMapping("/quiz/{id}/setStatus")
+    public void updateQuizStatus(@PathVariable int id, @RequestBody QuizStatus status) {
+        System.out.println("id =" + id);
+        System.out.println("status =" + status);
     }
 
     @GetMapping("/quizzes")
