@@ -3,7 +3,7 @@ export class Message {
   chatId: number;
   authorId: number;
   authorLogin: string;
-  creationDate: number;
+  creationDate: Date;
   isViewed: boolean;
   messageText: string;
   //imageId: number = -1;

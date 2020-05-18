@@ -4,14 +4,16 @@ import {RouterModule} from "@angular/router";
 import {SharedModule} from "../shared/shared.module";
 import { ChatListComponent } from './chat-list/chat-list.component';
 import { ChatAreaComponent } from './chat-area/chat-area.component';
+import {FormsModule} from "@angular/forms";
 
 
 @NgModule({
   declarations: [ChatListComponent, ChatAreaComponent],
-  imports: [
-    CommonModule,
-    RouterModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        RouterModule,
+        SharedModule,
+        FormsModule
+    ]
 })
 export class ChatModule { }

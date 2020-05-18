@@ -1,7 +1,8 @@
-<input type="text" placeholder="Search chat" class="form-control border border-warning  mb-3">
+<button class="form-control btn btn-warning mb-3" (click)="createChat()" >Create chat</button>
+<!--<input type="text" placeholder="Search chat" class="form-control border border-warning  mb-3">-->
 
 <ng-container *ngFor="let chat of chats">
-  <div class="chat_list" routerLink="/user/12/chat/{{chat.id}}">
+  <div class="chat_list" routerLink="../chat/{{chat.id}}">
     <img src="assets/img/main.png" class="avatar rounded-circle" alt="Avatar">
     <div class="chat_ib">
       <h5>{{chat.name}}

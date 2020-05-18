@@ -1,7 +1,7 @@
 export class Chat {
   id: number;
   name: string;
-  creationDate: number;
+  creationDate: Date;
   //imageId: number = -1;
   //image: Image;
 }

@@ -1,13 +1,33 @@
 <div class="p-m-3">
+  <div class="mb-3">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Chat name" [(ngModel)]="chat.name">
+      <div class="input-group-append">
+        <button class="btn btn-outline-warning" type="button" (click)="updateChat()">Rename chat</button>
+        <button class="btn btn-outline-warning" type="button" (click)="invitation = !invitation; loadFriends()">Invite friends</button>
+        <button class="btn btn-outline-warning" type="button" (click)="leaveChat()">Leave</button>
+      </div>
+    </div>
+
+    <div class="input-group mt-2" *ngIf="invitation">
+      <select class="custom-select" [(ngModel)]="selectedFriend">
+        <option selected>Choose friend</option>
+        <option *ngFor="let friend of friends">{{friend.login}}</option>
+      </select>
+      <div class="input-group-append">
+        <button class="btn btn-warning pl-5 pr-5" type="button" (click)="inviteFriend()">Invite</button>
+      </div>
+    </div>
+  </div>
 
   <div class="msg_history">
 
     <ng-container *ngFor="let message of messages">
-      <div *ngIf="message.authorId == 12; else incoming">
+      <div *ngIf="message.authorId == this.id; else incoming">
         <div class="d-flex justify-content-end row m-3">
           <div class="col-6">
             <p class="sent_msg">
-              <span class="login"> {{message.authorLogin}}</span>
+              <a routerLink="../../../../users/{{message.authorId}}" class="login text-dark">{{message.authorLogin}}</a>
               {{message.messageText}}
             </p>
             <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
@@ -21,7 +41,7 @@
           <img src="assets/img/main.png" class="avatar rounded-circle col-1" alt="Avatar">
           <div class="col-7">
             <p class="received_msg">
-              <span class="login"> {{message.authorLogin}}</span>
+              <a routerLink="../../users/{{message.authorId}}" class="login text-dark">{{message.authorLogin}}</a>
               {{message.messageText}}
             </p>
             <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
@@ -31,10 +51,10 @@
     </ng-container>
   </div>
 
-  <div class="input-group mt-3 mb-3">
-    <input type="text" class="form-control" placeholder="Type a message...">
+  <div class="input-group mt-3">
+    <input type="text" class="form-control" placeholder="Type a message..." [(ngModel)]="message.messageText" (keydown.enter)="sendMessage()">
     <div class="input-group-append">
-      <button class="btn btn-warning pl-5 pr-5" type="Send">Send</button>
+      <button class="btn btn-warning pl-5 pr-5" type="Send" (click)="sendMessage()">Send</button>
     </div>
   </div>
 
