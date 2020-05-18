@@ -1,14 +1,18 @@
 package com.qucat.quiz.repositories.dao;
 
 import com.qucat.quiz.repositories.entities.TakeQuiz;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
-public interface TakeQuizDao {
+public interface TakeQuizDao extends GenericDao<TakeQuiz>{
 
     String TABLE_NAME = "take_quiz";
 
-    List<TakeQuiz> getUserTakeQuizzes(int userId);
+    List<TakeQuiz> getUserCompletedQuizzes(int userId);
 
-    List<TakeQuiz> getUserResultsByQuiz(int userId, int quizId);
+    Page<TakeQuiz> getPageUserCompletedQuiz(int userId, Pageable pageable);
+
+    TakeQuiz getUserResultByQuiz(int userId, int quizId);
 }
