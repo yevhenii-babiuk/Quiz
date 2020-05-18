@@ -4,7 +4,6 @@ import com.qucat.quiz.repositories.dao.TakeQuizDao;
 import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.TakeQuiz;
 import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.enums.Role;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
