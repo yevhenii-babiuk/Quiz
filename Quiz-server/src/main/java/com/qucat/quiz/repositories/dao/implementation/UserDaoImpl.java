@@ -85,7 +85,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return new Object[]{user.getLogin(), user.getPassword(), user.getMail(),
                 user.getStatus().name().toLowerCase(), user.getRole().name().toLowerCase(),
                 user.getFirstName(), user.getSecondName(), user.getRegistrationDate(),
-                user.getProfile(), user.getScore(), user.getId(), user.getImageId()};
+                user.getProfile(), user.getScore(), user.getImageId(), user.getId()};
     }
 
     @Override
