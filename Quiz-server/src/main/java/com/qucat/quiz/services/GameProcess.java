@@ -1,7 +1,11 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.GameDao;
-import com.qucat.quiz.repositories.dto.*;
+import com.qucat.quiz.repositories.dto.game.AnswerDto;
+import com.qucat.quiz.repositories.dto.game.GameDto;
+import com.qucat.quiz.repositories.dto.game.GameQuestionDto;
+import com.qucat.quiz.repositories.dto.game.UserDto;
+import com.qucat.quiz.repositories.dto.game.Users;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import lombok.Data;
@@ -43,8 +47,8 @@ public class GameProcess implements Runnable {
         }
     }
 
-    private void sendResults() {
-        Users users = new Users(gameDao.getUsersByGame(gameId));
+    private void sendResults(boolean isFinal) {
+        Users users = new Users(gameDao.getUsersByGame(gameId), isFinal);
         socketSenderService.sendResults(gameId, users);
         try {
             Thread.sleep((long) 1e4);
@@ -108,13 +112,12 @@ public class GameProcess implements Runnable {
             }
 
             if (gameDto.isIntermediateResult() && count != 1) {
-                sendResults();
+                sendResults(false);
             }
 
             gameDao.deleteGameQuestion(questionDto.getId());
         }
-        sendResults();
-        //todo send end command
+        sendResults(true);
         //todo save
         gameDao.deleteGame(gameId);
     }

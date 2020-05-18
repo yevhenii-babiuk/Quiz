@@ -5,7 +5,6 @@ import {Observable, of} from 'rxjs';
 
 import {url} from "../../../../environments/environment.prod";
 import {Achievement} from "../models/achievement";
-import {User} from "../models/user";
 import {catchError} from "rxjs/operators";
 import {AchievementCharacteristic} from "../models/achievementCondition";
 import {SecurityService} from "./security.service";
@@ -20,8 +19,7 @@ export class AchievementService {
   };
 
   constructor(
-    private http: HttpClient,
-    private securityService: SecurityService) {
+    private http: HttpClient) {
   }
 
   sendAchievement(achievement: Achievement){
@@ -47,5 +45,9 @@ export class AchievementService {
       console.error(error);
       return of(result as T);
     };
+  }
+
+  recalculateAchievements(){
+      return this.http.put<string>(`${url}/achievement/recalculate`, "" , this.httpOptions);
   }
 }

@@ -44,6 +44,6 @@ public class TagService {
     }
 
     public void deleteTag(Tag tag) {
-        tagDao.delete(tag);
+        tagDao.deleteById(tag.getId());
     }
 }

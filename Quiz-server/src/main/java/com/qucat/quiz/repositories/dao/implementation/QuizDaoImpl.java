@@ -1,10 +1,10 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.QuizDao;
-import com.qucat.quiz.repositories.dao.mappers.QuizExtractor;
+import com.qucat.quiz.repositories.dao.mappers.extractors.QuizExtractor;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -61,6 +61,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         preparedStatement.setInt(7, quiz.getQuestionNumber());
         preparedStatement.setInt(8, quiz.getMaxScore());
         preparedStatement.setInt(9, quiz.getImageId());
+        preparedStatement.setString(10, quiz.getDescription());
         return preparedStatement;
     }
 
@@ -73,7 +74,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     protected Object[] getUpdateParameters(Quiz quiz) {
         return new Object[]{quiz.getName(), quiz.getAuthorId(), quiz.getCategoryId(), quiz.getStatus().name().toLowerCase(),
                 quiz.getPublishedDate(), quiz.getUpdatedDate(),
-                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImageId(), quiz.getId()};
+                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImageId(), quiz.getDescription(), quiz.getId()};
     }
 
 

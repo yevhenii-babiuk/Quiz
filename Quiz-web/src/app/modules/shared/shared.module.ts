@@ -12,6 +12,8 @@ import {MatBadgeModule} from "@angular/material/badge";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {FormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
+
 
 @NgModule({
   declarations: [
@@ -21,19 +23,21 @@ import {FormsModule} from "@angular/forms";
     SidenavComponent,
     NotificationMenuComponent
   ],
-    imports: [
-        CommonModule,
-        RouterModule,
-        MatBadgeModule,
-        MatIconModule,
-        MatCheckboxModule,
-        FormsModule
-    ],
+  imports: [
+    CommonModule,
+    RouterModule,
+    TranslateModule,
+    MatBadgeModule,
+    MatIconModule,
+    MatCheckboxModule,
+    FormsModule
+  ],
   exports: [
     AlertComponent,
     HeaderComponent,
     FooterComponent,
-    SidenavComponent
+    SidenavComponent,
+    TranslateModule,
   ]
 })
 export class SharedModule { }

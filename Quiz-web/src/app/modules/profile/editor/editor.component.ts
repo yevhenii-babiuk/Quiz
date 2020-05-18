@@ -13,9 +13,9 @@ import {SecurityService} from "../../core/services/security.service";
 export class EditorComponent implements OnInit {
 
   id: number;
-  userData : User;
-  login:String;
-  role:String;
+  userData: User;
+  login: String;
+  role: String;
 
   constructor(
     private profileService: ProfileService,
@@ -27,6 +27,7 @@ export class EditorComponent implements OnInit {
   ngOnInit(): void {
     this.getUser();
   }
+
   private getUser() {
     this.id = this.securityService.getCurrentId();
     this.role = this.securityService.getCurrentRole();
@@ -37,12 +38,13 @@ export class EditorComponent implements OnInit {
 
     });
   }
-  edit(id: number, firstname: string, secondname: string, email: string, profile:string, password: string, confirmPassword: string){
-    if (password!=confirmPassword) {
+
+  edit(id: number, firstname: string, secondname: string, email: string, profile: string, password: string, confirmPassword: string) {
+    if (password != confirmPassword) {
       this.alertService.error('passwords don`t match');
       return;
     }
-    if(firstname=="" || secondname=="" || email=="" || password=="" || confirmPassword==""){
+    if (firstname == "" || secondname == "" || email == "" || password == "" || confirmPassword == "") {
       this.alertService.error('fill all required fields');
       return;
     }
@@ -56,10 +58,14 @@ export class EditorComponent implements OnInit {
       profile:profile,
       score:this.userData.score,
       role:this.userData.role,
-      registrationDate:this.userData.registrationDate
+      registrationDate:this.userData.registrationDate,
+      imageId: this.userData.imageId,
+      image: this.userData.image,
+      status: this.userData.status
     };
+
     this.profileService.updateUser(editedUser).subscribe(data => {
-      editedUser=data;
+      editedUser = data;
     });
     this.alertService.success('You have successfully edited your profile');
   }

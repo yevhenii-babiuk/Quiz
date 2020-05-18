@@ -1,6 +1,6 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.entities.MessageInfo;
+import com.qucat.quiz.repositories.entities.enums.MessageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -11,10 +11,10 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
-import java.util.concurrent.ConcurrentHashMap;
 
 
 @Slf4j
@@ -50,7 +50,7 @@ public class EmailSender {
 
     public void sendMessage(String receiverEmailAddress, String username, String url, String quizName, String categoryName, MessageInfo.MessageInfoItem messageInfoItem) {
         try {
-            ConcurrentHashMap<String, String> replace = new ConcurrentHashMap<>();
+            Map<String, String> replace = new HashMap<>();
             replace.put(USERNAME_TOKEN, username);
             replace.put(QUIZNAME_TOKEN, quizName);
             replace.put(QUIZCATEGORY_TOKEN, categoryName);

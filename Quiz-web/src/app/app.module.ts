@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClient} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -21,6 +21,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {BasicAuthHtppInterceptorService} from "./modules/core/services/auth-http-interceptor.service";
 import {AuthGuardService} from "./modules/core/services/auth-guard.service";
+import {RoleGuardService} from "./modules/core/services/role-guard.service";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {AnnouncementModule} from "./modules/announcement/announcement.module";
 import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
@@ -28,8 +29,20 @@ import {DashboardModule} from "./modules/dashboard/dashboard.module";
 import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.module";
 import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
 import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
+
+/*import {WebsocketModule} from "./modules/websocket/websocket.module";*/
+import {ActivitiesRoutingModule} from "./modules/activities/activities-routing.module";
+import {ActivitiesModule} from "./modules/activities/activities.module";
+
 import {AchievementRoutingModule} from "./modules/achivement/achievement-routing.module";
 import {AchievementModule} from "./modules/achivement/achievement.module";
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
 import {NotificationMenuComponent} from "./modules/shared/notification-menu/notification-menu.component";
 
 @NgModule({
@@ -63,12 +76,21 @@ import {NotificationMenuComponent} from "./modules/shared/notification-menu/noti
     DashboardRoutingModule,
     PlayQuizModule,
     PlayQuizRoutingModule,
+    ActivitiesModule,
+    ActivitiesRoutingModule,
     AchievementModule,
-    AchievementRoutingModule
+    AchievementRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
-    AuthGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    AuthGuardService, RoleGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
     JwtHelperService, NotificationMenuComponent],
   bootstrap: [AppComponent]
 })

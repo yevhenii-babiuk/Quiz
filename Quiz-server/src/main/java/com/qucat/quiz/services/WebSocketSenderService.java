@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.qucat.quiz.repositories.dao.implementation.FriendListDaoImpl;
 import com.qucat.quiz.repositories.dto.UserDto;
 import com.qucat.quiz.repositories.dto.Users;
+import com.qucat.quiz.repositories.dto.game.UserDto;
+import com.qucat.quiz.repositories.dto.game.Users;
 import com.qucat.quiz.repositories.dto.WebsocketEvent;
 import com.qucat.quiz.repositories.entities.Notification;
 import com.qucat.quiz.repositories.entities.NotificationType;

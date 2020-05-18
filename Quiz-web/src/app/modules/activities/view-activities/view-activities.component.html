@@ -1,0 +1,58 @@
+<div class="container">
+  <div class="well well-sm text-center">
+    <div class="checkbox checkbox-warning" >
+      <ng-container *ngFor="let activity of activityCategories">
+
+        <input [(ngModel)]="activity.selected" id={{activity.id}} type="checkbox" class="styled"
+               (change)="getFilteredActivities()">
+        <label for={{activity.id}}>
+          {{activity.value}}
+        </label>
+
+      </ng-container>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngFor="let activity of activities">
+  <div class="row custom">
+    <div class="col-lg-10 col-md-10 mx-auto m-2">
+      <div class="post-preview">
+        <!-- Preview Image -->
+        <!--<img *ngIf="activity.imageId!=-1" class="img-responsive img-left"
+             src="data:image/jpeg;base64,{{activity.image.src}}" alt="logo" width="70" height="70">
+        <img *ngIf="activity.imageId==-1" class="img-responsive img-left" src="../../assets/img/logo.png" alt="logo"
+             width="70" height="70">-->
+        <img class="img-responsive img-left" src="../../assets/img/main.png" alt="logo"
+             width="70" height="70">
+        <!--achievement-->
+        <h5 *ngIf="activity.type==category.ACHIEVEMENT">
+          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> отримав нагороду
+          <q>{{activity.activityContent}}</q>.
+        </h5>
+        <!--added new quiz-->
+        <h5 *ngIf="activity.type==category.PUBLISH_QUIZ">
+          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> створив нову вікторину
+          <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
+          .
+        </h5>
+        <!--mark quiz as favourite-->
+        <h5 *ngIf="activity.type==category.MARK_AS_FAVORITE">
+          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a>
+          додав вікторину <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
+          в список улюблених.
+        </h5>
+        <!--add to friends-->
+        <h5 *ngIf="activity.type==category.ADD_FRIEND">
+          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> додав користувача
+          <a routerLink="../users/{{activity.activityId}}">{{activity.activityContent}}</a>
+          в друзі.
+        </h5>
+
+        <p class="post-meta">{{activity.activityDate| date:"MMMM d, yyyy h:mma"}}</p>
+        <hr>
+      </div>
+    </div>
+  </div>
+
+</ng-container>

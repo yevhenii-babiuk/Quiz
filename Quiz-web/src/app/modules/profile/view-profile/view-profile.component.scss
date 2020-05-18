@@ -8,11 +8,10 @@
 
 .img-preview-container {
   position: relative;
-
-  background: #f7f7f7 no-repeat center center;
+  background: #ffffff no-repeat center center;
   background-size: contain;
-  height: 120px !important;
-  width: 120px !important;
+  height: 250px !important;
+  width: 230px !important;
 
   .img-preview {
   }
@@ -21,14 +20,5 @@
 
 .btn-bwm {
   margin: 15px 30px;
-  /*background-color: greenyellow;
-  border-color: greenyellow;
-  color: white;
-  padding: 5px 10px;
-  font-size: 20px;
-
-  &:hover, &:focus, &:active {
-    border-color: greenyellow !important;
-    background-color: greenyellow !important;
-  }*/
 }
+
