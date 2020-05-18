@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -131,5 +129,48 @@ public class QuizService {
         }
         return quizDao.findAllForPage(PageRequest.of(page, size, Sort.Direction.DESC, "id"),
                 name, author, category, tMinDate, tMaxDate, tags, status);
+    }
+
+
+    public Page<Quiz> getCompletedQuizzesByUserId(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<Quiz> completedQuizzes = quizDao.getCompletedQuizzesByUserId(userId, PageRequest.of(page.orElse(0), size.orElse(10),
+                Sort.Direction.DESC, "id"));
+        if (completedQuizzes.isEmpty()) {
+            log.warn("There are no completed quizzes for user with id={}", userId);
+            return Page.empty();
+        } else {
+            return completedQuizzes;
+        }
+    }
+
+    public Page<Quiz> getCreatedQuizzesByUserId(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<Quiz> createdQuizzes = quizDao.getCreatedQuizzesByUserId(userId, PageRequest.of(page.orElse(0), size.orElse(10),
+                Sort.Direction.DESC, "id"));
+        if (createdQuizzes.isEmpty()) {
+            log.warn("There are no created quizzes for user with id={}", userId);
+            return Page.empty();
+        } else {
+            return createdQuizzes;
+        }
+    }
+
+    public Page<Quiz> getFavouriteQuizzesByUserId(int userId, Optional<Integer> page, Optional<Integer> size) {
+        Page<Quiz> favouriteQuizzes = quizDao.getFavouriteQuizzesByUserId(userId, PageRequest.of(page.orElse(0), size.orElse(10),
+                Sort.Direction.DESC, "id"));
+        if (favouriteQuizzes.isEmpty()) {
+            log.warn("There are no favourite quizzes for user with id={}", userId);
+            return Page.empty();
+        } else {
+
+            return favouriteQuizzes;
+        }
+    }
+
+    public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
+        return quizDao.getFavouriteMarkByUserIdAndQuizId(userId, quizId);
+    }
+
+    public void updateQuizStatus(Quiz quiz) {
+        quizDao.updateQuizStatus(quiz.getStatus(), quiz.getId());
     }
 }

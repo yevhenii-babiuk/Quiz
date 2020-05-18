@@ -3,7 +3,6 @@ package com.qucat.quiz.repositories.dao.implementation;
 import com.qucat.quiz.repositories.dao.QuizDao;
 import com.qucat.quiz.repositories.dao.mappers.extractors.QuizExtractor;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
-import com.qucat.quiz.repositories.dto.statistic.BestQuiz;
 import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -111,8 +110,8 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     @Override
     public boolean isUsersFavorite(int userId, int quizId) {
         try {
-         jdbcTemplate.queryForObject(quizQueries.get("isUsersFavorite"),
-                 new Object[]{userId, quizId}, Integer.class);
+            jdbcTemplate.queryForObject(quizQueries.get("isUsersFavorite"),
+                    new Object[]{userId, quizId}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return false;
         }
@@ -389,10 +388,15 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     }
 
     @Override
-    public int getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
-        return jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId,quizId}, (rs, rowNum) ->
-                        rs.getInt("count")
-        );
+    public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
+            return jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId, quizId}, (rs, rowNum) ->
+                    rs.getBoolean("is_favourite")
+            );
+    }
+
+    @Override
+    public void updateQuizStatus(QuizStatus quizStatus, int quizId) {
+        jdbcTemplate.update(quizQueries.get("updateQuizStatus"), quizStatus, quizId);
     }
 
 }
