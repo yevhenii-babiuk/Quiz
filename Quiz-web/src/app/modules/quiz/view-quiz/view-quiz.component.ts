@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {QuizzesService} from "../../core/services/quizzes.service";
 import {Quiz} from "../../core/models/quiz";
-import {ActivatedRoute, Route, Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../../core/services/security.service";
 import {COLORS} from '../../../../environments/environment.prod';
 import {TranslateService} from '@ngx-translate/core';
+import {QuizStatus} from "../../core/models/quizStatus";
 
 
 @Component({
@@ -43,7 +44,26 @@ export class ViewQuizComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  isActivated():boolean{
+    return this.quiz.status==QuizStatus.ACTIVATED;
+  }
 
+  isDeactivated():boolean{
+    return this.quiz.status==QuizStatus.DEACTIVATED;
+  }
+
+  setActivated(){
+    this.setStatus(QuizStatus.ACTIVATED)
+  }
+
+  setDeactivated(){
+    this.setStatus(QuizStatus.DEACTIVATED)
+  }
+
+  setStatus(status: QuizStatus){
+    this.quiz.status=status;
+    this.quizzesService.updateQuizStatus(this.quiz).subscribe();
+  }
 
 
 }

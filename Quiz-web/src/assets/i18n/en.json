@@ -17,6 +17,9 @@
       "false": "False"
     },
     "viewQuiz": {
+      "editQuiz": "Edit quiz",
+      "publishQuiz": "Publish quiz",
+      "deactivateQuiz": "Deactivate quiz",
       "playQuiz": "Play quiz",
       "quizName": "Quiz name",
       "category": "Category",

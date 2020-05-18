@@ -17,6 +17,9 @@
       "false": "Неправда"
     },
     "viewQuiz": {
+      "editQuiz": "Редагувати квіз",
+      "publishQuiz": "Опублікувати квіз",
+      "deactivateQuiz": "Деактивувати квіз",
       "playQuiz": "Зіграти квіз",
       "quizName": "Назва квіза",
       "category": "Категорія",
