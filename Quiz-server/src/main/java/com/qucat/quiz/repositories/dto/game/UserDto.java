@@ -14,5 +14,6 @@ public class UserDto {
     private int registerId;
     private int score;
     private int comboAnswer;
+    private int quizId;
 
 }

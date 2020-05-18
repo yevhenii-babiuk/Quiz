@@ -26,6 +26,7 @@ public class Quiz {
     private Category category;
     private List<Tag> tags;
     private Image image;
+    private String description;
     @JsonProperty("isFavorite")
     private boolean isFavorite;
 }

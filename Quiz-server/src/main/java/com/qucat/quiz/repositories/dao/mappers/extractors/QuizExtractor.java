@@ -33,6 +33,7 @@ public class QuizExtractor implements ResultSetExtractor<List<Quiz>> {
                 quiz = Quiz.builder()
                         .id(quizId)
                         .name(rs.getString("quiz_name"))
+                        .description(rs.getString("description"))
                         .authorId(rs.getInt("author_id"))
                         .categoryId(rs.getInt("category_id"))
                         .category(new Category(rs.getInt("category_id"), rs.getString("category_name")))
