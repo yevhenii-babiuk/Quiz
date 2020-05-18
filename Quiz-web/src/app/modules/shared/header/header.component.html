@@ -8,7 +8,7 @@
     <span></span>
   </button>
   <a class="navbar-brand ml-3" href="">
-    <img src='assets/img/animal.png' height="70" class="logo-image" alt="Qucat">
+    <img src='assets/img/animal.png' class="logo-image" alt="Qucat">
   </a>
 
   <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#basicExampleNav"
@@ -16,7 +16,7 @@
     <span class="navbar-toggler-icon"></span>
   </button>
 
-  <div class="collapse navbar-collapse" id="basicExampleNav">
+  <div class="collapse navbar-collapse"  id="basicExampleNav">
 
     <ul class="navbar-nav mr-auto ">
       <li class="nav-item active">
@@ -32,12 +32,10 @@
       </ng-container>
     </div>
 
-    <form class="form-inline">
       <div class="md-form my-0">
         <input class="form-control mr-sm-2" type="text" placeholder="Пошук вікторин" aria-label="Search"
                (keyup.enter)="search($event)">
       </div>
-    </form>
 
     <img src='../../../../assets/img/message.png' class="ml-3" *ngIf="authService.isAuthenticated()">
     <img src='../../../../assets/img/notification.png' width="70" height="50" *ngIf="authService.isAuthenticated()">
