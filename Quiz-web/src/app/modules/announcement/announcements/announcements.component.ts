@@ -25,7 +25,7 @@ export class AnnouncementsComponent implements OnInit {
   onWindowScroll() {
     if (document.documentElement.scrollHeight - document.documentElement.scrollTop -
       document.documentElement.clientHeight < 40) {
-      this.getNew();
+      if (this.announcements.length % 10 == 0) this.getNew();
     }
   }
 

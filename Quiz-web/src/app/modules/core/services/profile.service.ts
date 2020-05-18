@@ -72,7 +72,7 @@ export class ProfileService {
   }
 
   checkFriendship(id: number, visitorId: number) {
-    return this.http.get<boolean>(`${url}/users/${id}/checkFriend/${visitorId}`)
+    return this.http.get<boolean>(`${url}/users/${visitorId}/checkFriend/${id}`)
       .pipe(
         catchError(this.handleError<boolean>(false))
       );

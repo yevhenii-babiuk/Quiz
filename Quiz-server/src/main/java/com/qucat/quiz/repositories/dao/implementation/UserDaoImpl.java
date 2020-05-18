@@ -204,7 +204,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public void deleteUserFriend(int userId, int friendId) {
         jdbcTemplate.update(
                 friendsQueries.get("deleteUserFriend"),
-                userId, friendId, friendId, userId
+                userId, friendId
         );
     }
 
@@ -212,7 +212,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public List<User> getUserFriends(int userId) {
         return jdbcTemplate.query(
                 friendsQueries.get("getUserFriends"),
-                new Object[]{userId, userId}, new UserMapper()
+                new Object[]{userId}, new UserMapper()
         );
     }
 
@@ -327,7 +327,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     @Override
     public boolean checkUsersFriendship(int firstUserId, int secondUserId) {
         return jdbcTemplate.queryForObject(friendsQueries.get("checkFriendship"),
-                new Object[]{firstUserId, secondUserId, secondUserId, firstUserId},
+                new Object[]{firstUserId, secondUserId},
                 (resultSet, number) -> resultSet.getInt("row_count")) > 0 ? true : false;
     }
 
