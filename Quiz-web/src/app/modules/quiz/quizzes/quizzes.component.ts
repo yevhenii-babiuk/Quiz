@@ -9,6 +9,8 @@ import {DateFilter} from "./vertical-filter-bar/date-filter/date-filter.model";
 import {countOnPage} from "../../../../environments/environment.prod";
 import {TagFilter} from "./vertical-filter-bar/tag-filter/tag-filter.model";
 import {SecurityService} from "../../core/services/security.service";
+import {TranslateService} from '@ngx-translate/core';
+import {AuthenticationService} from "../../core/services/authentication.service";
 
 @Component({
   selector: 'app-quizzes',
@@ -34,6 +36,7 @@ export class QuizzesComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private quizzesService: QuizzesService,
+    public translate: TranslateService,
     private securityService: SecurityService
   ) {
   }

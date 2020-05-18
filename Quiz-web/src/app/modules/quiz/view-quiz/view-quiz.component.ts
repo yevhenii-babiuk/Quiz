@@ -4,6 +4,7 @@ import {Quiz} from "../../core/models/quiz";
 import {ActivatedRoute, Route, Router} from "@angular/router";
 import {SecurityService} from "../../core/services/security.service";
 import {COLORS} from '../../../../environments/environment.prod';
+import {TranslateService} from '@ngx-translate/core';
 
 
 @Component({
@@ -20,6 +21,7 @@ export class ViewQuizComponent implements OnInit {
     public securityService: SecurityService,
     private quizzesService: QuizzesService,
     private route: ActivatedRoute,
+    public translate: TranslateService,
     private redirect: Router) {
     console.log(this.securityService.getCurrentId())
     const id = this.route.snapshot.paramMap.get('quizId');
