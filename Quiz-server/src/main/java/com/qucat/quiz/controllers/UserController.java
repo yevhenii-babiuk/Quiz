@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,5 +75,10 @@ public class UserController {
     @PutMapping("/{id}/status/change")
     public void changeUserStatus(@PathVariable int id, @RequestBody String newStatus) {
         userService.updateUserStatus(id, UserAccountStatus.valueOf(newStatus));
+    }
+
+    @PostMapping("/create")
+    public boolean createUser(@RequestBody @Valid User user) {
+        return userService.createUser(user);
     }
 }

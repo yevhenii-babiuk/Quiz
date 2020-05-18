@@ -1,6 +1,7 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.UserDao;
+import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.*;
 import com.qucat.quiz.repositories.entities.enums.Lang;
 import com.qucat.quiz.repositories.entities.enums.MessageInfo;
@@ -312,7 +313,19 @@ public class UserService {
         userDao.updateUserStatus(userId, status);
     }
 
-    public void updateUsersScore(List<User> users) {
+    public void updateUsersScore(UserDto user) {
+        User userFromDb = userDao.get(user.getRegisterId());
+        userDao.updateUserScore(user.getRegisterId(),
+                userFromDb.getScore() + user.getScore());
+    }
 
+    public boolean createUser(User user) {
+        user.setStatus(UserAccountStatus.ACTIVATED);
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
+        user.setImageId(imageService.addUserProfileImage());
+        int id = userDao.save(user);
+
+        return id > 0;
     }
 }

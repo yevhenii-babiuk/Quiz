@@ -51,11 +51,11 @@ export class ProfileService {
   }
 
   addFriend(visitorId: number, id: number) {
-    return this.http.post<string>(`${url}/users/${id}/addFriend`, visitorId, this.httpOptions);
+    return this.http.post<string>(`${url}/users/${visitorId}/addFriend`, id, this.httpOptions);
   }
 
   removeFriend(visitorId: number, id: number) {
-    return this.http.post<string>(`${url}/users/${id}/removeFriend`, visitorId, this.httpOptions);
+    return this.http.post<string>(`${url}/users/${visitorId}/removeFriend`, id, this.httpOptions);
   }
 
   getFriends(id: number) {
@@ -72,7 +72,7 @@ export class ProfileService {
   }
 
   checkFriendship(id: number, visitorId: number) {
-    return this.http.get<boolean>(`${url}/users/${id}/checkFriend/${visitorId}`)
+    return this.http.get<boolean>(`${url}/users/${visitorId}/checkFriend/${id}`)
       .pipe(
         catchError(this.handleError<boolean>(false))
       );
