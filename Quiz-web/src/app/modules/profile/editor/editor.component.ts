@@ -3,6 +3,7 @@ import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {AlertService} from "../../core/services/alert.service";
 import {SecurityService} from "../../core/services/security.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-editor',
@@ -20,7 +21,8 @@ export class EditorComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private alertService: AlertService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    public translate: TranslateService,
   ) {
   }
 

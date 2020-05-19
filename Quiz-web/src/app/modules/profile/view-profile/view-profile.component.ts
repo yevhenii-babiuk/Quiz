@@ -8,6 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AlertService} from "../../core/services/alert.service";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
+import {TranslateService} from "@ngx-translate/core";
 
 
 
@@ -35,7 +36,8 @@ export class ViewProfile implements OnInit {
     private profileService: ProfileService,
     private securityService: SecurityService,
     private alertService:AlertService,
-    private achievementService: AchievementService
+    private achievementService: AchievementService,
+    public translate: TranslateService,
   ) {
   }
 

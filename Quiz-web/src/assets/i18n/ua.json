@@ -55,5 +55,28 @@
       "description": "Опис",
       "questionType": "Тип питання"
     }
+  },
+  "viewProfile": {
+    "login": "Логін:",
+    "firstName": "Ім'я:",
+    "lastName": "Прізвище:",
+    "description": "Опис:",
+    "murrs": "Мурри:",
+    "edit": "Редагувати",
+    "savePhoto": "Зберегти фото",
+    "addToFriends": "Додати до друзів",
+    "deleteFromFriends": "Видалити з друзів",
+    "achievements": "Перерахувати досягнення",
+    "activate": "Активувати",
+    "deactivate": "Деактивувати"
+  },
+  "editProfile": {
+    "title": "Редагувати профіль",
+    "firstName": "Ім'я",
+    "lastName": "Прізвище",
+    "description": "Опис профілю",
+    "password": "Пароль",
+    "confirmPassword": "Підтвердити пароль",
+    "save": "Зберегти"
   }
 }

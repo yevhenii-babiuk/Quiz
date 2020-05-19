@@ -54,7 +54,29 @@
       "tags": "Tags",
       "description": "Description",
       "questionType": "Question type"
-
     }
+  },
+  "viewProfile": {
+    "login": "Login:",
+    "firstName": "Name:",
+    "lastName": "Surname:",
+    "description": "Description:",
+    "murrs": "Murrs:",
+    "edit": "Edit",
+    "savePhoto": "Save photo",
+    "addToFriends": "Add to friends",
+    "deleteFromFriends": "Delete from friends",
+    "achievements": "Calculate achievements",
+    "activate": "Activate",
+    "deactivate": "Deactivate"
+  },
+  "editProfile": {
+    "title": "Edit profile",
+    "firstName": "First name",
+    "lastName": "Last Name",
+    "description": "Description",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "save": "Save"
   }
 }
