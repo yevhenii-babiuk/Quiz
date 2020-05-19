@@ -9,6 +9,7 @@ import {PassRecoveryConfirmComponent} from './pass-recovery/pass-recovery-confir
 import {RegistrationComponent} from './registration/registration.component';
 import {AuthRoutingModule} from './auth-routing.module';
 import {SharedModule} from "../shared/shared.module";
+import {FormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -18,11 +19,12 @@ import {SharedModule} from "../shared/shared.module";
     PassRecoveryConfirmComponent,
     RegistrationComponent
   ],
-  imports: [
-    CommonModule,
-    AuthRoutingModule,
-    RouterModule,
-    SharedModule
-  ]
+    imports: [
+        CommonModule,
+        AuthRoutingModule,
+        RouterModule,
+        SharedModule,
+        FormsModule
+    ]
 })
 export class AuthenticationModule { }
