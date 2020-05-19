@@ -17,8 +17,6 @@ public class RegistrationController {
 
     @PostMapping
     public boolean registerUser(@RequestBody @Valid User user) {
-        user.setRole(Role.USER);
-        user.setStatus(UserAccountStatus.UNACTIVATED);
         return userService.registerUser(user);
     }
 
