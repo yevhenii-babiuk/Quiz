@@ -111,8 +111,8 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     @Override
     public boolean isUsersFavorite(int userId, int quizId) {
         try {
-         jdbcTemplate.queryForObject(quizQueries.get("isUsersFavorite"),
-                 new Object[]{userId, quizId}, Integer.class);
+            jdbcTemplate.queryForObject(quizQueries.get("isUsersFavorite"),
+                    new Object[]{userId, quizId}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return false;
         }
@@ -354,4 +354,50 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         }
         return new PageImpl<>(quizzes, pageable, quizCount);
     }
+
+    @Override
+    public Page<Quiz> getCompletedQuizzesByUserId(int userId, Pageable pageable) {
+        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("getRowCountOfCompletedQuizzes"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt(1));
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getCompletedQuizzesPageByUserId"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, rowTotal);
+    }
+
+    @Override
+    public Page<Quiz> getCreatedQuizzesByUserId(int userId, Pageable pageable) {
+        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("getRowCountOfCreatedQuizzes"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt(1));
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getCreatedQuizzesPageByUserId"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, rowTotal);
+    }
+
+    @Override
+    public Page<Quiz> getFavouriteQuizzesByUserId(int userId, Pageable pageable) {
+        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("getRowCountOfFavouriteQuizzes"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt(1));
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getFavouriteQuizzesPageByUserId"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, rowTotal);
+    }
+
+    @Override
+    public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
+            return jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId, quizId}, (rs, rowNum) ->
+                    rs.getBoolean("is_favourite")
+            );
+    }
+
+    @Override
+    public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
+        jdbcTemplate.update(quizQueries.get("updateQuizStatus"), quizStatus.name().toLowerCase(), quizId);
+    }
+
 }

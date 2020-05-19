@@ -3,11 +3,25 @@
       rel="stylesheet">
 -->
 <div class="container" *ngIf="quiz">
-  <button [ngStyle]="{'background-color': COLORS.AMBER}" class="btn form-control mb-3"  routerLink="gameSettings">
-    Play quiz
+  <button *ngIf="securityService.getCurrentRole()=='USER'" [ngStyle]="{'background-color': COLORS.AMBER}" class="btn form-control mb-3" routerLink="gameSettings">
+    {{ 'quiz.viewQuiz.playQuiz' | translate }}
   </button>
-  <p class="text-center">{{quiz.name | uppercase}}</p>
+  <p class="text-center font-weight-bold">{{quiz.name | uppercase}}</p>
 
+  <div class="row mx-0" *ngIf="securityService.getCurrentId() &&
+  (securityService.getCurrentRole()!='USER'|| securityService.getCurrentId()==quiz.authorId)">
+
+    <div (click)="setDeactivated()" *ngIf="!isDeactivated()" class="col mx-3 btn btn-warning">
+      {{'quiz.viewQuiz.deactivateQuiz' | translate}}
+    </div>
+    <div (click)="setActivated()" *ngIf="securityService.getCurrentRole()!='USER' && !isActivated()" class="col mx-3 btn btn-warning">
+      {{'quiz.viewQuiz.publishQuiz' | translate}}
+    </div>
+    <button *ngIf="securityService.getCurrentId()==quiz.authorId" class="col mx-3 btn btn-warning">
+      {{'quiz.viewQuiz.editQuiz' | translate}}
+    </button>
+
+  </div>
   <div class="row mx-0">
 
     <div class="col-sm-3">
@@ -19,19 +33,19 @@
 
       <div class="row mx-0">
         <label class="col-sm m-3 border-0">
-          Quiz name
+          {{ 'quiz.viewQuiz.quizName' | translate }}
           <label class="form-control h-auto">{{quiz.name}}</label>
         </label>
 
         <label class="col-sm m-3 border-0">
-          Category
+          {{ 'quiz.viewQuiz.category' | translate }}
           <label class="form-control">{{quiz.category.name}}</label>
         </label>
       </div>
 
       <div class="mat-app-background" *ngIf="quiz.tags.length>0">
         <mat-form-field class="example-chip-list w-100">
-          <mat-chip-list aria-label="Fruit selection w-100" placeholder="Tags" >
+          <mat-chip-list aria-label="Fruit selection w-100" placeholder="{{ 'quiz.viewQuiz.tags' | translate }}">
             <mat-chip
               *ngFor="let tag of quiz.tags">
               {{tag.name}}
@@ -41,7 +55,7 @@
       </div>
 
       <div class="w-100 h-auto">
-        <label class="w-100 h-auto">Description:
+        <label class="w-100 h-auto">{{ 'quiz.viewQuiz.description' | translate }}:
           <label class="form-control h-auto w-100">{{quiz.description}}</label>
         </label>
       </div>
@@ -53,32 +67,27 @@
   <div *ngIf="securityService.getCurrentId() &&
   (securityService.getCurrentRole()!='USER'|| securityService.getCurrentId()==quiz.authorId)">
     <ng-container *ngFor="let question of quiz.questions">
-      <div class="form-control h-auto row mx-0 my-1 p-4 border-dark border">
-
-        <div class="col-sm-3">
-          <img *ngIf="question.imageId!=-1" class="img-preview-container img-preview"
-               src="data:image/jpeg;base64,{{question.image.src}}"
-               alt="Card image cap">
-        </div>
+      <div class="h-auto row mx-0 my-1 p-4 border-dark border rounded">
 
         <div class="col-sm-9">
 
           <div>
-            <label class="col-sm m-1">Type: {{question.type}}</label>
+            <h5 class="col-sm m-1">{{ 'quiz.viewQuiz.questionType' | translate }}
+              : {{ 'quiz.questionTypes.' + question.type | translate }}</h5>
           </div>
           <br>
           <div>
-            <h2 class="col-sm  m-1">{{question.content}}</h2>
+            <h3 class="col-sm  m-1">{{question.content}}</h3>
           </div>
 
           <div *ngIf="question.type=='SELECT_OPTION'">
             <div class="row mx-0" *ngFor="let questionOption of question.options">
 
-              <label class="w-50 col m-1 border border-{{questionOption.isCorrect? 'success':'danger'}}">
+              <label class="form-control w-50 col m-1 border border-{{questionOption.isCorrect? 'success':'danger'}}">
                 {{questionOption.content}}
               </label>
-              <div class="col">
-                <img *ngIf="questionOption.imageId!=-1" class="img-preview-container img-preview "
+              <div *ngIf="questionOption.imageId!=-1" class="col">
+                <img class="img-preview-container img-preview "
                      src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
               </div>
 
@@ -90,7 +99,7 @@
 
               <label for="{{question.id+questionOption.sequenceOrder}}">{{questionOption.sequenceOrder}}</label>
               <input id="{{question.id+questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
-                     class="w-50 m-1" readonly>
+                     class="form-control w-50 m-1" readonly>
               <div class="col">
                 <img *ngIf="questionOption.imageId!=-1" class="img-preview-container img-preview"
                      src="data:image/jpeg;base64,{{questionOption.image.src}}" alt="Card image cap">
@@ -100,17 +109,23 @@
           </div>
 
           <div *ngIf="question.type=='TRUE_FALSE'" class="row mx-0">
-            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'primary': 'secondary'}}">
-              True
+            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'warning': 'secondary'}}">
+              {{'quiz.questionTypes.true' | translate}}
             </div>
-            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'secondary': 'primary'}}">
-              False
+            <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'secondary': 'warning'}}">
+              {{'quiz.questionTypes.false' | translate}}
             </div>
           </div>
 
           <div *ngIf="question.type=='ENTER_ANSWER'">
             <input [(ngModel)]="question.options[0].content" class="form-control w-75 m-1" readonly>
           </div>
+        </div>
+
+        <div *ngIf="question.imageId!=-1" class="col-sm-3">
+          <img class="img-preview-container img-preview"
+               src="data:image/jpeg;base64,{{question.image.src}}"
+               alt="Card image cap">
         </div>
 
       </div>
