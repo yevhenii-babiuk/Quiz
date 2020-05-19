@@ -5,9 +5,9 @@ import {
   AchievementCondition,
   ConditionOperator
 } from "../../core/models/achievementCondition";
-import {Router} from "@angular/router";
 import {AchievementService} from "../../core/services/achievement.service";
 import {AlertService} from "../../core/services/alert.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-create-achievement',
@@ -26,7 +26,7 @@ export class CreateAchievementComponent implements OnInit {
 
   constructor(private achievementService: AchievementService,
               private alertService: AlertService,
-              private router: Router) {
+              public translate: TranslateService) {
     this.operatorName = Object.keys(ConditionOperator).filter(x => !(parseInt(x) >= 0));
   }
 

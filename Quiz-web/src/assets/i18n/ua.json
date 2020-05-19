@@ -13,14 +13,17 @@
     "FRIENDS": "Друзі",
     "ANNOUNCEMENTS": "Новини",
     "TOP": "Рейтинг учасників",
-    "PROFILE": "Профіль"
+    "PROFILE": "Профіль",
+    "ACHIEVEMENT": "Створити досягнення",
+    "CHATS": "Повідомлення"
   },
   "USERLIST": {
     "LOGIN": "Логін",
     "NAME": "Ім'я",
     "ROLE": "Роль",
     "DATE": "Дата реєстрації",
-    "SEARCH": "Пошук"
+    "SEARCH": "Пошук",
+    "SCORE": "Рахунок"
   },
   "ANNOUNCEMENT": {
     "CREATE BUTTON": "Є новина? Поділись з усіма!",
@@ -55,5 +58,22 @@
       "description": "Опис",
       "questionType": "Тип питання"
     }
+  },
+  "DASHBOARD": {
+    "ACHIEVEMENTS": "Досягнення",
+    "ACHIEVEMENTS_NAME": "Назва досягнення",
+    "ACHIEVEMENTS_DESCRIPTION": "Опис досягнення",
+    "ACHIEVEMENTS_ADD_CONDITION": "Додати умову",
+    "ACHIEVEMENTS_CONDITION": "Умова",
+    "ACHIEVEMENTS_REMOVE_CONDITION": "Видалити",
+    "ACHIEVEMENTS_CHARACTERISTIC": "Характеристика",
+    "ACHIEVEMENTS_OPERATOR": "Оператор",
+    "ACHIEVEMENTS_VALUE": "Значення",
+    "ACHIEVEMENTS_CREATE": "Створити",
+    "PLAYED_SCORE": "Порівняння з кращими",
+    "QUIZ_STATUS": "Робота модераторів",
+    "PLAYED_AMOUNT": "Кількість зіграних вікторин",
+    "CORRECT_PERCENT": "Відсоток правильних відповідей",
+    "FRIEND_PREFERENCE": "Переваги друзів"
   }
 }

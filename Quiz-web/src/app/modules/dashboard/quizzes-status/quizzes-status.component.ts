@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DashboardService} from "../../core/services/dashboard.service";
 import {AdminStatistics} from "../../core/models/adminStatistics";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-quizzes-status',
@@ -51,7 +52,8 @@ export class QuizzesStatusComponent implements OnInit {
     }
   }
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService,
+              public translate: TranslateService) {
   }
 
   ngOnInit(): void {

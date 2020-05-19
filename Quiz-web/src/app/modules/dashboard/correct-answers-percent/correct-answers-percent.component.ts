@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { graphic } from 'echarts';
 import {DashboardService} from "../../core/services/dashboard.service";
 import {Statistics} from "../../core/models/statistics";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-correct-answers-percent',
@@ -15,7 +16,8 @@ export class CorrectAnswersPercentComponent implements OnInit {
   options: any;
   detectEventChanges = true;
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService,
+              public translate: TranslateService) {
   }
 
   ngOnInit(): void{

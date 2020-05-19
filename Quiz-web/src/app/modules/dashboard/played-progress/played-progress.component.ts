@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {TranslateService} from "@ngx-translate/core";
+import {DashboardService} from "../../core/services/dashboard.service";
 
 @Component({
   selector: 'app-played-progress',
@@ -82,7 +84,7 @@ export class PlayedProgressComponent implements OnInit {
     ]
   };
 
-  constructor() { }
+  constructor(public translate: TranslateService) { }
 
   ngOnInit() {
   }

@@ -123,7 +123,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.chatService.leaveChat(this.id, this.chat.id)
       .subscribe(
         data => {
-          this.router.navigate([`users/${this.id}/chats`]).then();
+          this.router.navigate([`chats`]).then();
         },
         error => {
           console.log(error)
@@ -146,6 +146,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   }
 
   inviteFriend() {
+    console.log(this.selectedFriend.id)
     if (this.selectedFriend) {
       this.chatService.inviteToChat(this.selectedFriend, this.chat.id)
         .subscribe(
@@ -191,5 +192,9 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         this.getNew();
       }
     }
+  }
+
+  onChange(value: string) {
+    this.selectedFriend=this.friends.filter(value1 => value1.login=value)[0];
   }
 }

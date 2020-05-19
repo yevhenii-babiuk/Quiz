@@ -1,3 +1,4 @@
+<h4 *ngIf="stat.length>0"><p style="text-align:center">{{'DASHBOARD.PLAYED_AMOUNT' | translate}}</p></h4>
 <div echarts [options]="options" class="demo-chart"
      (chartInit)="onChartEvent($event, 'chartInit')"
      (chartClick)="onChartEvent($event, 'chartClick')"
