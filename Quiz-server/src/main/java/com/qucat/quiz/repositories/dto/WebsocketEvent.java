@@ -24,7 +24,7 @@ public class WebsocketEvent {
         RESULTS,
         QUESTION,
         PLAYERS,
-        MESSAGE
+        MESSAGE,
         NOTIFICATION
     }
 

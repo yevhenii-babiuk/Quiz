@@ -48,9 +48,13 @@ export class NotificationMenuComponent implements OnInit {
       that.stompClient.subscribe("/notification" + that.securityService.getCurrentId(), async (message) => {
         if (message.body) {
           that.receivedEvent = JSON.parse(message.body);
+          console.log(message.body);
+          console.log(that.receivedEvent.notification.isMessage);
           if(!that.receivedEvent.notification.isMessage) {
             that.notifications.push(that.receivedEvent.notification);
-            that.unviewedNotificationCount++;
+            if(that.receivedEvent.notification.isViewed) {
+              that.unviewedNotificationCount++;
+            }
           }
         }
       });

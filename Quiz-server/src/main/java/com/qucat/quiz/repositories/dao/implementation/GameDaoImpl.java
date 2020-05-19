@@ -1,14 +1,13 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.GameDao;
-import com.qucat.quiz.repositories.dao.mappers.*;
+import com.qucat.quiz.repositories.dao.mappers.GameDtoMapper;
+import com.qucat.quiz.repositories.dao.mappers.GameQuestionMapper;
+import com.qucat.quiz.repositories.dao.mappers.ImageMapper;
+import com.qucat.quiz.repositories.dao.mappers.UserDtoMapper;
 import com.qucat.quiz.repositories.dao.mappers.extractors.AnswerExtractor;
 import com.qucat.quiz.repositories.dao.mappers.extractors.QuestionExtractor;
-import com.qucat.quiz.repositories.dto.game.AnswerDto;
-import com.qucat.quiz.repositories.dto.game.GameDto;
-import com.qucat.quiz.repositories.dto.game.GameQuestionDto;
-import com.qucat.quiz.repositories.dto.game.QuizDto;
-import com.qucat.quiz.repositories.dto.game.UserDto;
+import com.qucat.quiz.repositories.dto.game.*;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;

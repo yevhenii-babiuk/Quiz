@@ -1,10 +1,6 @@
 package com.qucat.quiz.repositories.dao;
 
-import com.qucat.quiz.repositories.dto.game.AnswerDto;
-import com.qucat.quiz.repositories.dto.game.GameDto;
-import com.qucat.quiz.repositories.dto.game.GameQuestionDto;
-import com.qucat.quiz.repositories.dto.game.QuizDto;
-import com.qucat.quiz.repositories.dto.game.UserDto;
+import com.qucat.quiz.repositories.dto.game.*;
 import com.qucat.quiz.repositories.entities.Image;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;

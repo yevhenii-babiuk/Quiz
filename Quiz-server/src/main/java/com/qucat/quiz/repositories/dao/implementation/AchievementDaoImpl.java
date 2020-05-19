@@ -1,9 +1,9 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.AchievementDao;
-import com.qucat.quiz.repositories.dao.mappers.extractors.AchievementExtractor;
 import com.qucat.quiz.repositories.dao.mappers.AchievementMapper;
 import com.qucat.quiz.repositories.dao.mappers.UserAchievementMapper;
+import com.qucat.quiz.repositories.dao.mappers.extractors.AchievementExtractor;
 import com.qucat.quiz.repositories.entities.Achievement;
 import com.qucat.quiz.repositories.entities.AchievementCondition;
 import com.qucat.quiz.repositories.entities.UserAchievement;

@@ -1,13 +1,12 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.UserDao;
-import com.qucat.quiz.repositories.entities.*;
 import com.qucat.quiz.repositories.dto.game.UserDto;
-import com.qucat.quiz.repositories.entities.enums.Lang;
-import com.qucat.quiz.repositories.entities.enums.MessageInfo;
-import com.qucat.quiz.repositories.entities.enums.Role;
-import com.qucat.quiz.repositories.entities.enums.TokenType;
-import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
+import com.qucat.quiz.repositories.entities.FriendActivity;
+import com.qucat.quiz.repositories.entities.NotificationType;
+import com.qucat.quiz.repositories.entities.Token;
+import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.enums.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -218,14 +217,6 @@ public class UserService {
         } catch (BadCredentialsException e) {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
-    }
-
-    public boolean markQuizAsFavorite(int userId, int quizId) {
-        return userDao.markQuizAsFavorite(userId, quizId);
-    }
-
-    public void unmarkQuizAsFavorite(int userId, int quizId) {
-        userDao.unmarkQuizAsFavorite(userId, quizId);
     }
 
     public boolean addUserFriend(int userId, int friendId) {
