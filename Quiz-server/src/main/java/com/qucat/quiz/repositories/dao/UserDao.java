@@ -23,10 +23,6 @@ public interface UserDao extends GenericDao<User> {
 
     User getUserByLogin(String login);
 
-    boolean markQuizAsFavorite(int userId, int quizId);
-
-    void unmarkQuizAsFavorite(int userId, int quizId);
-
     boolean addUserFriend(int userId, int friendId);
 
     void deleteUserFriend(int userId, int friendId);
