@@ -27,7 +27,7 @@
         <div class="d-flex justify-content-end row m-3">
           <div class="col-6">
             <p class="sent_msg">
-              <a routerLink="../../../{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
+              <a routerLink="../../users/{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
               {{message.messageText}}
             </p>
             <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
@@ -41,7 +41,7 @@
           <img *ngIf="message.author.image" class="avatar rounded-circle col-1" src="data:image/jpeg;base64,{{message.author.image.src}}">
           <div class="col-7">
             <p class="received_msg">
-              <a routerLink="../../../{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
+              <a routerLink="../../users/{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
               {{message.messageText}}
             </p>
             <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
