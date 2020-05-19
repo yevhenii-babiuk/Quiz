@@ -39,6 +39,7 @@
   },
   "quiz": {
     "createQuiz": "Створити квіз",
+    "NEXT": "Далі",
     "questionTypes": {
       "SELECT_OPTION": "Виберіть правильні відповіді",
       "SELECT_SEQUENCE": "Виберіть послідовність відповідей",
@@ -75,5 +76,34 @@
     "PLAYED_AMOUNT": "Кількість зіграних вікторин",
     "CORRECT_PERCENT": "Відсоток правильних відповідей",
     "FRIEND_PREFERENCE": "Переваги друзів"
+  },
+  "CHAT": {
+    "CREATE_CHAT": "Створити чат",
+    "CREATE_NAME": "Вкажіть назву чату",
+    "CREATE": "Створити",
+    "PARTICIPANTS": "учасників",
+    "RENAME_CHAT": "Перейменувати чат",
+    "INVITE_FRIENDS": "Запросити друзів",
+    "INVITE": "Запросити",
+    "LEAVE": "Покинути",
+    "CHOOSE_FRIEND": "Виберіть друга",
+    "SEND": "Надіслати",
+    "TYPE_MESSAGE": "Введіть повідомлення"
+  },
+  "AUTHENTICATION": {
+    "LOGIN": {
+      "LOGIN_LABEL": "Увійти до свого облікового запису",
+      "FORGOT_PASSWORD": "Забули пароль?",
+      "REGISTER": "Зареєструватись?",
+      "LOGIN_BTN": "Увійти"
+    },
+    "PASS_RECOVERY": {
+      "PASS_RECOVERY": "Відновлення паролю",
+      "INSTRUCTION": "Будь ласка, введіть адресу вашої електронної пошти, щоб відновити пароль",
+      "RECOVER": "Відновити",
+      "NEW_PASSWORD_MSG": "Будь ласка, введіть новий пароль",
+      "APPLY": "Застосувати",
+      "UNAVAILABLE": "Вибачте, але ваш токен недоступний."
+    }
   }
 }
