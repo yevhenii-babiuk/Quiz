@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
 import {NotificationMenuComponent} from "../../shared/notification-menu/notification-menu.component";
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { AlertService } from '../../core/services/alert.service';
+import {AuthenticationService} from '../../core/services/authentication.service';
+import {AlertService} from '../../core/services/alert.service';
 
-import { User } from '../../core/models/user';
+import {User} from '../../core/models/user';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +18,8 @@ export class LoginComponent implements OnInit {
     private notificationMenuComponent: NotificationMenuComponent,
     private alertService: AlertService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }
@@ -31,17 +32,15 @@ export class LoginComponent implements OnInit {
     }
 
     this.authenticationService.login({login, password} as User)
-    .subscribe(
-               data => {
-                 //this.router.navigate(['/']).then();
-                 this.notificationMenuComponent.initializeWebSocketConnection();
-                 this.notificationMenuComponent.getNotificationFromDB();
-                 this.router.navigate(['profile']).then();
-               },
-               error => {
-                   this.alertService.error('Error while login');
-                   console.log(error);
-               });
+      .subscribe(
+        data => {
+          //this.router.navigate(['/']).then();
+          this.router.navigate(['profile']).then();
+        },
+        error => {
+          this.alertService.error('Error while login');
+          console.log(error);
+        });
 
   }
 

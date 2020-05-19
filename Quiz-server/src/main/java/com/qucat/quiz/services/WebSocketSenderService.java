@@ -2,11 +2,9 @@ package com.qucat.quiz.services;
 
 import com.google.gson.Gson;
 import com.qucat.quiz.repositories.dao.implementation.FriendListDaoImpl;
-import com.qucat.quiz.repositories.dto.UserDto;
-import com.qucat.quiz.repositories.dto.Users;
+import com.qucat.quiz.repositories.dto.WebsocketEvent;
 import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.dto.game.Users;
-import com.qucat.quiz.repositories.dto.WebsocketEvent;
 import com.qucat.quiz.repositories.entities.Notification;
 import com.qucat.quiz.repositories.entities.NotificationType;
 import com.qucat.quiz.repositories.entities.Question;
@@ -60,7 +58,9 @@ public class WebSocketSenderService {
             Notification notification;
             List<Integer> friendsId = friendListDao.getForNotification(authorId, notificationType);
             for (int friendId : friendsId) {
+                System.out.println("friendId: " + friendId);
                 notification = notificationService.generateNotification(authorId, objectId, friendId, notificationType);
+                System.out.println(notification);
                 this.template.convertAndSend("/notification" + friendId,
                         gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
                                 .notification(notification).build()));
@@ -70,11 +70,11 @@ public class WebSocketSenderService {
                 | notificationType == NotificationType.GAME_INVITATION) {
             Notification notification = notificationService.generateNotification(authorId, objectId, objectId, notificationType);
             if (friendListDao.isSendNotification(objectId, notificationType)) {
+                System.out.println(notification);
                 this.template.convertAndSend("/notification" + objectId,
                         gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
                                 .notification(notification).build()));
             }
         }
-
     }
 }

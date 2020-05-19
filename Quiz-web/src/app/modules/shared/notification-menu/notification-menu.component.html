@@ -1,5 +1,5 @@
-<div class="notification-wrapper" *ngIf="authService.isAuthenticated()">
-  <div  class="notification-btn" (click)="openNotification(!showNotification)">
+<div class="notification-wrapper">
+  <div  class="notification-btn" (click)="openNotification(!showNotification); changeShowMenu(showNotification)">
     <div  matBadge="{{unviewedNotificationCount}}" matBadgeColor="warn" *ngIf="unviewedNotificationCount > 0">
       <span class="fas fa-bell"></span>
     </div>
@@ -61,7 +61,8 @@
             <br>
           </a>
           <span class="lead">
-           {{notification.action}}<br>
+
+           {{'NOTIFICATIONS.'+ notification.action | translate}}<br>
         </span>
           <a routerLink="{{notification.actionLink}}" class="linkFont">Переглянути<br></a>
         </div>
@@ -69,3 +70,4 @@
     </div>
   </div>
 </div>
+

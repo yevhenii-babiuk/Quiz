@@ -27,24 +27,31 @@ public class NotificationService {
                 .author(notificationAuthor.getLogin())
                 .authorLink("http://localhost:4200/#/profile/" + authorId)
                 .userId(userId)
+                .isMessage(false)
                 .build();
         switch (notificationType) {
             case CREATED_NEWS:
-                notification.setAction("створив новину!");
+                notification.setAction("CREATED_NEWS");
                 notification.setActionLink("http://localhost:4200/#/announcement/" + objectId);
                 break;
             case CREATED_QUIZ:
-                notification.setAction("створив вікторину, поспішай збирати команду!");
+                notification.setAction("CREATED_QUIZ");
                 notification.setActionLink("http://localhost:4200/#/quiz/" + objectId);
                 break;
             case GAME_INVITATION:
-                notification.setAction("запрошує Вас у гру!");
+                notification.setAction("GAME_INVITATION");
                 notification.setActionLink("http://localhost:4200/#/quiz/35/game/null/play" + objectId);
                 break;
             case FRIEND_INVITATION:
-                notification.setAction("додав Вас у друзі!");
+                notification.setAction("FRIEND_INVITATION");
                 notification.setActionLink("http://localhost:4200/#/profile/" + authorId);
                 notification.setUserId(objectId);
+                break;
+            case MESSAGE:
+                notification.setAction("MESSAGE");
+                notification.setActionLink("http://localhost:4200/#/profile/" + objectId);
+                notification.setUserId(objectId);
+                notification.setMessage(true);
                 break;
             default:
                 return null;
@@ -54,6 +61,7 @@ public class NotificationService {
     }
 
     public boolean createNotification(Notification notification) {
+        System.out.println(notification);
         int notificationId = notificationDao.save(notification);
         if (notificationId == -1) {
             log.info("createNotification: Notification wasn't saved");
@@ -70,10 +78,6 @@ public class NotificationService {
         notificationDao.update(notification);
     }
 
-    public void deleteNotification(Notification notification) {
-        notificationDao.delete(notification);
-    }
-
     public void deleteNotificationById(int id) {
         notificationDao.deleteById(id);
     }
@@ -83,8 +87,17 @@ public class NotificationService {
     }
 
     public List<Notification> getNotificationsByUserId(int userId) {
-        return notificationDao.getByUserId(userId);
+        List<Notification> list = notificationDao.getByUserId(userId);
+        System.out.println(list);
+        return list;
     }
+
+    public List<Notification> getMessagesByUserId(int userId) {
+        List<Notification> list = notificationDao.getMessagesByUserId(userId);
+        System.out.println(list);
+        return list;
+    }
+
 
     public void deleteAllUserNotifications(int userId) {
         notificationDao.deleteAllByUserId(userId);

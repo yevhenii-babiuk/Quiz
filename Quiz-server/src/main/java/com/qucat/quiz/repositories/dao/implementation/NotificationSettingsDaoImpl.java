@@ -57,7 +57,8 @@ public class NotificationSettingsDaoImpl extends GenericDaoImpl<NotificationSett
                 notificationSettings.isNewAnnouncement(),
                 notificationSettings.isGameInvitation(),
                 notificationSettings.isFriendInvitation(),
-                notificationSettings.getUserId()};
+                notificationSettings.getUserId(),
+                notificationSettings.getId()};
     }
 
     @Override

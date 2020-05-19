@@ -39,7 +39,7 @@ public class NotificationDaoImpl extends GenericDaoImpl<Notification> implements
         preparedStatement.setString(4, notification.getAction());
         preparedStatement.setString(5, notification.getAuthorLink());
         preparedStatement.setString(6, notification.getActionLink());
-
+        preparedStatement.setBoolean(7, notification.isMessage());
         return preparedStatement;
     }
 
@@ -51,7 +51,7 @@ public class NotificationDaoImpl extends GenericDaoImpl<Notification> implements
     @Override
     protected Object[] getUpdateParameters(Notification notification) {
         return new Object[]{notification.getUserId(), notification.isViewed(), notification.getAuthor(),
-                notification.getAction(), notification.getAuthorLink(), notification.getActionLink()};
+                notification.getAction(), notification.getAuthorLink(), notification.getActionLink(), notification.isMessage(), notification.getId()};
     }
 
     @Override
@@ -61,10 +61,15 @@ public class NotificationDaoImpl extends GenericDaoImpl<Notification> implements
     }
 
     @Override
-    public void deleteAllByUserId(int id) {
-        jdbcTemplate.query(notificationQueries.get("deleteAllByUserId"),
+    public List<Notification> getMessagesByUserId(int id) {
+        return jdbcTemplate.query(notificationQueries.get("getMessages"),
                 new Object[]{id}, new NotificationMapper());
     }
 
 
+    @Override
+    public void deleteAllByUserId(int id) {
+        jdbcTemplate.query(notificationQueries.get("deleteAllByUserId"),
+                new Object[]{id}, new NotificationMapper());
+    }
 }

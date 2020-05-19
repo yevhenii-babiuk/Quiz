@@ -1,5 +1,5 @@
 export class NotificationFilters{
-  id:number;
+  id: number;
   newQuiz: boolean;
   newAnnouncement: boolean;
   gameInvitation: boolean;

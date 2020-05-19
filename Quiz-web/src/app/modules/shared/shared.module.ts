@@ -13,6 +13,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {FormsModule} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
+import { MessageMenuComponent } from './message-menu/message-menu.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import {TranslateModule} from "@ngx-translate/core";
     HeaderComponent,
     FooterComponent,
     SidenavComponent,
-    NotificationMenuComponent
+    NotificationMenuComponent,
+    MessageMenuComponent
   ],
   imports: [
     CommonModule,

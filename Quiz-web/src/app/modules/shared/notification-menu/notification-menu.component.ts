@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthenticationService} from "../../core/services/authentication.service";
 
 import {socket} from "../../../../environments/environment.prod";
@@ -9,6 +9,8 @@ import {SecurityService} from "../../core/services/security.service";
 import {NotificationService} from "../../core/services/notification.service";
 import {NotificationDto} from "../../core/models/notificationDto";
 import {NotificationFilters} from "../../core/models/notificationFilters";
+import {MessageMenuComponent} from "../message-menu/message-menu.component";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-notification-menu',
@@ -25,19 +27,17 @@ export class NotificationMenuComponent implements OnInit {
   userId: number;
   notificationFilters: NotificationFilters;
 
-  newsChanel = true;
-  playChanel: false;
-  quizChanel: boolean;
-  invitationChanel: boolean;
-
-  showNotification: boolean;
+  @Input()
+  public showNotification: boolean;
   showSettings: boolean;
-  newsSubscription: any;
 
+  @Output() isNotification = new EventEmitter<boolean>();
+  changeShowMenu(isShowMenu:boolean) {
+    this.isNotification.emit(isShowMenu);
+  }
   constructor(public securityService: SecurityService,
               public authService: AuthenticationService,
               private notificationService: NotificationService) {
-
   }
 
   initializeWebSocketConnection() {
@@ -48,17 +48,19 @@ export class NotificationMenuComponent implements OnInit {
       that.stompClient.subscribe("/notification" + that.securityService.getCurrentId(), async (message) => {
         if (message.body) {
           that.receivedEvent = JSON.parse(message.body);
-          that.notifications.push(that.receivedEvent.notification);
-          that.unviewedNotificationCount++;
+          if(!that.receivedEvent.notification.isMessage) {
+            that.notifications.push(that.receivedEvent.notification);
+            that.unviewedNotificationCount++;
+          }
         }
       });
     }, this);
   }
 
   setViewed(notification: NotificationDto) {
-    if (!this.notifications[this.notifications.indexOf(notification)].isViewed) {
-      this.notifications[this.notifications.indexOf(notification)].isViewed = true;
-      this.notificationService.updateNotificationView(this.notifications[this.notifications.indexOf(notification)].isViewed).subscribe();
+    if (!notification.isViewed) {
+      notification.isViewed = true;
+      this.notificationService.updateNotificationView(notification).subscribe();
       if (this.unviewedNotificationCount > 0) {
         this.unviewedNotificationCount--;
       }
@@ -81,12 +83,13 @@ export class NotificationMenuComponent implements OnInit {
   }
 
   openNotification(state: boolean) {
-    this.showNotification = state;
+      this.showNotification = state;
   }
 
   getNotificationFromDB() {
     this.notificationService.getNotificationsByUserId(this.securityService.getCurrentId()).subscribe(
       notifications => {
+        console.log(notifications);
         this.notifications = this.notifications.concat(notifications);
         for (let i = 0; i < this.notifications.length; i++) {
           if (!this.notifications[i].isViewed) {
@@ -101,6 +104,7 @@ export class NotificationMenuComponent implements OnInit {
 
   updateSettings(notificationFilters: NotificationFilters) {
     this.notificationService.updateSettings(notificationFilters).subscribe();
+    console.log(notificationFilters);
   }
 
   ngOnInit(): void {
@@ -116,12 +120,5 @@ export class NotificationMenuComponent implements OnInit {
           console.log(err);
         });
     }
-
   }
-
-  disconnect() {
-    this.stompClient.disconnect();
-    console.log("Disconnected");
-  }
-
 }

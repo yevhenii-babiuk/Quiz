@@ -6,4 +6,5 @@ export class NotificationDto {
   action: string;
   authorLink: string;
   actionLink: string;
+  isMessage: boolean;
 }

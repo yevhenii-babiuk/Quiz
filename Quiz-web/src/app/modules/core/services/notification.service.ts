@@ -14,6 +14,7 @@ export class NotificationService {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
 
+
   constructor(private http: HttpClient) {
   }
 
@@ -24,19 +25,26 @@ export class NotificationService {
       );
   }
 
+  getMessagesByUserId(userId: number): Observable<NotificationDto[]> {
+    return this.http.get<NotificationDto[]>(`${url}/notifications/messages/${userId}`)
+      .pipe(
+        catchError(this.handleError<NotificationDto[]>([]))
+      );
+  }
+
   updateNotificationView(notification: NotificationDto) {
     console.log("put request");
     return this.http.put<string>(`${url}/notification`, notification, this.httpOptions);
   }
 
-  deleteAllByUserId (userId: number): Observable<{}> {
+  deleteAllByUserId(userId: number): Observable<{}> {
     return this.http.delete(`${url}/notification/user/${userId}`, this.httpOptions)
       .pipe(
         catchError(this.handleError('deleteAllByUserId'))
       );
   }
 
-  deleteNotificationById (id: number): Observable<{}> {
+  deleteNotificationById(id: number): Observable<{}> {
     return this.http.delete(`${url}/notification/${id}`, this.httpOptions)
       .pipe(
         catchError(this.handleError('deleteAllByUserId'))

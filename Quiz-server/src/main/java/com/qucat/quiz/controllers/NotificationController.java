@@ -22,8 +22,14 @@ public class NotificationController {
         return notificationService.getNotificationsByUserId(userId).toArray(Notification[]::new);
     }
 
+    @GetMapping("/notifications/messages/{userId}")
+    public Notification[] getMessages(@PathVariable int userId) {
+        return notificationService.getMessagesByUserId(userId).toArray(Notification[]::new);
+    }
+
     @PutMapping("/notification")
     public void updateNotificationViewed(@RequestBody Notification notification) {
+        System.out.println(notification);
         notificationService.updateNotification(notification);
         System.out.println("updating");
     }
@@ -44,7 +50,8 @@ public class NotificationController {
     }
 
     @PutMapping("/notification/settings")
-    public void updateSettings(NotificationSettings notificationSettings) {
+    public void updateSettings(@RequestBody NotificationSettings notificationSettings) {
+        System.out.println("update notification settings");
         settingsService.updateNotificationSettings(notificationSettings);
     }
 }

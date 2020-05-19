@@ -15,7 +15,9 @@ public class NotificationMapper implements RowMapper<Notification> {
                 .isViewed(resultSet.getBoolean("is_viewed"))
                 .author(resultSet.getString("author"))
                 .action(resultSet.getString("action"))
-                .authorLink(resultSet.getString("action_link"))
+                .authorLink(resultSet.getString("author_link"))
+                .actionLink(resultSet.getString("action_link"))
+                .isMessage(resultSet.getBoolean("is_message"))
                 .build();
     }
 }
