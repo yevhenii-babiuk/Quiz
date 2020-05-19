@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {Achievement} from "../../core/models/achievement";
 import {AchievementService} from "../../core/services/achievement.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-achievements-list',
@@ -12,7 +13,8 @@ export class AchievementsListComponent implements OnInit {
   slides: any = [[]];
   @Input() currentId:number;
 
-  constructor(private achievementService: AchievementService) {
+  constructor(private achievementService: AchievementService,
+              public translate: TranslateService) {
   }
 
   chunk(arr, chunkSize) {

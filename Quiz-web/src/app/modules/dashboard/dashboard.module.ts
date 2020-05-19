@@ -7,9 +7,9 @@ import {PlayedProgressComponent} from './played-progress/played-progress.compone
 import {PlayedQuizScoreComponent} from './played-quiz-score/played-quiz-score.component';
 import {FriendsPreferenceComponent} from './friends-preference/friends-preference.component';
 import {CorrectAnswersPercentComponent} from './correct-answers-percent/correct-answers-percent.component';
-import {TopPlayersComponent} from './top-players/top-players.component';
 import { PlayedQuizzesAmountComponent } from './played-quizzes-amount/played-quizzes-amount.component';
 import { QuizzesStatusComponent } from './quizzes-status/quizzes-status.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -18,14 +18,14 @@ import { QuizzesStatusComponent } from './quizzes-status/quizzes-status.componen
     PlayedQuizScoreComponent,
     FriendsPreferenceComponent,
     CorrectAnswersPercentComponent,
-    TopPlayersComponent,
     PlayedQuizzesAmountComponent,
     QuizzesStatusComponent
   ],
   imports: [
     NgxEchartsModule,
     ChartModule,
-    CommonModule
+    CommonModule,
+    TranslateModule
   ]
 })
 export class DashboardModule {
