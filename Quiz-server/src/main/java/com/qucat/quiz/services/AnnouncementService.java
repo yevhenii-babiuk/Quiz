@@ -35,8 +35,8 @@ public class AnnouncementService {
         announcementDao.update(announcement);
     }
 
-    public void deleteAnnouncement(Announcement announcement) {
-        announcementDao.deleteById(announcement.getId());
+    public void deleteAnnouncement(int announcementId) {
+        announcementDao.deleteById(announcementId);
     }
 
     public Announcement getAnnouncementById(int announcementId) {

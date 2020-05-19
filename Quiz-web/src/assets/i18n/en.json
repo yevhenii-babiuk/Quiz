@@ -1,12 +1,60 @@
 {
-  "HOME": {
-    "TITLE": "Hello Angular with ngx-translate!"
-  },
   "HEADER": {
     "LOGIN": "Login",
-    "SIGN UP": "Sign up"
+    "SIGN UP": "Sign up",
+    "LOGOUT": "Log out",
+    "SEARCH": "Search quizzes"
   },
   "SIDENAV": {
-    "QUIZZES": "Quizzes"
+    "QUIZZES": "Quizzes",
+    "USERS": "Users",
+    "STATISTIC": "Statistic",
+    "ACTIVITY": "Friends activity",
+    "FRIENDS": "Friends",
+    "ANNOUNCEMENTS": "Announcements",
+    "TOP": "Top users",
+    "PROFILE": "Profile"
+  },
+  "USERLIST": {
+    "LOGIN": "Login",
+    "NAME": "Name",
+    "ROLE": "Role",
+    "DATE": "Registration date",
+    "SEARCH": "Search user"
+  },
+  "ANNOUNCEMENT": {
+    "CREATE BUTTON": "Have any news? Share with us!",
+    "POST BY": "Posted by ",
+    "POST ON": "Posted on ",
+    "CREATE": "Create announcement",
+    "UPDATE": "Create announcement",
+    "TITLE": "Title",
+    "SUBTITLE": "Subtitle",
+    "TEXT": "Text",
+    "UPLOAD": "Add image",
+    "SUBMIT": "Submit"
+  },
+  "quiz": {
+    "createQuiz": "Create quiz",
+    "questionTypes": {
+      "SELECT_OPTION": "Select options",
+      "SELECT_SEQUENCE": "Select sequence",
+      "TRUE_FALSE": "Chose true or false",
+      "ENTER_ANSWER": "Write answer",
+      "true": "True",
+      "false": "False"
+    },
+    "viewQuiz": {
+      "editQuiz": "Edit quiz",
+      "publishQuiz": "Publish quiz",
+      "deactivateQuiz": "Deactivate quiz",
+      "playQuiz": "Play quiz",
+      "quizName": "Quiz name",
+      "category": "Category",
+      "tags": "Tags",
+      "description": "Description",
+      "questionType": "Question type"
+
+    }
   }
 }

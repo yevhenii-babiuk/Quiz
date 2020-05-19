@@ -46,27 +46,7 @@ export class UpdateQuizComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private securityService: SecurityService) {
-    const id = this.route.snapshot.paramMap.get('quizId');
-    console.log(id);
-    if (id) {
-      this.quizzesService.getById(id).subscribe(
-        data => {
-          this.quiz = data;
-        }, err => {
-          console.log(err);
-          this.createNewQuiz();
-        });
-    } else {
-      this.createNewQuiz();
-    }
 
-    this.getCategories();
-    this.getTags();
-
-
-    this.filteredTags = this.tagCtrl.valueChanges.pipe(
-      startWith(null),
-      map((tags: string | null) => tags ? this._filter(tags) : this.tags.slice()));
   }
 
   getCategories() {
@@ -102,7 +82,27 @@ export class UpdateQuizComponent implements OnInit {
 
 
   ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('quizId');
+    console.log(id);
+    if (id) {
+      this.quizzesService.getById(id, "").subscribe(
+        data => {
+          this.quiz = data;
+        }, err => {
+          console.log(err);
+          this.createNewQuiz();
+        });
+    } else {
+      this.createNewQuiz();
+    }
 
+    this.getCategories();
+    this.getTags();
+
+
+    this.filteredTags = this.tagCtrl.valueChanges.pipe(
+      startWith(null),
+      map((tags: string | null) => tags ? this._filter(tags) : this.tags.slice()));
   }
 
   processFile(imageInput: any, imaged: Imaged) {

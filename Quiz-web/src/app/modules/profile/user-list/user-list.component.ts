@@ -3,6 +3,7 @@ import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {ProfileService} from "../../core/services/profile.service";
 import {User} from "../../core/models/user";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-userlist',
@@ -20,7 +21,9 @@ export class UserListComponent implements OnInit {
   private keyUpTimeout: any;
 
   constructor(private profileService: ProfileService,
-              private securityService: SecurityService) {
+              private securityService: SecurityService,
+              public translate: TranslateService
+  ) {
     this.role = this.securityService.getCurrentRole();
   }
 

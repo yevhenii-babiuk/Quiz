@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {SecurityService} from "../../core/services/security.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-friend-list',
@@ -16,7 +17,9 @@ export class FriendListComponent implements OnInit {
   id: number;
 
   constructor(private profileService: ProfileService,
-              private securityService: SecurityService) {
+              private securityService: SecurityService,
+              public translate: TranslateService
+  ) {
   }
 
 

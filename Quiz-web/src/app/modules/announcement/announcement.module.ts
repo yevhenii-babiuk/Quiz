@@ -7,6 +7,7 @@ import {RouterModule} from "@angular/router";
 import {FormsModule} from "@angular/forms";
 import { UpdateAnnouncementComponent } from './update-announcement/update-announcement.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import { AnnouncementsComponent } from './announcements/announcements.component'
     CommonModule,
     AnnouncementRoutingModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ]
 })
 export class AnnouncementModule { }

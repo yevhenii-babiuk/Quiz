@@ -33,28 +33,28 @@
 <hr>
     <ul class="sidebar-nav components pl-4">
       <li *ngIf="authenticationService.isAuthenticated()">
-        <a routerLink="../profile">Профіль</a>
+        <a routerLink="../profile">{{'SIDENAV.PROFILE' | translate}}</a>
       </li>
       <li *ngIf="securityService.getCurrentRole()==roleEnum.USER && authenticationService.isAuthenticated()">
-        <a routerLink="../friends">Друзі</a>
+        <a routerLink="../friends">{{'SIDENAV.FRIENDS' | translate}}</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
-        <a routerLink="../activities">Діяльність друзів</a>
+        <a routerLink="../activities">{{'SIDENAV.ACTIVITY' | translate}}</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
-        <a routerLink="../profile/dashboard">Статистика</a>
+        <a routerLink="../profile/dashboard">{{'SIDENAV.STATISTIC' | translate}}</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
-        <a routerLink="../users">Користувачі</a>
+        <a routerLink="../users">{{'SIDENAV.USERS' | translate}}</a>
       </li>
       <li>
         <a routerLink="../quizzes">{{'SIDENAV.QUIZZES' | translate}}</a>
       </li>
       <li>
-        <a routerLink="../announcements">Новини</a>
+        <a routerLink="../announcements">{{'SIDENAV.ANNOUNCEMENTS' | translate}}</a>
       </li>
       <li>
-        <a href="#">Рейтинг учасників</a>
+        <a href="#">{{'SIDENAV.TOP' | translate}}</a>
       </li>
     </ul>
 
