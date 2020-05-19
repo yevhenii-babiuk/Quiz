@@ -10,6 +10,8 @@ public interface ChatDao extends GenericDao<Chat> {
 
     List<Chat> getAllFullInfo();
 
+    List<Chat> getAllFullInfoForUser(int id);
+
     Chat getFullInfo(int id);
 
     List<Chat> getChatsForUser(int userId);
