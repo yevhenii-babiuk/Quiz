@@ -3,7 +3,8 @@
       rel="stylesheet">
 -->
 <div class="container" *ngIf="quiz">
-  <button *ngIf="securityService.getCurrentRole()=='USER'" [ngStyle]="{'background-color': COLORS.AMBER}" class="btn form-control mb-3" routerLink="gameSettings">
+  <button *ngIf="securityService.getCurrentRole()=='USER'" [ngStyle]="{'background-color': COLORS.AMBER}"
+          class="btn form-control mb-3" routerLink="gameSettings">
     {{ 'quiz.viewQuiz.playQuiz' | translate }}
   </button>
   <p class="text-center font-weight-bold">{{quiz.name | uppercase}}</p>
@@ -14,7 +15,8 @@
     <div (click)="setDeactivated()" *ngIf="!isDeactivated()" class="col mx-3 btn btn-warning">
       {{'quiz.viewQuiz.deactivateQuiz' | translate}}
     </div>
-    <div (click)="setActivated()" *ngIf="securityService.getCurrentRole()!='USER' && !isActivated()" class="col mx-3 btn btn-warning">
+    <div (click)="setActivated()" *ngIf="securityService.getCurrentRole()!='USER' && !isActivated()"
+         class="col mx-3 btn btn-warning">
       {{'quiz.viewQuiz.publishQuiz' | translate}}
     </div>
     <button *ngIf="securityService.getCurrentId()==quiz.authorId" class="col mx-3 btn btn-warning">
@@ -42,17 +44,22 @@
           <label class="form-control">{{quiz.category.name}}</label>
         </label>
       </div>
-
-      <div class="mat-app-background" *ngIf="quiz.tags.length>0">
-        <mat-form-field class="example-chip-list w-100">
-          <mat-chip-list aria-label="Fruit selection w-100" placeholder="{{ 'quiz.viewQuiz.tags' | translate }}">
-            <mat-chip
-              *ngFor="let tag of quiz.tags">
-              {{tag.name}}
-            </mat-chip>
-          </mat-chip-list>
-        </mat-form-field>
+      <div class="row">
+        <div *ngIf="userId" (click)="changeStar()">
+          <img src="assets/img/star-{{quiz.isFavorite?'full':'empty'}}.png" height="50" alt="sign">
+        </div>
+        <div class="mat-app-background col" *ngIf="quiz.tags.length>0">
+          <mat-form-field class="example-chip-list w-100">
+            <mat-chip-list aria-label="Fruit selection w-100" placeholder="{{ 'quiz.viewQuiz.tags' | translate }}">
+              <mat-chip
+                *ngFor="let tag of quiz.tags">
+                {{tag.name}}
+              </mat-chip>
+            </mat-chip-list>
+          </mat-form-field>
+        </div>
       </div>
+
 
       <div class="w-100 h-auto">
         <label class="w-100 h-auto">{{ 'quiz.viewQuiz.description' | translate }}:
