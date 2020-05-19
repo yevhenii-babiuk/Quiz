@@ -20,7 +20,7 @@ public class ChatService {
             log.warn("User id can`t be 0");
             throw new IllegalArgumentException("0 can`t be user`s identifier");
         }
-        return chatDao.getChatsForUser(userId);
+        return chatDao.getAllFullInfoForUser(userId);
     }
 
     public Chat getFullChatInfo(int chatId) {
