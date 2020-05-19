@@ -52,7 +52,7 @@ export class ChatService {
   }
 
   getMessages(chatId: number, currentCount: number): Observable<Message[]> {
-    return this.http.get<Message[]>(`${url}/chat/${chatId}/messages?pageNumber=${currentCount}`)
+    return this.http.get<Message[]>(`${url}/chat/${chatId}/messages?pageNumber=${Math.floor(currentCount/10)}`)
       .pipe(
         catchError(this.handleError<Message[]>([]))
       );

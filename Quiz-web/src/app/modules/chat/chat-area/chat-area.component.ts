@@ -11,6 +11,7 @@ import {socket} from "../../../../environments/environment.prod";
 import {EventType, WebsocketEvent} from "../../core/models/websocketEvent";
 import {ProfileService} from "../../core/services/profile.service";
 import {User} from "../../core/models/user";
+import {Role} from "../../core/models/role";
 
 @Component({
   selector: 'app-chat-area',
@@ -18,16 +19,20 @@ import {User} from "../../core/models/user";
   styleUrls: ['./chat-area.component.css']
 })
 export class ChatAreaComponent implements OnInit, OnDestroy {
-  public invitation: boolean = false;
+  isWaiting: boolean = false;
+  isOver: boolean = false;
+
   id: number;
   chat: Chat = new Chat();
   public messages: Array<Message> = new Array<Message>();
   message: Message = new Message();
+
+  public invitation: boolean = false;
   public isLoaded: boolean = false;
   selectedFriend: User;
   friends: User[] = [];
 
-  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  // @ViewChild('scrollMe') private myScrollContainer: ElementRef;
 
   private stompClient;
   eventType = EventType;
@@ -52,15 +57,8 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
           console.log(err);
         }
       );
-    this.chatService.getMessages(this.chat.id, this.messages.length)
-      .subscribe(
-        messages => {
-          this.messages = messages;
-          this.scrollToBottom();
-        },
-        err => {
-          console.log(err);
-        });
+
+    this.getNew();
 
     this.initializeWebSocketConnection();
   }
@@ -68,11 +66,13 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  scrollToBottom(): void {
-    try {
-      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-    } catch(err) { }
-  }
+  // scrollToBottom(): void {
+  //   try {
+  //     this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+  //   } catch(err) {
+  //     console.log(err);
+  //   }
+  // }
 
   initializeWebSocketConnection() {
     let ws = new SockJS(socket);
@@ -80,11 +80,11 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     let that = this;
 
     this.stompClient.connect({}, function () {
-      that.s = that.stompClient.subscribe("/chat/" + that.chat.id,  (message) => {
+      that.s = that.stompClient.subscribe("/chat/" + that.chat.id, (message) => {
         if (message.body) {
           that.receivedEvent = JSON.parse(message.body);
           if (that.receivedEvent.type == that.eventType.MESSAGE) {
-            that.messages.unshift(that.receivedEvent.message);
+            that.messages.push(that.receivedEvent.message);
           }
         }
       });
@@ -99,11 +99,10 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
 
     this.message.chatId = this.chat.id;
     this.message.authorId = this.id;
-    console.log(this.message);
 
     this.stompClient.send("/chat/" + this.chat.id, {}, JSON.stringify(this.message));
     this.message.messageText = '';
-    this.scrollToBottom();
+    // this.scrollToBottom();
   }
 
   ngOnDestroy(): void {
@@ -133,7 +132,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   }
 
   loadFriends() {
-    if (!this.isLoaded){
+    if (!this.isLoaded) {
       this.profileService.getFriends(this.id)
         .subscribe(
           friends => {
@@ -147,7 +146,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   }
 
   inviteFriend() {
-    if (this.selectedFriend){
+    if (this.selectedFriend) {
       this.chatService.inviteToChat(this.selectedFriend, this.chat.id)
         .subscribe(
           data => {
@@ -160,8 +159,37 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     }
   }
 
-  // @HostListener('scroll', ['$event'])
-  // scrollHandler(event) {
-  //   console.debug("Scroll Event");
-  // }
+  getNew(): void {
+    if (this.isWaiting) {
+      return;
+    }
+    this.isWaiting = true;
+
+    this.chatService.getMessages(this.chat.id, this.messages.length)
+      .subscribe(
+        messages => {
+          if (messages.length < 10){
+            this.isOver = true;
+          }
+
+          if (messages.length == 0) {
+            this.isWaiting = false;
+            return;
+          }
+          this.isWaiting = false;
+          this.messages = messages.reverse().concat(this.messages);
+        },
+        err => {
+          console.log(err);
+        })
+  }
+
+  @HostListener('scroll', ['$event'])
+  scrollHandler(event) {
+    if (event.srcElement.scrollHeight - event.srcElement.scrollTop - event.srcElement.clientHeight > (event.srcElement.scrollTopMax - 20)) {
+      if (!this.isOver){
+        this.getNew();
+      }
+    }
+  }
 }
