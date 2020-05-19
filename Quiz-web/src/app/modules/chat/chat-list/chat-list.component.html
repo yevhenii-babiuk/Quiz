@@ -10,13 +10,12 @@
 
 <ng-container *ngFor="let chat of chats">
   <div class="chat_list" routerLink="../chat/{{chat.id}}">
-    <img src="assets/img/chat-icons/{{(chat.id%50)+1}}.png" class="avatar" alt="Avatar">
+    <img src="assets/img/chat-icons/{{chat.id%51}}.png" class="avatar" alt="Avatar">
     <div class="chat_ib">
       <h5>{{chat.name}}
         <span class="chat_date">{{chat.creationDate | date:'medium'}}</span>
       </h5>
-      <p>Test, which is a new approach to have all solutions
-        astrology under one roof.</p>
+      <p *ngIf="chat.users">{{chat.users.length}} participants</p>
     </div>
   </div>
 </ng-container>

@@ -26,7 +26,7 @@ public class ChatExtractor implements ResultSetExtractor<List<Chat>> {
                 chat = Chat.builder()
                         .id(chatId)
                         .name(rs.getString("name"))
-                        .creationDate(rs.getDate("creation_date"))
+                        .creationDate(rs.getTimestamp("creation_date"))
                         .build();
                 chatMap.put(chatId, chat);
             }
