@@ -132,8 +132,8 @@ public class QuizService {
     }
 
 
-    public Page<Quiz> getCompletedQuizzesByUserId(int userId, Optional<Integer> page, Optional<Integer> size) {
-        Page<Quiz> completedQuizzes = quizDao.getCompletedQuizzesByUserId(userId, PageRequest.of(page.orElse(0), size.orElse(10),
+    public Page<Quiz> getCompletedQuizzesByUserId(int userId, int page, int size) {
+        Page<Quiz> completedQuizzes = quizDao.getCompletedQuizzesByUserId(userId, PageRequest.of(page, size,
                 Sort.Direction.DESC, "id"));
         if (completedQuizzes.isEmpty()) {
             log.warn("There are no completed quizzes for user with id={}", userId);
@@ -143,8 +143,8 @@ public class QuizService {
         }
     }
 
-    public Page<Quiz> getCreatedQuizzesByUserId(int userId, Optional<Integer> page, Optional<Integer> size) {
-        Page<Quiz> createdQuizzes = quizDao.getCreatedQuizzesByUserId(userId, PageRequest.of(page.orElse(0), size.orElse(10),
+    public Page<Quiz> getCreatedQuizzesByUserId(int userId, int page, int size) {
+        Page<Quiz> createdQuizzes = quizDao.getCreatedQuizzesByUserId(userId, PageRequest.of(page, size,
                 Sort.Direction.DESC, "id"));
         if (createdQuizzes.isEmpty()) {
             log.warn("There are no created quizzes for user with id={}", userId);
@@ -154,8 +154,8 @@ public class QuizService {
         }
     }
 
-    public Page<Quiz> getFavouriteQuizzesByUserId(int userId, Optional<Integer> page, Optional<Integer> size) {
-        Page<Quiz> favouriteQuizzes = quizDao.getFavouriteQuizzesByUserId(userId, PageRequest.of(page.orElse(0), size.orElse(10),
+    public Page<Quiz> getFavouriteQuizzesByUserId(int userId, int page, int size) {
+        Page<Quiz> favouriteQuizzes = quizDao.getFavouriteQuizzesByUserId(userId, PageRequest.of(page, size,
                 Sort.Direction.DESC, "id"));
         if (favouriteQuizzes.isEmpty()) {
             log.warn("There are no favourite quizzes for user with id={}", userId);
@@ -166,7 +166,7 @@ public class QuizService {
         }
     }
 
-    public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
+        public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
         return quizDao.getFavouriteMarkByUserIdAndQuizId(userId, quizId);
     }
 

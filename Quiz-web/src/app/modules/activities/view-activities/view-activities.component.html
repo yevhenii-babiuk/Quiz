@@ -18,13 +18,8 @@
   <div class="row custom">
     <div class="col-lg-10 col-md-10 mx-auto m-2">
       <div class="post-preview">
-        <!-- Preview Image -->
-        <!--<img *ngIf="activity.imageId!=-1" class="img-responsive img-left"
-             src="data:image/jpeg;base64,{{activity.image.src}}" alt="logo" width="70" height="70">
-        <img *ngIf="activity.imageId==-1" class="img-responsive img-left" src="../../assets/img/logo.png" alt="logo"
-             width="70" height="70">-->
-        <img class="img-responsive img-left" src="../../assets/img/main.png" alt="logo"
-             width="70" height="70">
+        <img class="img-responsive img-left" src="../../assets/img/userIcons/{{(activity.friendId%50)+1}}.png" alt="logo"
+             width="70" height="70" alt="Avatar">
         <!--achievement-->
         <h5 *ngIf="activity.type==category.ACHIEVEMENT">
           Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> отримав нагороду
