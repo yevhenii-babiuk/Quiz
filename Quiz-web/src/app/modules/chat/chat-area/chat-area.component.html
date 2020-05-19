@@ -10,9 +10,9 @@
     </div>
 
     <div class="input-group mt-2" *ngIf="invitation">
-      <select class="custom-select" [(ngModel)]="selectedFriend">
+      <select class="custom-select">
         <option selected>Choose friend</option>
-        <option *ngFor="let friend of friends">{{friend.login}}</option>
+        <option *ngFor="let friend of friends" (click)="selectedFriend = friend">{{friend.login}}</option>
       </select>
       <div class="input-group-append">
         <button class="btn btn-warning pl-5 pr-5" type="button" (click)="inviteFriend()">Invite</button>
@@ -27,21 +27,21 @@
         <div class="d-flex justify-content-end row m-3">
           <div class="col-6">
             <p class="sent_msg">
-              <a routerLink="../../../../users/{{message.authorId}}" class="login text-dark">{{message.authorLogin}}</a>
+              <a routerLink="../../../{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
               {{message.messageText}}
             </p>
             <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
           </div>
-          <img src="assets/img/main.png" class="avatar rounded-circle col-1" alt="Avatar">
+          <img *ngIf="message.author.image" class="avatar rounded-circle col-1" src="data:image/jpeg;base64,{{message.author.image.src}}">
         </div>
       </div>
 
       <ng-template #incoming>
         <div class="row m-3">
-          <img src="assets/img/main.png" class="avatar rounded-circle col-1" alt="Avatar">
+          <img *ngIf="message.author.image" class="avatar rounded-circle col-1" src="data:image/jpeg;base64,{{message.author.image.src}}">
           <div class="col-7">
             <p class="received_msg">
-              <a routerLink="../../users/{{message.authorId}}" class="login text-dark">{{message.authorLogin}}</a>
+              <a routerLink="../../../{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
               {{message.messageText}}
             </p>
             <span class="time_date"> {{message.creationDate | date:'medium'}}</span>

@@ -25,15 +25,13 @@ export class ChatService {
     );
   }
 
-  createChat(id: number) {
-    return this.http.post<string>(`${url}/users/${id}/createChat`, id, this.httpOptions);
+  createChat(chat: Chat) {
+    return this.http.post<Chat>(`${url}/createChat`, chat, this.httpOptions);
   }
 
-  // createChat(chat: Chat) {
-  //   return this.http.post<Chat>(`${url}/chat/`, chat, this.httpOptions).pipe(
-  //     catchError(this.handleError<Chat>(null))
-  //   );
-  // }
+  inviteToChat(user: User, chatId: number) {
+    return this.http.post<Chat>(`${url}/users/${user.id}/chat/${chatId}/invite`, this.httpOptions);
+  }
 
   leaveChat(id:number, chatId:number){
     return this.http.delete<string>(`${url}/users/${id}/chat/${chatId}`);
@@ -60,8 +58,15 @@ export class ChatService {
       );
   }
 
-  getMessages(chatId: number) {
-    return this.http.get<Message[]>(`${url}/chat/${chatId}/messages`)
+  // getMessages(chatId: number) {
+  //   return this.http.get<Message[]>(`${url}/chat/${chatId}/messages`)
+  //     .pipe(
+  //       catchError(this.handleError<Message[]>([]))
+  //     );
+  // }
+
+  getMessages(chatId: number, currentCount: number): Observable<Message[]> {
+    return this.http.get<Message[]>(`${url}/chat/${chatId}/messages?pageNumber=${currentCount}`)
       .pipe(
         catchError(this.handleError<Message[]>([]))
       );

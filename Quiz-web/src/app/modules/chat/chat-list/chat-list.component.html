@@ -1,9 +1,16 @@
-<button class="form-control btn btn-warning mb-3" (click)="createChat()" >Create chat</button>
+<button *ngIf="!creation" class="form-control btn btn-warning mb-3" (click)="creation = !creation;">Create chat</button>
+<div *ngIf="creation" class="input-group mb-3">
+  <input type="text" class="form-control" [(ngModel)]="chat.name" placeholder="Enter chat name">
+  <div class="input-group-append">
+    <button class="btn btn-warning" type="button" (click)="createChat()">Create</button>
+  </div>
+</div>
+
 <!--<input type="text" placeholder="Search chat" class="form-control border border-warning  mb-3">-->
 
 <ng-container *ngFor="let chat of chats">
   <div class="chat_list" routerLink="../chat/{{chat.id}}">
-    <img src="assets/img/main.png" class="avatar rounded-circle" alt="Avatar">
+    <img src="assets/img/chat-icons/{{(chat.id%50)+1}}.png" class="avatar" alt="Avatar">
     <div class="chat_ib">
       <h5>{{chat.name}}
         <span class="chat_date">{{chat.creationDate | date:'medium'}}</span>

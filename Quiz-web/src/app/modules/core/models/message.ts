@@ -1,11 +1,10 @@
+import {User} from "./user";
+
 export class Message {
   id: number;
   chatId: number;
   authorId: number;
-  authorLogin: string;
+  author: User;
   creationDate: Date;
-  isViewed: boolean;
   messageText: string;
-  //imageId: number = -1;
-  //image: Image;
 }

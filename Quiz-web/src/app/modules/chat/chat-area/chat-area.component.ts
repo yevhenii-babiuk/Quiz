@@ -21,7 +21,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   public invitation: boolean = false;
   id: number;
   chat: Chat = new Chat();
-  public messages: Array<Message>;
+  public messages: Array<Message> = new Array<Message>();
   message: Message = new Message();
   public isLoaded: boolean = false;
   selectedFriend: User;
@@ -50,7 +50,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
           console.log(err);
         }
       );
-    this.chatService.getMessages(this.chat.id)
+    this.chatService.getMessages(this.chat.id, this.messages.length)
       .subscribe(
         messages => {
           this.messages = messages;
@@ -138,7 +138,15 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
 
   inviteFriend() {
     if (this.selectedFriend){
-      console.log(this.selectedFriend);
+      this.chatService.inviteToChat(this.selectedFriend, this.chat.id)
+        .subscribe(
+          data => {
+            this.invitation = false;
+          },
+          err => {
+            console.log(err);
+          }
+        );
     }
   }
 }

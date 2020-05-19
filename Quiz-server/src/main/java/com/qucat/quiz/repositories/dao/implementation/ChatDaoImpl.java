@@ -61,7 +61,7 @@ public class ChatDaoImpl extends GenericDaoImpl<Chat> implements ChatDao {
 
     @Override
     public List<Chat> getChatsForUser(int userId) {
-        return jdbcTemplate.query(chatQueries.get("getUsersChat"), new ChatMapper());
+        return jdbcTemplate.query(chatQueries.get("getUsersChat"), new Object[]{userId}, new ChatMapper());
     }
 
     @Override

@@ -3,6 +3,7 @@ import {Chat} from "../../core/models/chat";
 import {SecurityService} from "../../core/services/security.service";
 import {ChatService} from "../../core/services/chat.service";
 import {Router} from "@angular/router";
+import {User} from "../../core/models/user";
 
 @Component({
   selector: 'app-chat-list',
@@ -11,21 +12,12 @@ import {Router} from "@angular/router";
 })
 export class ChatListComponent implements OnInit {
   id: number;
+  public creation: boolean = false;
   public chats: Array<Chat>;
-
-  // public chats:Array<Chat> = [
-  //   {id: 1, name: 'Test Chat1', creationDate: Date.now()} as Chat,
-  //   {id: 2, name: 'Test Chat2', creationDate: Date.now()} as Chat,
-  //   {id: 3, name: 'Test Chat3', creationDate: Date.now()} as Chat,
-  //   {id: 4, name: 'Test Chat4', creationDate: Date.now()} as Chat,
-  //   {id: 5, name: 'Test Chat5', creationDate: Date.now()} as Chat,
-  //   {id: 6, name: 'Test Chat6', creationDate: Date.now()} as Chat,
-  //   {id: 7, name: 'Test Chat7', creationDate: Date.now()} as Chat,
-  // ];
+  public chat: Chat = new Chat();
 
   constructor(private chatService: ChatService,
               private securityService: SecurityService) {
-    // this.chats = [];
   }
 
   ngOnInit(): void {
@@ -41,9 +33,11 @@ export class ChatListComponent implements OnInit {
   }
 
   createChat() {
-    this.chatService.createChat(this.id)
+    this.chat.users.push({id : this.id} as User);
+    this.chatService.createChat(this.chat)
       .subscribe(
         data => {
+          this.creation = false;
           window.location.reload();
         },
         err => {
