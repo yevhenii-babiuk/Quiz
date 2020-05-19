@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {Statistics} from "../../core/models/statistics";
 import {DashboardService} from "../../core/services/dashboard.service";
 import {graphic} from "echarts";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-played-quizzes-amount',
@@ -14,7 +15,8 @@ export class PlayedQuizzesAmountComponent implements OnInit {
   options: any;
   detectEventChanges = true;
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService,
+              public translate: TranslateService) {
   }
 
   ngOnInit(): void {

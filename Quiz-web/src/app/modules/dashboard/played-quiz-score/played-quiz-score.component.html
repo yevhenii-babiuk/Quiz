@@ -1,3 +1,4 @@
 <div *ngIf="score.length!=0">
+  <h4 *ngIf="score.length>0"><p style="text-align:center">{{'DASHBOARD.PLAYED_SCORE' | translate}}</p></h4>
   <p-chart type="bar" [data]="data"></p-chart>
 </div>
