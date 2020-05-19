@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -42,6 +43,28 @@ public class GameService {
     @Value("${url}")
     private String URL;
 
+    @Value("${userName.animals}")
+    private List<String> animals;
+
+    @Value("${userName.characteristic}")
+    private List<String> characteristic;
+
+    int currAnimal=0;
+
+    int currCharacteristic=0;
+
+    private synchronized String getNewName(){
+        currAnimal++;
+        currCharacteristic++;
+        if (animals.size() == currAnimal) {
+            currAnimal=0;
+        }
+        if (characteristic.size() == currCharacteristic) {
+            currCharacteristic=0;
+        }
+        return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);
+    }
+
     public UserDto connectUser(String gameId, int userId) {
         UserDto user;
         if (userId != 0) {
@@ -54,7 +77,7 @@ public class GameService {
         } else {
             user = UserDto.builder()
                     .gameId(gameId)
-                    .login("player")
+                    .login(getNewName())
                     .registerId(userId)
                     .build();
         }
