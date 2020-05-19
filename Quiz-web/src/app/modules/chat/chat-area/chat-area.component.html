@@ -10,9 +10,9 @@
     </div>
 
     <div class="input-group mt-2" *ngIf="invitation">
-      <select class="custom-select">
+      <select #mySelect (change)="onChange(mySelect.value)" class="custom-select">
         <option selected>Choose friend</option>
-        <option *ngFor="let friend of friends" (click)="selectedFriend = friend">{{friend.login}}</option>
+        <option *ngFor="let friend of friends" [value]="friend.login" >{{friend.login}}</option>
       </select>
       <div class="input-group-append">
         <button class="btn btn-warning pl-5 pr-5" type="button" (click)="inviteFriend()">Invite</button>
