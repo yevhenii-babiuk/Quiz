@@ -1,7 +1,7 @@
 <div class="container">
   <input
     type="text"
-    placeholder="Search user"
+    placeholder="{{ 'USERLIST.SEARCH' | translate }}"
     [(ngModel)]="filter"
     (keyup)="onKeyUp($event)"
     class="form-control border border-warning"
@@ -13,10 +13,10 @@
       <thead>
       <tr>
         <th></th>
-        <th>Login</th>
-        <th>Name</th>
-        <th>Registered date</th>
-        <th *ngIf="role!=roleEnum.USER">Role</th>
+        <th>{{ 'USERLIST.LOGIN' | translate }}</th>
+        <th>{{ 'USERLIST.NAME' | translate }}</th>
+        <th>{{ 'USERLIST.DATE' | translate }}</th>
+        <th *ngIf="role!=roleEnum.USER">{{ 'USERLIST.ROLE' | translate }}</th>
       </tr>
       </thead>
       <tbody>

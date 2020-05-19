@@ -55,8 +55,12 @@ public class ChatService {
         chatDao.removeChatMember(chatId, userId);
     }
 
-    public int createChat(Chat chat) {
-        return chatDao.save(chat);
+    public int createChat(Chat chat, int userId) {
+        int chatId = chatDao.save(chat);
+        if (chatId != -1) {
+            chatDao.addChatMember(chatId, userId);
+        }
+        return chatId;
     }
 
     public void updateChat(Chat chat) {

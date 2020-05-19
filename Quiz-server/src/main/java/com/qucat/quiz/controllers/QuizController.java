@@ -12,7 +12,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 
 @RestController
@@ -40,14 +39,21 @@ public class QuizController {
     }
 
     @GetMapping("/quiz/{id}")
-    public Quiz getQuiz(@PathVariable int id) {
-        return quizService.getQuizById(id);
+    public Quiz getQuiz(@PathVariable int id,
+                        @RequestParam(value = "userId", defaultValue = "-1") int userId) {
+        return quizService.getQuizByIdForUser(userId, id);
     }
 
     @PutMapping("/quiz/{id}/setStatus")
-    public void updateQuizStatus(@PathVariable int id, @RequestBody QuizStatus status) {
-        System.out.println("id =" + id);
-        System.out.println("status =" + status);
+    public void updateQuizStatus(@PathVariable int id, @RequestBody String status) {
+        quizService.updateQuizStatus(id, QuizStatus.valueOf(status));
+    }
+
+    @PutMapping("/quiz/{id}/user/{userId}/setFavorite")
+    public void updateQuizIsFavorite(@PathVariable int id,
+                                     @PathVariable int userId,
+                                     @RequestBody boolean isFavorite) {
+        quizService.setQuizIsFavorite(userId, id, isFavorite);
     }
 
     @GetMapping("/quizzes")
@@ -72,9 +78,8 @@ public class QuizController {
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
             @RequestParam(value = "userId") int userId) {
-        Quiz[] quizzes = new Quiz[countOnPage];
-        Arrays.fill(quizzes, quizService.getQuizById(22));
-        return quizzes;
+        return quizService.getFavouriteQuizzesByUserId(userId,pageNumber,countOnPage)
+                .toList().toArray(Quiz[]::new);
     }
 
     @GetMapping("/userCompletedQuizzes")
@@ -82,19 +87,17 @@ public class QuizController {
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
             @RequestParam(value = "userId") int userId) {
-        Quiz[] quizzes = new Quiz[countOnPage];
-        Arrays.fill(quizzes, quizService.getQuizById(21));
-        return quizzes;
+        return quizService.getCompletedQuizzesByUserId(userId,pageNumber,countOnPage)
+                .toList().toArray(Quiz[]::new);
     }
 
     @GetMapping("/userCreatedQuizzes")
-    public Quiz[] getUserQuizzes(
+    public Quiz[] getUserCreatedQuizzes(
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
             @RequestParam(value = "userId") int userId) {
-        Quiz[] quizzes = new Quiz[countOnPage];
-        Arrays.fill(quizzes, quizService.getQuizById(20));
-        return quizzes;
+        return quizService.getCreatedQuizzesByUserId(userId,pageNumber,countOnPage)
+                .toList().toArray(Quiz[]::new);
     }
 
     @GetMapping("/categories")

@@ -1,0 +1,62 @@
+<div class="p-m-3">
+  <div class="mb-3">
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Chat name" [(ngModel)]="chat.name">
+      <div class="input-group-append">
+        <button class="btn btn-outline-warning" type="button" (click)="updateChat()">Rename chat</button>
+        <button class="btn btn-outline-warning" type="button" (click)="invitation = !invitation; loadFriends()">Invite friends</button>
+        <button class="btn btn-outline-warning" type="button" (click)="leaveChat()">Leave</button>
+      </div>
+    </div>
+
+    <div class="input-group mt-2" *ngIf="invitation">
+      <select class="custom-select">
+        <option selected>Choose friend</option>
+        <option *ngFor="let friend of friends" (click)="selectedFriend = friend">{{friend.login}}</option>
+      </select>
+      <div class="input-group-append">
+        <button class="btn btn-warning pl-5 pr-5" type="button" (click)="inviteFriend()">Invite</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="msg_history" >
+<!--    (scroll)="scrollHandler($event)"-->
+
+    <ng-container *ngFor="let message of messages.reverse()">
+      <div *ngIf="message.authorId == this.id; else incoming">
+        <div class="d-flex justify-content-end row m-3">
+          <div class="col-6">
+            <p class="sent_msg">
+              <a routerLink="../../../{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
+              {{message.messageText}}
+            </p>
+            <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
+          </div>
+          <img *ngIf="message.author.image" class="avatar rounded-circle col-1" src="data:image/jpeg;base64,{{message.author.image.src}}">
+        </div>
+      </div>
+
+      <ng-template #incoming>
+        <div class="row m-3">
+          <img *ngIf="message.author.image" class="avatar rounded-circle col-1" src="data:image/jpeg;base64,{{message.author.image.src}}">
+          <div class="col-7">
+            <p class="received_msg">
+              <a routerLink="../../../{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
+              {{message.messageText}}
+            </p>
+            <span class="time_date"> {{message.creationDate | date:'medium'}}</span>
+          </div>
+        </div>
+      </ng-template>
+    </ng-container>
+  </div>
+
+  <div class="input-group mt-3">
+    <input type="text" class="form-control" placeholder="Type a message..." [(ngModel)]="message.messageText" (keydown.enter)="sendMessage()">
+    <div class="input-group-append">
+      <button class="btn btn-warning pl-5 pr-5" type="Send" (click)="sendMessage()">Send</button>
+    </div>
+  </div>
+
+</div>

@@ -17,6 +17,7 @@ export class ViewQuizComponent implements OnInit {
 
   quiz: Quiz;
   COLORS: any = COLORS;
+  userId: number;
 
   constructor(
     public securityService: SecurityService,
@@ -24,46 +25,52 @@ export class ViewQuizComponent implements OnInit {
     private route: ActivatedRoute,
     public translate: TranslateService,
     private redirect: Router) {
-    console.log(this.securityService.getCurrentId())
-    const id = this.route.snapshot.paramMap.get('quizId');
-    console.log(id);
-    if (id) {
-      this.quizzesService.getById(id).subscribe(
-        data => {
-          this.quiz = data;
-        }, err => {
-          console.log(err);
-          redirect.navigate(['quizzes']);
-        });
-    } else {
-
-    }
-
   }
 
   ngOnInit(): void {
+    this.userId = this.securityService.getCurrentId();
+    const id = this.route.snapshot.paramMap.get('quizId');
+    let userIdStr = "";
+    if (this.userId) {
+      userIdStr = `?userId=${this.userId}`;
+    }
+    if (id) {
+      this.quizzesService.getById(id, userIdStr).subscribe(
+        data => {
+          console.log(data)
+          this.quiz = data;
+        }, err => {
+          console.log(err);
+          this.redirect.navigate(['quizzes']);
+        });
+    } else {
+      this.redirect.navigate(['quizzes']);
+    }
   }
 
-  isActivated():boolean{
-    return this.quiz.status==QuizStatus.ACTIVATED;
+  isActivated(): boolean {
+    return this.quiz.status == QuizStatus.ACTIVATED;
   }
 
-  isDeactivated():boolean{
-    return this.quiz.status==QuizStatus.DEACTIVATED;
+  isDeactivated(): boolean {
+    return this.quiz.status == QuizStatus.DEACTIVATED;
   }
 
-  setActivated(){
+  setActivated() {
     this.setStatus(QuizStatus.ACTIVATED)
   }
 
-  setDeactivated(){
+  setDeactivated() {
     this.setStatus(QuizStatus.DEACTIVATED)
   }
 
-  setStatus(status: QuizStatus){
-    this.quiz.status=status;
+  setStatus(status: QuizStatus) {
+    this.quiz.status = status;
     this.quizzesService.updateQuizStatus(this.quiz).subscribe();
   }
 
-
+  changeStar() {
+    this.quiz.isFavorite = !this.quiz.isFavorite;
+    this.quizzesService.updateQuizIsFavorite(this.quiz, this.userId).subscribe();
+  }
 }

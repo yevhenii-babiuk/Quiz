@@ -20,7 +20,7 @@ export class ViewAnnouncementComponent implements OnInit {
     private announcementService: AnnouncementService,
     private route: ActivatedRoute,
     private redirect: Router,
-    private securityService:SecurityService) {
+    private securityService: SecurityService) {
     this.role = this.securityService.getCurrentRole();
     const id = this.route.snapshot.paramMap.get('announcementId');
     console.log(id);
@@ -29,7 +29,6 @@ export class ViewAnnouncementComponent implements OnInit {
         data => {
           this.announcement = data;
         }, err => {
-          console.log(err);
           redirect.navigate(['announcements']);
         });
     } else {
@@ -46,9 +45,19 @@ export class ViewAnnouncementComponent implements OnInit {
     this.announcement.isPublished = !this.announcement.isPublished;
     this.announcementService.updateAnnouncement(this.announcement).subscribe(
       get => {
-        console.log("id = " + get);
       },
       error => {
         console.log(error);
-      });  }
+      });
+  }
+
+  delete() {
+    this.announcementService.deleteAnnouncement(this.announcement).subscribe(
+      get => {
+        this.redirect.navigate(['announcements']);
+      },
+      error => {
+        console.log(error);
+      });
+  }
 }
