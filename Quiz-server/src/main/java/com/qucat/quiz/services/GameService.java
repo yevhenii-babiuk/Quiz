@@ -1,11 +1,7 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.GameDaoImpl;
-import com.qucat.quiz.repositories.dto.game.AnswerDto;
-import com.qucat.quiz.repositories.dto.game.GameDto;
-import com.qucat.quiz.repositories.dto.game.GameQuestionDto;
-import com.qucat.quiz.repositories.dto.game.QuizDto;
-import com.qucat.quiz.repositories.dto.game.UserDto;
+import com.qucat.quiz.repositories.dao.GameDao;
+import com.qucat.quiz.repositories.dto.game.*;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.QuestionOption;
 import com.qucat.quiz.repositories.entities.Quiz;
@@ -13,8 +9,8 @@ import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigInteger;
@@ -25,11 +21,12 @@ import java.util.*;
 @Service
 @PropertySource("classpath:application.properties")
 public class GameService {
+
     @Autowired
     private QRCodeGenerator qrCodeGenerator;
 
     @Autowired
-    private GameDaoImpl gameDao;
+    private GameDao gameDao;
 
     @Autowired
     private QuizService quizService;
@@ -40,6 +37,8 @@ public class GameService {
     @Autowired
     private WebSocketSenderService socketSenderService;
 
+    private ApplicationContext context;
+
     @Value("${url}")
     private String URL;
 
@@ -49,20 +48,24 @@ public class GameService {
     @Value("${userName.characteristic}")
     private List<String> characteristic;
 
-    int currAnimal=0;
+    private int currAnimal = 0;
+    private int currCharacteristic = 0;
 
-    int currCharacteristic=0;
+    @Autowired
+    public void context(ApplicationContext context) {
+        this.context = context;
+    }
 
-    private synchronized String getNewName(){
+    private synchronized String getNewName() {
         currAnimal++;
         currCharacteristic++;
         if (animals.size() == currAnimal) {
-            currAnimal=0;
+            currAnimal = 0;
         }
         if (characteristic.size() == currCharacteristic) {
-            currCharacteristic=0;
+            currCharacteristic = 0;
         }
-        return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);
+        return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);//todo
     }
 
     public UserDto connectUser(String gameId, int userId) {
@@ -87,9 +90,7 @@ public class GameService {
     }
 
     public void startGame(String gameId) {
-        GameProcess gameProcess = new GameProcess();
-        gameProcess.setGameDao(gameDao);
-        gameProcess.setSocketSenderService(socketSenderService);
+        GameProcess gameProcess = context.getBean(GameProcess.class);
         gameProcess.setGameId(gameId);
         gameProcess.run();
     }
@@ -101,35 +102,20 @@ public class GameService {
         int correctAnswer = 0;
         switch (question.getType()) {
             case ENTER_ANSWER:
-                if (options.get(0).getContent().trim()
-                        .equalsIgnoreCase(answer.getFullAnswer().trim())) {
-                    answer.setCorrect(true);
-                    answer.setPercent(100);
-                } else {
-                    answer.setCorrect(false);
-                    answer.setPercent(0);
-                }
+                answer.setPercent(options.get(0).getContent().trim()
+                        .equalsIgnoreCase(answer.getFullAnswer().trim()) ? 100 : 0);
                 break;
             case TRUE_FALSE:
-                if (options.get(0).isCorrect() == answer.isTrueFalse()) {
-                    answer.setCorrect(true);
-                    answer.setPercent(100);
-                } else {
-                    answer.setCorrect(false);
-                    answer.setPercent(0);
-                }
+                answer.setPercent(options.get(0).isCorrect() == answer.isTrueFalse() ? 100 : 0);
                 break;
 
             case SELECT_OPTION:
                 List<Integer> chosenAnswers = answer.getOptions();
-                /*log.info("options " + question.getOptions().toString());
-                log.info("chosenAnswers " + chosenAnswers.toString());*/
                 for (QuestionOption option : question.getOptions()) {
                     if (option.isCorrect() == chosenAnswers.contains(option.getId())) {
                         correctAnswer++;
                     }
                 }
-                answer.setCorrect(correctAnswer == question.getOptions().size());
                 answer.setPercent(100 * correctAnswer / question.getOptions().size());
                 break;
 
@@ -142,7 +128,6 @@ public class GameService {
                         correctAnswer++;
                     }
                 }
-                answer.setCorrect(correctAnswer == question.getOptions().size());
                 answer.setPercent(100 * correctAnswer / question.getOptions().size());
                 break;
 
@@ -164,6 +149,7 @@ public class GameService {
     public GameDto getGameById(String gameID) {
         GameDto gameDto = gameDao.getGame(gameID);
         gameDto.setImage(getQRCode(gameDto.getQuizId(), gameID));
+        gameDto.setCountQuestions(gameDao.getCountGameQuestion(gameID));
         return gameDto;
     }
 
@@ -197,7 +183,7 @@ public class GameService {
         gameDao.saveQuestionOptions(questionOptions);
 
         for (Question question : quizDto.getQuestions()) {
-            gameDao.saveGameQuestion(game.getGameId(), question.getId());//todo save gameQuestions
+            gameDao.saveGameQuestion(game.getGameId(), question.getId());
         }
 
     }
@@ -218,19 +204,4 @@ public class GameService {
                 URL + "quiz/" + quizId + "/game/" + accessCode,
                 200, 200));
     }
-/*
-    public GameAccessor generateGameAccessCredentials(Quiz quiz) {
-        String accessCode = String.format("%040d",
-                new BigInteger(UUID.randomUUID().toString().replace("-", ""), 16)
-        ).substring(0, 10);
-
-        Image qrCode = new Image(
-                Integer.parseInt(accessCode),
-                Base64.getEncoder().encodeToString(qrCodeGenerator.getQRCodeImage(
-                        URL + "quiz/" + quiz.getId() + "/game/" + accessCode,
-                        200, 200))
-        );
-
-        return new GameAccessor(accessCode, qrCode);
-    }*/
 }
