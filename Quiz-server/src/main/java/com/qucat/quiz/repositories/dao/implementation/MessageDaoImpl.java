@@ -56,7 +56,7 @@ public class MessageDaoImpl extends GenericDaoImpl<Message> implements MessageDa
         preparedStatement.setInt(1, message.getChatId());
         preparedStatement.setInt(2, message.getAuthorId());
         preparedStatement.setString(3, message.getMessageText());
-        return null;
+        return preparedStatement;
     }
 
     @Override

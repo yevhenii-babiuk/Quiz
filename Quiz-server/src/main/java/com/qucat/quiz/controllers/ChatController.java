@@ -35,9 +35,9 @@ public class ChatController {
         chatService.updateChat(chat);
     }
 
-    @PostMapping("api/v1/createChat")
-    public int createChat(@RequestBody Chat chat) {
-        return chatService.createChat(chat);
+    @PostMapping("api/v1/users/{id}/createChat")
+    public int createChat(@PathVariable int id, @RequestBody Chat chat) {
+        return chatService.createChat(chat, id);
     }
 
     @DeleteMapping("api/v1/users/{id}/chat/{chatId}")

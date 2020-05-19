@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Chat} from "../../core/models/chat";
 import {SecurityService} from "../../core/services/security.service";
 import {ChatService} from "../../core/services/chat.service";
-import {Router} from "@angular/router";
 import {User} from "../../core/models/user";
 
 @Component({
@@ -34,7 +33,7 @@ export class ChatListComponent implements OnInit {
 
   createChat() {
     this.chat.users.push({id : this.id} as User);
-    this.chatService.createChat(this.chat)
+    this.chatService.createChat(this.chat, this.id)
       .subscribe(
         data => {
           this.creation = false;

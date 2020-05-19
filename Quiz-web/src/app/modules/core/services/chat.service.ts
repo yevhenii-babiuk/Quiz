@@ -25,8 +25,8 @@ export class ChatService {
     );
   }
 
-  createChat(chat: Chat) {
-    return this.http.post<Chat>(`${url}/createChat`, chat, this.httpOptions);
+  createChat(chat: Chat, id: number) {
+    return this.http.post<Chat>(`${url}/users/${id}/createChat`, chat, this.httpOptions);
   }
 
   inviteToChat(user: User, chatId: number) {
@@ -44,26 +44,12 @@ export class ChatService {
       );
   }
 
-  // public getMessages(length: number, chatId: number) {
-  //   return this.http.get<Message[]>(`${url}/chat/${chatId}?pageNumber=${Math.floor((length + 1) / 10)}`)
-  //     .pipe(
-  //       catchError(this.handleError<Message[]>([]))
-  //     );
-  // }
-
   getChat(chatId: number) {
     return this.http.get<Chat>(`${url}/chat/${chatId}`)
       .pipe(
         catchError(this.handleError<Chat>(null))
       );
   }
-
-  // getMessages(chatId: number) {
-  //   return this.http.get<Message[]>(`${url}/chat/${chatId}/messages`)
-  //     .pipe(
-  //       catchError(this.handleError<Message[]>([]))
-  //     );
-  // }
 
   getMessages(chatId: number, currentCount: number): Observable<Message[]> {
     return this.http.get<Message[]>(`${url}/chat/${chatId}/messages?pageNumber=${currentCount}`)
