@@ -33,9 +33,11 @@ public class MessageController {
 
         System.out.println(msg);
 
-        if (messageService.saveMessage(msg)) {
+        Message sm = messageService.saveMessage(msg);
+
+        if (sm != null) {
             this.template.convertAndSend(String.format("/chat/%s", chatId),
-                    gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.MESSAGE).message(msg).build()));
+                    gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.MESSAGE).message(sm).build()));
         }
     }
 

@@ -30,7 +30,7 @@ public class MessageMapper implements RowMapper<Message> {
                 .chatId(resultSet.getInt("chat_id"))
                 .authorId(resultSet.getInt("author_id"))
                 .messageText(resultSet.getString("message_text"))
-                .creationDate(resultSet.getDate("creation_date"))
+                .creationDate(resultSet.getTimestamp("creation_date"))
                 .author(user)
                 .build();
     }

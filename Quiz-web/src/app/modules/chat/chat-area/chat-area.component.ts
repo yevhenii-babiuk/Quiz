@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Chat} from "../../core/models/chat";
 import {Message} from "../../core/models/message";
 import {SecurityService} from "../../core/services/security.service";
@@ -27,6 +27,8 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   selectedFriend: User;
   friends: User[] = [];
 
+  @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+
   private stompClient;
   eventType = EventType;
   receivedEvent: WebsocketEvent;
@@ -54,6 +56,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
       .subscribe(
         messages => {
           this.messages = messages;
+          this.scrollToBottom();
         },
         err => {
           console.log(err);
@@ -63,6 +66,12 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+  }
+
+  scrollToBottom(): void {
+    try {
+      this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+    } catch(err) { }
   }
 
   initializeWebSocketConnection() {
@@ -75,7 +84,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         if (message.body) {
           that.receivedEvent = JSON.parse(message.body);
           if (that.receivedEvent.type == that.eventType.MESSAGE) {
-            that.messages.push(that.receivedEvent.message);
+            that.messages.unshift(that.receivedEvent.message);
           }
         }
       });
@@ -94,6 +103,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
 
     this.stompClient.send("/chat/" + this.chat.id, {}, JSON.stringify(this.message));
     this.message.messageText = '';
+    this.scrollToBottom();
   }
 
   ngOnDestroy(): void {
@@ -149,4 +159,9 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         );
     }
   }
+
+  // @HostListener('scroll', ['$event'])
+  // scrollHandler(event) {
+  //   console.debug("Scroll Event");
+  // }
 }

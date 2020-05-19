@@ -20,9 +20,10 @@
     </div>
   </div>
 
-  <div class="msg_history">
+  <div class="msg_history" >
+<!--    (scroll)="scrollHandler($event)"-->
 
-    <ng-container *ngFor="let message of messages">
+    <ng-container *ngFor="let message of messages.reverse()">
       <div *ngIf="message.authorId == this.id; else incoming">
         <div class="d-flex justify-content-end row m-3">
           <div class="col-6">
