@@ -1,7 +1,4 @@
 {
-  "HOME": {
-    "TITLE": "Hello Angular Українською!"
-  },
   "HEADER": {
     "LOGIN": "Увійти",
     "SIGN UP": "Зареєструватись",
@@ -36,5 +33,27 @@
     "TEXT": "Зміст",
     "UPLOAD": "Додати зображення",
     "SUBMIT": "Підтвердити"
+  },
+  "quiz": {
+    "createQuiz": "Створити квіз",
+    "questionTypes": {
+      "SELECT_OPTION": "Виберіть правильні відповіді",
+      "SELECT_SEQUENCE": "Виберіть послідовність відповідей",
+      "TRUE_FALSE": "Виберіть чи це правда",
+      "ENTER_ANSWER": "Введіть правильну відповідь",
+      "true": "Правда",
+      "false": "Неправда"
+    },
+    "viewQuiz": {
+      "editQuiz": "Редагувати квіз",
+      "publishQuiz": "Опублікувати квіз",
+      "deactivateQuiz": "Деактивувати квіз",
+      "playQuiz": "Зіграти квіз",
+      "quizName": "Назва квіза",
+      "category": "Категорія",
+      "tags": "Теги",
+      "description": "Опис",
+      "questionType": "Тип питання"
+    }
   }
 }

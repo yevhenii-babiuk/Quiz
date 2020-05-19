@@ -85,7 +85,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         return new Object[]{user.getLogin(), user.getPassword(), user.getMail(),
                 user.getStatus().name().toLowerCase(), user.getRole().name().toLowerCase(),
                 user.getFirstName(), user.getSecondName(), user.getRegistrationDate(),
-                user.getProfile(), user.getScore(), user.getId(), user.getImageId()};
+                user.getProfile(), user.getScore(), user.getImageId(), user.getId()};
     }
 
     @Override
@@ -164,27 +164,6 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
             return null;
         }
         return user;
-    }
-
-    @Override
-    public boolean markQuizAsFavorite(int userId, int quizId) {
-        try {
-            jdbcTemplate.update(
-                    usersQueries.get("markAsFavorite"),
-                    quizId, userId
-            );
-        } catch (DuplicateKeyException e) {
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public void unmarkQuizAsFavorite(int userId, int quizId) {
-        jdbcTemplate.update(
-                usersQueries.get("unmarkAsFavorite"),
-                quizId, userId
-        );
     }
 
     @Override

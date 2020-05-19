@@ -1,22 +1,21 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.UserDao;
-import com.qucat.quiz.repositories.entities.*;
-import com.qucat.quiz.repositories.entities.enums.Lang;
-import com.qucat.quiz.repositories.entities.enums.MessageInfo;
-import com.qucat.quiz.repositories.entities.enums.Role;
-import com.qucat.quiz.repositories.entities.enums.TokenType;
-import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
+import com.qucat.quiz.repositories.dto.game.UserDto;
+import com.qucat.quiz.repositories.entities.FriendActivity;
+import com.qucat.quiz.repositories.entities.Token;
+import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.enums.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -215,14 +214,6 @@ public class UserService {
         }
     }
 
-    public boolean markQuizAsFavorite(int userId, int quizId) {
-        return userDao.markQuizAsFavorite(userId, quizId);
-    }
-
-    public void unmarkQuizAsFavorite(int userId, int quizId) {
-        userDao.unmarkQuizAsFavorite(userId, quizId);
-    }
-
     public boolean addUserFriend(int userId, int friendId) {
         return userDao.addUserFriend(userId, friendId);
     }
@@ -312,7 +303,19 @@ public class UserService {
         userDao.updateUserStatus(userId, status);
     }
 
-    public void updateUsersScore(List<User> users) {
+    public void updateUsersScore(UserDto user) {
+        User userFromDb = userDao.get(user.getRegisterId());
+        userDao.updateUserScore(user.getRegisterId(),
+                userFromDb.getScore() + user.getScore());
+    }
 
+    public boolean createUser(User user) {
+        user.setStatus(UserAccountStatus.ACTIVATED);
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
+        user.setImageId(imageService.addUserProfileImage());
+        int id = userDao.save(user);
+
+        return id > 0;
     }
 }

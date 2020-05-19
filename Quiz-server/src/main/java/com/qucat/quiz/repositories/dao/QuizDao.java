@@ -26,4 +26,18 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category, Timestamp minDate,
                               Timestamp maxDate, List<String> tags, QuizStatus[] status);
+
+    Page<Quiz> getCompletedQuizzesByUserId(int userId, Pageable pageable);
+
+    Page<Quiz> getCreatedQuizzesByUserId(int userId, Pageable pageable);
+
+    Page<Quiz> getFavouriteQuizzesByUserId(int userId, Pageable pageable);
+
+    boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId);
+
+    void updateQuizStatus(int quizId, QuizStatus quizStatus);
+
+    boolean markQuizAsFavorite(int userId, int quizId);
+
+    boolean unmarkQuizAsFavorite(int userId, int quizId);
 }

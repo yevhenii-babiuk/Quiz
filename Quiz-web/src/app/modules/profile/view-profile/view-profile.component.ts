@@ -5,9 +5,10 @@ import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {Imaged} from "../../core/models/imaged";
 import {ActivatedRoute} from "@angular/router";
+import {AlertService} from "../../core/services/alert.service";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
-import {AlertService} from "../../core/services/alert.service";
+
 
 
 @Component({
@@ -33,8 +34,8 @@ export class ViewProfile implements OnInit {
     private route: ActivatedRoute,
     private profileService: ProfileService,
     private securityService: SecurityService,
-    private achievementService: AchievementService,
-    private alertService: AlertService
+    private alertService:AlertService,
+    private achievementService: AchievementService
   ) {
   }
 
@@ -51,6 +52,7 @@ export class ViewProfile implements OnInit {
       this.id = this.securityService.getCurrentId();
       this.isOwn = true;
     }
+
     this.getUser();
   }
 
@@ -72,7 +74,6 @@ export class ViewProfile implements OnInit {
       this.loadedPhoto=true;
       this.profileService.putImage(file).subscribe(
         id => {
-          console.log("id = " + id);
           if (typeof id === "number") {
             imaged.imageId = id;
           }

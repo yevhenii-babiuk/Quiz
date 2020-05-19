@@ -1,7 +1,4 @@
 {
-  "HOME": {
-    "TITLE": "Hello Angular with ngx-translate!"
-  },
   "HEADER": {
     "LOGIN": "Login",
     "SIGN UP": "Sign up",
@@ -36,5 +33,28 @@
     "TEXT": "Text",
     "UPLOAD": "Add image",
     "SUBMIT": "Submit"
+  },
+  "quiz": {
+    "createQuiz": "Create quiz",
+    "questionTypes": {
+      "SELECT_OPTION": "Select options",
+      "SELECT_SEQUENCE": "Select sequence",
+      "TRUE_FALSE": "Chose true or false",
+      "ENTER_ANSWER": "Write answer",
+      "true": "True",
+      "false": "False"
+    },
+    "viewQuiz": {
+      "editQuiz": "Edit quiz",
+      "publishQuiz": "Publish quiz",
+      "deactivateQuiz": "Deactivate quiz",
+      "playQuiz": "Play quiz",
+      "quizName": "Quiz name",
+      "category": "Category",
+      "tags": "Tags",
+      "description": "Description",
+      "questionType": "Question type"
+
+    }
   }
 }
