@@ -31,6 +31,11 @@ public class AnnouncementController {
         return announcementService.getAnnouncementById(id);
     }
 
+    @DeleteMapping("/announcement/{id}")
+    public void deleteAnnouncement(@PathVariable int id) {
+        announcementService.deleteAnnouncement(id);
+    }
+
     @GetMapping("/announcements")
     public List<Announcement> getAnnouncements(@RequestParam(value = "pageNumber") int pageNumber,
                                                @RequestParam(value = "isPublished") boolean isPublished) {

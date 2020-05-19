@@ -98,7 +98,7 @@ export class GameComponent implements OnInit, OnDestroy {
     let that = this;
 
     this.stompClient.connect({}, function () {
-      this.s = that.stompClient.subscribe("/game/" + that.gameId + "/play", async (message) => {
+      that.s = that.stompClient.subscribe("/game/" + that.gameId + "/play", async (message) => {
         if (message.body) {
           that.receivedEvent = JSON.parse(message.body);
           if (that.receivedEvent.type == that.eventType.PLAYERS) {
