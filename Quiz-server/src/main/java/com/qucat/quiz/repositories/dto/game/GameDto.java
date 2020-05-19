@@ -17,4 +17,5 @@ public class GameDto {
     private QuizDto quiz;
     private int hostId;
     private String image;
+    private int countQuestions;
 }

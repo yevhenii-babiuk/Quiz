@@ -16,6 +16,7 @@ public class WebsocketEvent {
     private Question question;
     private Users gameResults;
     private Message message;
+    private int currQuestion;
 
     public enum EventType {
         RESULTS,

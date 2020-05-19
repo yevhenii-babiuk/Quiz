@@ -70,8 +70,7 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public int save(Token token) {
-        String saveQuery = "INSERT INTO system_action_tokens (token, token_type, user_id, expired_date) "
-                + "VALUES (?,  cast(? AS system_action_token_type), ?, NOW() + interval '1 day');";
+        String saveQuery = tokensQueries.get("saveToken");
 
         try {
             jdbcTemplate.update(saveQuery,
