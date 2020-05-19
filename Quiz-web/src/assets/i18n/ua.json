@@ -1,13 +1,80 @@
 {
-  "HOME": {
-    "TITLE": "Hello Angular Українською!"
-  },
   "HEADER": {
     "LOGIN": "Увійти",
-    "SIGN UP": "Зареєструватись"
+    "SIGN UP": "Зареєструватись",
+    "LOGOUT": "Вийти",
+    "SEARCH": "Пошук вікторин"
   },
   "SIDENAV": {
-    "QUIZZES": "Список вікторин"
+    "QUIZZES": "Список вікторин",
+    "USERS": "Користувачі",
+    "STATISTIC": "Статистика",
+    "ACTIVITY": "Діяльність друзів",
+    "FRIENDS": "Друзі",
+    "ANNOUNCEMENTS": "Новини",
+    "TOP": "Рейтинг учасників",
+    "PROFILE": "Профіль",
+    "ACHIEVEMENT": "Створити досягнення",
+    "CHATS": "Повідомлення"
+  },
+  "USERLIST": {
+    "LOGIN": "Логін",
+    "NAME": "Ім'я",
+    "ROLE": "Роль",
+    "DATE": "Дата реєстрації",
+    "SEARCH": "Пошук",
+    "SCORE": "Рахунок"
+  },
+  "ANNOUNCEMENT": {
+    "CREATE BUTTON": "Є новина? Поділись з усіма!",
+    "POST BY": "Опубліковано  ",
+    "POST ON": "Опубліковано  ",
+    "CREATE": "Створити новину",
+    "UPDATE": "Оновити новину",
+    "TITLE": "Заголовок",
+    "SUBTITLE": "Підзаголовок",
+    "TEXT": "Зміст",
+    "UPLOAD": "Додати зображення",
+    "SUBMIT": "Підтвердити"
+  },
+  "quiz": {
+    "createQuiz": "Створити квіз",
+    "questionTypes": {
+      "SELECT_OPTION": "Виберіть правильні відповіді",
+      "SELECT_SEQUENCE": "Виберіть послідовність відповідей",
+      "TRUE_FALSE": "Виберіть чи це правда",
+      "ENTER_ANSWER": "Введіть правильну відповідь",
+      "true": "Правда",
+      "false": "Неправда"
+    },
+    "viewQuiz": {
+      "editQuiz": "Редагувати квіз",
+      "publishQuiz": "Опублікувати квіз",
+      "deactivateQuiz": "Деактивувати квіз",
+      "playQuiz": "Зіграти квіз",
+      "quizName": "Назва квіза",
+      "category": "Категорія",
+      "tags": "Теги",
+      "description": "Опис",
+      "questionType": "Тип питання"
+    }
+  },
+  "DASHBOARD": {
+    "ACHIEVEMENTS": "Досягнення",
+    "ACHIEVEMENTS_NAME": "Назва досягнення",
+    "ACHIEVEMENTS_DESCRIPTION": "Опис досягнення",
+    "ACHIEVEMENTS_ADD_CONDITION": "Додати умову",
+    "ACHIEVEMENTS_CONDITION": "Умова",
+    "ACHIEVEMENTS_REMOVE_CONDITION": "Видалити",
+    "ACHIEVEMENTS_CHARACTERISTIC": "Характеристика",
+    "ACHIEVEMENTS_OPERATOR": "Оператор",
+    "ACHIEVEMENTS_VALUE": "Значення",
+    "ACHIEVEMENTS_CREATE": "Створити",
+    "PLAYED_SCORE": "Порівняння з кращими",
+    "QUIZ_STATUS": "Робота модераторів",
+    "PLAYED_AMOUNT": "Кількість зіграних вікторин",
+    "CORRECT_PERCENT": "Відсоток правильних відповідей",
+    "FRIEND_PREFERENCE": "Переваги друзів"
   },
   "NOTIFICATIONS": {
     "CREATED_NEWS": "створив новину!",

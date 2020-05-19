@@ -6,6 +6,10 @@ import com.qucat.quiz.repositories.entities.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
@@ -31,6 +35,19 @@ public class MessageDaoImpl extends GenericDaoImpl<Message> implements MessageDa
     }
 
     @Override
+    public Page<Message> getMessagesFromChat(int chatId, Pageable pageable) {
+        Number total = jdbcTemplate.queryForObject(messageQueries.get("rowCount"),
+                new Object[]{chatId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        List<Message> messages = jdbcTemplate.query(
+                messageQueries.get("getMessagesFromChat").replace(";", " LIMIT ? OFFSET ?;"),
+                new Object[]{chatId, pageable.getPageSize(), pageable.getOffset()},
+                new MessageMapper());
+        return new PageImpl<>(messages, pageable, total != null ? total.intValue() : 0);
+    }
+
+    @Override
     protected String getInsertQuery() {
         return messageQueries.get("insert");
     }
@@ -40,7 +57,7 @@ public class MessageDaoImpl extends GenericDaoImpl<Message> implements MessageDa
         preparedStatement.setInt(1, message.getChatId());
         preparedStatement.setInt(2, message.getAuthorId());
         preparedStatement.setString(3, message.getMessageText());
-        return null;
+        return preparedStatement;
     }
 
     @Override
@@ -52,4 +69,17 @@ public class MessageDaoImpl extends GenericDaoImpl<Message> implements MessageDa
     protected Object[] getUpdateParameters(Message message) {
         return new Object[]{message.getChatId(), message.getAuthorId(), message.getMessageText()};
     }
+
+    @Override
+    public Message get(int id) {
+        Message message;
+        try {
+            message = jdbcTemplate.queryForObject(messageQueries.get("getById"),
+                    new Object[]{id}, new MessageMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+        return message;
+    }
+
 }

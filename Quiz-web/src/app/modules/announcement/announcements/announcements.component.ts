@@ -3,6 +3,7 @@ import {Announcement} from "../../core/models/announcement";
 import {AnnouncementService} from "../../core/services/announcement.service";
 import {SecurityService} from "../../core/services/security.service";
 import {Role} from "../../core/models/role";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-announcements',
@@ -14,10 +15,13 @@ export class AnnouncementsComponent implements OnInit {
   announcements: Announcement[] = [];
   isWaiting: boolean = false;
   role: Role;
-  isPublished:boolean;
+  roleEnum = Role;
+  isPublished: boolean = true;
 
   constructor(private announcementService: AnnouncementService,
-              private securityService: SecurityService) {
+              private securityService: SecurityService,
+              public translate: TranslateService
+  ) {
     this.role = this.securityService.getCurrentRole();
   }
 
@@ -34,7 +38,9 @@ export class AnnouncementsComponent implements OnInit {
       return;
     }
     this.isWaiting = true;
-    this.isPublished = !(this.role && this.role != Role.USER);
+    if (!this.isPublished) this.isPublished = false;
+    console.log(this.isPublished);
+    //this.isPublished = !(this.role && this.role != Role.USER);
     this.announcementService.getAnnouncementsByRole(this.announcements.length, this.isPublished)
       .subscribe(
         announcements => {
@@ -54,4 +60,16 @@ export class AnnouncementsComponent implements OnInit {
     this.getNew();
   }
 
+
+  getUnpublished() {
+    this.announcements = [];
+    this.isPublished = false;
+    this.getNew();
+  }
+
+  getPublished() {
+    this.announcements = [];
+    this.isPublished = true;
+    this.getNew();
+  }
 }

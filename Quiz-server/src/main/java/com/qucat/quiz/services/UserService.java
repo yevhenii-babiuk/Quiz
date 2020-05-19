@@ -1,8 +1,8 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.UserDao;
-import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.enums.Lang;
 import com.qucat.quiz.repositories.entities.enums.MessageInfo;
 import com.qucat.quiz.repositories.entities.enums.Role;
@@ -60,7 +60,8 @@ public class UserService {
 
     @Transactional
     public boolean registerUser(User user) {
-
+        user.setRole(Role.USER);
+        user.setStatus(UserAccountStatus.UNACTIVATED);
         if (userDao.getUserByLogin(user.getLogin()) != null) {
             return false;
         }
@@ -228,10 +229,8 @@ public class UserService {
     }
 
     public boolean addUserFriend(int userId, int friendId) {
-        boolean isAdded;
-        isAdded = userDao.addUserFriend(userId, friendId);
         webSocketSenderService.sendNotification(userId, friendId, NotificationType.FRIEND_INVITATION);
-        return isAdded;
+        return userDao.addUserFriend(userId, friendId);
     }
 
     public boolean deleteUserFriend(int userId, int friendId) {

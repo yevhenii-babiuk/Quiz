@@ -55,10 +55,9 @@ export class HeaderComponent implements OnInit {
 
 
   search(event: any) {
-    this.redirect.navigate(['/quizzes'], {queryParams: {quizName: event.target.value}});
+    this.redirect.navigate(['/quizzes'], {queryParams:{quizName: event.target.value}});
   }
-
-  logout() {
+  logout(){
     this.authService.logOut();
     this.redirect.navigate(['home']);
   }

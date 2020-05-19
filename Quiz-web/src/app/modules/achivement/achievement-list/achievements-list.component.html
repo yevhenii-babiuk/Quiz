@@ -1,4 +1,4 @@
-<h4><p style="text-align:center">Досягнення</p></h4>
+<h4 *ngIf="cards.length>0"><p style="text-align:center">{{'DASHBOARD.ACHIEVEMENTS' | translate}}</p></h4>
 <mdb-carousel [isControls]="true" class="carousel-multi-item multi-animation" [type]="'carousel-multi-item'"
               [animation]="'slide'">
   <mdb-carousel-item class=" row w-100"  *ngFor="let item of slides; let i = index">

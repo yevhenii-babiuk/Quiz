@@ -78,8 +78,16 @@ export class QuizzesService {
     }
   }
 
-  getById(id: string) {
-    return this.http.get<Quiz>(`${url}/quiz/${id}`).pipe(
+  updateQuizStatus(quiz: Quiz) {
+    return this.http.put(`${url}/quiz/${quiz.id}/setStatus`, quiz.status, this.httpOptions);
+  }
+
+  updateQuizIsFavorite(quiz: Quiz, userId: number) {
+    return this.http.put(`${url}/quiz/${quiz.id}/user/${userId}/setFavorite`, quiz.isFavorite, this.httpOptions);
+  }
+
+  getById(id: string, userIdStr: string) {
+    return this.http.get<Quiz>(`${url}/quiz/${id + userIdStr}`).pipe(
       catchError(this.handleError<Quiz>())
     );
   }
@@ -92,4 +100,5 @@ export class QuizzesService {
       return of(result as T);
     };
   }
+
 }

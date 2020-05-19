@@ -12,6 +12,8 @@ import {User} from '../../core/models/user';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
+  user: User = new User();
+  confirmPassword: string = "";
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -23,22 +25,17 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  registerUser(login: string, firstName: string, secondName: string, mail: string, password: string, confirmPassword: string): void {
+  registerUser(): void {
 
-    if (!login || !firstName || !secondName || !mail) {
+    if (!this.user.login || !this.user.firstName || !this.user.secondName || !this.user.mail) {
       this.alertService.error('Fields should not be empty!');
       return;
     }
 
-    if (password !== confirmPassword) {
-      this.alertService.error('Passwords don\'t match!');
-      return;
-    }
-
-    this.authenticationService.register({firstName, secondName, login, mail, password} as User)
+    this.authenticationService.register(this.user)
       .subscribe(
         data => {
-          if (data){
+          if (data) {
             this.alertService.success('Registration successful', true);
             this.router.navigate(['login']);
           } else {

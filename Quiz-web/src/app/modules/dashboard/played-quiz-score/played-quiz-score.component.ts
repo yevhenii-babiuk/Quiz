@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ComparedScores} from "../../core/models/comparedScores";
 import {DashboardService} from "../../core/services/dashboard.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-played-quiz-score',
@@ -51,7 +52,8 @@ export class PlayedQuizScoreComponent implements OnInit {
     }
   }
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService,
+              public translate: TranslateService) {
   }
 
   ngOnInit(): void {

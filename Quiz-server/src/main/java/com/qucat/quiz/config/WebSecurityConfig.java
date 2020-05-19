@@ -61,6 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/game/**",
                         "/game/**",
                         "/notification/**",
+                        "/chat/**",
                         "/api/v1/registration/**",
                         "/api/v1/pass-recovery/**",
                         "/api/v1/quizzes",

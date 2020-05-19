@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {DashboardService} from "../../core/services/dashboard.service";
 import {Statistics} from "../../core/models/statistics";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-friends-preference',
@@ -13,7 +14,8 @@ export class FriendsPreferenceComponent implements OnInit {
   options: any;
   echartsInstance: any;
 
-  constructor(private dashboardService: DashboardService) {
+  constructor(private dashboardService: DashboardService,
+              public translate: TranslateService) {
   }
 
   getPreferences() {

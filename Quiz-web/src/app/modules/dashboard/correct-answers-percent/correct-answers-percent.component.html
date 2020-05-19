@@ -1,10 +1,5 @@
-<!--<div class="card card-accent-info">
-  <div class="card-body">
-    <h4 class="card-title">Some ECharts event-emitters</h4>
-    <div class="mt-4">
-      <tabset>
-        <tab heading="demo">-->
 <div *ngIf="stat.length!=0">
+  <h4 *ngIf="stat.length>0"><p style="text-align:center">{{'DASHBOARD.CORRECT_PERCENT' | translate}}</p></h4>
           <div echarts [options]="options" class="demo-chart"
                (chartInit)="onChartEvent($event, 'chartInit')"
                (chartClick)="onChartEvent($event, 'chartClick')"
@@ -18,8 +13,3 @@
                (chartDataZoom)="onChartEvent($event, 'chartDataZoom')"
           ></div>
 </div>
-      <!--  </tab>
-      </tabset>
-    </div>
-  </div>
-</div>-->

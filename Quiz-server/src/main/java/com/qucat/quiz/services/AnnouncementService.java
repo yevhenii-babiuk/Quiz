@@ -22,15 +22,15 @@ public class AnnouncementService {
     @Autowired
     private WebSocketSenderService webSocketSenderService;
 
-    public boolean createAnnouncement(Announcement announcement) {
+    public int createAnnouncement(Announcement announcement) {
         int announcementId = announcementDao.save(announcement);
         if (announcementId == -1) {
             log.info("createAnnouncement: Announcement wasn't saved");
-            return false;
+            return -1;
         }
         webSocketSenderService.sendNotification(announcement.getAuthorId(), announcementId,
                 NotificationType.CREATED_NEWS);
-        return true;
+        return announcementId;
     }
 
     public void updateAnnouncement(Announcement announcement) {
@@ -43,8 +43,8 @@ public class AnnouncementService {
         announcementDao.update(announcement);
     }
 
-    public void deleteAnnouncement(Announcement announcement) {
-        announcementDao.deleteById(announcement.getId());
+    public void deleteAnnouncement(int announcementId) {
+        announcementDao.deleteById(announcementId);
     }
 
     public Announcement getAnnouncementById(int announcementId) {
