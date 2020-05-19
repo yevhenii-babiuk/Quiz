@@ -21,17 +21,25 @@ public class WebSocketSenderService {
     @Autowired
     private SimpMessagingTemplate template;
 
-    public void sendResults(String gameId, Users users) {
+    public void sendResults(String gameId, Users users, int currQuestion) {
         log.info("send results " + users);
         this.template.convertAndSend(String.format("/game/%s/play", gameId),
-                gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.RESULTS).gameResults(users).build()));
+                gson.toJson(WebsocketEvent.builder()
+                        .type(WebsocketEvent.EventType.RESULTS)
+                        .gameResults(users)
+                        .currQuestion(currQuestion)
+                        .build()));
     }
 
-    public void sendQuestion(Question question, String gameId) {
+    public void sendQuestion(Question question, String gameId, int currQuestion) {
         log.info("send question");
         Gson g = new Gson();
         this.template.convertAndSend(String.format("/game/%s/play", gameId),
-                g.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.QUESTION).question(question).build()));
+                g.toJson(WebsocketEvent.builder()
+                        .type(WebsocketEvent.EventType.QUESTION)
+                        .question(question)
+                        .currQuestion(currQuestion)
+                        .build()));
     }
 
     public void sendUsers(String gameId, List<UserDto> users) {

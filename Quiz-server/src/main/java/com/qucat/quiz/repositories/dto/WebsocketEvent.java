@@ -14,6 +14,7 @@ public class WebsocketEvent {
     private List<String> players;
     private Question question;
     private Users gameResults;
+    private int currQuestion;
 
     public enum EventType {
         RESULTS,
