@@ -18,9 +18,9 @@ public class MessageService {
     @Autowired
     private MessageDao messageDao;
 
-    public boolean saveMessage(Message message) {
+    public Message saveMessage(Message message) {
         int messageId = messageDao.save(message);
-        return messageId > 0;
+        return messageDao.get(messageId);
     }
 
     public Page<Message> getPageMessages(int chatId, Optional<Integer> page, Optional<Integer> size) {
@@ -29,6 +29,6 @@ public class MessageService {
             throw new IllegalArgumentException("0 can`t be chat`s identifier");
         }
         return messageDao.getMessagesFromChat(chatId, PageRequest.of(page.orElse(0), size.orElse(10),
-                Sort.Direction.DESC, "creationDate"));
+                Sort.Direction.ASC, "creationDate"));
     }
 }

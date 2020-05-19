@@ -9,6 +9,7 @@ import {ProfileRoutingModule} from './profile-routing.module';
 import { UserListComponent } from './user-list/user-list.component'
 import {AchievementModule} from "../achivement/achievement.module";
 import { FriendListComponent } from './friend-list/friend-list.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { FriendListComponent } from './friend-list/friend-list.component';
     ProfileRoutingModule,
     RouterModule,
     FormsModule,
-    AchievementModule
+    AchievementModule,
+    TranslateModule
   ]
 })
 export class ProfileModule { }

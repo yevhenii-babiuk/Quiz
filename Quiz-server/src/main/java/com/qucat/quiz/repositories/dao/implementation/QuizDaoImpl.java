@@ -1,8 +1,8 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.QuizDao;
-import com.qucat.quiz.repositories.dao.mappers.extractors.QuizExtractor;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
+import com.qucat.quiz.repositories.dao.mappers.extractors.QuizExtractor;
 import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -390,14 +390,35 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
     @Override
     public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
-            return jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId, quizId}, (rs, rowNum) ->
-                    rs.getBoolean("is_favourite")
-            );
+        return jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId, quizId}, (rs, rowNum) ->
+                rs.getBoolean("is_favourite")
+        );
     }
 
     @Override
     public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
         jdbcTemplate.update(quizQueries.get("updateQuizStatus"), quizStatus.name().toLowerCase(), quizId);
+    }
+
+    @Override
+    public boolean markQuizAsFavorite(int userId, int quizId) {
+        try {
+            jdbcTemplate.update(
+                    quizQueries.get("markAsFavorite"),
+                    quizId, userId
+            );
+        } catch (DuplicateKeyException e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean unmarkQuizAsFavorite(int userId, int quizId) {
+        return jdbcTemplate.update(
+                quizQueries.get("unmarkAsFavorite"),
+                userId, quizId
+        ) != 0;
     }
 
 }

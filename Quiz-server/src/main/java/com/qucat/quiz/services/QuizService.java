@@ -3,8 +3,8 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.repositories.dao.QuizDao;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Slf4j
 @Service
@@ -114,6 +116,12 @@ public class QuizService {
         quizDao.update(quiz);
     }
 
+    public Quiz getQuizByIdForUser(int userId, int quizId) {
+        Quiz quiz = getQuizById(quizId);
+        quiz.setFavorite(getFavouriteMarkByUserIdAndQuizId(userId, quizId));
+        return quiz;
+    }
+
     public Quiz getQuizById(int id) {
         return quizDao.getFullInfo(id);
     }
@@ -166,11 +174,24 @@ public class QuizService {
         }
     }
 
-        public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
+    public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
         return quizDao.getFavouriteMarkByUserIdAndQuizId(userId, quizId);
     }
 
     public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
         quizDao.updateQuizStatus(quizId, quizStatus);
     }
+
+    public boolean setQuizIsFavorite(int userId, int quizId, boolean isFavorite) {
+        log.info(String.valueOf(userId));
+        log.info(String.valueOf(quizId));
+        log.info(String.valueOf(isFavorite));
+        if (isFavorite) {
+            return quizDao.markQuizAsFavorite(userId, quizId);
+        } else {
+            return quizDao.unmarkQuizAsFavorite(userId, quizId);
+        }
+    }
+
+
 }

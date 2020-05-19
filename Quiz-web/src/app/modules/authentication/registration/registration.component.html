@@ -1,47 +1,93 @@
-<div class="container">
-  <div>
-    <h3 class="col-sm-8 offset-2 text-center">Registration</h3>
+<div class="container custom">
 
-    <div class="form-group">
-      <div class="col-sm-8 offset-2">
-        <input type="text" placeholder="First Name" class="form-control" autofocus #firstname>
-      </div>
-    </div>
+  <h3 class="text-center">Registration</h3>
 
-    <div class="form-group">
-      <div class="col-sm-8 offset-2">
-        <input type="text" placeholder="Last Name" class="form-control" autofocus #lastname>
-      </div>
+  <div class="form-group row">
+    <div class="col"></div>
+    <div class="col-9">
+      <input type="text" placeholder="First Name" class="form-control" [(ngModel)]="user.firstName"
+             #firstname="ngModel"
+             pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="fnHelp">
+      <small id="fnHelp" class="form-text text-danger" [hidden]="firstname.valid || firstname.untouched">
+        First name should be at least 2 characters long and have no numbers
+      </small>
     </div>
+    <div class="col"></div>
+  </div>
 
-    <div class="form-group">
-      <div class="col-sm-8 offset-2">
-        <input type="text" placeholder="Login" class="form-control" autofocus #login>
-      </div>
+  <div class="form-group row">
+    <div class="col"></div>
+    <div class="col-9">
+      <input type="text" placeholder="Last Name" class="form-control" [(ngModel)]="user.secondName"
+             #lastname="ngModel"
+             pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="lnHelp">
+      <small id="lnHelp" class="form-text text-danger" [hidden]="lastname.valid || lastname.untouched">
+        Last name should be at least 2 characters long and have no numbers
+      </small>
     </div>
+    <div class="col"></div>
+  </div>
 
-    <div class="form-group">
-      <div class="col-sm-8 offset-2">
-        <input type="email" placeholder="Email" class="form-control" name="email" autofocus #email>
-      </div>
+  <div class="form-group row">
+    <div class="col"></div>
+    <div class="col-9">
+      <input type="text" placeholder="Login" class="form-control" [(ngModel)]="user.login" aria-describedby="lHelp"
+             #login="ngModel">
+      <small id="lHelp" class="form-text text-danger" [hidden]="login.untouched || (user.login.length > 0)">
+        Login should not be empty!
+      </small>
     </div>
-    <div class="form-group">
-      <div class="col-sm-8 offset-2">
-        <input type="password" placeholder="Password" class="form-control" autofocus #password>
-      </div>
-    </div>
+    <div class="col"></div>
+  </div>
 
-    <div class="form-group">
-      <div class="col-sm-8 offset-2">
-        <input type="password" placeholder="Confirm password" class="form-control" autofocus #confirmPassword>
-      </div>
+  <div class="form-group row">
+    <div class="col"></div>
+    <div class="col-9">
+      <input type="email" placeholder="Email" class="form-control" name="email" [(ngModel)]="user.mail"
+             #email="ngModel"
+             pattern="^[A-z\d._]+@[A-z]+\.[A-z]+$" aria-describedby="emailHelp">
+      <small id="emailHelp" class="form-text text-danger" [hidden]="email.valid || email.untouched">
+        Email does't match the pattern: example@gmail.com
+      </small>
     </div>
+    <div class="col"></div>
+  </div>
 
+  <div class="form-group row">
+    <div class="col"></div>
+    <div class="col-9">
+      <input type="password" placeholder="Password" class="form-control" [(ngModel)]="user.password"
+             #password="ngModel"
+             pattern="^.{8,}$" aria-describedby="passHelp">
+      <small id="passHelp" class="form-text text-danger" [hidden]="password.valid || password.untouched">
+        Password should be at least 8 symbols
+      </small>
+    </div>
+    <div class="col"></div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col"></div>
+    <div class="col-9">
+      <input type="password" placeholder="Confirm password" class="form-control" [(ngModel)]="confirmPassword"
+             aria-describedby="cpHelp">
+      <small id="cpHelp" class="form-text text-danger"
+             [hidden]="password.untouched || user.password == confirmPassword">
+        Passwords don't match!
+      </small>
+    </div>
+    <div class="col"></div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col"></div>
     <button
-      (click)="registerUser(login.value, firstname.value, lastname.value, email.value, password.value, confirmPassword.value)"
-      class="btn btn-warning btn-block col-sm-8 offset-2">
+      [disabled]="!firstname.valid || !lastname.valid || !password.valid || !email.valid || !(user.password == confirmPassword) || (user.login.length < 1)"
+      (click)="registerUser()"
+      class="btn btn-warning btn-block col-9">
       Register
     </button>
+    <div class="col"></div>
   </div>
 
 </div>

@@ -5,6 +5,7 @@ import {AnnouncementService} from "../../core/services/announcement.service";
 import {Imaged} from "../../core/models/imaged";
 import {SecurityService} from "../../core/services/security.service";
 import {Role} from "../../core/models/role";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-update-announcement',
@@ -19,7 +20,9 @@ export class UpdateAnnouncementComponent implements OnInit {
   constructor(private announcementService: AnnouncementService,
               private route: ActivatedRoute,
               private securityService: SecurityService,
-              private router: Router) {
+              private router: Router,
+              public translate: TranslateService
+  ) {
     const id = this.route.snapshot.paramMap.get('announcementId');
     console.log(id);
     if (id) {

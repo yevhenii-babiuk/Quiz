@@ -62,4 +62,8 @@ export class AnnouncementService {
       return of(result as T);
     };
   }
+
+  deleteAnnouncement(announcement: Announcement) {
+    return this.http.delete(`${url}/announcement/${announcement.id}`);
+  }
 }
