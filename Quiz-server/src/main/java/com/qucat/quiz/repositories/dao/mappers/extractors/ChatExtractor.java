@@ -23,6 +23,7 @@ public class ChatExtractor implements ResultSetExtractor<List<Chat>> {
             int chatId = rs.getInt("chat_id");
             Chat chat = chatMap.get(chatId);
             if (chat == null) {
+                userMap = new HashMap<>();
                 chat = Chat.builder()
                         .id(chatId)
                         .name(rs.getString("name"))
