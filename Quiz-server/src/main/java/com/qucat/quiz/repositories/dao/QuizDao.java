@@ -35,5 +35,5 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId);
 
-    void updateQuizStatus(QuizStatus quizStatus, int quizId);
+    void updateQuizStatus(int quizId, QuizStatus quizStatus);
 }

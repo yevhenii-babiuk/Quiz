@@ -170,7 +170,7 @@ public class QuizService {
         return quizDao.getFavouriteMarkByUserIdAndQuizId(userId, quizId);
     }
 
-    public void updateQuizStatus(Quiz quiz) {
-        quizDao.updateQuizStatus(quiz.getStatus(), quiz.getId());
+    public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
+        quizDao.updateQuizStatus(quizId, quizStatus);
     }
 }
