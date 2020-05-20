@@ -60,7 +60,6 @@ public class NotificationService {
     }
 
     public boolean createNotification(Notification notification) {
-        System.out.println(notification);
         int notificationId = notificationDao.save(notification);
         if (notificationId == -1) {
             log.info("createNotification: Notification wasn't saved");

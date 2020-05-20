@@ -84,6 +84,26 @@
       "tags": "Tags",
       "description": "Description",
       "questionType": "Question type"
+    },
+    "editQuiz": {
+      "enterQuizName": "Enter quiz name",
+      "newTag": "New tag...",
+      "selectImage": "Select image",
+      "question": "Question",
+      "inputAnswer": "Input answer",
+      "correctAnswer": "Correct answer",
+      "addQuestion": "Add question",
+      "send": "Send"
+    },
+    "errorValidation": {
+      "noNameQuiz": "Please enter name of quiz ",
+      "noDescQuiz": "Please enter description of quiz ",
+      "noQuestions": "Please add one or more question ",
+      "noNameImage": "Please add content for your ",
+      "question": "question ",
+      "option": "option ",
+      "addMoreCorrectAnswer": "Please chose one or more correct answer for your ",
+      "addLessCorrectAnswer": "Please chose less correct answer for your "
     }
   },
   "CREATE_ADMIN": {
@@ -114,7 +134,9 @@
     "deleteFromFriends": "Delete from friends",
     "achievements": "Calculate achievements",
     "activate": "Activate",
-    "deactivate": "Deactivate"
+    "deactivate": "Deactivate",
+    "CHANGED_STATUS_SUCCESSFUL": "Status successfully changed",
+    "CHANGED_STATUS_ERRORED": "Error while changing status!"
   },
   "editProfile": {
     "title": "Edit profile",
@@ -138,26 +160,6 @@
       "favouriteQuizzes": "Added quizzes to favorites list",
       "createdQuizzes": "Created quizzes",
       "achievements": "Achievements"
-    },
-    "editQuiz": {
-      "enterQuizName": "Enter quiz name",
-      "newTag": "New tag...",
-      "selectImage": "Select image",
-      "question": "Question",
-      "inputAnswer": "Input answer",
-      "correctAnswer": "Correct answer",
-      "addQuestion": "Add question",
-      "send": "Send"
-    },
-    "errorValidation": {
-      "noNameQuiz": "Please enter name of quiz ",
-      "noDescQuiz": "Please enter description of quiz ",
-      "noQuestions": "Please add one or more question ",
-      "noNameImage": "Please add content for your ",
-      "question": "question ",
-      "option": "option ",
-      "addMoreCorrectAnswer": "Please chose one or more correct answer for your ",
-      "addLessCorrectAnswer": "Please chose less correct answer for your "
     }
   },
   "DASHBOARD": {
@@ -187,7 +189,6 @@
       "ERRORED": "Error while adding achievement!",
       "RECALCULATION_SUCCESSFUL": "Recalculation successful",
       "RECALCULATION_ERRORED": "Error while recalculation!"
-
     }
   },
   "CHAT": {
@@ -223,7 +224,7 @@
     "mailConfirm": {
       "registrationSuccessfully": "Your registration has been successfully confirmed.",
       "plsSignIn": "Please, sign in to start",
-      "SignIn": "Sign in",
+      "signIn": "Sign in",
       "noToken": "Sorry, but your token is unavailable."
     },
     "LOGIN": {

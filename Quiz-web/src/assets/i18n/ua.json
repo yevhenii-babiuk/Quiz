@@ -84,6 +84,26 @@
       "tags": "Теги",
       "description": "Опис",
       "questionType": "Тип питання"
+    },
+    "editQuiz": {
+      "enterQuizName": "Введіть назву вікторини",
+      "newTag": "Новий тег...",
+      "selectImage": "Вибрати фото",
+      "question": "Запитання",
+      "inputAnswer": "Введіть відповідь",
+      "correctAnswer": "Введіть правильно відповідь",
+      "addQuestion": "Додати запитання",
+      "send": "Надіслати"
+    },
+    "errorValidation": {
+      "noNameQuiz": "Будь ласка, введіть назву вікторини ",
+      "noDescQuiz": "Будь ласка, введіть опис вікторини ",
+      "noQuestions": "Будь ласка, додайте одне або більше запитань ",
+      "noNameImage": "Будь ласка, додайте вміст до ",
+      "question": "запитання ",
+      "option": "опції ",
+      "addMoreCorrectAnswer": "Будь ласка, додайте більше коректних відповідей для ",
+      "addLessCorrectAnswer": "Будь ласка, додайте менше коректних відповідей для "
     }
   },
   "CREATE_ADMIN": {
@@ -101,16 +121,6 @@
     "NO_VALID_PASSWORD": "Пароль повинен містити як мінімум 8 символів",
     "CONFIRM_PASSWORD": "Підтвердження паролю",
     "NO_MATCH_PASSWORD": "Паролі не збігаються!"
-  },
-  "errorValidation": {
-    "noNameQuiz": "Будь ласка, введіть назву вікторини ",
-    "noDescQuiz": "Будь ласка, введіть опис вікторини ",
-    "noQuestions": "Будь ласка, додайте одне або більше запитань ",
-    "noNameImage": "Будь ласка, додайте вміст до ",
-    "question": "запитання ",
-    "option": "опції ",
-    "addMoreCorrectAnswer": "Будь ласка, додайте більше коректних відповідей для ",
-    "addLessCorrectAnswer": "Будь ласка, додайте менше коректних відповідей для "
   },
   "DASHBOARD": {
     "ACHIEVEMENTS": "Досягнення",
@@ -174,7 +184,7 @@
     "mailConfirm": {
       "registrationSuccessfully": "Реєстрація успішно підтверджена",
       "plsSignIn": "Будь ласка, увійдіть",
-      "SignIn": "Увійти",
+      "signIn": "Увійти",
       "noToken": "Вибачте, ваш токен недійсний."
     },
     "LOGIN": {
@@ -204,7 +214,9 @@
     "deleteFromFriends": "Видалити з друзів",
     "achievements": "Перерахувати досягнення",
     "activate": "Активувати",
-    "deactivate": "Деактивувати"
+    "deactivate": "Деактивувати",
+    "CHANGED_STATUS_SUCCESSFUL": "Статус успішно змінений",
+    "CHANGED_STATUS_ERRORED": "Помилка зміни статуса!"
   },
   "editProfile": {
     "title": "Редагувати профіль",

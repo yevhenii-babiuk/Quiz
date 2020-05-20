@@ -195,7 +195,6 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
             if (status != null) {
                 for (QuizStatus statusItem : status) {
-                    System.out.println(statusItem);
                     preparedStatement.setString(paramIndex++, statusItem.toString().toLowerCase());
                 }
             }
@@ -343,7 +342,6 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             }
 
         } catch (Exception e) {
-            System.out.println(psId);
             log.error("In findAllForPage method while read page of quiz from DB: " + e.getMessage());
         } finally {
             try {
