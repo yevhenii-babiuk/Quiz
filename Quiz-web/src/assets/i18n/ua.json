@@ -40,6 +40,9 @@
   "quiz": {
     "createQuiz": "Створити квіз",
     "NEXT": "Далі",
+    "favorite": "Улюблені",
+    "completed": "Пройдені",
+    "created": "Створені",
     "questionTypes": {
       "SELECT_OPTION": "Виберіть правильні відповіді",
       "SELECT_SEQUENCE": "Виберіть послідовність відповідей",

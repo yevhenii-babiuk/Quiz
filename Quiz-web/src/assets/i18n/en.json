@@ -39,6 +39,9 @@
   },
   "quiz": {
     "createQuiz": "Create quiz",
+    "favorite": "Favorite",
+    "completed": "Completed",
+    "created": "Created",
     "NEXT": "Next",
     "questionTypes": {
       "SELECT_OPTION": "Select options",
