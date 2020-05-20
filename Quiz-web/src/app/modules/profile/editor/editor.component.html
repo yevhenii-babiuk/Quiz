@@ -39,9 +39,10 @@
     <div class="form-group required"><label class="col-md-2 control-label offset-md-1">{{'editProfile.password' | translate}}</label>
       <div class="col-sm-9 offset-md-1" >
         <input type="password" placeholder="Password" class="form-control"
-               autofocus #password
+               [(ngModel)]="userData.password"
+               #password="ngModel"
                pattern="^.{8,}$" aria-describedby="passHelp">
-        <small id="passHelp" class="form-text text-danger">
+        <small id="passHelp" class="form-text text-danger" [hidden]="password.valid || password.untouched">
           Password should be at least 8 symbols
         </small>
       </div>
