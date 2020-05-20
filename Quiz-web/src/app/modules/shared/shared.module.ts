@@ -27,7 +27,7 @@ import {TranslateModule} from "@ngx-translate/core";
     HeaderComponent,
     FooterComponent,
     SidenavComponent,
-    TranslateModule,
+    TranslateModule
   ]
 })
 export class SharedModule { }

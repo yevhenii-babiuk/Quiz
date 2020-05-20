@@ -40,6 +40,8 @@ import {ChatModule} from "./modules/chat/chat.module";
 import {ChatRoutingModule} from "./modules/chat/chat-routing.module";
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {CreateAdminRoutingModule} from "./modules/create-admin/create-admin-routing.module";
+import {CreateAdminModule} from "./modules/create-admin/create-admin.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
@@ -84,6 +86,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ChatModule,
     ChatRoutingModule,
     AchievementRoutingModule,
+    CreateAdminModule,
+    CreateAdminRoutingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

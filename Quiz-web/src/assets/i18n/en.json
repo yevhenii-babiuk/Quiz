@@ -15,7 +15,9 @@
     "TOP": "Top users",
     "PROFILE": "Profile",
     "ACHIEVEMENT": "Create achievement",
-    "CHATS": "Chats"
+    "CHATS": "Chats",
+    "CREATE_ADMIN": "Create admin or moderator",
+    "CREATE_MODER": "Create moderator"
   },
   "USERLIST": {
     "LOGIN": "Login",
@@ -139,5 +141,9 @@
       "APPLY": "Apply",
       "UNAVAILABLE": "Sorry, but your token is unavailable."
     }
+  },
+  "CREATE_ADMIN": {
+    "TITLE": "Create admin/moderator",
+    "BUTTON": "Create"
   }
 }
