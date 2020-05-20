@@ -2,7 +2,7 @@
   <div *ngFor="let fbFilter of filters; let i = index">
     <div class="form-group">
       <!-- filter title -->
-      <h5 class="float-left">{{fbFilter.title}}</h5>
+      <h5 class="float-left">{{'quiz.viewQuiz.' + fbFilter.title | translate}}</h5>
       <!-- collapse filter link -->
       <div class="float-right minimize-button"
               (click)="onHideFilterClick(i)">

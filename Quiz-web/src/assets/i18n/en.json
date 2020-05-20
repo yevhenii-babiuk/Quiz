@@ -49,6 +49,9 @@
       "false": "False"
     },
     "viewQuiz": {
+      "authorName": "Author login",
+      "date": "Date",
+      "status": "Status",
       "editQuiz": "Edit quiz",
       "publishQuiz": "Publish quiz",
       "deactivateQuiz": "Deactivate quiz",

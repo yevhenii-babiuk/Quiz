@@ -49,6 +49,9 @@
       "false": "Неправда"
     },
     "viewQuiz": {
+      "authorName": "Логін автора",
+      "date": "Дата",
+      "status": "Статус",
       "editQuiz": "Редагувати квіз",
       "publishQuiz": "Опублікувати квіз",
       "deactivateQuiz": "Деактивувати квіз",
