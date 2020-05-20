@@ -17,6 +17,18 @@
     "ACHIEVEMENT": "Create achievement",
     "CHATS": "Chats"
   },
+  "alert": {
+    "errorLogin": "Error while login",
+    "loginEmpty": "Login is empty!",
+    "fieldEmpty": "Fields should not be empty!",
+    "registrationSuccessful": "Registration successful",
+    "registrationNoSuccessful": "Registration is not successful",
+    "errorRegistration": "Error while registration!",
+    "enterMail": "Enter the email!",
+    "resetSuccessful": "Reset is successful. Check your email box.",
+    "errorReset": "Error while reset!",
+    "errorApplyingPass": "Error while applying new pass"
+  },
   "USERLIST": {
     "LOGIN": "Login",
     "NAME": "Name",

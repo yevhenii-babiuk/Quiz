@@ -17,6 +17,18 @@
     "ACHIEVEMENT": "Створити досягнення",
     "CHATS": "Повідомлення"
   },
+  "alert": {
+    "errorLogin": "Помилка при авторизації",
+    "loginEmpty": "Логін пустий!",
+    "fieldEmpty": "Поля не повинні бути пусті!",
+    "registrationSuccessful": "Реєстрація успішна",
+    "registrationNoSuccessful": "Реєстрація не успішна",
+    "errorRegistration": "Помилка при реєстрації!",
+    "enterMail": "Введіть поштову адресу!",
+    "resetSuccessful": "Скидання паролю успішне. Провірте поштову адресу",
+    "errorReset": "Помилка при скиданні паролю!",
+    "errorApplyingPass": "Помилка при застосуванні новго паролю"
+  },
   "USERLIST": {
     "LOGIN": "Логін",
     "NAME": "Ім'я",

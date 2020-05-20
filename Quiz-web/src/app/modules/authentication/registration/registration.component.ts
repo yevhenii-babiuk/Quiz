@@ -28,7 +28,7 @@ export class RegistrationComponent implements OnInit {
   registerUser(): void {
 
     if (!this.user.login || !this.user.firstName || !this.user.secondName || !this.user.mail) {
-      this.alertService.error('Fields should not be empty!');
+      this.alertService.error('alert.fieldEmpty');
       return;
     }
 
@@ -36,14 +36,14 @@ export class RegistrationComponent implements OnInit {
       .subscribe(
         data => {
           if (data) {
-            this.alertService.success('Registration successful', true);
+            this.alertService.success('alert.registrationSuccessful', true);
             this.router.navigate(['login']);
           } else {
-            this.alertService.error('Registration is not successful', false);
+            this.alertService.error('alert.registrationNoSuccessful', false);
           }
         },
         error => {
-          this.alertService.error('Error while registration!');
+          this.alertService.error('alert.errorRegistration');
           console.log(error);
         });
   }
