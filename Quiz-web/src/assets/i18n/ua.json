@@ -18,9 +18,6 @@
     "CREATE_MODER": "Створити модератора",
     "ACHIEVEMENT": "Створити досягнення",
     "CHATS": "Повідомлення",
-    "PROFILE": "Профіль",
-    "CREATE_ADMIN": "Створити адміна або модератора",
-    "CREATE_MODER": "Створити модератора"
   },
   "alert": {
     "errorLogin": "Помилка при авторизації",
@@ -35,8 +32,7 @@
     "errorApplyingPass": "Помилка при застосуванні новго паролю",
     "adminCreatedSuccessful": "Створення успішне",
     "adminCreatedNoSuccessful": "Створення не успішне",
-    "errorCreatedAdmin": "Помилка при створенні"
-    "errorApplyingPass": "Помилка при застосуванні новго паролю",
+    "errorCreatedAdmin": "Помилка при створенні",
     "photoChanged": "Фото змінено",
     "editSuccessful": "Ви успішно відредагували свій профіль"
   },
@@ -242,10 +238,6 @@
     "COMBO BONUS": "Бонус за декілька послідовних правильних відповідей",
     "INTERMEDIATE RESULT": "Показувати проміжні результати",
     "PLAY": "ГРАТИ"
-  },
-  "CREATE_ADMIN": {
-    "TITLE": "Створити адміна/модератора",
-    "BUTTON": "Створити"
   },
   "HOME": {
     "PLAY": "Грати зараз"
