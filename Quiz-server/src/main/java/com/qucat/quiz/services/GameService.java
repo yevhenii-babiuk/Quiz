@@ -201,7 +201,7 @@ public class GameService {
 
     public String getQRCode(int quizId, String accessCode) {
         return Base64.getEncoder().encodeToString(qrCodeGenerator.getQRCodeImage(
-                URL + "quiz/" + quizId + "/game/" + accessCode,
+                URL + "quiz/" + quizId + "/game/" + accessCode + "/play",
                 200, 200));
     }
 }
