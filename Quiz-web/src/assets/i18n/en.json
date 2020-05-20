@@ -17,6 +17,18 @@
     "ACHIEVEMENT": "Create achievement",
     "CHATS": "Chats"
   },
+  "alert": {
+    "errorLogin": "Error while login",
+    "loginEmpty": "Login is empty!",
+    "fieldEmpty": "Fields should not be empty!",
+    "registrationSuccessful": "Registration successful",
+    "registrationNoSuccessful": "Registration is not successful",
+    "errorRegistration": "Error while registration!",
+    "enterMail": "Enter the email!",
+    "resetSuccessful": "Reset is successful. Check your email box.",
+    "errorReset": "Error while reset!",
+    "errorApplyingPass": "Error while applying new pass"
+  },
   "USERLIST": {
     "LOGIN": "Login",
     "NAME": "Name",
@@ -117,6 +129,28 @@
     "TYPE_MESSAGE": "Type a message"
   },
   "AUTHENTICATION": {
+    "login": "Login",
+    "password": "Password",
+    "email": "Email",
+    "registration": {
+      "registration": "Registration",
+      "firstName": "First name",
+      "noValidFirstName": "First name should be at least 2 characters long and have no numbers",
+      "lastName": "Last Name",
+      "noValidLastName": "Last name should be at least 2 characters long and have no numbers",
+      "noValidLogin": "Login should not be empty!",
+      "noValidMail": "Email does't match the pattern: example@gmail.com",
+      "noValidPassword": "Password should be at least 8 symbols",
+      "confirmPassword": "Confirm password",
+      "noMatchPassword": "Passwords don't match!",
+      "register": "Register"
+    },
+    "mailConfirm": {
+      "registrationSuccessfully": "Your registration has been successfully confirmed.",
+      "plsSignIn": "Please, sign in to start",
+      "SignIn": "Sign in",
+      "noToken": "Sorry, but your token is unavailable."
+    },
     "LOGIN": {
       "LOGIN_LABEL": "Login to your account",
       "FORGOT_PASSWORD": "Forgot password?",
