@@ -3,7 +3,9 @@ package com.qucat.quiz.controllers;
 import com.google.gson.Gson;
 import com.qucat.quiz.repositories.dto.WebsocketEvent;
 import com.qucat.quiz.repositories.entities.Message;
+import com.qucat.quiz.repositories.entities.NotificationType;
 import com.qucat.quiz.services.MessageService;
+import com.qucat.quiz.services.WebSocketSenderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -26,6 +28,9 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
+    @Autowired
+    private WebSocketSenderService webSocketSenderService;
+
     @MessageMapping("/{chatId}")
     public void receiveMessage(@DestinationVariable String chatId, String message) {
         Gson gson = new Gson();
@@ -38,6 +43,7 @@ public class MessageController {
         if (sm != null) {
             this.template.convertAndSend(String.format("/chat/%s", chatId),
                     gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.MESSAGE).message(sm).build()));
+            webSocketSenderService.sendNotification(sm.getAuthorId(), Integer.parseInt(chatId), NotificationType.MESSAGE);
         }
     }
 

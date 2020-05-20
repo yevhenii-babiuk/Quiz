@@ -69,6 +69,10 @@ public class FriendListDaoImpl implements FriendListDao {
                 friends = jdbcTemplate.queryForList(friendsListQueries.get("caseFriendInvitation"),
                         new Object[]{userId}, Integer.class);
                 break;
+            case MESSAGE:
+                friends = jdbcTemplate.queryForList(friendsListQueries.get("caseMessage"),
+                        new Object[]{userId}, Integer.class);
+                break;
             default:
                 return null;
         }

@@ -2,10 +2,7 @@ package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.dto.game.UserDto;
-import com.qucat.quiz.repositories.entities.FriendActivity;
-import com.qucat.quiz.repositories.entities.NotificationType;
-import com.qucat.quiz.repositories.entities.Token;
-import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.*;
 import com.qucat.quiz.repositories.entities.enums.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +51,9 @@ public class UserService {
     @Autowired
     private WebSocketSenderService webSocketSenderService;
 
+    @Autowired
+    private NotificationSettingsService notificationSettingsService;
+
     @Value("${url}")
     private String URL;
 
@@ -95,6 +95,15 @@ public class UserService {
                 .userId(id)
                 .build();
         tokenService.saveToken(tokenForNewUser);
+        NotificationSettings notificationSettings = NotificationSettings.builder()
+                .userId(id)
+                .newQuiz(true)
+                .newAnnouncement(true)
+                .gameInvitation(true)
+                .friendInvitation(true)
+                .build();
+
+        notificationSettingsService.createNotificationSettings(notificationSettings);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + tokenForNewUser.getToken(), MessageInfo.registration.findByLang(Lang.EN));
         //todo get Lang
         return true;

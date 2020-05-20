@@ -29,9 +29,7 @@ public class NotificationController {
 
     @PutMapping("/notification")
     public void updateNotificationViewed(@RequestBody Notification notification) {
-        System.out.println(notification);
         notificationService.updateNotification(notification);
-        System.out.println("updating");
     }
 
     @DeleteMapping("/notification/user/{userId}")
@@ -51,7 +49,6 @@ public class NotificationController {
 
     @PutMapping("/notification/settings")
     public void updateSettings(@RequestBody NotificationSettings notificationSettings) {
-        System.out.println("update notification settings");
         settingsService.updateNotificationSettings(notificationSettings);
     }
 }

@@ -25,32 +25,31 @@ public class NotificationService {
         Notification notification = Notification.builder()
                 .isViewed(false)
                 .author(notificationAuthor.getLogin())
-                .authorLink("http://localhost:4200/#/profile/" + authorId)
+                .authorLink("users/" + authorId)
                 .userId(userId)
                 .isMessage(false)
                 .build();
         switch (notificationType) {
             case CREATED_NEWS:
                 notification.setAction("CREATED_NEWS");
-                notification.setActionLink("http://localhost:4200/#/announcement/" + objectId);
+                notification.setActionLink("announcement/" + objectId);
                 break;
             case CREATED_QUIZ:
                 notification.setAction("CREATED_QUIZ");
-                notification.setActionLink("http://localhost:4200/#/quiz/" + objectId);
+                notification.setActionLink("quiz/" + objectId);
                 break;
             case GAME_INVITATION:
                 notification.setAction("GAME_INVITATION");
-                notification.setActionLink("http://localhost:4200/#/quiz/35/game/null/play" + objectId);
+                notification.setActionLink("quiz/35/game/null/play" + objectId);
                 break;
             case FRIEND_INVITATION:
                 notification.setAction("FRIEND_INVITATION");
-                notification.setActionLink("http://localhost:4200/#/profile/" + authorId);
+                notification.setActionLink("profile/" + authorId);
                 notification.setUserId(objectId);
                 break;
             case MESSAGE:
                 notification.setAction("MESSAGE");
-                notification.setActionLink("http://localhost:4200/#/profile/" + objectId);
-                notification.setUserId(objectId);
+                notification.setActionLink("chat/" + objectId);
                 notification.setMessage(true);
                 break;
             default:
@@ -88,13 +87,11 @@ public class NotificationService {
 
     public List<Notification> getNotificationsByUserId(int userId) {
         List<Notification> list = notificationDao.getByUserId(userId);
-        System.out.println(list);
         return list;
     }
 
     public List<Notification> getMessagesByUserId(int userId) {
         List<Notification> list = notificationDao.getMessagesByUserId(userId);
-        System.out.println(list);
         return list;
     }
 
