@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {SecurityService} from "../../core/services/security.service";
 import {GameDto} from "../../core/models/gameDto";
 import {PlayGameService} from "../../core/services/play-game.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-settings',
@@ -18,7 +19,9 @@ export class SettingsComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private redirect: Router,
               private securityService: SecurityService,
-              private playGameService: PlayGameService) {
+              private playGameService: PlayGameService,
+              public translate: TranslateService
+  ) {
     this.game = new GameDto();
     this.game.quizId = this.route.snapshot.paramMap.get('quizId');
     this.game.hostId = securityService.getCurrentId();

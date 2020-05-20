@@ -1,16 +1,17 @@
 <div class="container">
   <div *ngIf="isConfirmed; else tokenUnavailable">
     <div class="col-sm text-center">
-      <h2>Your registration has been successfully confirmed.</h2>
-      <h4>Please, sign in to start</h4>
+      <h2>{{'AUTHENTICATION.mailConfirm.registrationSuccessfully'|translate}}</h2>
+      <h4>{{'AUTHENTICATION.mailConfirm.plsSignIn'|translate}}</h4>
       <div>
-        <a class="btn btn-outline-warning"[routerLink]="['/login']" routerLinkActive="active">Sign in</a><br>
+        <a class="btn btn-outline-warning" [routerLink]="['/login']" routerLinkActive="active">
+          {{'AUTHENTICATION.mailConfirm.signIn'|translate}}</a><br>
       </div>
     </div>
   </div>
   <ng-template #tokenUnavailable>
     <div class="col-sm text-center">
-      <h3>Sorry, but your token is unavailable.</h3>
+      <h3>{{'AUTHENTICATION.mailConfirm.noToken'|translate}}</h3>
     </div>
   </ng-template>
 </div>

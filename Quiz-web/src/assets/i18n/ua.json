@@ -17,6 +17,18 @@
     "ACHIEVEMENT": "Створити досягнення",
     "CHATS": "Повідомлення"
   },
+  "alert": {
+    "errorLogin": "Помилка при авторизації",
+    "loginEmpty": "Логін пустий!",
+    "fieldEmpty": "Поля не повинні бути пусті!",
+    "registrationSuccessful": "Реєстрація успішна",
+    "registrationNoSuccessful": "Реєстрація не успішна",
+    "errorRegistration": "Помилка при реєстрації!",
+    "enterMail": "Введіть поштову адресу!",
+    "resetSuccessful": "Скидання паролю успішне. Провірте поштову адресу",
+    "errorReset": "Помилка при скиданні паролю!",
+    "errorApplyingPass": "Помилка при застосуванні новго паролю"
+  },
   "USERLIST": {
     "LOGIN": "Логін",
     "NAME": "Ім'я",
@@ -117,6 +129,28 @@
     "TYPE_MESSAGE": "Введіть повідомлення"
   },
   "AUTHENTICATION": {
+    "login": "Логін",
+    "password": "Пароль",
+    "email": "Поштовий ящик",
+    "registration": {
+      "registration": "Реєстрація",
+      "firstName": "Ім'я",
+      "noValidFirstName": "Ім'я повинне містити як мінімум 2 символи і не містити цифр",
+      "lastName": "Прізвище",
+      "noValidLastName": "Прізвище повинне містити як мінімум 2 символи і не містити цифр\"",
+      "noValidLogin": "Логін повинен бути непустим!",
+      "noValidMail": "Поштовий ящик повинен відповідати патерну: example@gmail.com",
+      "noValidPassword": "Пароль повинен містити як мінімум 8 символів",
+      "confirmPassword": "Підтвердження паролю",
+      "noMatchPassword": "Паролі не збігаються!",
+      "register": "Зареєструватись"
+    },
+    "mailConfirm": {
+      "registrationSuccessfully": "Реєстрація успішно підтверджена",
+      "plsSignIn": "Будь ласка, увійдіть",
+      "SignIn": "Увійти",
+      "noToken": "Вибачте, ваш токен недійсний."
+    },
     "LOGIN": {
       "LOGIN_LABEL": "Увійти до свого облікового запису",
       "FORGOT_PASSWORD": "Забули пароль?",
@@ -169,5 +203,14 @@
       "createdQuizzes": "Створені вікторини",
       "achievements": "Досягнення"
     }
+  },
+  "SETTING": {
+    "TITLE": "Налаштування гри",
+    "TIME": "Час на відповідь",
+    "QUESTION FIRST": "Спочатку питання, потім відповіді",
+    "FIRST BONUS": "Бонус гравцю, який відповів першим",
+    "COMBO BONUS": "Бонус за декілька послідовних правильних відповідей",
+    "INTERMEDIATE RESULT": "Показувати проміжні результати",
+    "PLAY": "ГРАТИ"
   }
 }
