@@ -88,18 +88,18 @@ export class CreateAchievementComponent implements OnInit {
       this.achievementService.sendAchievement(this.achievement).subscribe(
         data => {
           if (data) {
-            this.alertService.success('Adding successful', false);
+            this.alertService.success('DASHBOARD.ACHIEVEMENT_VALIDATION.SUCCESSFUL', false);
             this.isInvalid = false;
             this.achievement.name = "";
             this.achievement.description = "";
             this.conditions = [new AchievementCondition];
           } else {
-            this.alertService.error('Adding is not successful', false);
+            this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.ERRORED', false);
           }
         },
         error => {
-          this.alertService.error('Error while adding achievement!');
-          this.message = `cant add achievement`;
+          this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.ERRORED');
+          this.message = `DASHBOARD.ACHIEVEMENT_VALIDATION.ERRORED`;
           console.log(error);
         });
     }

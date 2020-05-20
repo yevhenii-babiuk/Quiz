@@ -29,7 +29,9 @@
     "enterMail": "Enter the email!",
     "resetSuccessful": "Reset is successful. Check your email box.",
     "errorReset": "Error while reset!",
-    "errorApplyingPass": "Error while applying new pass"
+    "errorApplyingPass": "Error while applying new pass",
+    "photoChanged": "Photo is changed",
+    "editSuccessful": "You have successfully edited your profile"
   },
   "USERLIST": {
     "LOGIN": "Login",
@@ -160,7 +162,12 @@
       "CONDITION": "Please add one or more condition",
       "CHARACTERISTIC": "Please choose characteristic of your condition",
       "OPERATOR": "Please choose operator of your condition",
-      "VALUE": "Please enter value of your condition"
+      "VALUE": "Please enter value of your condition",
+      "SUCCESSFUL": "Adding successful",
+      "ERRORED": "Error while adding achievement!",
+      "RECALCULATION_SUCCESSFUL": "Recalculation successful",
+      "RECALCULATION_ERRORED": "Error while recalculation!"
+
     }
   },
   "CHAT": {
