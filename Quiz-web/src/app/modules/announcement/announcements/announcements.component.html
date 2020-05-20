@@ -1,5 +1,15 @@
 <div class="row">
-  <a class="form-control btn btn-outline-dark" routerLink="/createAnnouncement">Є новини? Поділись з усіма!</a>
+  <a class="form-control btn btn-outline-dark" routerLink="/createAnnouncement">{{ 'ANNOUNCEMENT.CREATE BUTTON' | translate }}</a>
+</div>
+<div *ngIf="role != roleEnum.USER && role" class="offset-10 my-2">
+  <div class="btn-group btn-group-toggle" data-toggle="buttons">
+    <label class="btn btn-outline-secondary active">
+      <input (click)="getPublished()" type="radio" name="options" id="option1" autocomplete="off" checked> Published
+    </label>
+    <label class="btn btn-outline-secondary">
+      <input (click)="getUnpublished()" type="radio" name="options" id="option2" autocomplete="off"> Unpublished
+    </label>
+  </div>
 </div>
 <ng-container *ngFor="let announcement of announcements">
   <div class="row custom">
@@ -11,7 +21,7 @@
         <h2 class="lead">
           {{announcement.subtitle}}
         </h2>
-        <p class="post-meta">Posted by
+        <p class="post-meta">{{ 'ANNOUNCEMENT.POST BY' | translate }}
           {{announcement.authorLogin}}
           on {{announcement.createdDate | date:'MMMM d, yyyy'}}</p>
         <hr>

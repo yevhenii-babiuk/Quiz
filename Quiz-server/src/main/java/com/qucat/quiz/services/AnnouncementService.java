@@ -2,6 +2,7 @@ package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.AnnouncementDao;
 import com.qucat.quiz.repositories.entities.Announcement;
+import com.qucat.quiz.repositories.entities.NotificationType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,13 +19,18 @@ public class AnnouncementService {
     @Autowired
     private AnnouncementDao announcementDao;
 
-    public boolean createAnnouncement(Announcement announcement) {
+    @Autowired
+    private WebSocketSenderService webSocketSenderService;
+
+    public int createAnnouncement(Announcement announcement) {
         int announcementId = announcementDao.save(announcement);
         if (announcementId == -1) {
             log.info("createAnnouncement: Announcement wasn't saved");
-            return false;
+            return -1;
         }
-        return true;
+        webSocketSenderService.sendNotification(announcement.getAuthorId(), announcementId,
+                NotificationType.CREATED_NEWS);
+        return announcementId;
     }
 
     public void updateAnnouncement(Announcement announcement) {
@@ -32,11 +38,13 @@ public class AnnouncementService {
             log.info("updateAnnouncement: Announcement is null");
             return;
         }
+        webSocketSenderService.sendNotification(announcement.getAuthorId(), announcement.getId(),
+                NotificationType.CREATED_NEWS);
         announcementDao.update(announcement);
     }
 
-    public void deleteAnnouncement(Announcement announcement) {
-        announcementDao.delete(announcement);
+    public void deleteAnnouncement(int announcementId) {
+        announcementDao.deleteById(announcementId);
     }
 
     public Announcement getAnnouncementById(int announcementId) {

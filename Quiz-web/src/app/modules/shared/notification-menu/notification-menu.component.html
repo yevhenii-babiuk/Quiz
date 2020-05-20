@@ -1,0 +1,73 @@
+<div class="notification-wrapper">
+  <div  class="notification-btn" (click)="openNotification(!showNotification); changeShowMenu(showNotification)">
+    <div  matBadge="{{unviewedNotificationCount}}" matBadgeColor="warn" *ngIf="unviewedNotificationCount > 0">
+      <span class="fas fa-bell"></span>
+    </div>
+    <div  *ngIf="unviewedNotificationCount == 0">
+      <span class="fas fa-bell"></span>
+    </div>
+
+  </div>
+
+  <div *ngIf="showNotification" class="notification-content" >
+    <div class="notification-header" >
+     <div>
+       <span (click)="openSettings(!showSettings)">
+         <div class="fas fa-cog"> </div>
+       </span>
+       <span class="label">Повідомлення</span>
+       <span (click)="deleteAllNotification()">
+         <div class="fas fa-trash"> </div>
+       </span>
+     </div>
+
+    </div>
+    <div *ngIf="showSettings" class="notification-setting">
+      <div>
+        Отримувати повідомлення про:
+      </div>
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="notificationFilters.newAnnouncement" (click)="(updateSettings(notificationFilters))" id="checkbox1" type="checkbox" class="styled">
+        <label for="checkbox1">
+          Створення друзями новини
+        </label>
+      </div>
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="notificationFilters.newQuiz"  (click)="(updateSettings(notificationFilters))" id="checkbox2" type="checkbox" class="styled">
+        <label for="checkbox2">
+          Створення друзями вікторини
+        </label>
+      </div>
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="notificationFilters.gameInvitation"  (click)="(updateSettings(notificationFilters))" id="checkbox3" type="checkbox" class="styled">
+        <label for="checkbox3">
+          Запрошення друзями до гри
+        </label>
+      </div>
+      <div class="checkbox checkbox-warning">
+        <input [(ngModel)]="notificationFilters.friendInvitation" (click)="(updateSettings(notificationFilters))" id="checkbox4" type="checkbox" class="styled">
+        <label for="checkbox4">
+          Додавання у друзі
+        </label>
+      </div>
+    </div>
+    <div class="notification-container">
+      <ng-container *ngFor="let notification of notifications">
+        <div class="notification-item" (mouseover)="setViewed(notification)">
+          <button type="button" (click)="deleteNotification(notification.linkAction, notification.id)" class="close"
+                  data-dismiss="modal" aria-hidden="true">×</button>
+          <a routerLink="{{notification.authorLink}}" class="post-title mt-4 authorLinkFont" >
+            {{notification.author}}
+            <br>
+          </a>
+          <span class="lead">
+
+           {{'NOTIFICATIONS.'+ notification.action | translate}}<br>
+        </span>
+          <a routerLink="{{notification.actionLink}}" class="linkFont">Переглянути<br></a>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+

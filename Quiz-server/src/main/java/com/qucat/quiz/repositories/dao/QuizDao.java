@@ -1,7 +1,7 @@
 package com.qucat.quiz.repositories.dao;
 
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -26,4 +26,18 @@ public interface QuizDao extends GenericDao<Quiz> {
 
     Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category, Timestamp minDate,
                               Timestamp maxDate, List<String> tags, QuizStatus[] status);
+
+    Page<Quiz> getCompletedQuizzesByUserId(int userId, Pageable pageable);
+
+    Page<Quiz> getCreatedQuizzesByUserId(int userId, Pageable pageable);
+
+    Page<Quiz> getFavouriteQuizzesByUserId(int userId, Pageable pageable);
+
+    boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId);
+
+    void updateQuizStatus(int quizId, QuizStatus quizStatus);
+
+    boolean markQuizAsFavorite(int userId, int quizId);
+
+    boolean unmarkQuizAsFavorite(int userId, int quizId);
 }

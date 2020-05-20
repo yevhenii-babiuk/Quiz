@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NotificationMenuComponent} from "../../shared/notification-menu/notification-menu.component";
+import {AuthenticationService} from '../../core/services/authentication.service';
+import {AlertService} from '../../core/services/alert.service';
+import {TranslateService} from "@ngx-translate/core";
 
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { AlertService } from '../../core/services/alert.service';
-
-import { User } from '../../core/models/user';
+import {User} from '../../core/models/user';
 
 @Component({
   selector: 'app-login',
@@ -15,9 +16,12 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private notificationMenuComponent: NotificationMenuComponent,
     private alertService: AlertService,
+    public translate: TranslateService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }
@@ -25,7 +29,7 @@ export class LoginComponent implements OnInit {
   onLogin(login: string, password: string) {
     login = login.trim();
     if (!login) {
-      this.alertService.error('Login is empty!');
+      this.alertService.error('alert.loginEmpty');
       return;
     }
 
@@ -36,7 +40,7 @@ export class LoginComponent implements OnInit {
                  this.router.navigate(['profile']).then();
                },
                error => {
-                   this.alertService.error('Error while login');
+                   this.alertService.error('alert.errorLogin');
                    console.log(error);
                });
   }

@@ -82,13 +82,8 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
     }
 
     @Override
-    public void delete(T t) {
-        //     jdbcTemplate.update(String.format(genericQueries.get("delete"), tableName), t.getId());
-    }
-
-    @Override
     public void deleteById(int id) {
-             jdbcTemplate.update(String.format(genericQueries.get("delete"), tableName), id);
+        jdbcTemplate.update(String.format(genericQueries.get("delete"), tableName), id);
     }
 
 }

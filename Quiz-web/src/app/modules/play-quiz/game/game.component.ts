@@ -28,7 +28,7 @@ export class GameComponent implements OnInit, OnDestroy {
   public gameResults: Users;
   eventType = EventType;
   receivedEvent: WebsocketEvent;
-  s:any;
+  s: any;
 
   public currentUser: UserDto;
   public gameId: string = this.route.snapshot.paramMap.get('gameId');
@@ -98,17 +98,13 @@ export class GameComponent implements OnInit, OnDestroy {
     let that = this;
 
     this.stompClient.connect({}, function () {
-      this.s = that.stompClient.subscribe("/game/" + that.gameId + "/play", async (message) => {
+      that.s = that.stompClient.subscribe("/game/" + that.gameId + "/play", async (message) => {
         if (message.body) {
-          console.log(message.body)
           that.receivedEvent = JSON.parse(message.body);
-          console.log(that.receivedEvent)
-          console.log(that.receivedEvent.type)
           if (that.receivedEvent.type == that.eventType.PLAYERS) {
             that.players = that.receivedEvent.players;
           }
           if (that.receivedEvent.type == that.eventType.QUESTION) {
-            console.log("it is question")
             that.isWaiting = false;
             that.gameResults = null;
             that.receivedQuestion = that.receivedEvent.question;
@@ -118,7 +114,6 @@ export class GameComponent implements OnInit, OnDestroy {
               that.question = null;
               await sleep(500);
               that.question = that.receivedEvent.question;
-              console.log(that.question)
             }
           }
           if (that.receivedEvent.type == that.eventType.RESULTS) {
@@ -126,37 +121,13 @@ export class GameComponent implements OnInit, OnDestroy {
             that.isWaiting = false;
             that.question = null;
             that.gameResults = that.receivedEvent.gameResults;
+            if (that.gameResults.isFinal) {
+              localStorage.removeItem("playerId")
+            }
           }
         }
       });
-
-      /* that.stompClient.subscribe("/game/" + that.gameId + "/play/question", async (message) => {
-         if (message.body) {
-           let json = JSON.parse(message.body);
-           that.isWaiting = false;
-           that.gameResults = null;
-           that.receivedQuestion = json;
-           if (that.question && that.receivedQuestion.id == that.question.id) that.question = that.receivedQuestion;
-           else {
-             that.question = null;
-             await sleep(1000);
-             that.question = json;
-           }
-         }
-       });
-
-       that.stompClient.subscribe("/game/" + that.gameId + "/play/results", (message) => {
-         if (message.body) {
-           let json = JSON.parse(message.body);
-           that.isWaiting = false;
-           that.question = null;
-           console.log("results " + json);
-           that.gameResults = json;
-           console.log(that.gameResults);
-         }
-       });*/
     }, this);
-
   }
 
   ngOnInit(): void {

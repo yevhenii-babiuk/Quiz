@@ -1,40 +1,61 @@
 <div class="container">
-  <h3 class="col-sm-9 text-center">Редагувати профіль</h3>
+  <h3 class="col-sm-9 text-center offset-md-1">{{'editProfile.title' | translate}}</h3>
   <div class="form-horizontal align-content-center">
-    <div class="form-group required"><label class="col-md-2 control-label">Ім'я</label>
-      <div class="col-sm-9">
-        <input type="text" placeholder="First Name" class="form-control" autofocus #firstname value={{userData.firstName}}>
+    <div class="form-group required"><label class="col-md-2 control-label offset-md-1">{{'editProfile.firstName' | translate}}</label>
+      <div class="col-sm-9 offset-md-1">
+        <input type="text" placeholder="First Name" class="form-control" [(ngModel)]="userData.firstName"
+               #firstname="ngModel"
+               pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="fnHelp">
+        <small id="fnHelp" class="form-text text-danger" [hidden]="firstname.valid || firstname.untouched">
+          First name should be at least 2 characters long and have no numbers
+        </small>
       </div>
     </div>
-    <div class="form-group required"><label class="col-md-2 control-label">Прізвище</label>
-      <div class="col-sm-9">
-        <input type="text" placeholder="Last Name" class="form-control" autofocus #lastname value={{userData.secondName}}>
+    <div class="form-group required"><label class="col-md-2 control-label offset-md-1">{{'editProfile.lastName' | translate}}</label>
+      <div class="col-sm-9 offset-md-1">
+        <input type="text" placeholder="Last Name" class="form-control" [(ngModel)]="userData.secondName"
+               #lastname="ngModel"
+               pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="lnHelp">
+        <small id="lnHelp" class="form-text text-danger" [hidden]="lastname.valid || lastname.untouched">
+          Last name should be at least 2 characters long and have no numbers
+        </small>
       </div>
     </div>
-    <div class="form-group required"><label class="col-md-2 control-label">E-mail</label>
-      <div class="col-sm-9">
-        <input type="email" placeholder="Email" class="form-control" name= "email" autofocus #email value={{userData.mail}}>
+    <div class="form-group required"><label class="col-md-2 control-label offset-md-1">E-mail</label>
+      <div class="col-sm-9 offset-md-1">
+        <input type="email" placeholder="Email" class="form-control" [(ngModel)]="userData.mail"
+               #email="ngModel"
+               pattern="^[A-z\d._]+@[A-z]+\.[A-z]+$" aria-describedby="emailHelp">
+        <small id="emailHelp" class="form-text text-danger" [hidden]="email.valid || email.untouched">
+          Email does't match the pattern: example@gmail.com
+        </small>
       </div>
     </div>
-    <div class="form-group"><label class="col-md-2 control-label">Опис профілю</label>
-      <div class="col-sm-9">
+    <div class="form-group"><label class="col-md-2 control-label offset-md-1">{{'editProfile.description' | translate}}</label>
+      <div class="col-sm-9 offset-md-1">
         <input type="text" placeholder="Profile" class="form-control" autofocus #profile value={{userData.profile}}>
       </div>
     </div>
-    <div class="form-group required"><label class="col-md-2 control-label">Пароль</label>
-      <div class="col-sm-9" >
-        <input type="password" placeholder="Password" class="form-control" autofocus #password>
+    <div class="form-group required"><label class="col-md-2 control-label offset-md-1">{{'editProfile.password' | translate}}</label>
+      <div class="col-sm-9 offset-md-1" >
+        <input type="password" placeholder="Password" class="form-control"
+               [(ngModel)]="userData.password"
+               #password="ngModel"
+               pattern="^.{8,}$" aria-describedby="passHelp">
+        <small id="passHelp" class="form-text text-danger" [hidden]="password.valid || password.untouched">
+          Password should be at least 8 symbols
+        </small>
       </div>
     </div>
 
-    <div class="form-group required"><label class="col-md-2 control-label">Підтвердити пароль</label>
-      <div class="col-sm-9">
+    <div class="form-group required"><label class="col-md-2 control-label offset-md-1">{{'editProfile.confirmPassword' | translate}}</label>
+      <div class="col-sm-9 offset-md-1">
         <input type="password" placeholder="Confirm password" class="form-control" autofocus #confirmPassword>
       </div>
     </div>
     <button (click)="edit(id,firstname.value, lastname.value, email.value, profile.value, password.value, confirmPassword.value)"
-            class="btn btn-warning btn-block col-sm-9">
-      Зберегти
+            class="btn btn-warning btn-block col-sm-9 offset-md-1">
+      {{'editProfile.save' | translate}}
     </button>
 
   </div>

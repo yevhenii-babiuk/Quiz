@@ -1,18 +1,19 @@
 package com.qucat.quiz.services;
 
-import com.qucat.quiz.repositories.dao.implementation.TokenDaoImpl;
-import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
+import com.qucat.quiz.repositories.dao.UserDao;
+import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.enums.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ import java.util.*;
 public class UserService {
 
     private final String REGISTRATION = "registration/";
+
     private final String PASS_RECOVERY = "pass-recovery/";
 
     @Autowired
@@ -38,20 +40,27 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private UserDaoImpl userDao;
+    private UserDao userDao;
 
     @Autowired
-    private TokenDaoImpl tokenDao;
+    private TokenService tokenService;
 
     @Autowired
     private ImageService imageService;
+
+    @Autowired
+    private WebSocketSenderService webSocketSenderService;
+
+    @Autowired
+    private NotificationSettingsService notificationSettingsService;
 
     @Value("${url}")
     private String URL;
 
     @Transactional
     public boolean registerUser(User user) {
-
+        user.setRole(Role.USER);
+        user.setStatus(UserAccountStatus.UNACTIVATED);
         if (userDao.getUserByLogin(user.getLogin()) != null) {
             return false;
         }
@@ -63,7 +72,7 @@ public class UserService {
         user.setImageId(imageService.addUserProfileImage());
 
         if (userByMail != null) {
-            Token token = tokenDao.get(userByMail.getId());
+            Token token = tokenService.getTokenByUserId(userByMail.getId());
             if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
                 return false;
             } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
@@ -85,7 +94,16 @@ public class UserService {
                 .tokenType(TokenType.REGISTRATION)
                 .userId(id)
                 .build();
-        tokenDao.save(tokenForNewUser);
+        tokenService.saveToken(tokenForNewUser);
+        NotificationSettings notificationSettings = NotificationSettings.builder()
+                .userId(id)
+                .newQuiz(true)
+                .newAnnouncement(true)
+                .gameInvitation(true)
+                .friendInvitation(true)
+                .build();
+
+        notificationSettingsService.createNotificationSettings(notificationSettings);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + tokenForNewUser.getToken(), MessageInfo.registration.findByLang(Lang.EN));
         //todo get Lang
         return true;
@@ -101,7 +119,7 @@ public class UserService {
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .userId(user.getId())
                 .build();
-        tokenDao.save(token);
+        tokenService.saveToken(token);
         emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));
         //todo get Lang
         return true;
@@ -112,7 +130,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.REGISTRATION)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         if (id == 0) {
             return false;
         }
@@ -135,7 +153,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         return id != 0;
     }
 
@@ -144,7 +162,7 @@ public class UserService {
                 .token(tokenStr)
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .build();
-        int id = tokenDao.getUserId(token);
+        int id = tokenService.getUserId(token);
         if (id == 0) {
             return false;
         }
@@ -173,9 +191,7 @@ public class UserService {
     public User getUserDataById(int id) {
         User user = userDao.get(id);
 
-        if (user == null) {
-            return null;//throw new NoSuchElementException("Such user not exist");
-        }
+        //throw new NoSuchElementException("Such user not exist");
 
         return user;
     }
@@ -198,6 +214,13 @@ public class UserService {
 
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+            User user = userDao.getUserByLogin(username);
+            boolean isActivated = user
+                    .getStatus()
+                    .equals(UserAccountStatus.ACTIVATED);
+            if (!isActivated) {
+                throw new DisabledException("User " + username + "has UNACTIVATED account status");
+            }
         } catch (DisabledException e) {
             throw new Exception("USER_DISABLED", e);
         } catch (BadCredentialsException e) {
@@ -205,15 +228,8 @@ public class UserService {
         }
     }
 
-    public boolean markQuizAsFavorite(int userId, int quizId) {
-        return userDao.markQuizAsFavorite(userId, quizId);
-    }
-
-    public void unmarkQuizAsFavorite(int userId, int quizId) {
-        userDao.unmarkQuizAsFavorite(userId, quizId);
-    }
-
     public boolean addUserFriend(int userId, int friendId) {
+        webSocketSenderService.sendNotification(userId, friendId, NotificationType.FRIEND_INVITATION);
         return userDao.addUserFriend(userId, friendId);
     }
 
@@ -293,9 +309,28 @@ public class UserService {
         return users;
     }
 
-    public void updateUserImage(int userId, Image image) {
-        User currentUser = userDao.get(userId);
-        currentUser.setImageId(imageService.saveImage(image.getSrc()));
-        userDao.update(currentUser);
+
+    public void updateUserImage(User user) {
+        userDao.updateUserPhoto(user.getImageId(), user.getId());
+    }
+
+    public void updateUserStatus(int userId, UserAccountStatus status) {
+        userDao.updateUserStatus(userId, status);
+    }
+
+    public void updateUsersScore(UserDto user) {
+        User userFromDb = userDao.get(user.getRegisterId());
+        userDao.updateUserScore(user.getRegisterId(),
+                userFromDb.getScore() + user.getScore());
+    }
+
+    public boolean createUser(User user) {
+        user.setStatus(UserAccountStatus.ACTIVATED);
+        String encodePassword = passwordEncoder.encode(user.getPassword());
+        user.setPassword(encodePassword);
+        user.setImageId(imageService.addUserProfileImage());
+        int id = userDao.save(user);
+
+        return id > 0;
     }
 }

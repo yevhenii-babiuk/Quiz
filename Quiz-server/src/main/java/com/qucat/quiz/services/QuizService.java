@@ -3,8 +3,8 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.repositories.dao.QuizDao;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -116,6 +116,12 @@ public class QuizService {
         quizDao.update(quiz);
     }
 
+    public Quiz getQuizByIdForUser(int userId, int quizId) {
+        Quiz quiz = getQuizById(quizId);
+        quiz.setFavorite(getFavouriteMarkByUserIdAndQuizId(userId, quizId));
+        return quiz;
+    }
+
     public Quiz getQuizById(int id) {
         return quizDao.getFullInfo(id);
     }
@@ -132,4 +138,60 @@ public class QuizService {
         return quizDao.findAllForPage(PageRequest.of(page, size, Sort.Direction.DESC, "id"),
                 name, author, category, tMinDate, tMaxDate, tags, status);
     }
+
+
+    public Page<Quiz> getCompletedQuizzesByUserId(int userId, int page, int size) {
+        Page<Quiz> completedQuizzes = quizDao.getCompletedQuizzesByUserId(userId, PageRequest.of(page, size,
+                Sort.Direction.DESC, "id"));
+        if (completedQuizzes.isEmpty()) {
+            log.warn("There are no completed quizzes for user with id={}", userId);
+            return Page.empty();
+        } else {
+            return completedQuizzes;
+        }
+    }
+
+    public Page<Quiz> getCreatedQuizzesByUserId(int userId, int page, int size) {
+        Page<Quiz> createdQuizzes = quizDao.getCreatedQuizzesByUserId(userId, PageRequest.of(page, size,
+                Sort.Direction.DESC, "id"));
+        if (createdQuizzes.isEmpty()) {
+            log.warn("There are no created quizzes for user with id={}", userId);
+            return Page.empty();
+        } else {
+            return createdQuizzes;
+        }
+    }
+
+    public Page<Quiz> getFavouriteQuizzesByUserId(int userId, int page, int size) {
+        Page<Quiz> favouriteQuizzes = quizDao.getFavouriteQuizzesByUserId(userId, PageRequest.of(page, size,
+                Sort.Direction.DESC, "id"));
+        if (favouriteQuizzes.isEmpty()) {
+            log.warn("There are no favourite quizzes for user with id={}", userId);
+            return Page.empty();
+        } else {
+
+            return favouriteQuizzes;
+        }
+    }
+
+    public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
+        return quizDao.getFavouriteMarkByUserIdAndQuizId(userId, quizId);
+    }
+
+    public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
+        quizDao.updateQuizStatus(quizId, quizStatus);
+    }
+
+    public boolean setQuizIsFavorite(int userId, int quizId, boolean isFavorite) {
+        log.info(String.valueOf(userId));
+        log.info(String.valueOf(quizId));
+        log.info(String.valueOf(isFavorite));
+        if (isFavorite) {
+            return quizDao.markQuizAsFavorite(userId, quizId);
+        } else {
+            return quizDao.unmarkQuizAsFavorite(userId, quizId);
+        }
+    }
+
+
 }

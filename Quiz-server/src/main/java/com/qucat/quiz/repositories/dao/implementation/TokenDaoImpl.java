@@ -2,7 +2,7 @@ package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.TokenDao;
 import com.qucat.quiz.repositories.entities.Token;
-import com.qucat.quiz.repositories.entities.TokenType;
+import com.qucat.quiz.repositories.entities.enums.TokenType;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -59,14 +59,18 @@ public class TokenDaoImpl implements TokenDao {
     }
 
     @Override
+    public void deleteOldTokens() {
+        jdbcTemplate.update(tokensQueries.get("deleteOld"));
+    }
+
+    @Override
     public List<Token> getAll() {
         return null;
     }
 
     @Override
     public int save(Token token) {
-        String saveQuery = "INSERT INTO system_action_tokens (token, token_type, user_id, expired_date) "
-                + "VALUES (?,  cast(? AS system_action_token_type), ?, NOW() + interval '1 day');";
+        String saveQuery = tokensQueries.get("saveToken");
 
         try {
             jdbcTemplate.update(saveQuery,
@@ -80,11 +84,6 @@ public class TokenDaoImpl implements TokenDao {
 
     @Override
     public void update(Token token) {
-
-    }
-
-    @Override
-    public void delete(Token token) {
 
     }
 

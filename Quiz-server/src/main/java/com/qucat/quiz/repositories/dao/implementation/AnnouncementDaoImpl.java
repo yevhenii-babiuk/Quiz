@@ -1,8 +1,8 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.AnnouncementDao;
-import com.qucat.quiz.repositories.dao.mappers.AnnouncementExtractor;
 import com.qucat.quiz.repositories.dao.mappers.AnnouncementMapper;
+import com.qucat.quiz.repositories.dao.mappers.extractors.AnnouncementExtractor;
 import com.qucat.quiz.repositories.entities.Announcement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

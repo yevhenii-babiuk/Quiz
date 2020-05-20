@@ -23,6 +23,9 @@ import {TagFilterComponent} from './quizzes/vertical-filter-bar/tag-filter/tag-f
 import {VerticalFilterBarComponent} from './quizzes/vertical-filter-bar/vertical-filter-bar.component';
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatNativeDateModule} from '@angular/material/core';
+import { UserQuizzesComponent } from './user-quizzes/user-quizzes.component';
+import { QuizListComponent } from './quiz-list/quiz-list.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -34,22 +37,25 @@ import {MatNativeDateModule} from '@angular/material/core';
     DateFilterComponent,
     TagFilterComponent,
     VerticalFilterBarComponent,
+    UserQuizzesComponent,
+    QuizListComponent,
   ],
-  imports: [
-    CommonModule,
-    QuizRoutingModule,
-    RouterModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatChipsModule,
-    MatIconModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-  ]
+    imports: [
+        CommonModule,
+        QuizRoutingModule,
+        RouterModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatChipsModule,
+        MatIconModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        BrowserAnimationsModule,
+        MatFormFieldModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        TranslateModule,
+    ]
 })
 export class QuizModule {
 }

@@ -27,6 +27,6 @@ public class QuestionOptionService {
     }
 
     public void deleteQuestionOption(QuestionOption questionOption) {
-        questionOptionDao.delete(questionOption);
+        questionOptionDao.deleteById(questionOption.getId());
     }
 }

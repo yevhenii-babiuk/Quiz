@@ -14,7 +14,7 @@
           <div class="btn-group" aria-label="Basic example">
             <button class="btn btn-outline-secondary" routerLink="/announcement/{{announcement.id}}/edit">Edit</button>
             <button *ngIf="!announcement.isPublished" type="button" class="btn btn-outline-secondary" (click)="publish()">Publish</button>
-            <button *ngIf="announcement.isPublished" type="button" class="btn btn-outline-secondary" (click)="publish()">Delete</button>
+            <button type="button" class="btn btn-outline-secondary" (click)="delete()">Delete</button>
           </div>
         </div>
       </div>
@@ -22,13 +22,13 @@
 
       <!-- Author -->
       <p class="lead">
-        by {{announcement.authorLogin}}
+        {{announcement.authorLogin}}
       </p>
 
       <hr>
 
       <!-- Date/Time -->
-      <p>Posted on {{announcement.createdDate | date:'MMMM d, yyyy'}}</p>
+      <p>{{ 'ANNOUNCEMENT.POST ON' | translate }} {{announcement.createdDate | date:'MMMM d, yyyy'}}</p>
 
       <hr>
 

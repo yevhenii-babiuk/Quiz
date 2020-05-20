@@ -3,7 +3,7 @@ import {NgModule} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule, HttpClient} from '@angular/common/http';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
@@ -21,6 +21,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {BasicAuthHtppInterceptorService} from "./modules/core/services/auth-http-interceptor.service";
 import {AuthGuardService} from "./modules/core/services/auth-guard.service";
+import {RoleGuardService} from "./modules/core/services/role-guard.service";
 import {JWT_OPTIONS, JwtHelperService} from "@auth0/angular-jwt";
 import {AnnouncementModule} from "./modules/announcement/announcement.module";
 import {AnnouncementRoutingModule} from "./modules/announcement/announcement-routing.module";
@@ -35,6 +36,18 @@ import {ActivitiesModule} from "./modules/activities/activities.module";
 
 import {AchievementRoutingModule} from "./modules/achivement/achievement-routing.module";
 import {AchievementModule} from "./modules/achivement/achievement.module";
+import {ChatModule} from "./modules/chat/chat.module";
+import {ChatRoutingModule} from "./modules/chat/chat-routing.module";
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {CreateAdminRoutingModule} from "./modules/create-admin/create-admin-routing.module";
+import {CreateAdminModule} from "./modules/create-admin/create-admin.module";
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new TranslateHttpLoader(httpClient);
+}
+import {NotificationMenuComponent} from "./modules/shared/notification-menu/notification-menu.component";
 
 @NgModule({
   declarations: [
@@ -70,12 +83,24 @@ import {AchievementModule} from "./modules/achivement/achievement.module";
     ActivitiesModule,
     ActivitiesRoutingModule,
     AchievementModule,
-    AchievementRoutingModule
+    AchievementRoutingModule,
+    ChatModule,
+    ChatRoutingModule,
+    AchievementRoutingModule,
+    CreateAdminModule,
+    CreateAdminRoutingModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
-    AuthGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService],
+    AuthGuardService, RoleGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService, NotificationMenuComponent],
   bootstrap: [AppComponent]
 })
 

@@ -3,8 +3,10 @@ import {Announcement} from "../../core/models/announcement";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AnnouncementService} from "../../core/services/announcement.service";
 import {Imaged} from "../../core/models/imaged";
+import {Image} from "../../core/models/image";
 import {SecurityService} from "../../core/services/security.service";
 import {Role} from "../../core/models/role";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-update-announcement',
@@ -15,11 +17,15 @@ export class UpdateAnnouncementComponent implements OnInit {
 
   announcement: Announcement;
   updated: boolean = false;
+  isInvalid: boolean = false;
+  //message: string;
 
   constructor(private announcementService: AnnouncementService,
               private route: ActivatedRoute,
               private securityService: SecurityService,
-              private router: Router) {
+              private router: Router,
+              public translate: TranslateService
+  ) {
     const id = this.route.snapshot.paramMap.get('announcementId');
     console.log(id);
     if (id) {
@@ -32,6 +38,7 @@ export class UpdateAnnouncementComponent implements OnInit {
         });
     } else {
       this.announcement = new Announcement();
+      this.announcement.image = new Image();
       this.announcement.authorId = this.securityService.getCurrentId();
     }
 
@@ -62,27 +69,37 @@ export class UpdateAnnouncementComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  send() {
-    if (this.announcement.id) {
-      this.announcementService.updateAnnouncement(this.announcement).subscribe(
-        get => {
-          console.log("id = " + get);
-        },
-        error => {
-          console.log(error);
-        });
-    } else {
-      this.announcement.isPublished = (this.securityService.getCurrentRole() != Role.USER);
-      this.announcementService.sendAnnouncement(this.announcement).subscribe(
-        get => {
-          console.log("id = " + get);
-          if(this.announcement.isPublished) this.router.navigate(["announcement/"+get]);
-        },
-        error => {
-          console.log(error);
-        });
-    }
-    this.router.navigate(["announcements"]);
+  isValid(): boolean {
 
+    if (this.announcement.title && this.announcement.fullText) return true;
+    else {
+      this.isInvalid = true;
+      return false;
+    }
+  }
+
+  send() {
+    if (this.isValid()) {
+      if (this.announcement.id) {
+        this.announcementService.updateAnnouncement(this.announcement).subscribe(
+          get => {
+            console.log("id = " + get);
+          },
+          error => {
+            console.log(error);
+          });
+      } else {
+        this.announcement.isPublished = (this.securityService.getCurrentRole() != Role.USER);
+        this.announcementService.sendAnnouncement(this.announcement).subscribe(
+          get => {
+            console.log("id = " + get);
+            if (this.announcement.isPublished) this.router.navigate(["announcement/" + get]);
+          },
+          error => {
+            console.log(error);
+          });
+      }
+      this.router.navigate(["announcements"]);
+    }
   }
 }

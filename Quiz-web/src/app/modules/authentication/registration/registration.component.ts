@@ -12,6 +12,8 @@ import {User} from '../../core/models/user';
   styleUrls: ['./registration.component.css']
 })
 export class RegistrationComponent implements OnInit {
+  user: User = new User();
+  confirmPassword: string = "";
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -23,30 +25,25 @@ export class RegistrationComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  registerUser(login: string, firstName: string, secondName: string, mail: string, password: string, confirmPassword: string): void {
+  registerUser(): void {
 
-    if (!login || !firstName || !secondName || !mail) {
-      this.alertService.error('Fields should not be empty!');
+    if (!this.user.login || !this.user.firstName || !this.user.secondName || !this.user.mail) {
+      this.alertService.error('alert.fieldEmpty');
       return;
     }
 
-    if (password !== confirmPassword) {
-      this.alertService.error('Passwords don\'t match!');
-      return;
-    }
-
-    this.authenticationService.register({firstName, secondName, login, mail, password} as User)
+    this.authenticationService.register(this.user)
       .subscribe(
         data => {
-          if (data){
-            this.alertService.success('Registration successful', true);
+          if (data) {
+            this.alertService.success('alert.registrationSuccessful', true);
             this.router.navigate(['login']);
           } else {
-            this.alertService.error('Registration is not successful', false);
+            this.alertService.error('alert.registrationNoSuccessful', false);
           }
         },
         error => {
-          this.alertService.error('Error while registration!');
+          this.alertService.error('alert.errorRegistration');
           console.log(error);
         });
   }

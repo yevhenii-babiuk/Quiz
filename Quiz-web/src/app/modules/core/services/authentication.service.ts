@@ -29,7 +29,7 @@ export class AuthenticationService {
       map(
         userData => {
           let tokenStr = 'Bearer ' + userData.token;
-          sessionStorage.setItem('token', tokenStr);
+          localStorage.setItem('token', tokenStr);
           return userData;
         }
       )
@@ -38,6 +38,11 @@ export class AuthenticationService {
 
   register(user: User) {
     return this.http.post<User>(`${url}/registration`, user, this.httpOptions);
+  }
+
+  createAdmin(user: User){
+    console.log(user);
+    return this.http.post<User>(`${url}/users/create`, user, this.httpOptions);
   }
 
   confirmMail(token: string) {
@@ -57,11 +62,11 @@ export class AuthenticationService {
   }
 
   logOut() {
-    sessionStorage.removeItem('token');
+    localStorage.removeItem('token');
   }
 
   public isAuthenticated(): boolean {
-    const token = sessionStorage.getItem('token');
+    const token = localStorage.getItem('token');
     // Check whether the token is expired and return
     // true or false
     if (!token) {
@@ -70,7 +75,11 @@ export class AuthenticationService {
     if(!this.jwtHelper){
       return false;
     }
-    return  !this.jwtHelper.isTokenExpired(token);
+    if (this.jwtHelper.isTokenExpired(token)) {
+      localStorage.removeItem('token');
+      return false;
+    }
+    return true;
 
   }
 }

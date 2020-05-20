@@ -2,8 +2,8 @@ package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.Category;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
 import com.qucat.quiz.repositories.entities.Tag;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import com.qucat.quiz.services.CategoryService;
 import com.qucat.quiz.services.QuizService;
 import com.qucat.quiz.services.TagService;
@@ -39,8 +39,21 @@ public class QuizController {
     }
 
     @GetMapping("/quiz/{id}")
-    public Quiz getQuiz(@PathVariable int id) {
-        return quizService.getQuizById(id);
+    public Quiz getQuiz(@PathVariable int id,
+                        @RequestParam(value = "userId", defaultValue = "-1") int userId) {
+        return quizService.getQuizByIdForUser(userId, id);
+    }
+
+    @PutMapping("/quiz/{id}/setStatus")
+    public void updateQuizStatus(@PathVariable int id, @RequestBody String status) {
+        quizService.updateQuizStatus(id, QuizStatus.valueOf(status));
+    }
+
+    @PutMapping("/quiz/{id}/user/{userId}/setFavorite")
+    public void updateQuizIsFavorite(@PathVariable int id,
+                                     @PathVariable int userId,
+                                     @RequestBody boolean isFavorite) {
+        quizService.setQuizIsFavorite(userId, id, isFavorite);
     }
 
     @GetMapping("/quizzes")
@@ -55,9 +68,36 @@ public class QuizController {
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date minDate,
             @RequestParam(value = "maxDate", required = false)
             @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date maxDate,
-            @RequestParam(required = false) QuizStatus[] statuses) {
+            @RequestParam(value = "status", required = false) QuizStatus[] statuses) {
         return quizService.showPage(pageNumber, countOnPage, quizName, authorName,
                 categories, minDate, maxDate, tags, statuses).toList().toArray(Quiz[]::new);
+    }
+
+    @GetMapping("/userFavoriteQuizzes")
+    public Quiz[] getUserFavoriteQuizzes(
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
+            @RequestParam(value = "userId") int userId) {
+        return quizService.getFavouriteQuizzesByUserId(userId, pageNumber, countOnPage)
+                .toList().toArray(Quiz[]::new);
+    }
+
+    @GetMapping("/userCompletedQuizzes")
+    public Quiz[] getUserCompletedQuizzes(
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
+            @RequestParam(value = "userId") int userId) {
+        return quizService.getCompletedQuizzesByUserId(userId, pageNumber, countOnPage)
+                .toList().toArray(Quiz[]::new);
+    }
+
+    @GetMapping("/userCreatedQuizzes")
+    public Quiz[] getUserCreatedQuizzes(
+            @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
+            @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
+            @RequestParam(value = "userId") int userId) {
+        return quizService.getCreatedQuizzesByUserId(userId, pageNumber, countOnPage)
+                .toList().toArray(Quiz[]::new);
     }
 
     @GetMapping("/categories")

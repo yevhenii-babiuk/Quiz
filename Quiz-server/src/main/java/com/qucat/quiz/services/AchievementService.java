@@ -83,7 +83,7 @@ public class AchievementService {
 
     @Transactional
     public void deleteAchievement(Achievement achievement) {
-        achievementDao.delete(achievement);
+        achievementDao.deleteById(achievement.getId());
     }
 
     public List<Achievement> getAllAchievement() {
@@ -96,6 +96,7 @@ public class AchievementService {
         List<UserAchievement> afterUpdateAchievements = achievementDao.getNewUserAchievements(achievements);
 
         if (afterUpdateAchievements.equals(beforeUpdateAchievements)) {
+            log.info("here is no changes in userAchievementLists");
             return;
         }
 

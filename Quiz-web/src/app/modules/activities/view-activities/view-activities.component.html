@@ -1,51 +1,48 @@
 <div class="container">
   <div class="well well-sm text-center">
-    <div class="btn-group" data-toggle="buttons">
+    <div class="checkbox checkbox-warning" >
       <ng-container *ngFor="let activity of activityCategories">
-        <div class="dropdown-item checkbox">
-          <label class="btn btn-default"><input [(ngModel)]="activity.selected" type="checkbox" value={{activity.value}}>{{activity.value}}</label>
-        </div>
+
+        <input [(ngModel)]="activity.selected" id={{activity.id}} type="checkbox" class="styled"
+               (change)="getFilteredActivities()">
+        <label for={{activity.id}}>
+          <!--{{activity.value}}-->
+          {{'activities.categoryTypes.'+activity.activityType|translate}}
+        </label>
+
       </ng-container>
     </div>
   </div>
 </div>
 
-<div class="row">
-  <button type="button" class="btn btn-warning btn btn-block mt-2 mb-3" (click)="getFilteredActivities()">Відфільтрувати</button>
-  </div>
-
 <ng-container *ngFor="let activity of activities">
   <div class="row custom">
     <div class="col-lg-10 col-md-10 mx-auto m-2">
       <div class="post-preview">
-        <!-- Preview Image -->
-        <!--<img *ngIf="activity.imageId!=-1" class="img-responsive img-left"
-             src="data:image/jpeg;base64,{{activity.image.src}}" alt="logo" width="70" height="70">
-        <img *ngIf="activity.imageId==-1" class="img-responsive img-left" src="../../assets/img/logo.png" alt="logo"
-             width="70" height="70">-->
-        <img class="img-responsive img-left" src="../../assets/img/main.png" alt="logo"
-             width="70" height="70">
+        <img class="img-responsive img-left" src="../../assets/img/userIcons/{{(activity.friendId%50)+1}}.png" alt="logo"
+             width="70" height="70" alt="Avatar">
         <!--achievement-->
         <h5 *ngIf="activity.type==category.ACHIEVEMENT">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> отримав нагороду
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.getAchievement' | translate}}
           <q>{{activity.activityContent}}</q>.
         </h5>
         <!--added new quiz-->
         <h5 *ngIf="activity.type==category.PUBLISH_QUIZ">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> створив нову вікторину <a routerLink="../quiz/{{activity.activityId}}" class="text-dark"><q>{{activity.activityContent}}</q></a>
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.createQuiz' | translate}}
+          <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
           .
         </h5>
         <!--mark quiz as favourite-->
         <h5 *ngIf="activity.type==category.MARK_AS_FAVORITE">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a>
-          додав вікторину <a routerLink="../quiz/{{activity.activityId}}" class="text-dark"><q>{{activity.activityContent}}</q></a>
-          в список улюблених.
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a>
+          {{'activities.addQuiz' | translate}} <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
+          {{'activities.favouriteList' | translate}}.
         </h5>
         <!--add to friends-->
         <h5 *ngIf="activity.type==category.ADD_FRIEND">
-          Користувач <a routerLink="../users/{{activity.friendId}}" class="text-dark">{{activity.friendLogin}}</a> додав користувача
-          <a routerLink="../users/{{activity.activityId}}" class="text-dark">{{activity.activityContent}}</a>
-          в друзі.
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.addUser' | translate}}
+          <a routerLink="../users/{{activity.activityId}}">{{activity.activityContent}}</a>
+          {{'activities.toFriends' | translate}}.
         </h5>
 
         <p class="post-meta">{{activity.activityDate| date:"MMMM d, yyyy h:mma"}}</p>
@@ -55,12 +52,3 @@
   </div>
 
 </ng-container>
-
-
-
-
-
-
-
-
-

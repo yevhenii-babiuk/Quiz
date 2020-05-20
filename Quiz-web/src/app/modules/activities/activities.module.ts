@@ -6,6 +6,7 @@ import {RouterModule} from "@angular/router";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ViewActivitiesComponent} from "./view-activities/view-activities.component";
 import {ActivitiesRoutingModule} from "./activities-routing.module";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import {ActivitiesRoutingModule} from "./activities-routing.module";
     ActivitiesRoutingModule,
     RouterModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    TranslateModule
   ]
 })
 export class ActivitiesModule { }

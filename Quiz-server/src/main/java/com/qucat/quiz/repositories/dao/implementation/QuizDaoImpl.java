@@ -1,10 +1,10 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.QuizDao;
-import com.qucat.quiz.repositories.dao.mappers.QuizExtractor;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
+import com.qucat.quiz.repositories.dao.mappers.extractors.QuizExtractor;
 import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.QuizStatus;
+import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -61,6 +61,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         preparedStatement.setInt(7, quiz.getQuestionNumber());
         preparedStatement.setInt(8, quiz.getMaxScore());
         preparedStatement.setInt(9, quiz.getImageId());
+        preparedStatement.setString(10, quiz.getDescription());
         return preparedStatement;
     }
 
@@ -73,7 +74,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     protected Object[] getUpdateParameters(Quiz quiz) {
         return new Object[]{quiz.getName(), quiz.getAuthorId(), quiz.getCategoryId(), quiz.getStatus().name().toLowerCase(),
                 quiz.getPublishedDate(), quiz.getUpdatedDate(),
-                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImageId(), quiz.getId()};
+                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImageId(), quiz.getDescription(), quiz.getId()};
     }
 
 
@@ -110,8 +111,8 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     @Override
     public boolean isUsersFavorite(int userId, int quizId) {
         try {
-         jdbcTemplate.queryForObject(quizQueries.get("isUsersFavorite"),
-                 new Object[]{userId, quizId}, Integer.class);
+            jdbcTemplate.queryForObject(quizQueries.get("isUsersFavorite"),
+                    new Object[]{userId, quizId}, Integer.class);
         } catch (EmptyResultDataAccessException e) {
             return false;
         }
@@ -133,7 +134,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         if (id != null) {
             pageQuery.append(quizQueries.get("caseId"));
 
-            String insertion = makeInsertion(id.size());
+            String insertion = makeInsertion(id.size(), false);
             pageQuery.replace(pageQuery.indexOf("(") + 1, pageQuery.indexOf(")") - 1, insertion);
         }
 
@@ -141,11 +142,15 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                 null, null, null, null);
     }
 
-    private String makeInsertion(int size) {
+    private String makeInsertion(int size, boolean isQuizStatus) {
         List<String> mark = new ArrayList<>();
         String insertion;
         for (int i = 0; i < size; i++) {
-            mark.add("?");
+            if (isQuizStatus) {
+                mark.add("?::quiz_status");
+            } else {
+                mark.add("?");
+            }
         }
         insertion = String.join(",", mark);
         return insertion;
@@ -190,7 +195,8 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
             if (status != null) {
                 for (QuizStatus statusItem : status) {
-                    preparedStatement.setString(paramIndex++, statusItem.toString());
+                    System.out.println(statusItem);
+                    preparedStatement.setString(paramIndex++, statusItem.toString().toLowerCase());
                 }
             }
 
@@ -250,7 +256,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
             query.append(quizQueries.get("caseCategory"));
 
-            String insertion = makeInsertion(category.size());
+            String insertion = makeInsertion(category.size(), false);
 
             query.replace(query.indexOf("(") + 1, query.indexOf(")") - 1, insertion);
         }
@@ -270,7 +276,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             anotherParameter = true;
             query.append(quizQueries.get("caseTag"));
 
-            String insertion = makeInsertion(tags.size());
+            String insertion = makeInsertion(tags.size(), false);
 
             query.replace(query.lastIndexOf("(") + 1, query.lastIndexOf(")") - 1, insertion);
         }
@@ -279,9 +285,10 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             if (anotherParameter) {
                 query.append(" AND ");
             }
+
             anotherParameter = true;
             query.append(quizQueries.get("caseStatus"));
-            String insertion = makeInsertion(status.length);
+            String insertion = makeInsertion(status.length, true);
 
             query.replace(query.lastIndexOf("(") + 1, query.lastIndexOf(")") - 1, insertion);
         }
@@ -336,6 +343,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             }
 
         } catch (Exception e) {
+            System.out.println(psId);
             log.error("In findAllForPage method while read page of quiz from DB: " + e.getMessage());
         } finally {
             try {
@@ -353,4 +361,71 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         }
         return new PageImpl<>(quizzes, pageable, quizCount);
     }
+
+    @Override
+    public Page<Quiz> getCompletedQuizzesByUserId(int userId, Pageable pageable) {
+        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("getRowCountOfCompletedQuizzes"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt(1));
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getCompletedQuizzesPageByUserId"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, rowTotal);
+    }
+
+    @Override
+    public Page<Quiz> getCreatedQuizzesByUserId(int userId, Pageable pageable) {
+        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("getRowCountOfCreatedQuizzes"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt(1));
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getCreatedQuizzesPageByUserId"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, rowTotal);
+    }
+
+    @Override
+    public Page<Quiz> getFavouriteQuizzesByUserId(int userId, Pageable pageable) {
+        int rowTotal = jdbcTemplate.queryForObject(quizQueries.get("getRowCountOfFavouriteQuizzes"),
+                new Object[]{userId},
+                (resultSet, number) -> resultSet.getInt(1));
+        List<Quiz> quizzes = jdbcTemplate.query(quizQueries.get("getFavouriteQuizzesPageByUserId"),
+                new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
+                new QuizMapper());
+        return new PageImpl<>(quizzes, pageable, rowTotal);
+    }
+
+    @Override
+    public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
+        return jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId, quizId}, (rs, rowNum) ->
+                rs.getBoolean("is_favourite")
+        );
+    }
+
+    @Override
+    public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
+        jdbcTemplate.update(quizQueries.get("updateQuizStatus"), quizStatus.name().toLowerCase(), quizId);
+    }
+
+    @Override
+    public boolean markQuizAsFavorite(int userId, int quizId) {
+        try {
+            jdbcTemplate.update(
+                    quizQueries.get("markAsFavorite"),
+                    quizId, userId
+            );
+        } catch (DuplicateKeyException e) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean unmarkQuizAsFavorite(int userId, int quizId) {
+        return jdbcTemplate.update(
+                quizQueries.get("unmarkAsFavorite"),
+                userId, quizId
+        ) != 0;
+    }
+
 }

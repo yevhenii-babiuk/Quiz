@@ -31,6 +31,6 @@ public class AchievementConditionService {
     }
 
     public void removeCondition(AchievementCondition achievementCondition) {
-        achievementConditionDao.delete(achievementCondition);
+        achievementConditionDao.deleteById(achievementCondition.getAchievementId());
     }
 }
