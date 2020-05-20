@@ -129,6 +129,28 @@
     "TYPE_MESSAGE": "Введіть повідомлення"
   },
   "AUTHENTICATION": {
+    "login": "Логін",
+    "password": "Пароль",
+    "email": "Поштовий ящик",
+    "registration": {
+      "registration": "Реєстрація",
+      "firstName": "Ім'я",
+      "noValidFirstName": "Ім'я повинне містити як мінімум 2 символи і не містити цифр",
+      "lastName": "Прізвище",
+      "noValidLastName": "Прізвище повинне містити як мінімум 2 символи і не містити цифр\"",
+      "noValidLogin": "Логін повинен бути непустим!",
+      "noValidMail": "Поштовий ящик повинен відповідати патерну: example@gmail.com",
+      "noValidPassword": "Пароль повинен містити як мінімум 8 символів",
+      "confirmPassword": "Підтвердження паролю",
+      "noMatchPassword": "Паролі не збігаються!",
+      "register": "Зареєструватись"
+    },
+    "mailConfirm": {
+      "registrationSuccessfully": "Реєстрація успішно підтверджена",
+      "plsSignIn": "Будь ласка, увійдіть",
+      "SignIn": "Увійти",
+      "noToken": "Вибачте, ваш токен недійсний."
+    },
     "LOGIN": {
       "LOGIN_LABEL": "Увійти до свого облікового запису",
       "FORGOT_PASSWORD": "Забули пароль?",
