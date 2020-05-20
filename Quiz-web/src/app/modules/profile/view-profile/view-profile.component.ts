@@ -96,7 +96,7 @@ export class ViewProfile implements OnInit {
       });
 
     this.loadedPhoto=false;
-    this.alertService.success("Photo is changed");
+    this.alertService.success("alert.photoChanged");
 
   }
 
@@ -115,13 +115,13 @@ export class ViewProfile implements OnInit {
     this.achievementService.recalculateAchievements().subscribe(
       data => {
         if (data) {
-          this.alertService.success('Recalculation is successful', false);
+          this.alertService.success('DASHBOARD.ACHIEVEMENT_VALIDATION.RECALCULATION_SUCCESSFUL', false);
         } else {
-          this.alertService.error('Recalculation is not successful', false);
+          this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.RECALCULATION_ERRORED', false);
         }
       },
       error => {
-        this.alertService.error('Error while recalculation!');
+        this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.RECALCULATION_ERRORED');
         console.log(error);
       });
   }
