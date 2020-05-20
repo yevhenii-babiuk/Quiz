@@ -75,5 +75,13 @@
     "PLAYED_AMOUNT": "Played quizzes amount",
     "CORRECT_PERCENT": "Correct answer percents",
     "FRIEND_PREFERENCE": "Friend preferences"
+  },
+  "SETTING": {
+    "TITLE": "Game settings",
+    "TIME": "Time for answer",
+    "QUESTION FIRST":"Question first, answers later",
+    "FIRST BONUS":"Bonus for the quickest player",
+    "COMBO BONUS": "Bonus for combo of right answers",
+    "INTERMEDIATE RESULT": "Show intermediate results"
   }
 }

@@ -10,6 +10,7 @@ import {MatSortModule} from "@angular/material/sort";
 import {TimerPipe} from "./game/play-question/timer-pipe";
 import { GameComponent } from './game/game.component';
 import { ResultsComponent } from './game/results/results.component';
+import {TranslateModule} from "@ngx-translate/core";
 
 
 @NgModule({
@@ -21,13 +22,14 @@ import { ResultsComponent } from './game/results/results.component';
     GameComponent,
     ResultsComponent
   ],
-    imports: [
-        CommonModule,
-        PlayQuizRoutingModule,
-        RouterModule,
-        FormsModule,
-        MatSortModule
-    ]
+  imports: [
+    CommonModule,
+    PlayQuizRoutingModule,
+    RouterModule,
+    FormsModule,
+    MatSortModule,
+    TranslateModule
+  ]
 })
 export class PlayQuizModule {
 }
