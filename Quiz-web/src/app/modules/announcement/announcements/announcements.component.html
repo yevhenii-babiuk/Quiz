@@ -1,7 +1,7 @@
 <div class="row">
   <a class="form-control btn btn-outline-dark" routerLink="/createAnnouncement">{{ 'ANNOUNCEMENT.CREATE BUTTON' | translate }}</a>
 </div>
-<div *ngIf="role != roleEnum.USER" class="offset-10 my-2">
+<div *ngIf="role != roleEnum.USER && role" class="offset-10 my-2">
   <div class="btn-group btn-group-toggle" data-toggle="buttons">
     <label class="btn btn-outline-secondary active">
       <input (click)="getPublished()" type="radio" name="options" id="option1" autocomplete="off" checked> Published
