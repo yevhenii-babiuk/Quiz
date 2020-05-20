@@ -31,20 +31,10 @@ export class CreateAdminComponent implements OnInit {
   ngOnInit(): void {
     if (this.secur.getCurrentRole() == 'SUPER_ADMIN') {
       this.user.role = 'ADMIN';
-      console.log(this.user.role);
     } else {
       this.user.role = 'MODERATOR';
       this.roles = ['MODERATOR'];
     }
-    console.log(this.roles);
-  }
-
-  selectOption() {
-    console.log(this.user.role)
-    //getted from event
-    // console.log(id);
-    //getted from binding
-    // console.log(this.selected)
   }
 
   createAdmin(): void {

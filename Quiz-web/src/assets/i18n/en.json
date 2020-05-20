@@ -15,8 +15,7 @@
     "TOP": "Top users",
     "PROFILE": "Profile",
     "CREATE_ADMIN": "Create admin or moderator",
-    "CREATE_MODER": "Create moderator"
-    "PROFILE": "Profile",
+    "CREATE_MODER": "Create moderator",
     "ACHIEVEMENT": "Create achievement",
     "CHATS": "Chats"
   },
@@ -79,11 +78,23 @@
       "tags": "Tags",
       "description": "Description",
       "questionType": "Question type"
-    },
-    "CREATE_ADMIN": {
-      "TITLE": "Create admin/moderator",
-      "BUTTON": "Create"
     }
+  },
+  "CREATE_ADMIN": {
+    "TITLE": "Create admin/moderator",
+    "BUTTON": "Create",
+    "LOGIN": "Login",
+    "PASSWORD": "Password",
+    "FIRST_NAME": "First name",
+    "NO_VALID_FIRST_NAME": "First name should be at least 2 characters long and have no numbers",
+    "LAST_NAME": "Last Name",
+    "NO_VALID_LAST_NAME": "Last name should be at least 2 characters long and have no numbers",
+    "NO_VALID_LOGIN": "Login should not be empty!",
+    "EMAIL": "Email",
+    "NO_VALID_MAIL": "Email does't match the pattern: example@gmail.com",
+    "NO_VALID_PASSWORD": "Password should be at least 8 symbols",
+    "CONFIRM_PASSWORD": "Confirm password",
+    "NO_MATCH_PASSWORD": "Passwords don't match!"
   },
   "viewProfile": {
     "login": "Login:",

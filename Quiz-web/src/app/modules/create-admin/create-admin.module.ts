@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import {SharedModule} from "../shared/shared.module";
 import {FormsModule} from "@angular/forms";
 import {CreateAdminComponent} from "./pages/create-admin.component";
-import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -15,11 +14,7 @@ import {TranslateModule} from "@ngx-translate/core";
     CommonModule,
     RouterModule,
     SharedModule,
-    FormsModule,
-    TranslateModule
-  ],
-  exports:[
-    TranslateModule
+    FormsModule
   ]
 })
 export class CreateAdminModule { }
