@@ -12,10 +12,14 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 public class UserAchievement {
-    @EqualsAndHashCode.Exclude private int id;
+    @EqualsAndHashCode.Exclude
+    private int id;
     private int userId;
-    @EqualsAndHashCode.Exclude private User user;
+    @EqualsAndHashCode.Exclude
+    private User user;
     private int achievementId;
-    @EqualsAndHashCode.Exclude private Achievement achievement;
-    @EqualsAndHashCode.Exclude private Date date;
+    @EqualsAndHashCode.Exclude
+    private Achievement achievement;
+    @EqualsAndHashCode.Exclude
+    private Date date;
 }

@@ -2,6 +2,7 @@ package com.qucat.quiz.repositories.dto;
 
 import com.qucat.quiz.repositories.dto.game.Users;
 import com.qucat.quiz.repositories.entities.Message;
+import com.qucat.quiz.repositories.entities.Notification;
 import com.qucat.quiz.repositories.entities.Question;
 import lombok.Builder;
 import lombok.Data;
@@ -15,6 +16,7 @@ public class WebsocketEvent {
     private List<String> players;
     private Question question;
     private Users gameResults;
+    private Notification notification;
     private Message message;
     private int currQuestion;
 
@@ -22,7 +24,8 @@ public class WebsocketEvent {
         RESULTS,
         QUESTION,
         PLAYERS,
-        MESSAGE
+        MESSAGE,
+        NOTIFICATION
     }
 
 }

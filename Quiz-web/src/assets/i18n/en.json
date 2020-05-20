@@ -252,5 +252,12 @@
   },
   "HOME": {
     "PLAY": "Play now"
+  },
+  "NOTIFICATIONS": {
+    "CREATED_NEWS": "created news!",
+    "CREATED_QUIZ": "created a quiz, hurry to assemble a team!",
+    "GAME_INVITATION": "invites you to the game!",
+    "FRIEND_INVITATION": "added you as a friend!",
+    "MESSAGE": "you have message in chat"
   }
 }

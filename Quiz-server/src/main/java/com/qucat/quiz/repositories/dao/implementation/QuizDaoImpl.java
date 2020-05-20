@@ -134,7 +134,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         if (id != null) {
             pageQuery.append(quizQueries.get("caseId"));
 
-            String insertion = makeInsertion(id.size());
+            String insertion = makeInsertion(id.size(), false);
             pageQuery.replace(pageQuery.indexOf("(") + 1, pageQuery.indexOf(")") - 1, insertion);
         }
 
@@ -142,11 +142,15 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                 null, null, null, null);
     }
 
-    private String makeInsertion(int size) {
+    private String makeInsertion(int size, boolean isQuizStatus) {
         List<String> mark = new ArrayList<>();
         String insertion;
         for (int i = 0; i < size; i++) {
-            mark.add("?");
+            if (isQuizStatus) {
+                mark.add("?::quiz_status");
+            } else {
+                mark.add("?");
+            }
         }
         insertion = String.join(",", mark);
         return insertion;
@@ -191,7 +195,8 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
             if (status != null) {
                 for (QuizStatus statusItem : status) {
-                    preparedStatement.setString(paramIndex++, statusItem.toString());
+                    System.out.println(statusItem);
+                    preparedStatement.setString(paramIndex++, statusItem.toString().toLowerCase());
                 }
             }
 
@@ -251,7 +256,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
             query.append(quizQueries.get("caseCategory"));
 
-            String insertion = makeInsertion(category.size());
+            String insertion = makeInsertion(category.size(), false);
 
             query.replace(query.indexOf("(") + 1, query.indexOf(")") - 1, insertion);
         }
@@ -271,7 +276,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             anotherParameter = true;
             query.append(quizQueries.get("caseTag"));
 
-            String insertion = makeInsertion(tags.size());
+            String insertion = makeInsertion(tags.size(), false);
 
             query.replace(query.lastIndexOf("(") + 1, query.lastIndexOf(")") - 1, insertion);
         }
@@ -280,9 +285,10 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             if (anotherParameter) {
                 query.append(" AND ");
             }
+
             anotherParameter = true;
             query.append(quizQueries.get("caseStatus"));
-            String insertion = makeInsertion(status.length);
+            String insertion = makeInsertion(status.length, true);
 
             query.replace(query.lastIndexOf("(") + 1, query.lastIndexOf(")") - 1, insertion);
         }
@@ -337,6 +343,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
             }
 
         } catch (Exception e) {
+            System.out.println(psId);
             log.error("In findAllForPage method while read page of quiz from DB: " + e.getMessage());
         } finally {
             try {

@@ -78,7 +78,7 @@ public class QuizController {
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
             @RequestParam(value = "userId") int userId) {
-        return quizService.getFavouriteQuizzesByUserId(userId,pageNumber,countOnPage)
+        return quizService.getFavouriteQuizzesByUserId(userId, pageNumber, countOnPage)
                 .toList().toArray(Quiz[]::new);
     }
 
@@ -87,7 +87,7 @@ public class QuizController {
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
             @RequestParam(value = "userId") int userId) {
-        return quizService.getCompletedQuizzesByUserId(userId,pageNumber,countOnPage)
+        return quizService.getCompletedQuizzesByUserId(userId, pageNumber, countOnPage)
                 .toList().toArray(Quiz[]::new);
     }
 
@@ -96,7 +96,7 @@ public class QuizController {
             @RequestParam(value = "pageNumber", defaultValue = "0") int pageNumber,
             @RequestParam(value = "countOnPage", defaultValue = "20") int countOnPage,
             @RequestParam(value = "userId") int userId) {
-        return quizService.getCreatedQuizzesByUserId(userId,pageNumber,countOnPage)
+        return quizService.getCreatedQuizzesByUserId(userId, pageNumber, countOnPage)
                 .toList().toArray(Quiz[]::new);
     }
 

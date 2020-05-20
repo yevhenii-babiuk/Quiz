@@ -47,6 +47,7 @@ import {CreateAdminModule} from "./modules/create-admin/create-admin.module";
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
+import {NotificationMenuComponent} from "./modules/shared/notification-menu/notification-menu.component";
 
 @NgModule({
   declarations: [
@@ -99,7 +100,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
     AuthGuardService, RoleGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService],
+    JwtHelperService, NotificationMenuComponent],
   bootstrap: [AppComponent]
 })
 
