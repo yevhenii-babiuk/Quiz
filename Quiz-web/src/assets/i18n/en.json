@@ -75,7 +75,15 @@
     "QUIZ_STATUS": "Moderators works",
     "PLAYED_AMOUNT": "Played quizzes amount",
     "CORRECT_PERCENT": "Correct answer percents",
-    "FRIEND_PREFERENCE": "Friend preferences"
+    "FRIEND_PREFERENCE": "Friend preferences",
+    "ACHIEVEMENT_VALIDATION": {
+      "NAME": "Please enter name of achievement",
+      "DESCRIPTION": "Please enter description of achievement",
+      "CONDITION": "Please add one or more condition",
+      "CHARACTERISTIC": "Please choose characteristic of your condition",
+      "OPERATOR": "Please choose operator of your condition",
+      "VALUE": "Please enter value of your condition"
+    }
   },
   "CHAT": {
     "CREATE_CHAT": "Create chat",
