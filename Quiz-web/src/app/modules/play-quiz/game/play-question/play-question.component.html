@@ -18,7 +18,7 @@
             <label class="btn bg-light btn-block p-3">
               <input type="radio" class="form-check-input" name="optradio" (click)="setTrueFalseOption(true)"
                      [disabled]="isSend">
-              True
+              {{ 'quiz.questionTypes.true' | translate }}
             </label>
           </div>
 
@@ -26,7 +26,7 @@
             <label class="btn bg-light btn-block p-3">
               <input type="radio" class="form-check-input" name="optradio" (click)="setTrueFalseOption(false)"
                      [disabled]="isSend">
-              False
+              {{ 'quiz.questionTypes.false' | translate }}
             </label>
           </div>
 
@@ -91,7 +91,7 @@
 
       <button type="button" (click)="nextQuestion()" class="btn btn-success btn-lg btn-block" *ngIf="question.options"
               [disabled]="isSend">
-        Next >
+        {{ 'quiz.NEXT' | translate }} >
       </button>
 
       <br>

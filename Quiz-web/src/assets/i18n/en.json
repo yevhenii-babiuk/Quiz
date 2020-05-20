@@ -39,6 +39,10 @@
   },
   "quiz": {
     "createQuiz": "Create quiz",
+    "favorite": "Favorite",
+    "completed": "Completed",
+    "created": "Created",
+    "NEXT": "Next",
     "questionTypes": {
       "SELECT_OPTION": "Select options",
       "SELECT_SEQUENCE": "Select sequence",
@@ -48,6 +52,9 @@
       "false": "False"
     },
     "viewQuiz": {
+      "authorName": "Author login",
+      "date": "Date",
+      "status": "Status",
       "editQuiz": "Edit quiz",
       "publishQuiz": "Publish quiz",
       "deactivateQuiz": "Deactivate quiz",
@@ -57,6 +64,26 @@
       "tags": "Tags",
       "description": "Description",
       "questionType": "Question type"
+    },
+    "editQuiz": {
+      "enterQuizName": "Enter quiz name",
+      "newTag": "New tag...",
+      "selectImage": "Select image",
+      "question": "Question",
+      "inputAnswer": "Input answer",
+      "correctAnswer": "Correct answer",
+      "addQuestion": "Add question",
+      "send": "Send"
+    },
+    "errorValidation": {
+      "noNameQuiz": "Please enter name of quiz ",
+      "noDescQuiz": "Please enter description of quiz ",
+      "noQuestions": "Please add one or more question ",
+      "noNameImage": "Please add content for your ",
+      "question": "question ",
+      "option": "option ",
+      "addMoreCorrectAnswer": "Please chose one or more correct answer for your ",
+      "addLessCorrectAnswer": "Please chose less correct answer for your "
     }
   },
   "DASHBOARD": {
@@ -75,6 +102,35 @@
     "PLAYED_AMOUNT": "Played quizzes amount",
     "CORRECT_PERCENT": "Correct answer percents",
     "FRIEND_PREFERENCE": "Friend preferences"
+  },
+  "CHAT": {
+    "CREATE_CHAT": "Create chat",
+    "CREATE_NAME": "Enter chat name",
+    "CREATE": "Create",
+    "PARTICIPANTS": "participants",
+    "RENAME_CHAT": "Rename chat",
+    "INVITE_FRIENDS": "Invite friends",
+    "INVITE": "Invite",
+    "LEAVE": "Leave",
+    "CHOOSE_FRIEND": "Choose friend",
+    "SEND": "Send",
+    "TYPE_MESSAGE": "Type a message"
+  },
+  "AUTHENTICATION": {
+    "LOGIN": {
+      "LOGIN_LABEL": "Login to your account",
+      "FORGOT_PASSWORD": "Forgot password?",
+      "REGISTER": "Register new account?",
+      "LOGIN_BTN": "Login"
+    },
+    "PASS_RECOVERY": {
+      "PASS_RECOVERY": "Password recovery",
+      "INSTRUCTION": "Please, enter your email to reset the password",
+      "RECOVER": "Recover",
+      "NEW_PASSWORD_MSG": "Please, enter a new password",
+      "APPLY": "Apply",
+      "UNAVAILABLE": "Sorry, but your token is unavailable."
+    }
   },
   "SETTING": {
     "TITLE": "Game settings",
