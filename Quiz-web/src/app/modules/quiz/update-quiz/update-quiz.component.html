@@ -3,7 +3,7 @@
       rel="stylesheet">
 -->
 <div class="container">
-  <p class="text-center">Create quiz</p>
+  <p class="text-center">{{'quiz.createQuiz'|translate}}</p>
 
   <div class="row mx-0">
 
@@ -30,11 +30,12 @@
       <div class="row mx-0">
 
         <label class="col-sm m-3 border-0">
-          Quiz name
-          <input [(ngModel)]="quiz.name" class="form-control" placeholder="Enter quiz name" required
+          {{'quiz.viewQuiz.quizName'|translate}}
+          <input [(ngModel)]="quiz.name" class="form-control" placeholder="{{'quiz.editQuiz.enterQuizName'|translate}}"
+                 required
                  minlength="4">
         </label>
-        <label for="categories" class="col-sm m-3 border-0"> categories
+        <label for="categories" class="col-sm m-3 border-0"> {{'quiz.viewQuiz.category'|translate}}
           <select #mySelect id="categories" class="form-control" (change)="setCategory(mySelect.value)">
             <!--or custom select-->
             <ng-container *ngFor="let category of categories">
@@ -59,8 +60,8 @@
               </button>
             </mat-chip>
             <input
-              placeholder="New tag..."
-              #fruitInput
+              placeholder="{{'quiz.editQuiz.newTag'|translate}}"
+              #tagInput
               [formControl]="tagCtrl"
               [matAutocomplete]="auto"
               [matChipInputFor]="chipList"
@@ -76,7 +77,7 @@
       </div>
 
       <div class="w-100 h-auto">
-        <label class="w-100 h-auto">Description:
+        <label class="w-100 h-auto">{{'quiz.viewQuiz.description'|translate}}:
           <input class="form-control h-auto w-100" [(ngModel)]="quiz.description">
         </label>
       </div>
@@ -99,7 +100,7 @@
 
           <div class="col-sm-3">
             <label *ngIf="question.imageId==-1" class="image-upload-container btn btn-bwm btn-warning">
-              <span>Select Image</span>
+              <span>{{'quiz.editQuiz.selectImage'|translate}}</span>
               <input class="d-none" #imageInput
                      type="file"
                      accept="image/*"
@@ -122,33 +123,26 @@
             <div>
               <select #mySelect class="custom-select m-1"
                       (change)="onChangeTypeQuestion(question, mySelect.value)">
-                <option [attr.selected]="question.type=='SELECT_OPTION' ? true : null"
-                        [value]="'SELECT_OPTION'">SELECT OPTION
-                </option>
-                <option [attr.selected]="question.type=='SELECT_SEQUENCE' ? true : null"
-                        [value]="'SELECT_SEQUENCE'">SELECT SEQUENCE
-                </option>
-                <option [attr.selected]="question.type=='TRUE_FALSE' ? true : null"
-                        [value]="'TRUE_FALSE'">TRUE / False
-                </option>
-                <option [attr.selected]="question.type=='ENTER_ANSWER' ? true : null"
-                        [value]="'ENTER_ANSWER'">ENTER ANSWER
+                <option *ngFor="let questionType of questionTypes"
+                        [attr.selected]="question.type==questionType ? true : null"
+                        [value]="questionType">{{'quiz.questionTypes.'+questionType|translate}}
                 </option>
               </select>
             </div>
             <div>
-              <input [(ngModel)]="question.content" class="form-control col-sm m-1" placeholder="Question"/>
+              <input [(ngModel)]="question.content" class="form-control col-sm m-1"
+                     placeholder="{{'quiz.editQuiz.question'|translate}}"/>
             </div>
 
             <div [ngSwitch]="question.type">
               <div *ngSwitchCase="'SELECT_OPTION'">
                 <div class="row mx-0" *ngFor="let questionOption of question.options">
                   <input type="checkbox" class="questionOption" [(ngModel)]="questionOption.isCorrect">
-                  <input [(ngModel)]="questionOption.content" placeholder="Input answer"
+                  <input [(ngModel)]="questionOption.content" placeholder="{{'quiz.editQuiz.inputAnswer'|translate}}"
                          class="questionOption w-50 form-control col m-1 border"/>
                   <div>
                     <label *ngIf="questionOption.imageId==-1" class="image-upload-container btn btn-bwm btn-warning">
-                      <span>Select Image</span>
+                      <span>{{'quiz.editQuiz.selectImage'|translate}}</span>
                       <input class="d-none" #imageInput
                              type="file"
                              accept="image/*"
@@ -175,10 +169,10 @@
                   <label for="{{questionOption.sequenceOrder}}"
                          class="questionOption">{{questionOption.sequenceOrder}}</label>
                   <input id="{{questionOption.sequenceOrder}}" [(ngModel)]="questionOption.content"
-                         placeholder="answer" class="form-control w-50 m-1 questionOption">
+                         placeholder="{{'quiz.editQuiz.inputAnswer'|translate}}" class="form-control w-50 m-1 questionOption">
                   <div>
                     <label *ngIf="questionOption.imageId==-1" class="image-upload-container btn btn-bwm btn-warning">
-                      <span>Select Image</span>
+                      <span>{{'quiz.editQuiz.selectImage'|translate}}</span>
                       <input class="d-none" #imageInput
                              type="file"
                              accept="image/*"
@@ -202,16 +196,16 @@
               <div *ngSwitchCase="'TRUE_FALSE'" class="row mx-0 mt-2">
                 <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'primary': 'secondary'}}"
                      (click)="setCorrectAnswer(question, true)">
-                  True
+                  placeholder="{{'quiz.questionTypes.true'|translate}}"
                 </div>
                 <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'secondary': 'primary'}}"
                      (click)="setCorrectAnswer(question, false)">
-                  False
+                  placeholder="{{'quiz.questionTypes.false'|translate}}"
                 </div>
               </div>
 
               <div *ngSwitchCase="'ENTER_ANSWER'">
-                <input [(ngModel)]="question.options[0].content" placeholder="correct answer"
+                <input [(ngModel)]="question.options[0].content" placeholder="<span>{{'quiz.editQuiz.correctAnswer'|translate}}</span>"
                        class="form-control w-75 m-1 mt-2">
               </div>
             </div>
@@ -229,13 +223,15 @@
 
   <div class="text-center row">
     <button (click)="addQuestion()" class="btn btn-warning px-5 m-3">
-      Add question
+      {{'quiz.editQuiz.addQuestion'|translate}}
     </button>
     <button (click)="send()" class="btn btn-success px-5 m-3">
-      Send
+      {{'quiz.editQuiz.send'|translate}}
     </button>
   </div>
   <div *ngIf="isInvalid" class="w-100 alert border-danger">
-    {{message}}
+    <ng-container *ngFor="let message of messages">
+      {{message|translate}}
+    </ng-container>
   </div>
 </div>

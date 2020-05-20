@@ -18,13 +18,13 @@ public class AnnouncementService {
     @Autowired
     private AnnouncementDao announcementDao;
 
-    public boolean createAnnouncement(Announcement announcement) {
+    public int createAnnouncement(Announcement announcement) {
         int announcementId = announcementDao.save(announcement);
         if (announcementId == -1) {
             log.info("createAnnouncement: Announcement wasn't saved");
-            return false;
+            return -1;
         }
-        return true;
+        return announcementId;
     }
 
     public void updateAnnouncement(Announcement announcement) {

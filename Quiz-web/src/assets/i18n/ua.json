@@ -13,14 +13,17 @@
     "FRIENDS": "Друзі",
     "ANNOUNCEMENTS": "Новини",
     "TOP": "Рейтинг учасників",
-    "PROFILE": "Профіль"
+    "PROFILE": "Профіль",
+    "ACHIEVEMENT": "Створити досягнення",
+    "CHATS": "Повідомлення"
   },
   "USERLIST": {
     "LOGIN": "Логін",
     "NAME": "Ім'я",
     "ROLE": "Роль",
     "DATE": "Дата реєстрації",
-    "SEARCH": "Пошук"
+    "SEARCH": "Пошук",
+    "SCORE": "Рахунок"
   },
   "ANNOUNCEMENT": {
     "CREATE BUTTON": "Є новина? Поділись з усіма!",
@@ -35,7 +38,11 @@
     "SUBMIT": "Підтвердити"
   },
   "quiz": {
-    "createQuiz": "Створити квіз",
+    "createQuiz": "Створити вікторину",
+    "NEXT": "Далі",
+    "favorite": "Улюблені",
+    "completed": "Пройдені",
+    "created": "Створені",
     "questionTypes": {
       "SELECT_OPTION": "Виберіть правильні відповіді",
       "SELECT_SEQUENCE": "Виберіть послідовність відповідей",
@@ -45,15 +52,84 @@
       "false": "Неправда"
     },
     "viewQuiz": {
-      "editQuiz": "Редагувати квіз",
-      "publishQuiz": "Опублікувати квіз",
-      "deactivateQuiz": "Деактивувати квіз",
-      "playQuiz": "Зіграти квіз",
-      "quizName": "Назва квіза",
+      "authorName": "Логін автора",
+      "date": "Дата",
+      "status": "Статус",
+      "editQuiz": "Редагувати вікторину",
+      "publishQuiz": "Опублікувати вікторину",
+      "deactivateQuiz": "Деактивувати вікторину",
+      "playQuiz": "Зіграти вікторину",
+      "quizName": "Назва вікторини",
       "category": "Категорія",
       "tags": "Теги",
       "description": "Опис",
       "questionType": "Тип питання"
+    },
+    "editQuiz": {
+      "enterQuizName": "Введіть назву вікторини",
+      "newTag": "Новий тег...",
+      "selectImage": "Вибрати фото",
+      "question": "Запитання",
+      "inputAnswer": "Введіть відповідь",
+      "correctAnswer": "Введіть правильно відповідь",
+      "addQuestion": "Додати запитання",
+      "send": "Надіслати"
+    },
+    "errorValidation": {
+      "noNameQuiz": "Будь ласка, введіть назву вікторини ",
+      "noDescQuiz": "Будь ласка, введіть опис вікторини ",
+      "noQuestions": "Будь ласка, додайте одне або більше запитань ",
+      "noNameImage": "Будь ласка, додайте вміст до ",
+      "question": "запитання ",
+      "option": "опції ",
+      "addMoreCorrectAnswer": "Будь ласка, додайте більше коректних відповідей для ",
+      "addLessCorrectAnswer": "Будь ласка, додайте менше коректних відповідей для "
+    }
+  },
+  "DASHBOARD": {
+    "ACHIEVEMENTS": "Досягнення",
+    "ACHIEVEMENTS_NAME": "Назва досягнення",
+    "ACHIEVEMENTS_DESCRIPTION": "Опис досягнення",
+    "ACHIEVEMENTS_ADD_CONDITION": "Додати умову",
+    "ACHIEVEMENTS_CONDITION": "Умова",
+    "ACHIEVEMENTS_REMOVE_CONDITION": "Видалити",
+    "ACHIEVEMENTS_CHARACTERISTIC": "Характеристика",
+    "ACHIEVEMENTS_OPERATOR": "Оператор",
+    "ACHIEVEMENTS_VALUE": "Значення",
+    "ACHIEVEMENTS_CREATE": "Створити",
+    "PLAYED_SCORE": "Порівняння з кращими",
+    "QUIZ_STATUS": "Робота модераторів",
+    "PLAYED_AMOUNT": "Кількість зіграних вікторин",
+    "CORRECT_PERCENT": "Відсоток правильних відповідей",
+    "FRIEND_PREFERENCE": "Переваги друзів"
+  },
+  "CHAT": {
+    "CREATE_CHAT": "Створити чат",
+    "CREATE_NAME": "Вкажіть назву чату",
+    "CREATE": "Створити",
+    "PARTICIPANTS": "учасників",
+    "RENAME_CHAT": "Перейменувати чат",
+    "INVITE_FRIENDS": "Запросити друзів",
+    "INVITE": "Запросити",
+    "LEAVE": "Покинути",
+    "CHOOSE_FRIEND": "Виберіть друга",
+    "SEND": "Надіслати",
+    "TYPE_MESSAGE": "Введіть повідомлення"
+  },
+  "AUTHENTICATION": {
+    "LOGIN": {
+      "LOGIN_LABEL": "Увійти до свого облікового запису",
+      "FORGOT_PASSWORD": "Забули пароль?",
+      "REGISTER": "Зареєструватись?",
+      "LOGIN_BTN": "Увійти"
+    },
+    "PASS_RECOVERY": {
+      "PASS_RECOVERY": "Відновлення паролю",
+      "INSTRUCTION": "Будь ласка, введіть адресу вашої електронної пошти, щоб відновити пароль",
+      "RECOVER": "Відновити",
+      "NEW_PASSWORD_MSG": "Будь ласка, введіть новий пароль",
+      "APPLY": "Застосувати",
+      "UNAVAILABLE": "Вибачте, але ваш токен недоступний."
     }
   },
   "viewProfile": {

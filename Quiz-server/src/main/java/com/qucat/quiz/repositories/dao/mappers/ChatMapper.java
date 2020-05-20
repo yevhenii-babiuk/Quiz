@@ -12,7 +12,7 @@ public class ChatMapper implements RowMapper<Chat> {
         return Chat.builder()
                 .id(resultSet.getInt("id"))
                 .name(resultSet.getString("name"))
-                .creationDate(resultSet.getDate("creation_date"))
+                .creationDate(resultSet.getTimestamp("creation_date"))
                 .build();
     }
 }

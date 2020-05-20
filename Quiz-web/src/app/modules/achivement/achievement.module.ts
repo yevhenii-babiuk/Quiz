@@ -5,6 +5,7 @@ import {CommonModule} from '@angular/common';
 import {CardsModule, CarouselModule} from "angular-bootstrap-md";
 import {CreateAchievementComponent} from "./create-achievement/create-achievement.component";
 import {FormsModule} from "@angular/forms";
+import {TranslateModule} from "@ngx-translate/core";
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {FormsModule} from "@angular/forms";
     CommonModule,
     CarouselModule,
     CardsModule,
-    FormsModule
+    FormsModule,
+    TranslateModule
   ]
 })
 export class AchievementModule {
