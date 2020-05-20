@@ -17,6 +17,8 @@ export class UpdateAnnouncementComponent implements OnInit {
 
   announcement: Announcement;
   updated: boolean = false;
+  isInvalid: boolean = false;
+  //message: string;
 
   constructor(private announcementService: AnnouncementService,
               private route: ActivatedRoute,
@@ -67,27 +69,37 @@ export class UpdateAnnouncementComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  send() {
-    if (this.announcement.id) {
-      this.announcementService.updateAnnouncement(this.announcement).subscribe(
-        get => {
-          console.log("id = " + get);
-        },
-        error => {
-          console.log(error);
-        });
-    } else {
-      this.announcement.isPublished = (this.securityService.getCurrentRole() != Role.USER);
-      this.announcementService.sendAnnouncement(this.announcement).subscribe(
-        get => {
-          console.log("id = " + get);
-          if(this.announcement.isPublished) this.router.navigate(["announcement/"+get]);
-        },
-        error => {
-          console.log(error);
-        });
-    }
-    this.router.navigate(["announcements"]);
+  isValid(): boolean {
 
+    if (this.announcement.title && this.announcement.fullText) return true;
+    else {
+      this.isInvalid = true;
+      return false;
+    }
+  }
+
+  send() {
+    if (this.isValid()) {
+      if (this.announcement.id) {
+        this.announcementService.updateAnnouncement(this.announcement).subscribe(
+          get => {
+            console.log("id = " + get);
+          },
+          error => {
+            console.log(error);
+          });
+      } else {
+        this.announcement.isPublished = (this.securityService.getCurrentRole() != Role.USER);
+        this.announcementService.sendAnnouncement(this.announcement).subscribe(
+          get => {
+            console.log("id = " + get);
+            if (this.announcement.isPublished) this.router.navigate(["announcement/" + get]);
+          },
+          error => {
+            console.log(error);
+          });
+      }
+      this.router.navigate(["announcements"]);
+    }
   }
 }

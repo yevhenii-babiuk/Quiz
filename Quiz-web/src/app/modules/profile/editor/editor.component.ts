@@ -68,7 +68,7 @@ export class EditorComponent implements OnInit {
 
     this.profileService.updateUser(editedUser).subscribe(data => {
       editedUser = data;
-      this.alertService.success('You have successfully edited your profile');
+      this.alertService.success('alert.editSuccessful');
     });
   }
 

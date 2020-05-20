@@ -17,7 +17,9 @@
     "CREATE_ADMIN": "Create admin or moderator",
     "CREATE_MODER": "Create moderator",
     "ACHIEVEMENT": "Create achievement",
-    "CHATS": "Chats"
+    "CHATS": "Chats",
+    "CREATE_ADMIN": "Create admin or moderator",
+    "CREATE_MODER": "Create moderator"
   },
   "alert": {
     "errorLogin": "Error while login",
@@ -33,6 +35,9 @@
     "adminCreatedSuccessful": "Creation successful",
     "adminCreatedNoSuccessful": "Creation is not successful",
     "errorCreatedAdmin": "Error while creation!"
+    "errorApplyingPass": "Error while applying new pass",
+    "photoChanged": "Photo is changed",
+    "editSuccessful": "You have successfully edited your profile"
   },
   "USERLIST": {
     "LOGIN": "Login",
@@ -52,7 +57,8 @@
     "SUBTITLE": "Subtitle",
     "TEXT": "Text",
     "UPLOAD": "Add image",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Submit",
+    "ALERT": "Title and text can't be empty"
   },
   "quiz": {
     "createQuiz": "Create quiz",
@@ -172,7 +178,20 @@
     "QUIZ_STATUS": "Moderators works",
     "PLAYED_AMOUNT": "Played quizzes amount",
     "CORRECT_PERCENT": "Correct answer percents",
-    "FRIEND_PREFERENCE": "Friend preferences"
+    "FRIEND_PREFERENCE": "Friend preferences",
+    "ACHIEVEMENT_VALIDATION": {
+      "NAME": "Please enter name of achievement",
+      "DESCRIPTION": "Please enter description of achievement",
+      "CONDITION": "Please add one or more condition",
+      "CHARACTERISTIC": "Please choose characteristic of your condition",
+      "OPERATOR": "Please choose operator of your condition",
+      "VALUE": "Please enter value of your condition",
+      "SUCCESSFUL": "Adding successful",
+      "ERRORED": "Error while adding achievement!",
+      "RECALCULATION_SUCCESSFUL": "Recalculation successful",
+      "RECALCULATION_ERRORED": "Error while recalculation!"
+
+    }
   },
   "CHAT": {
     "CREATE_CHAT": "Create chat",
@@ -232,5 +251,12 @@
     "FIRST BONUS":"Bonus for the quickest player",
     "COMBO BONUS": "Bonus for combo of right answers",
     "INTERMEDIATE RESULT": "Show intermediate results"
+  },
+  "CREATE_ADMIN": {
+    "TITLE": "Create admin/moderator",
+    "BUTTON": "Create"
+  },
+  "HOME": {
+    "PLAY": "Play now"
   }
 }

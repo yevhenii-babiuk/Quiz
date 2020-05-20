@@ -3,10 +3,10 @@
 </div>
 <div *ngIf="role != roleEnum.USER" class="offset-10 my-2">
   <div class="btn-group btn-group-toggle" data-toggle="buttons">
-    <label class="btn btn-outline-secondary">
+    <label class="btn btn-outline-secondary active">
       <input (click)="getPublished()" type="radio" name="options" id="option1" autocomplete="off" checked> Published
     </label>
-    <label class="btn btn-outline-secondary active">
+    <label class="btn btn-outline-secondary">
       <input (click)="getUnpublished()" type="radio" name="options" id="option2" autocomplete="off"> Unpublished
     </label>
   </div>
