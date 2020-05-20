@@ -145,5 +145,8 @@
   "CREATE_ADMIN": {
     "TITLE": "Create admin/moderator",
     "BUTTON": "Create"
+  },
+  "HOME": {
+    "PLAY": "Play now"
   }
 }

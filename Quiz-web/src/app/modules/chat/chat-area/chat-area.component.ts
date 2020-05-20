@@ -195,6 +195,6 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   }
 
   onChange(value: string) {
-    this.selectedFriend=this.friends.filter(value1 => value1.login=value)[0];
+    this.selectedFriend=this.friends.filter(value1 => value1.login==value)[0];
   }
 }
