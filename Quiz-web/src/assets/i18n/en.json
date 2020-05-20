@@ -47,7 +47,8 @@
     "SUBTITLE": "Subtitle",
     "TEXT": "Text",
     "UPLOAD": "Add image",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Submit",
+    "ALERT": "Title and text can't be empty"
   },
   "quiz": {
     "createQuiz": "Create quiz",
