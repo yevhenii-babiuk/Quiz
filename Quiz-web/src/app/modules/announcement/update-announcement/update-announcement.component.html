@@ -28,7 +28,9 @@
         <img *ngIf="updated" class="img-fluid rounded" src="{{announcement.image.src}}">
         <img *ngIf="!updated" class="img-fluid rounded" src="data:image/jpeg;base64,{{announcement.image.src}}">
       </label>
-
+      <div *ngIf="isInvalid" class="w-100 alert border-danger my-4 text-center">
+        {{ 'ANNOUNCEMENT.ALERT' | translate }}
+      </div>
       <button (click)="send()" class="btn btn-warning form-control">{{ 'ANNOUNCEMENT.SUBMIT' | translate }}</button>
 
     </div>

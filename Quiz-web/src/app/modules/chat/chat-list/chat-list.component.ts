@@ -3,6 +3,7 @@ import {Chat} from "../../core/models/chat";
 import {SecurityService} from "../../core/services/security.service";
 import {ChatService} from "../../core/services/chat.service";
 import {User} from "../../core/models/user";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-chat-list',
@@ -16,7 +17,8 @@ export class ChatListComponent implements OnInit {
   public chat: Chat = new Chat();
 
   constructor(private chatService: ChatService,
-              private securityService: SecurityService) {
+              private securityService: SecurityService,
+              public translate: TranslateService) {
   }
 
   ngOnInit(): void {

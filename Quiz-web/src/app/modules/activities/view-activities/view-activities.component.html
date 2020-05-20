@@ -6,7 +6,8 @@
         <input [(ngModel)]="activity.selected" id={{activity.id}} type="checkbox" class="styled"
                (change)="getFilteredActivities()">
         <label for={{activity.id}}>
-          {{activity.value}}
+          <!--{{activity.value}}-->
+          {{'activities.categoryTypes.'+activity.activityType|translate}}
         </label>
 
       </ng-container>
@@ -22,26 +23,26 @@
              width="70" height="70" alt="Avatar">
         <!--achievement-->
         <h5 *ngIf="activity.type==category.ACHIEVEMENT">
-          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> отримав нагороду
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.getAchievement' | translate}}
           <q>{{activity.activityContent}}</q>.
         </h5>
         <!--added new quiz-->
         <h5 *ngIf="activity.type==category.PUBLISH_QUIZ">
-          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> створив нову вікторину
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.createQuiz' | translate}}
           <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
           .
         </h5>
         <!--mark quiz as favourite-->
         <h5 *ngIf="activity.type==category.MARK_AS_FAVORITE">
-          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a>
-          додав вікторину <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
-          в список улюблених.
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a>
+          {{'activities.addQuiz' | translate}} <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
+          {{'activities.favouriteList' | translate}}.
         </h5>
         <!--add to friends-->
         <h5 *ngIf="activity.type==category.ADD_FRIEND">
-          Користувач <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> додав користувача
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.addUser' | translate}}
           <a routerLink="../users/{{activity.activityId}}">{{activity.activityContent}}</a>
-          в друзі.
+          {{'activities.toFriends' | translate}}.
         </h5>
 
         <p class="post-meta">{{activity.activityDate| date:"MMMM d, yyyy h:mma"}}</p>

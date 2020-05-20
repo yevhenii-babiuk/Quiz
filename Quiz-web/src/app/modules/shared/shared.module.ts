@@ -39,7 +39,7 @@ import { MessageMenuComponent } from './message-menu/message-menu.component';
     HeaderComponent,
     FooterComponent,
     SidenavComponent,
-    TranslateModule,
+    TranslateModule
   ]
 })
 export class SharedModule { }

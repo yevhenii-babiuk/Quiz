@@ -3,6 +3,7 @@ import {Router} from '@angular/router';
 import {NotificationMenuComponent} from "../../shared/notification-menu/notification-menu.component";
 import {AuthenticationService} from '../../core/services/authentication.service';
 import {AlertService} from '../../core/services/alert.service';
+import {TranslateService} from "@ngx-translate/core";
 
 import {User} from '../../core/models/user';
 
@@ -17,6 +18,7 @@ export class LoginComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private notificationMenuComponent: NotificationMenuComponent,
     private alertService: AlertService,
+    public translate: TranslateService,
     private router: Router
   ) {
   }
@@ -27,21 +29,20 @@ export class LoginComponent implements OnInit {
   onLogin(login: string, password: string) {
     login = login.trim();
     if (!login) {
-      this.alertService.error('Login is empty!');
+      this.alertService.error('alert.loginEmpty');
       return;
     }
 
     this.authenticationService.login({login, password} as User)
-      .subscribe(
-        data => {
-          //this.router.navigate(['/']).then();
-          this.router.navigate(['profile']).then();
-        },
-        error => {
-          this.alertService.error('Error while login');
-          console.log(error);
-        });
-
+    .subscribe(
+               data => {
+                 //this.router.navigate(['/']).then();
+                 this.router.navigate(['profile']).then();
+               },
+               error => {
+                   this.alertService.error('alert.errorLogin');
+                   console.log(error);
+               });
   }
 
 }

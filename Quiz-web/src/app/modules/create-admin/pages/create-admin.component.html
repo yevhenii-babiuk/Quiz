@@ -1,15 +1,15 @@
 <div class="container custom">
 
-  <h3 class="text-center">{{'AUTHENTICATION.registration.registration'|translate}}</h3>
+  <h3 class="text-center">{{'CREATE_ADMIN.TITLE' | translate}}</h3>
 
   <div class="form-group row">
     <div class="col"></div>
     <div class="col-9">
-      <input type="text" placeholder="{{'AUTHENTICATION.registration.firstName'|translate}}"
+      <input type="text" placeholder="{{'CREATE_ADMIN.FIRST_NAME'|translate}}"
              class="form-control" [(ngModel)]="user.firstName" #firstname="ngModel"
              pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="fnHelp">
       <small id="fnHelp" class="form-text text-danger" [hidden]="firstname.valid || firstname.untouched">
-        {{'AUTHENTICATION.registration.noValidFirstName'|translate}}
+        {{'CREATE_ADMIN.NO_VALID_FIRST_NAME'|translate}}
       </small>
     </div>
     <div class="col"></div>
@@ -18,11 +18,11 @@
   <div class="form-group row">
     <div class="col"></div>
     <div class="col-9">
-      <input type="text" placeholder="{{'AUTHENTICATION.registration.lastName'|translate}}"
+      <input type="text" placeholder="{{'CREATE_ADMIN.LAST_NAME'|translate}}"
              class="form-control" [(ngModel)]="user.secondName" #lastname="ngModel"
              pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="lnHelp">
       <small id="lnHelp" class="form-text text-danger" [hidden]="lastname.valid || lastname.untouched">
-        {{'AUTHENTICATION.registration.noValidLastName'|translate}}
+        {{'CREATE_ADMIN.NO_VALID_LAST_NAME'|translate}}
       </small>
     </div>
     <div class="col"></div>
@@ -31,10 +31,10 @@
   <div class="form-group row">
     <div class="col"></div>
     <div class="col-9">
-      <input type="text" placeholder="{{'AUTHENTICATION.login'|translate}}"
+      <input type="text" placeholder="{{'CREATE_ADMIN.LOGIN'|translate}}"
              class="form-control" [(ngModel)]="user.login" aria-describedby="lHelp" #login="ngModel">
       <small id="lHelp" class="form-text text-danger" [hidden]="login.untouched || (user.login.length > 0)">
-        {{'AUTHENTICATION.registration.noValidLogin'|translate}}
+        {{'CREATE_ADMIN.NO_VALID_LOGIN'|translate}}
       </small>
     </div>
     <div class="col"></div>
@@ -43,24 +43,35 @@
   <div class="form-group row">
     <div class="col"></div>
     <div class="col-9">
-      <input type="email" placeholder="{{'AUTHENTICATION.email'|translate}}" class="form-control" name="email"
+      <input type="email" placeholder="{{'CREATE_ADMIN.EMAIL'|translate}}" class="form-control" name="email"
              [(ngModel)]="user.mail" #email="ngModel"
              pattern="^[A-z\d._]+@[A-z]+\.[A-z]+$" aria-describedby="emailHelp">
       <small id="emailHelp" class="form-text text-danger" [hidden]="email.valid || email.untouched">
-        {{'AUTHENTICATION.registration.noValidMail'|translate}}
+        {{'CREATE_ADMIN.NO_VALID_MAIL'|translate}}
       </small>
     </div>
     <div class="col"></div>
   </div>
 
+  <div class="form-group-row">
+    <div class="col-9 mx-auto px-1">
+      <div class="mb-3">
+        <!--[ngModel]="user.role"-->
+        <select class="form-control"[(ngModel)]="user.role" (change)="selectOption()">
+          <option selected *ngFor="let role of roles" [value]="role">{{role}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
   <div class="form-group row">
     <div class="col"></div>
     <div class="col-9">
-      <input type="password" placeholder="{{'AUTHENTICATION.password'|translate}}"
+      <input type="password" placeholder="{{'CREATE_ADMIN.PASSWORD'|translate}}"
              class="form-control" [(ngModel)]="user.password" #password="ngModel"
              pattern="^.{8,}$" aria-describedby="passHelp">
       <small id="passHelp" class="form-text text-danger" [hidden]="password.valid || password.untouched">
-        {{'AUTHENTICATION.registration.noValidPassword'|translate}}
+        {{'CREATE_ADMIN.NO_VALID_PASSWORD'|translate}}
       </small>
     </div>
     <div class="col"></div>
@@ -69,11 +80,11 @@
   <div class="form-group row">
     <div class="col"></div>
     <div class="col-9">
-      <input type="password" placeholder="{{'AUTHENTICATION.registration.confirmPassword'|translate}}"
+      <input type="password" placeholder="{{'CREATE_ADMIN.CONFIRM_PASSWORD'|translate}}"
              class="form-control" [(ngModel)]="confirmPassword" aria-describedby="cpHelp">
       <small id="cpHelp" class="form-text text-danger"
              [hidden]="password.untouched || user.password == confirmPassword">
-        {{'AUTHENTICATION.registration.noMatchPassword'|translate}}
+        {{'CREATE_ADMIN.NO_MATCH_PASSWORD'|translate}}
       </small>
     </div>
     <div class="col"></div>
@@ -83,9 +94,9 @@
     <div class="col"></div>
     <button
       [disabled]="!firstname.valid || !lastname.valid || !password.valid || !email.valid || !(user.password == confirmPassword) || (user.login.length < 1)"
-      (click)="registerUser()"
+      (click)="createAdmin()"
       class="btn btn-warning btn-block col-9">
-      {{'AUTHENTICATION.registration.register'|translate}}
+      {{'CREATE_ADMIN.BUTTON' | translate}}
     </button>
     <div class="col"></div>
   </div>

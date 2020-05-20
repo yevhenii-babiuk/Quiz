@@ -8,6 +8,7 @@ import {ActivatedRoute} from "@angular/router";
 import {AlertService} from "../../core/services/alert.service";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
+import {TranslateService} from "@ngx-translate/core";
 
 
 
@@ -35,7 +36,8 @@ export class ViewProfile implements OnInit {
     private profileService: ProfileService,
     private securityService: SecurityService,
     private alertService:AlertService,
-    private achievementService: AchievementService
+    private achievementService: AchievementService,
+    public translate: TranslateService,
   ) {
   }
 
@@ -94,7 +96,7 @@ export class ViewProfile implements OnInit {
       });
 
     this.loadedPhoto=false;
-    this.alertService.success("Photo is changed");
+    this.alertService.success("alert.photoChanged");
 
   }
 
@@ -113,13 +115,13 @@ export class ViewProfile implements OnInit {
     this.achievementService.recalculateAchievements().subscribe(
       data => {
         if (data) {
-          this.alertService.success('Recalculation is successful', false);
+          this.alertService.success('DASHBOARD.ACHIEVEMENT_VALIDATION.RECALCULATION_SUCCESSFUL', false);
         } else {
-          this.alertService.error('Recalculation is not successful', false);
+          this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.RECALCULATION_ERRORED', false);
         }
       },
       error => {
-        this.alertService.error('Error while recalculation!');
+        this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.RECALCULATION_ERRORED');
         console.log(error);
       });
   }
