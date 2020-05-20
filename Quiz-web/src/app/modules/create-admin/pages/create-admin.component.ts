@@ -31,26 +31,16 @@ export class CreateAdminComponent implements OnInit {
   ngOnInit(): void {
     if (this.secur.getCurrentRole() == 'SUPER_ADMIN') {
       this.user.role = 'ADMIN';
-      console.log(this.user.role);
     } else {
       this.user.role = 'MODERATOR';
       this.roles = ['MODERATOR'];
     }
-    console.log(this.roles);
-  }
-
-  selectOption() {
-    console.log(this.user.role)
-    //getted from event
-    // console.log(id);
-    //getted from binding
-    // console.log(this.selected)
   }
 
   createAdmin(): void {
 
     if (!this.user.login || !this.user.firstName || !this.user.secondName || !this.user.mail || !this.user.role) {
-      this.alertService.error('Fields should not be empty!');
+      this.alertService.error('alert.fieldEmpty');
       return;
     }
 
@@ -61,14 +51,14 @@ export class CreateAdminComponent implements OnInit {
       .subscribe(
         data => {
           if (data) {
-            this.alertService.success('Created successfully', true);
+            this.alertService.success('alert.adminCreatedSuccessful', true);
             this.router.navigate(['profile']);
           } else {
-            this.alertService.error('Couldn\'t create', false);
+            this.alertService.error('alert.adminCreatedNoSuccessful', false);
           }
         },
         error => {
-          this.alertService.error('Error while creation!');
+          this.alertService.error('alert.errorCreatedAdmin');
           console.log(error);
         });
   }

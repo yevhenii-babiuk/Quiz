@@ -17,9 +17,6 @@ import {TranslateModule} from "@ngx-translate/core";
     SharedModule,
     FormsModule,
     TranslateModule
-  ],
-  exports:[
-    TranslateModule
   ]
 })
 export class CreateAdminModule { }

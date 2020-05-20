@@ -14,10 +14,10 @@
     "ANNOUNCEMENTS": "Announcements",
     "TOP": "Top users",
     "PROFILE": "Profile",
+    "CREATE_ADMIN": "Create admin or moderator",
+    "CREATE_MODER": "Create moderator",
     "ACHIEVEMENT": "Create achievement",
     "CHATS": "Chats",
-    "CREATE_ADMIN": "Create admin or moderator",
-    "CREATE_MODER": "Create moderator"
   },
   "alert": {
     "errorLogin": "Error while login",
@@ -29,6 +29,10 @@
     "enterMail": "Enter the email!",
     "resetSuccessful": "Reset is successful. Check your email box.",
     "errorReset": "Error while reset!",
+    "errorApplyingPass": "Error while applying new pass",
+    "adminCreatedSuccessful": "Creation successful",
+    "adminCreatedNoSuccessful": "Creation is not successful",
+    "errorCreatedAdmin": "Error while creation!"
     "errorApplyingPass": "Error while applying new pass",
     "photoChanged": "Photo is changed",
     "editSuccessful": "You have successfully edited your profile"
@@ -82,6 +86,22 @@
       "description": "Description",
       "questionType": "Question type"
     }
+  },
+  "CREATE_ADMIN": {
+    "TITLE": "Create admin/moderator",
+    "BUTTON": "Create",
+    "LOGIN": "Login",
+    "PASSWORD": "Password",
+    "FIRST_NAME": "First name",
+    "NO_VALID_FIRST_NAME": "First name should be at least 2 characters long and have no numbers",
+    "LAST_NAME": "Last Name",
+    "NO_VALID_LAST_NAME": "Last name should be at least 2 characters long and have no numbers",
+    "NO_VALID_LOGIN": "Login should not be empty!",
+    "EMAIL": "Email",
+    "NO_VALID_MAIL": "Email does't match the pattern: example@gmail.com",
+    "NO_VALID_PASSWORD": "Password should be at least 8 symbols",
+    "CONFIRM_PASSWORD": "Confirm password",
+    "NO_MATCH_PASSWORD": "Passwords don't match!"
   },
   "viewProfile": {
     "login": "Login:",
@@ -229,10 +249,6 @@
     "FIRST BONUS":"Bonus for the quickest player",
     "COMBO BONUS": "Bonus for combo of right answers",
     "INTERMEDIATE RESULT": "Show intermediate results"
-  },
-  "CREATE_ADMIN": {
-    "TITLE": "Create admin/moderator",
-    "BUTTON": "Create"
   },
   "HOME": {
     "PLAY": "Play now"
