@@ -50,7 +50,7 @@ export class PassRecoveryConfirmComponent implements OnInit {
                   this.router.navigate(['/login']).then();
               },
               error => {
-                  this.alertService.error('Error while applying new pass');
+                  this.alertService.error('alert.errorApplyingPass');
                   console.log(error);
               });
  }

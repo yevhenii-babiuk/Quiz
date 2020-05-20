@@ -3,6 +3,7 @@ import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {AlertService} from "../../core/services/alert.service";
 import {SecurityService} from "../../core/services/security.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-editor',
@@ -20,7 +21,8 @@ export class EditorComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private alertService: AlertService,
-    private securityService: SecurityService
+    private securityService: SecurityService,
+    public translate: TranslateService,
   ) {
   }
 
@@ -34,7 +36,7 @@ export class EditorComponent implements OnInit {
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.userData.id = this.id;
-
+      this.userData.password = null;
 
     });
   }
@@ -50,15 +52,15 @@ export class EditorComponent implements OnInit {
     }
     let editedUser: User = {
       id: id,
-      firstName:firstname,
-      secondName:secondname,
-      login:this.userData.login,
-      mail:email,
-      password:password,
-      profile:profile,
-      score:this.userData.score,
-      role:this.userData.role,
-      registrationDate:this.userData.registrationDate,
+      firstName: firstname,
+      secondName: secondname,
+      login: this.userData.login,
+      mail: email,
+      password: password,
+      profile: profile,
+      score: this.userData.score,
+      role: this.userData.role,
+      registrationDate: this.userData.registrationDate,
       imageId: this.userData.imageId,
       image: this.userData.image,
       status: this.userData.status
@@ -66,8 +68,8 @@ export class EditorComponent implements OnInit {
 
     this.profileService.updateUser(editedUser).subscribe(data => {
       editedUser = data;
+      this.alertService.success('You have successfully edited your profile');
     });
-    this.alertService.success('You have successfully edited your profile');
   }
 
 }
