@@ -29,7 +29,10 @@
     "enterMail": "Enter the email!",
     "resetSuccessful": "Reset is successful. Check your email box.",
     "errorReset": "Error while reset!",
-    "errorApplyingPass": "Error while applying new pass"
+    "errorApplyingPass": "Error while applying new pass",
+    "adminCreatedSuccessful": "Creation successful",
+    "adminCreatedNoSuccessful": "Creation is not successful",
+    "errorCreatedAdmin": "Error while creation!"
   },
   "USERLIST": {
     "LOGIN": "Login",

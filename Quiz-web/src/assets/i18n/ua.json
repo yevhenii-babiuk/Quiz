@@ -29,7 +29,10 @@
     "enterMail": "Введіть поштову адресу!",
     "resetSuccessful": "Скидання паролю успішне. Провірте поштову адресу",
     "errorReset": "Помилка при скиданні паролю!",
-    "errorApplyingPass": "Помилка при застосуванні новго паролю"
+    "errorApplyingPass": "Помилка при застосуванні новго паролю",
+    "adminCreatedSuccessful": "Створення успішне",
+    "adminCreatedNoSuccessful": "Створення не успішне",
+    "errorCreatedAdmin": "Помилка при створенні"
   },
   "USERLIST": {
     "LOGIN": "Логін",

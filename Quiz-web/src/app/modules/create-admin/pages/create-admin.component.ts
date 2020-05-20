@@ -40,7 +40,7 @@ export class CreateAdminComponent implements OnInit {
   createAdmin(): void {
 
     if (!this.user.login || !this.user.firstName || !this.user.secondName || !this.user.mail || !this.user.role) {
-      this.alertService.error('Fields should not be empty!');
+      this.alertService.error('alert.fieldEmpty');
       return;
     }
 
@@ -51,14 +51,14 @@ export class CreateAdminComponent implements OnInit {
       .subscribe(
         data => {
           if (data) {
-            this.alertService.success('Created successfully', true);
+            this.alertService.success('alert.adminCreatedSuccessful', true);
             this.router.navigate(['profile']);
           } else {
-            this.alertService.error('Couldn\'t create', false);
+            this.alertService.error('alert.adminCreatedNoSuccessful', false);
           }
         },
         error => {
-          this.alertService.error('Error while creation!');
+          this.alertService.error('alert.errorCreatedAdmin');
           console.log(error);
         });
   }
