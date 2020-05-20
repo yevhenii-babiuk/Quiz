@@ -62,6 +62,12 @@
       <li *ngIf="(securityService.getCurrentRole()==roleEnum.ADMIN || securityService.getCurrentRole()==roleEnum.ADMIN) && authenticationService.isAuthenticated()">
         <a routerLink="../achievements/create">{{'SIDENAV.ACHIEVEMENT' | translate}}</a>
       </li>
+      <li *ngIf="securityService.getCurrentRole() == roleEnum.SUPER_ADMIN && authenticationService.isAuthenticated()">
+        <a routerLink="../createAdmin">{{'SIDENAV.CREATE_ADMIN' | translate}}</a>
+      </li>
+      <li *ngIf="securityService.getCurrentRole() == roleEnum.ADMIN && authenticationService.isAuthenticated()">
+        <a routerLink="../createAdmin">{{'SIDENAV.CREATE_MODER' | translate}}</a>
+      </li>
     </ul>
 
    <!-- <ul class="list-unstyled CTAs">

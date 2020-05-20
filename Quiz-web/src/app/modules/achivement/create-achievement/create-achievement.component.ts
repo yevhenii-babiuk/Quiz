@@ -17,12 +17,13 @@ import {TranslateService} from "@ngx-translate/core";
 export class CreateAchievementComponent implements OnInit {
 
   achievement: Achievement = new Achievement();
-  characteristics: AchievementCharacteristic[]=[];
+  characteristics: AchievementCharacteristic[] = [];
   operators = ConditionOperator;
   operatorName: any;
   conditions: AchievementCondition[] = [new AchievementCondition];
   message: string = "";
   isInvalid: boolean = false;
+  number: number;
 
   constructor(private achievementService: AchievementService,
               private alertService: AlertService,
@@ -44,29 +45,35 @@ export class CreateAchievementComponent implements OnInit {
 
   isValid(): boolean {
     if (this.achievement.name == null || this.achievement.name.length == 0) {
-      this.message = "Please enter name of achievement";
+      this.message = "NAME";
+      this.number = 0;
       return false
     }
     if (this.achievement.description == null || this.achievement.description.length == 0) {
-      this.message = "Please enter description of achievement";
+      this.message = "DESCRIPTION";
+      this.number = 0;
       return false
     }
     if (this.achievement.conditions.length < 1) {
-      this.message = "Please add one or more condition";
+      this.message = "CONDITION";
+      this.number = 0;
       return false
     }
     for (let i = 0; i < this.achievement.conditions.length; i++) {
       let condition = this.achievement.conditions[i];
-      if (condition.characteristicId==null) {
-        this.message = `Please choose characteristic of your condition ${i + 1}`;
+      if (condition.characteristicId == null) {
+        this.message = `CHARACTERISTIC`;
+        this.number = i + 1;
         return false
       }
-      if (condition.operator == null ) {
-        this.message = `Please choose operator of your condition ${i + 1} `;
+      if (condition.operator == null) {
+        this.message = `OPERATOR`;
+        this.number = i + 1;
         return false
       }
       if (condition.value == null || condition.value == 0) {
-        this.message = `Please enter value of your condition ${i + 1} `;
+        this.message = `VALUE`;
+        this.number = i + 1;
         return false
       }
     }
@@ -74,25 +81,25 @@ export class CreateAchievementComponent implements OnInit {
   }
 
   send() {
-    this.achievement.conditions=this.conditions;
+    this.achievement.conditions = this.conditions;
     if (!this.isValid()) {
       this.isInvalid = true;
     } else {
       this.achievementService.sendAchievement(this.achievement).subscribe(
         data => {
-          if (data){
-            this.alertService.success('Adding successful', false);
+          if (data) {
+            this.alertService.success('DASHBOARD.ACHIEVEMENT_VALIDATION.SUCCESSFUL', false);
             this.isInvalid = false;
-            this.achievement.name="";
-            this.achievement.description="";
+            this.achievement.name = "";
+            this.achievement.description = "";
             this.conditions = [new AchievementCondition];
           } else {
-            this.alertService.error('Adding is not successful', false);
+            this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.ERRORED', false);
           }
         },
         error => {
-          this.alertService.error('Error while adding achievement!');
-          this.message = `cant add achievement`;
+          this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.ERRORED');
+          this.message = `DASHBOARD.ACHIEVEMENT_VALIDATION.ERRORED`;
           console.log(error);
         });
     }
