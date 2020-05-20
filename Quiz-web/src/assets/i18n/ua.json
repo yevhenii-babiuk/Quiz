@@ -166,11 +166,49 @@
       "UNAVAILABLE": "Вибачте, але ваш токен недоступний."
     }
   },
+  "viewProfile": {
+    "login": "Логін:",
+    "firstName": "Ім'я:",
+    "lastName": "Прізвище:",
+    "description": "Опис:",
+    "murrs": "Мурри:",
+    "edit": "Редагувати",
+    "savePhoto": "Зберегти фото",
+    "addToFriends": "Додати до друзів",
+    "deleteFromFriends": "Видалити з друзів",
+    "achievements": "Перерахувати досягнення",
+    "activate": "Активувати",
+    "deactivate": "Деактивувати"
+  },
+  "editProfile": {
+    "title": "Редагувати профіль",
+    "firstName": "Ім'я",
+    "lastName": "Прізвище",
+    "description": "Опис профілю",
+    "password": "Пароль",
+    "confirmPassword": "Підтвердити пароль",
+    "save": "Зберегти"
+  },
+  "activities": {
+    "user": "Користувач ",
+    "getAchievement": "отримав нагороду",
+    "createQuiz": "створив нову вікторину",
+    "addQuiz": "додав вікторину",
+    "favouriteList": "в список улюблених",
+    "addUser": "додав користувача",
+    "toFriends": "в друзі",
+    "categoryTypes": {
+      "addFriend": "Додані друзі",
+      "favouriteQuizzes": "Додані до списку улюблених вікторини",
+      "createdQuizzes": "Створені вікторини",
+      "achievements": "Досягнення"
+    }
+  },
   "SETTING": {
     "TITLE": "Налаштування гри",
     "TIME": "Час на відповідь",
-    "QUESTION FIRST":"Спочатку питання, потім відповіді",
-    "FIRST BONUS":"Бонус гравцю, який відповів першим",
+    "QUESTION FIRST": "Спочатку питання, потім відповіді",
+    "FIRST BONUS": "Бонус гравцю, який відповів першим",
     "COMBO BONUS": "Бонус за декілька послідовних правильних відповідей",
     "INTERMEDIATE RESULT": "Показувати проміжні результати",
     "PLAY": "ГРАТИ"
