@@ -8,4 +8,5 @@ export class GameDto {
   intermediateResult: boolean;
   hostId: number;
   image: string;
+  countQuestions:number;
 }

@@ -42,14 +42,14 @@ export class QuizzesComponent implements OnInit {
   }
 
   verticalBarFilters: FBFilter[] = [
-    new KeywordFilter('quizName', 'Quiz name'),
-    new KeywordFilter('authorName', 'Author name'),
-    new CheckboxFilter('category', 'Categories', this.categories),
-    new TagFilter('tag', 'Tags', this.tags),
-    new DateFilter("date", "Date", new Date(2020, 3, 20), new Date())
+    new KeywordFilter('quizName', 'quizName'),
+    new KeywordFilter('authorName', 'authorName'),
+    new CheckboxFilter('category', 'category', this.categories),
+    new TagFilter('tag', 'tags', this.tags),
+    new DateFilter("date", "date", new Date(2020, 3, 20), new Date())
   ]
 
-  quizStatusesFilter: FBFilter = new CheckboxFilter('status', 'Status', this.quizStatuses);
+  quizStatusesFilter: FBFilter = new CheckboxFilter('status', 'status', this.quizStatuses);
 
 
   @HostListener("window:scroll", ["$event"])

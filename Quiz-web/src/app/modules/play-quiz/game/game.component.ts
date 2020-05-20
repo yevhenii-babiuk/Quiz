@@ -28,7 +28,7 @@ export class GameComponent implements OnInit, OnDestroy {
   public gameResults: Users;
   eventType = EventType;
   receivedEvent: WebsocketEvent;
-  s:any;
+  s: any;
 
   public currentUser: UserDto;
   public gameId: string = this.route.snapshot.paramMap.get('gameId');
@@ -121,10 +121,12 @@ export class GameComponent implements OnInit, OnDestroy {
             that.isWaiting = false;
             that.question = null;
             that.gameResults = that.receivedEvent.gameResults;
+            if (that.gameResults.isFinal) {
+              localStorage.removeItem("playerId")
+            }
           }
         }
       });
-
     }, this);
   }
 

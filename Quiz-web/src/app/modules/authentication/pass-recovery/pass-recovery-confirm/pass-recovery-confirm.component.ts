@@ -6,6 +6,7 @@ import { Location } from '@angular/common';
 
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AlertService } from '../../../core/services/alert.service';
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-pass-recovery-confirm',
@@ -22,6 +23,7 @@ export class PassRecoveryConfirmComponent implements OnInit {
       private alertService: AlertService,
       private route: ActivatedRoute,
       private location: Location,
+      public translate: TranslateService,
       private router: Router
   ) { }
 
@@ -48,7 +50,7 @@ export class PassRecoveryConfirmComponent implements OnInit {
                   this.router.navigate(['/login']).then();
               },
               error => {
-                  this.alertService.error('Error while applying new pass');
+                  this.alertService.error('alert.errorApplyingPass');
                   console.log(error);
               });
  }

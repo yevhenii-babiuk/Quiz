@@ -16,7 +16,7 @@ export class AnnouncementsComponent implements OnInit {
   isWaiting: boolean = false;
   role: Role;
   roleEnum = Role;
-  isPublished: boolean = false;
+  isPublished: boolean = true;
 
   constructor(private announcementService: AnnouncementService,
               private securityService: SecurityService,

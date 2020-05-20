@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { AlertService } from '../../core/services/alert.service';
+import {TranslateService} from "@ngx-translate/core";
 
 import { User } from '../../core/models/user';
 
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
+    public translate: TranslateService,
     private router: Router
   ) { }
 
@@ -25,7 +27,7 @@ export class LoginComponent implements OnInit {
   onLogin(login: string, password: string) {
     login = login.trim();
     if (!login) {
-      this.alertService.error('Login is empty!');
+      this.alertService.error('alert.loginEmpty');
       return;
     }
 
@@ -36,7 +38,7 @@ export class LoginComponent implements OnInit {
                  this.router.navigate(['profile']).then();
                },
                error => {
-                   this.alertService.error('Error while login');
+                   this.alertService.error('alert.errorLogin');
                    console.log(error);
                });
   }

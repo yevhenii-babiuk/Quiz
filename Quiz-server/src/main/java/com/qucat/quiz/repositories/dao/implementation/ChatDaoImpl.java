@@ -53,6 +53,11 @@ public class ChatDaoImpl extends GenericDaoImpl<Chat> implements ChatDao {
     }
 
     @Override
+    public List<Chat> getAllFullInfoForUser(int id) {
+        return jdbcTemplate.query(chatQueries.get("getFullInfoForUser"), new Object[]{id}, new ChatExtractor());
+    }
+
+    @Override
     public Chat getFullInfo(int id) {
         String getQuery = chatQueries.get("getFullInfo").replace(";", " WHERE chat_id = ?;");
         List<Chat> result = jdbcTemplate.query(getQuery, new Object[]{id}, new ChatExtractor());

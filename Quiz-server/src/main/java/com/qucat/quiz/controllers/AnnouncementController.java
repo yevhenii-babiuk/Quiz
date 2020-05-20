@@ -17,7 +17,7 @@ public class AnnouncementController {
     private AnnouncementService announcementService;
 
     @PostMapping("/announcement")
-    public boolean createAnnouncement(@RequestBody Announcement announcement) {
+    public int createAnnouncement(@RequestBody Announcement announcement) {
         return announcementService.createAnnouncement(announcement);
     }
 

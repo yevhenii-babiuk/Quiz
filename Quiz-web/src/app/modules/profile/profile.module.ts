@@ -10,13 +10,15 @@ import { UserListComponent } from './user-list/user-list.component'
 import {AchievementModule} from "../achivement/achievement.module";
 import { FriendListComponent } from './friend-list/friend-list.component';
 import {TranslateModule} from "@ngx-translate/core";
+import {TopUserListComponent} from "./top-user-list/top-user-list.component";
 
 @NgModule({
   declarations: [
     ViewProfile,
     EditorComponent,
     UserListComponent,
-    FriendListComponent
+    FriendListComponent,
+    TopUserListComponent
   ],
   imports: [
     CommonModule,

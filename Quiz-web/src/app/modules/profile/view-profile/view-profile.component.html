@@ -25,29 +25,29 @@
                [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
           </div>
         </label>
-        <button *ngIf="isOwn && loadedPhoto" (click)="update()" class="btn btn-warning form-control mb-3">Зберегти фото</button>
+        <button *ngIf="isOwn && loadedPhoto" (click)="update()" class="btn btn-warning form-control mb-3">{{'viewProfile.savePhoto' | translate}}</button>
         <button *ngIf="isOwn" class="btn btn-warning btn-block" routerLink="../edit">
-          Редагувати
+          {{'viewProfile.edit' | translate}}
         </button>
         <button *ngIf="!isOwn && !isFriend && role == roleEnum.USER" class="btn btn-warning btn-block" (click)="friendship()">
-          Додати до друзів
+          {{'viewProfile.addToFriends' | translate}}
         </button>
         <button *ngIf="!isOwn && isFriend && role == roleEnum.USER" class="btn btn-warning btn-block" (click)="friendship()">
-          Видалити з друзів
+          {{'viewProfile.deleteFromFriends' | translate}}
         </button>
         <button *ngIf="role == roleEnum.ADMIN && isOwn" class="btn btn-warning btn-block"
                 (click)="recalculateAchievement()">
-          Перерахувати досягення
+          {{'viewProfile.achievements' | translate}}
         </button>
         <button *ngIf="userData.status==statusEnum.ACTIVATED && !isOwn &&
           (role == roleEnum.ADMIN || role == roleEnum.SUPER_ADMIN)" class="btn btn-warning btn-block"
                 (click)="changeStatus()">
-          Деактивувати
+          {{'viewProfile.deactivate' | translate}}
         </button>
         <button *ngIf="userData.status==statusEnum.UNACTIVATED && !isOwn &&
           (role == roleEnum.ADMIN || role == roleEnum.SUPER_ADMIN)" class="btn btn-warning btn-block"
                 (click)="changeStatus()">
-          Активувати
+          {{'viewProfile.activate' | translate}}
         </button>
       </div>
       <div class="col-lg-8">
@@ -55,25 +55,25 @@
             <table class="table table-hover h5">
               <tbody>
               <tr class="table-borderless">
-                <td style="text-align: left">Login:</td>
+                <td style="text-align: left">{{'viewProfile.login' | translate}}</td>
                 <td style="text-align: left">{{userData.login}}</td>
 
               </tr>
 
               <tr>
-                <td style="text-align: left">Name:</td>
+                <td style="text-align: left">{{'viewProfile.firstName' | translate}}</td>
                 <td style="text-align: left">{{userData.firstName}}</td>
               </tr>
               <tr>
-                <td style="text-align: left">Surname:</td>
+                <td style="text-align: left">{{'viewProfile.lastName' | translate}}</td>
                 <td style="text-align: left">{{userData.secondName}}</td>
               </tr>
               <tr>
-                <td style="text-align: left">Description:</td>
+                <td style="text-align: left">{{'viewProfile.description' | translate}}</td>
                 <td style="text-align: left">{{userData.profile}}</td>
               </tr>
               <tr *ngIf="userData.role == roleEnum.USER">
-                <td style="text-align: left">Murrs:</td>
+                <td style="text-align: left">{{'viewProfile.murrs' | translate}}</td>
                 <td style="text-align: left"> {{userData.score}}
                   <img src="../../assets/img/score.png" width="30" height="30" align="bottom"/></td>
               </tr>
@@ -87,7 +87,6 @@
 
   <div class="w-100" align="center">
     <div *ngIf="userData.role == roleEnum.USER">
-      <h4><p style="text-align:center">Досягнення</p></h4>
       <app-achievements-list [currentId]="id" ></app-achievements-list>
     </div>
     <!--    <div class="col-sm" *ngIf="role == roleEnum.ADMIN"></div>

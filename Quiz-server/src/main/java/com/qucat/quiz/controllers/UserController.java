@@ -25,7 +25,7 @@ public class UserController {
     }
 
     @PutMapping
-    public void updateUser(@RequestBody User editedUser) {
+    public void updateUser(@RequestBody @Valid User editedUser) {
         userService.updateUserProfile(editedUser);
     }
 

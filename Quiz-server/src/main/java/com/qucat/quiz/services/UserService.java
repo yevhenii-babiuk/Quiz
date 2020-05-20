@@ -55,7 +55,8 @@ public class UserService {
 
     @Transactional
     public boolean registerUser(User user) {
-
+        user.setRole(Role.USER);
+        user.setStatus(UserAccountStatus.UNACTIVATED);
         if (userDao.getUserByLogin(user.getLogin()) != null) {
             return false;
         }

@@ -3,8 +3,8 @@ import {Question} from '../../../core/models/question';
 
 import {timer} from 'rxjs';
 import {Answer} from "../../../core/models/answer";
-import {QuestionType} from "../../../core/models/questionType";
-import {QuestionOptions} from "../../../core/models/questionOptions";
+
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
   selector: 'app-play-question',
@@ -30,7 +30,7 @@ export class PlayQuestionComponent implements OnInit {
   sequence: Map<number, number> = new Map();
   answerText = '';
 
-  constructor() {
+  constructor(public translate: TranslateService) {
 
     timer(1000, 1000).subscribe(val => {
       if (this.subscribeTimer != 0) {

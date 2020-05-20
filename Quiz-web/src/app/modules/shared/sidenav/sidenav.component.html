@@ -38,6 +38,9 @@
       <li *ngIf="securityService.getCurrentRole()==roleEnum.USER && authenticationService.isAuthenticated()">
         <a routerLink="../friends">{{'SIDENAV.FRIENDS' | translate}}</a>
       </li>
+      <li *ngIf="securityService.getCurrentRole()==roleEnum.USER && authenticationService.isAuthenticated()">
+        <a routerLink="../chats">{{'SIDENAV.CHATS' | translate}}</a>
+      </li>
       <li *ngIf="authenticationService.isAuthenticated()">
         <a routerLink="../activities">{{'SIDENAV.ACTIVITY' | translate}}</a>
       </li>
@@ -53,8 +56,11 @@
       <li>
         <a routerLink="../announcements">{{'SIDENAV.ANNOUNCEMENTS' | translate}}</a>
       </li>
-      <li>
-        <a href="#">{{'SIDENAV.TOP' | translate}}</a>
+      <li *ngIf="securityService.getCurrentRole()==roleEnum.USER && authenticationService.isAuthenticated()">
+        <a routerLink="../top">{{'SIDENAV.TOP' | translate}}</a>
+      </li>
+      <li *ngIf="(securityService.getCurrentRole()==roleEnum.ADMIN || securityService.getCurrentRole()==roleEnum.ADMIN) && authenticationService.isAuthenticated()">
+        <a routerLink="../achievements/create">{{'SIDENAV.ACHIEVEMENT' | translate}}</a>
       </li>
       <li *ngIf="securityService.getCurrentRole() == roleEnum.SUPER_ADMIN && authenticationService.isAuthenticated()">
         <a routerLink="../createAdmin">{{'SIDENAV.CREATE_ADMIN' | translate}}</a>
