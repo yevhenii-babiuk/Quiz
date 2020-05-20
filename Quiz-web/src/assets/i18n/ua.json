@@ -38,8 +38,11 @@
     "SUBMIT": "Підтвердити"
   },
   "quiz": {
-    "createQuiz": "Створити квіз",
+    "createQuiz": "Створити вікторину",
     "NEXT": "Далі",
+    "favorite": "Улюблені",
+    "completed": "Пройдені",
+    "created": "Створені",
     "questionTypes": {
       "SELECT_OPTION": "Виберіть правильні відповіді",
       "SELECT_SEQUENCE": "Виберіть послідовність відповідей",
@@ -49,15 +52,38 @@
       "false": "Неправда"
     },
     "viewQuiz": {
-      "editQuiz": "Редагувати квіз",
-      "publishQuiz": "Опублікувати квіз",
-      "deactivateQuiz": "Деактивувати квіз",
-      "playQuiz": "Зіграти квіз",
-      "quizName": "Назва квіза",
+      "authorName": "Логін автора",
+      "date": "Дата",
+      "status": "Статус",
+      "editQuiz": "Редагувати вікторину",
+      "publishQuiz": "Опублікувати вікторину",
+      "deactivateQuiz": "Деактивувати вікторину",
+      "playQuiz": "Зіграти вікторину",
+      "quizName": "Назва вікторини",
       "category": "Категорія",
       "tags": "Теги",
       "description": "Опис",
       "questionType": "Тип питання"
+    },
+    "editQuiz": {
+      "enterQuizName": "Введіть назву вікторини",
+      "newTag": "Новий тег...",
+      "selectImage": "Вибрати фото",
+      "question": "Запитання",
+      "inputAnswer": "Введіть відповідь",
+      "correctAnswer": "Введіть правильно відповідь",
+      "addQuestion": "Додати запитання",
+      "send": "Надіслати"
+    },
+    "errorValidation": {
+      "noNameQuiz": "Будь ласка, введіть назву вікторини ",
+      "noDescQuiz": "Будь ласка, введіть опис вікторини ",
+      "noQuestions": "Будь ласка, додайте одне або більше запитань ",
+      "noNameImage": "Будь ласка, додайте вміст до ",
+      "question": "запитання ",
+      "option": "опції ",
+      "addMoreCorrectAnswer": "Будь ласка, додайте більше коректних відповідей для ",
+      "addLessCorrectAnswer": "Будь ласка, додайте менше коректних відповідей для "
     }
   },
   "DASHBOARD": {
