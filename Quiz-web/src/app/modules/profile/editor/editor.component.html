@@ -3,17 +3,32 @@
   <div class="form-horizontal align-content-center">
     <div class="form-group required"><label class="col-md-2 control-label offset-md-1">{{'editProfile.firstName' | translate}}</label>
       <div class="col-sm-9 offset-md-1">
-        <input type="text" placeholder="First Name" class="form-control" autofocus #firstname value={{userData.firstName}}>
+        <input type="text" placeholder="First Name" class="form-control" [(ngModel)]="userData.firstName"
+               #firstname="ngModel"
+               pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="fnHelp">
+        <small id="fnHelp" class="form-text text-danger" [hidden]="firstname.valid || firstname.untouched">
+          First name should be at least 2 characters long and have no numbers
+        </small>
       </div>
     </div>
     <div class="form-group required"><label class="col-md-2 control-label offset-md-1">{{'editProfile.lastName' | translate}}</label>
       <div class="col-sm-9 offset-md-1">
-        <input type="text" placeholder="Last Name" class="form-control" autofocus #lastname value={{userData.secondName}}>
+        <input type="text" placeholder="Last Name" class="form-control" [(ngModel)]="userData.secondName"
+               #lastname="ngModel"
+               pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="lnHelp">
+        <small id="lnHelp" class="form-text text-danger" [hidden]="lastname.valid || lastname.untouched">
+          Last name should be at least 2 characters long and have no numbers
+        </small>
       </div>
     </div>
     <div class="form-group required"><label class="col-md-2 control-label offset-md-1">E-mail</label>
       <div class="col-sm-9 offset-md-1">
-        <input type="email" placeholder="Email" class="form-control" name= "email" autofocus #email value={{userData.mail}}>
+        <input type="email" placeholder="Email" class="form-control" [(ngModel)]="userData.mail"
+               #email="ngModel"
+               pattern="^[A-z\d._]+@[A-z]+\.[A-z]+$" aria-describedby="emailHelp">
+        <small id="emailHelp" class="form-text text-danger" [hidden]="email.valid || email.untouched">
+          Email does't match the pattern: example@gmail.com
+        </small>
       </div>
     </div>
     <div class="form-group"><label class="col-md-2 control-label offset-md-1">{{'editProfile.description' | translate}}</label>
@@ -23,7 +38,12 @@
     </div>
     <div class="form-group required"><label class="col-md-2 control-label offset-md-1">{{'editProfile.password' | translate}}</label>
       <div class="col-sm-9 offset-md-1" >
-        <input type="password" placeholder="Password" class="form-control" autofocus #password>
+        <input type="password" placeholder="Password" class="form-control"
+               autofocus #password
+               pattern="^.{8,}$" aria-describedby="passHelp">
+        <small id="passHelp" class="form-text text-danger">
+          Password should be at least 8 symbols
+        </small>
       </div>
     </div>
 

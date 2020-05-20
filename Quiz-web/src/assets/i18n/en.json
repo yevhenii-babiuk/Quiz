@@ -78,5 +78,20 @@
     "password": "Password",
     "confirmPassword": "Confirm password",
     "save": "Save"
+  },
+  "activities": {
+    "user": "User",
+    "getAchievement": "received an achievement ",
+    "createQuiz": "created a new quiz",
+    "addQuiz": "added quiz",
+    "favouriteList": "to the list of favourite quizzes",
+    "addUser": "added user",
+    "toFriends": "to friends",
+    "categoryTypes": {
+      "addFriend": "Added friends",
+      "favouriteQuizzes": "Added quizzes to favorites list",
+      "createdQuizzes": "Created quizzes",
+      "achievements": "Achievements"
+    }
   }
 }

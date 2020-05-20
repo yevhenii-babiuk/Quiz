@@ -78,5 +78,20 @@
     "password": "Пароль",
     "confirmPassword": "Підтвердити пароль",
     "save": "Зберегти"
+  },
+  "activities": {
+    "user": "Користувач ",
+    "getAchievement": "отримав нагороду",
+    "createQuiz": "створив нову вікторину",
+    "addQuiz": "додав вікторину",
+    "favouriteList": "в список улюблених",
+    "addUser": "додав користувача",
+    "toFriends": "в друзі",
+    "categoryTypes": {
+      "addFriend": "Додані друзі",
+      "favouriteQuizzes": "Додані до списку улюблених вікторини",
+      "createdQuizzes": "Створені вікторини",
+      "achievements": "Досягнення"
+    }
   }
 }
