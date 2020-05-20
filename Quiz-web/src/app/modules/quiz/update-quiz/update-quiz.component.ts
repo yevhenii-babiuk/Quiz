@@ -34,11 +34,12 @@ export class UpdateQuizComponent implements OnInit {
   filteredTags: Observable<string[]>;
   tags: string[] = [];
 
+  questionTypes: string[] = ['SELECT_OPTION', 'SELECT_SEQUENCE', 'TRUE_FALSE', 'ENTER_ANSWER']
 
-  message: string = "";
+  messages: string[] = [];
   isInvalid: boolean = false;
 
-  @ViewChild('fruitInput') fruitInput: ElementRef<HTMLInputElement>;
+  @ViewChild('tagInput') fruitInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
 
   constructor(
@@ -111,7 +112,7 @@ export class UpdateQuizComponent implements OnInit {
 
     reader.addEventListener('load', (event: any) => {
       imaged.image.src = event.target.result;
-      imaged.image.src=imaged.image.src.substring(imaged.image.src.indexOf(',')+1)
+      imaged.image.src = imaged.image.src.substring(imaged.image.src.indexOf(',') + 1)
       this.quizzesService.putImage(file).subscribe(
         id => {
           console.log("id=" + id);
@@ -168,22 +169,30 @@ export class UpdateQuizComponent implements OnInit {
   }
 
   isValid(): boolean {
+    this.messages=[];
     if (this.quiz.name == null || this.quiz.name.length == 0) {
-      this.message = "Please enter name of quiz";
+      //this.message = "Please enter name of quiz";
+      this.messages[0]="quiz.errorValidation.noNameQuiz";
       return false
     }
     if (this.quiz.description == null || this.quiz.description.length == 0) {
-      this.message = "Please enter description of quiz";
+      //this.message = "Please enter description of quiz";
+      this.messages[0]="quiz.errorValidation.noDescQuiz";
       return false
     }
     if (this.quiz.questions.length < 1) {
-      this.message = "Please add one or more question";
+      //this.message = "Please add one or more question";
+      this.messages[0]="quiz.errorValidation.noQuestions";
       return false
     }
     for (let i = 0; i < this.quiz.questions.length; i++) {
       let question = this.quiz.questions[i];
       if ((question.content == null || question.content.length == 0) && question.imageId == -1) {
-        this.message = `Please enter name or add image of your ${i + 1} question`;
+        //this.message = `Please enter name or add image of your ${i + 1} question`;
+        this.messages[0]="quiz.errorValidation.noNameImage";
+        this.messages[1]=`${i + 1}`
+        this.messages[2]="quiz.errorValidation.question"
+
         return false
       }
       let countCorrectAnswer = 0;
@@ -194,18 +203,29 @@ export class UpdateQuizComponent implements OnInit {
             countCorrectAnswer++;
           }
           if (question.options[j].content.length == 0 && question.options[j].imageId == -1) {
-            this.message = `Please enter name ${(question.type == "ENTER_ANSWER" ? '' : ' or add image')}
-             for your ${j + 1} option ${i + 1} question`;
+            //this.message = `Please enter name ${(question.type == "ENTER_ANSWER" ? '' : ' or add image')}
+            // for your ${j + 1} option ${i + 1} question`;
+            this.messages[0]="quiz.errorValidation.noNameImage"
+            this.messages[1]=`${j + 1}`
+            this.messages[2]="quiz.errorValidation.option"
+            this.messages[3]=`${i + 1}`
+            this.messages[4]="quiz.errorValidation.question"
             return false
           }
         }
       if (question.type == "SELECT_OPTION") {
         if (countCorrectAnswer == 0) {
-          this.message = `Please chose one or more correct answer for your ${i + 1} question`;
+          //this.message = `Please chose one or more correct answer for your ${i + 1} question`;
+          this.messages[0]="quiz.errorValidation.addMoreCorrectAnswer";
+          this.messages[1]=`${i + 1}`
+          this.messages[2]="quiz.errorValidation.question"
           return false
         }
         if (countCorrectAnswer == question.options.length) {
-          this.message = `Please chose less correct answer for your ${i + 1} question`;
+          //this.message = `Please chose less correct answer for your ${i + 1} question`;
+          this.messages[0]="quiz.errorValidation.addLessCorrectAnswer";
+          this.messages[1]=`${i + 1}`
+          this.messages[2]="quiz.errorValidation.question"
           return false
         }
       }
@@ -229,7 +249,7 @@ export class UpdateQuizComponent implements OnInit {
           this.router.navigate(['quiz/' + id])
         },
         error => {
-          this.message = `cant ${this.quiz.id ? 'update' : 'add'} quiz`;
+          //this.message = `cant ${this.quiz.id ? 'update' : 'add'} quiz`;
           console.log(error);
         });
     }

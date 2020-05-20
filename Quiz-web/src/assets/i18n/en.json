@@ -64,6 +64,26 @@
       "tags": "Tags",
       "description": "Description",
       "questionType": "Question type"
+    },
+    "editQuiz": {
+      "enterQuizName": "Enter quiz name",
+      "newTag": "New tag...",
+      "selectImage": "Select image",
+      "question": "Question",
+      "inputAnswer": "Input answer",
+      "correctAnswer": "Correct answer",
+      "addQuestion": "Add question",
+      "send": "Send"
+    },
+    "errorValidation": {
+      "noNameQuiz": "Please enter name of quiz ",
+      "noDescQuiz": "Please enter description of quiz ",
+      "noQuestions": "Please add one or more question ",
+      "noNameImage": "Please add content for your ",
+      "question": "question ",
+      "option": "option ",
+      "addMoreCorrectAnswer": "Please chose one or more correct answer for your ",
+      "addLessCorrectAnswer": "Please chose less correct answer for your "
     }
   },
   "DASHBOARD": {
