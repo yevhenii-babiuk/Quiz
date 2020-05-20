@@ -110,7 +110,8 @@ export class UpdateQuizComponent implements OnInit {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      imaged.image.src = event.target.result.substring(23);
+      imaged.image.src = event.target.result;
+      imaged.image.src=imaged.image.src.substring(imaged.image.src.indexOf(',')+1)
       this.quizzesService.putImage(file).subscribe(
         id => {
           console.log("id=" + id);
