@@ -13,7 +13,9 @@
     "FRIENDS": "Friends",
     "ANNOUNCEMENTS": "Announcements",
     "TOP": "Top users",
-    "PROFILE": "Profile"
+    "PROFILE": "Profile",
+    "CREATE_ADMIN": "Create admin or moderator",
+    "CREATE_MODER": "Create moderator"
   },
   "USERLIST": {
     "LOGIN": "Login",
@@ -54,7 +56,10 @@
       "tags": "Tags",
       "description": "Description",
       "questionType": "Question type"
-
+    },
+    "CREATE_ADMIN": {
+      "TITLE": "Create admin/moderator",
+      "BUTTON": "Create"
     }
   }
 }
