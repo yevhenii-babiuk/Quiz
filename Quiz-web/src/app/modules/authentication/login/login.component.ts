@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 
 import { AuthenticationService } from '../../core/services/authentication.service';
 import { AlertService } from '../../core/services/alert.service';
+import {TranslateService} from "@ngx-translate/core";
 
 import { User } from '../../core/models/user';
 
@@ -16,6 +17,7 @@ export class LoginComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
+    public translate: TranslateService,
     private router: Router
   ) { }
 

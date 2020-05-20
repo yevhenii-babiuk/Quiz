@@ -5,7 +5,7 @@
     <div class="row form-group">
       <div class="col-sm"></div>
       <div class="col-sm">
-        <h3>Please, enter a new password</h3>
+        <h3>{{ 'AUTHENTICATION.PASS_RECOVERY.NEW_PASSWORD_MSG' | translate }}</h3>
       </div>
       <div class="col-sm"></div>
     </div>
@@ -22,7 +22,7 @@
       <div class="col-sm"></div>
       <div class="col-sm text-center">
         <button class="btn btn-block btn-warning" (click)="createNewPass(password.value)">
-          Apply
+          {{ 'AUTHENTICATION.PASS_RECOVERY.APPLY' | translate }}
         </button>
       </div>
       <div class="col-sm"></div>
@@ -32,7 +32,7 @@
 
   <ng-template #tokenUnavailable>
     <div class="col-sm text-center">
-      <h3>Sorry, but your token is unavailable.</h3>
+      <h3>{{ 'AUTHENTICATION.PASS_RECOVERY.UNAVAILABLE' | translate }}</h3>
     </div>
   </ng-template>
 
