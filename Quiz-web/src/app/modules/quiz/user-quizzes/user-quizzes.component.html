@@ -1,11 +1,11 @@
 <nav>
   <div class="nav nav-tabs" id="nav-tab" role="tablist">
     <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab" href="#nav-favorite" role="tab"
-       (click)="selectedTab=0" aria-controls="nav-favorite" aria-selected="true">Favorite</a>
+       (click)="selectedTab=0" aria-controls="nav-favorite" aria-selected="true">{{'quiz.favorite'|translate}}</a>
     <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-completed" role="tab"
-       (click)="selectedTab=1" aria-controls="nav-completed" aria-selected="false">Completed</a>
+       (click)="selectedTab=1" aria-controls="nav-completed" aria-selected="false">{{'quiz.completed'|translate}}</a>
     <a class="nav-item nav-link" id="nav-contact-tab" data-toggle="tab" href="#nav-created" role="tab"
-       (click)="selectedTab=2" aria-controls="nav-created" aria-selected="false">Created</a>
+       (click)="selectedTab=2" aria-controls="nav-created" aria-selected="false">{{'quiz.created'|translate}}</a>
   </div>
 </nav>
 <div class="tab-content" id="nav-tabContent">
