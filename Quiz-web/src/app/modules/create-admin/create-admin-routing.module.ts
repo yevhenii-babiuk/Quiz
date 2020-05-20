@@ -1,12 +1,18 @@
 import {NgModule} from "@angular/core";
 
-import { Routes, RouterModule, CanActivate } from '@angular/router';
+import {Routes, RouterModule, CanActivate} from '@angular/router';
 
 import {CreateAdminComponent} from "./pages/create-admin.component";
-import {TranslateModule} from "@ngx-translate/core";
+import {RoleGuardService as RoleGuard} from "../core/services/role-guard.service";
 
 const createAdminRoutes: Routes = [
-  { path: 'createAdmin', component: CreateAdminComponent },
+  {
+    path: 'createAdmin', component: CreateAdminComponent,
+    canActivate: [RoleGuard],
+    data: {
+      expectedRole: 'SUPER_ADMIN, ADMIN'
+    }
+  }
 
 ];
 
@@ -18,4 +24,5 @@ const createAdminRoutes: Routes = [
     RouterModule
   ]
 })
-export class CreateAdminRoutingModule { }
+export class CreateAdminRoutingModule {
+}
