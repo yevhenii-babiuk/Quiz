@@ -28,6 +28,12 @@
   margin-bottom: 15px;
 }
 
+.custom-collapse-nav{
+  margin-left: -15px;
+  margin-right: -15px;
+  z-index: 100000;
+}
+
 .custom-link:hover{
   cursor: pointer;
 }
