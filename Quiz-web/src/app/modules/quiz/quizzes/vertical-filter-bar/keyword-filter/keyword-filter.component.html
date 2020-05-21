@@ -2,7 +2,7 @@
 <!--<i class="fas fa-search"></i>-->
 <input
     type="text"
-    placeholder="{{model.title}}"
+    placeholder="{{'quiz.viewQuiz.' + model.title | translate}}"
     [(ngModel)]="model.filterValue"
     (keyup)="onKeyUp($event)"
     (change)="onChange($event)"

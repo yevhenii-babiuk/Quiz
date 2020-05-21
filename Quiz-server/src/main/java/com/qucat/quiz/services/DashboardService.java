@@ -1,11 +1,7 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.DashboardDao;
-import com.qucat.quiz.repositories.dto.statistic.AdminStatistics;
-import com.qucat.quiz.repositories.dto.statistic.BestQuiz;
-import com.qucat.quiz.repositories.dto.statistic.CategoryStatistics;
-import com.qucat.quiz.repositories.dto.statistic.ComparedScores;
-import com.qucat.quiz.repositories.dto.statistic.QuizStatistics;
+import com.qucat.quiz.repositories.dto.statistic.*;
 import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +69,7 @@ public class DashboardService {
     public List<ComparedScores> getComparedScores(int userId) {
         List<ComparedScores> comparedScores = dashboardDao.getComparedScores(userId);
         if (comparedScores.isEmpty()) {
-            log.warn("Can`t get information about scores of user with id={}",userId);
+            log.warn("Can`t get information about scores of user with id={}", userId);
             return Collections.emptyList();
         } else {
             return comparedScores;
@@ -83,7 +79,7 @@ public class DashboardService {
     public List<QuizStatistics> getFriendsPreferences(int userId) {
         List<QuizStatistics> friendsPreferences = dashboardDao.getFriendsPreferences(userId);
         if (friendsPreferences.isEmpty()) {
-            log.warn("Can`t get information about about the preferences of friends of a user with id = {}",userId);
+            log.warn("Can`t get information about about the preferences of friends of a user with id = {}", userId);
             return Collections.emptyList();
         } else {
             return friendsPreferences;

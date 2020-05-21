@@ -26,6 +26,9 @@ public class TakeQuizService {
 
     public void saveUsersResults(List<UserDto> users) {
         for (UserDto user : users) {
+            if (user.getRegisterId() == 0) {
+                continue;
+            }
             TakeQuiz takeQuiz = takeQuizDao.getUserResultByQuiz(
                     user.getRegisterId(), user.getQuizId());
             if (takeQuiz != null && user.getScore() > takeQuiz.getScore()) {

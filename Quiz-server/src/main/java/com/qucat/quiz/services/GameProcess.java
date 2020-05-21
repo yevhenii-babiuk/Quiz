@@ -103,7 +103,9 @@ public class GameProcess implements Runnable {
             gameDao.deleteGameQuestion(questionDto.getId());
         }
         sendResults(true, currentQuestion);
-        takeQuizService.saveUsersResults(gameDao.getUsersByGame(gameId));
+        List<UserDto> users = gameDao.getUsersByGame(gameId);
+        users.forEach(userDto -> userDto.setQuizId(gameDto.getQuizId()));
+        takeQuizService.saveUsersResults(users);
         gameDao.deleteGame(gameId);
     }
 

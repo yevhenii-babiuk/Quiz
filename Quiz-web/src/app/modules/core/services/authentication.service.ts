@@ -40,6 +40,11 @@ export class AuthenticationService {
     return this.http.post<User>(`${url}/registration`, user, this.httpOptions);
   }
 
+  createAdmin(user: User){
+    console.log(user);
+    return this.http.post<User>(`${url}/users/create`, user, this.httpOptions);
+  }
+
   confirmMail(token: string) {
     return this.http.get<boolean>(`${url}/registration/${token}`);
   }

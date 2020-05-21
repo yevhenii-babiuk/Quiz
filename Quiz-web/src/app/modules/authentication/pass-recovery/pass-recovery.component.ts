@@ -24,17 +24,17 @@ export class PassRecoveryComponent implements OnInit {
   reset(email: string) {
     email = email.trim();
     if (!email) {
-      this.alertService.error('Enter the email!');
+      this.alertService.error('alert.enterMail');
       return;
     }
 
     this.authenticationService.resetPass(email)
       .subscribe(
         data => {
-          this.alertService.success('Reset is successful. Check your email box.', true);
+          this.alertService.success('alert.resetSuccessful', true);
         },
         error => {
-          this.alertService.error('Error while reset!');
+          this.alertService.error('alert.errorReset');
           console.log(error);
         });
   }

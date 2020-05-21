@@ -1,5 +1,6 @@
 import {Question} from "./question";
 import {Users} from "./gameResults";
+import {NotificationDto} from "./notificationDto";
 import {Message} from "./message";
 
 export class WebsocketEvent {
@@ -8,11 +9,13 @@ export class WebsocketEvent {
   gameResults: Users;
   message: Message;
   type:EventType;
+  notification: NotificationDto;
 }
 
 export enum EventType {
   RESULTS = "RESULTS",
   QUESTION = "QUESTION",
   PLAYERS = "PLAYERS",
-  MESSAGE = "MESSAGE"
+  MESSAGE = "MESSAGE",
+  NOTIFICATION = "NOTIFICATION"
 }

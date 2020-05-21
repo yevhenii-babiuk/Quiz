@@ -1,11 +1,10 @@
-import {Component, HostListener, Input, OnInit} from '@angular/core';
+import {Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
 import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {ActivitiesService} from "../../core/services/activities.service";
 import {Activity} from "../../core/models/activity";
 import {FriendActivityType} from "../../core/models/friendActivityType";
-import {Image} from "../../core/models/image";
-import {GameDto} from "../../core/models/gameDto";
+import {TranslateService} from "@ngx-translate/core";
 
 
 @Component({
@@ -18,22 +17,22 @@ export class ViewActivitiesComponent implements OnInit {
   activityCategories = [
     {
       id: '1',
-      value: 'Додані друзі',
+      activityType: 'addFriend',
       selected: false
     },
     {
       id: '2',
-      value: 'Додані до списку улюблених вікторини',
+      activityType: 'favouriteQuizzes',
       selected: false
     },
     {
       id: '3',
-      value: 'Створені вікторини',
+      activityType: 'createdQuizzes',
       selected: false
     },
     {
       id: '4',
-      value: 'Досягнення',
+      activityType: 'achievements',
       selected: false
     }
   ]
@@ -41,23 +40,37 @@ export class ViewActivitiesComponent implements OnInit {
   activities: Activity[] = [];
   userId: number;
   role: Role;
+  isWaiting: boolean;
 
+  @HostListener("window:scroll", ["$event"])
+  onWindowScroll() {
+
+    if (document.documentElement.scrollHeight - document.documentElement.scrollTop -
+      document.documentElement.clientHeight < 40) {
+      this.getActivities();
+    }
+
+  }
 
   constructor(private activitiesService: ActivitiesService,
               private securityService: SecurityService,
+              public translate: TranslateService,
   ) {
   }
 
   getActivities(): void {
     this.userId = this.securityService.getCurrentId();
     console.log(this.userId);
-    this.activitiesService.getActivitiesByUserId(this.userId)
+    if (this.isWaiting) {
+      return;
+    }
+    this.isWaiting = true;
+    this.activitiesService.getActivitiesPageByUserId(this.userId, this.activities.length)
       .subscribe(
         activities => {
-          if (activities.length == 0) {
-            return;
+          if (activities.length == 10) {
+            this.isWaiting = false;
           }
-
           this.activities = this.activities.concat(activities);
         },
         err => {
@@ -76,6 +89,7 @@ export class ViewActivitiesComponent implements OnInit {
     });
 
     if (!resultSelected[0] && !resultSelected[1] && !resultSelected[2] && !resultSelected[3]) {
+      this.isWaiting = false;
       this.getActivities();
       return;
     }

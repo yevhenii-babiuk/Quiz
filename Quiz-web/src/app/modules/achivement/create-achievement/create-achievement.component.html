@@ -1,6 +1,6 @@
 <div class="container mt-3">
   <div *ngIf="isInvalid" class="w-100 alert border-danger">
-    {{message}}
+    {{'DASHBOARD.ACHIEVEMENT_VALIDATION.'+ message | translate}} <span *ngIf="number!=0"> {{number}}</span>
   </div>
   <div class="row">
     <div class="col-6">
