@@ -11,7 +11,6 @@ import {socket} from "../../../../environments/environment.prod";
 import {EventType, WebsocketEvent} from "../../core/models/websocketEvent";
 import {ProfileService} from "../../core/services/profile.service";
 import {User} from "../../core/models/user";
-import {Role} from "../../core/models/role";
 
 @Component({
   selector: 'app-chat-area',
@@ -152,6 +151,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         .subscribe(
           data => {
             this.invitation = false;
+            this.chat.users.push(this.selectedFriend);
           },
           err => {
             console.log(err);
