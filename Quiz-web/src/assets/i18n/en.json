@@ -248,7 +248,8 @@
     "QUESTION FIRST":"Question first, answers later",
     "FIRST BONUS":"Bonus for the quickest player",
     "COMBO BONUS": "Bonus for combo of right answers",
-    "INTERMEDIATE RESULT": "Show intermediate results"
+    "INTERMEDIATE RESULT": "Show intermediate results",
+    "PLAY": "PLAY"
   },
   "HOME": {
     "PLAY": "Play now"
