@@ -4,9 +4,8 @@
       <ng-container *ngFor="let activity of activityCategories">
 
         <input [(ngModel)]="activity.selected" id={{activity.id}} type="checkbox" class="styled"
-               (change)="getFilteredActivities()">
+               (change)="clearActivities(); getFilteredActivities()">
         <label for={{activity.id}}>
-          <!--{{activity.value}}-->
           {{'activities.categoryTypes.'+activity.activityType|translate}}
         </label>
 

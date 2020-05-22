@@ -22,29 +22,15 @@ export class ActivitiesService {
   constructor(private http: HttpClient) {
   }
 
-  getFilterActivities(id: number, categoryFilter: boolean[]): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${url}/activities?id=${id}&categoryFilter=${categoryFilter}`)
-      .pipe(
-        catchError(this.handleError<Activity[]>([]))
-      );
-  }
-
-  getFilterActivitiesPage(id: number, categoryFilter: boolean[], currentCount: number): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${url}/activities/filter/pages?id=${id}&categoryFilter=${categoryFilter}&pageNumber=${currentCount/10}`)
-      .pipe(
-        catchError(this.handleError<Activity[]>([]))
-      );
-  }
-
-  getActivitiesByUserId(id: number): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${url}/activities/${id}`)
+  getFilterActivitiesPage(userId: number, categoryFilter: boolean[], currentCount: number): Observable<Activity[]> {
+    return this.http.get<Activity[]>(`${url}/activities/filter/${userId}?categoryFilter=${categoryFilter}&pageNumber=${currentCount/10}`)
       .pipe(
         catchError(this.handleError<Activity[]>([]))
       );
   }
 
   getActivitiesPageByUserId(userId: number, currentCount: number): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${url}/activities/${userId}/pages?pageNumber=${currentCount/10}`)
+    return this.http.get<Activity[]>(`${url}/activities/${userId}?pageNumber=${currentCount/10}`)
       .pipe(
         catchError(this.handleError<Activity[]>([]))
       );
