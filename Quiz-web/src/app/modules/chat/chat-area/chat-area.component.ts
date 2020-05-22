@@ -48,6 +48,15 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.id = this.securityService.getCurrentId();
     this.chat.id = +this.route.snapshot.paramMap.get('chatId');
 
+    this.chatService.checkChatAffiliation(this.id, this.chat.id)
+      .subscribe(
+        answer => {
+          if (!answer) {
+            this.router.navigate([`chats`]).then();
+          }
+        }
+      );
+
     this.chatService.getChat(this.chat.id)
       .subscribe(
         chat => {

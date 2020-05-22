@@ -20,6 +20,7 @@ import org.springframework.stereotype.Repository;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -132,25 +133,25 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Override
     public Page<User> getUserByRole(Role role, Pageable pageable) {
-        int rowTotal = jdbcTemplate.queryForObject(usersQueries.get("rowCount"),
+        Number rowTotal = jdbcTemplate.queryForObject(usersQueries.get("rowCount"),
                 new Object[]{role.name().toLowerCase()},
                 (resultSet, number) -> resultSet.getInt(1));
         List<User> users = jdbcTemplate.query(usersQueries.get("getPageByRole"),
                 new Object[]{role.name().toLowerCase(), pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
-        return new PageImpl<>(users, pageable, rowTotal);
+        return new PageImpl<>(users, pageable, rowTotal != null ? rowTotal.intValue() : 0);
     }
 
     @Override
     public Page<User> getAllUsersPage(Pageable pageable) {
-        int total = jdbcTemplate.queryForObject(usersQueries.get("allUsersCount"),
+        Number total = jdbcTemplate.queryForObject(usersQueries.get("allUsersCount"),
                 new Object[]{},
                 (resultSet, number) -> resultSet.getInt(1));
         List<User> users = jdbcTemplate.query(
                 usersQueries.get("getAllUsersPage"),
                 new Object[]{pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
-        return new PageImpl<>(users, pageable, total);
+        return new PageImpl<>(users, pageable, total != null ? total.intValue() : 0);
     }
 
     @Override
@@ -197,7 +198,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Override
     public Page<User> getUserFriendsPage(int userId, Pageable pageable) {
-        int total = jdbcTemplate.queryForObject(friendsQueries.get("rowCount"),
+        Number total = jdbcTemplate.queryForObject(friendsQueries.get("rowCount"),
                 new Object[]{userId},
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
@@ -205,7 +206,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 friendsQueries.get("getUserFriends").replace(";", " LIMIT ? OFFSET ?;"),
                 new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
-        return new PageImpl<>(friends, pageable, total);
+        return new PageImpl<>(friends, pageable, total != null ? total.intValue() : 0);
     }
 
     @Override
@@ -218,7 +219,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Override
     public Page<FriendActivity> getAllFriendsActivityPage(int userId, Pageable pageable) {
-        int total = jdbcTemplate.queryForObject(friendsActivityQueries.get("allRowCount"),
+        Number total = jdbcTemplate.queryForObject(friendsActivityQueries.get("allRowCount"),
                 new Object[]{userId},
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
@@ -226,7 +227,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 friendsActivityQueries.get("getAllFriendsActivity").replace(";", " LIMIT ? OFFSET ?;"),
                 new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
                 new FriendActivityExtractor());
-        return new PageImpl<>(activities, pageable, total);
+        return new PageImpl<>(activities != null ? activities : new ArrayList<>(), pageable, total != null ? total.intValue() : 0);
     }
 
     @Override
@@ -244,7 +245,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         String query = friendsActivityQueries.get("activitySelectStart") + innerQuery + friendsActivityQueries.get("activitySelectEnd");
         String countQuery = friendsActivityQueries.get("activityCountStart") + innerQuery + friendsActivityQueries.get("activityCountEnd");
 
-        int total = jdbcTemplate.queryForObject(countQuery,
+        Number total = jdbcTemplate.queryForObject(countQuery,
                 new Object[]{userId},
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
@@ -252,7 +253,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 query.replace(";", " LIMIT ? OFFSET ?;"),
                 new Object[]{userId, pageable.getPageSize(), pageable.getOffset()},
                 new FriendActivityExtractor());
-        return new PageImpl<>(activities, pageable, total);
+        return new PageImpl<>(activities != null ? activities : new ArrayList<>(), pageable, total != null ? total.intValue() : 0);
     }
 
     @Override
@@ -277,7 +278,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public Page<User> searchUsersByLogin(String login, Pageable pageable) {
         login = '%' + login + '%';
 
-        int total = jdbcTemplate.queryForObject(usersQueries.get("countRowsForSearchByLogin"),
+        Number total = jdbcTemplate.queryForObject(usersQueries.get("countRowsForSearchByLogin"),
                 new Object[]{login},
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
@@ -285,14 +286,14 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 usersQueries.get("searchUsersByLogin").replace(";", " LIMIT ? OFFSET ?;"),
                 new Object[]{login, pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
-        return new PageImpl<>(users, pageable, total);
+        return new PageImpl<>(users, pageable, total != null ? total.intValue() : 0);
     }
 
     @Override
     public Page<User> searchUsersByLogin(String login, Role role, Pageable pageable) {
         login = '%' + login + '%';
 
-        int total = jdbcTemplate.queryForObject(usersQueries.get("countRowsForSearchByLogin").replace(";", " AND role = cast(? AS user_role);"),
+        Number total = jdbcTemplate.queryForObject(usersQueries.get("countRowsForSearchByLogin").replace(";", " AND role = cast(? AS user_role);"),
                 new Object[]{login, role.name().toLowerCase()},
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
@@ -300,14 +301,20 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
                 usersQueries.get("searchUsersByLogin").replace(";", " AND role = cast(? AS user_role) LIMIT ? OFFSET ?;"),
                 new Object[]{login, role.name().toLowerCase(), pageable.getPageSize(), pageable.getOffset()},
                 new UserMapper());
-        return new PageImpl<>(users, pageable, total);
+        return new PageImpl<>(users, pageable, total != null ? total.intValue() : 0);
     }
 
     @Override
     public boolean checkUsersFriendship(int firstUserId, int secondUserId) {
-        return jdbcTemplate.queryForObject(friendsQueries.get("checkFriendship"),
+        Number total = jdbcTemplate.queryForObject(friendsQueries.get("checkFriendship"),
                 new Object[]{firstUserId, secondUserId},
-                (resultSet, number) -> resultSet.getInt("row_count")) > 0;
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        if (total == null) {
+            return false;
+        }
+
+        return total.intValue() > 0;
     }
 
     @Override
