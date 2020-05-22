@@ -67,7 +67,7 @@ public class ChatService {
         chatDao.update(chat);
     }
 
-    public boolean checkChatAffiliation(int chatId, int userId){
+    public boolean checkChatAffiliation(int chatId, int userId) {
         return chatDao.checkChatAffiliation(chatId, userId);
     }
 }
