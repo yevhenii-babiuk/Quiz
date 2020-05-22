@@ -68,8 +68,6 @@ export class PlayQuestionComponent implements OnInit {
     this.answer.questionId = this.question.id;
     this.isSend = true;
 
-    console.log(this.answer);
-
     this.sendAnswer.emit(this.answer)
   }
 
@@ -79,8 +77,6 @@ export class PlayQuestionComponent implements OnInit {
     } else {
       this.answer.options.splice(this.answer.options.indexOf(optId), 1);
     }
-
-    console.log(this.answer.options);
   }
 
   setTrueFalseOption(value: boolean) {
