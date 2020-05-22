@@ -14,6 +14,8 @@
     "ANNOUNCEMENTS": "Announcements",
     "TOP": "Top users",
     "PROFILE": "Profile",
+    "CREATE_ADMIN": "Create admin or moderator",
+    "CREATE_MODER": "Create moderator",
     "ACHIEVEMENT": "Create achievement",
     "CHATS": "Chats"
   },
@@ -27,7 +29,14 @@
     "enterMail": "Enter the email!",
     "resetSuccessful": "Reset is successful. Check your email box.",
     "errorReset": "Error while reset!",
-    "errorApplyingPass": "Error while applying new pass"
+    "errorApplyingPass": "Error while applying new pass",
+    "adminCreatedSuccessful": "Creation successful",
+    "adminCreatedNoSuccessful": "Creation is not successful",
+    "errorCreatedAdmin": "Error while creation!",
+    "photoChanged": "Photo is changed",
+    "editSuccessful": "You have successfully edited your profile",
+    "passwordsDontMatch": "Passwords don`t match",
+    "fillAllRequiredFields": "Fill all required fields"
   },
   "USERLIST": {
     "LOGIN": "Login",
@@ -47,7 +56,8 @@
     "SUBTITLE": "Subtitle",
     "TEXT": "Text",
     "UPLOAD": "Add image",
-    "SUBMIT": "Submit"
+    "SUBMIT": "Submit",
+    "ALERT": "Title and text can't be empty"
   },
   "quiz": {
     "createQuiz": "Create quiz",
@@ -136,6 +146,62 @@
       "addLessCorrectAnswer": "Please chose less correct answer for your "
     }
   },
+  "CREATE_ADMIN": {
+    "TITLE": "Create admin/moderator",
+    "BUTTON": "Create",
+    "LOGIN": "Login",
+    "PASSWORD": "Password",
+    "FIRST_NAME": "First name",
+    "NO_VALID_FIRST_NAME": "First name should be at least 2 characters long and have no numbers",
+    "LAST_NAME": "Last Name",
+    "NO_VALID_LAST_NAME": "Last name should be at least 2 characters long and have no numbers",
+    "NO_VALID_LOGIN": "Login should not be empty!",
+    "EMAIL": "Email",
+    "NO_VALID_MAIL": "Email does't match the pattern: example@gmail.com",
+    "NO_VALID_PASSWORD": "Password should be at least 8 symbols",
+    "CONFIRM_PASSWORD": "Confirm password",
+    "NO_MATCH_PASSWORD": "Passwords don't match!"
+  },
+  "viewProfile": {
+    "login": "Login:",
+    "firstName": "Name:",
+    "lastName": "Surname:",
+    "description": "Description:",
+    "murrs": "Murrs:",
+    "edit": "Edit",
+    "savePhoto": "Save photo",
+    "addToFriends": "Add to friends",
+    "deleteFromFriends": "Delete from friends",
+    "achievements": "Calculate achievements",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "CHANGED_STATUS_SUCCESSFUL": "Status successfully changed",
+    "CHANGED_STATUS_ERRORED": "Error while changing status!"
+  },
+  "editProfile": {
+    "title": "Edit profile",
+    "firstName": "First name",
+    "lastName": "Last Name",
+    "description": "Description",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "save": "Save"
+  },
+  "activities": {
+    "user": "User",
+    "getAchievement": "received an achievement ",
+    "createQuiz": "created a new quiz",
+    "addQuiz": "added quiz",
+    "favouriteList": "to the list of favourite quizzes",
+    "addUser": "added user",
+    "toFriends": "to friends",
+    "categoryTypes": {
+      "addFriend": "Added friends",
+      "favouriteQuizzes": "Added quizzes to favorites list",
+      "createdQuizzes": "Created quizzes",
+      "achievements": "Achievements"
+    }
+  },
   "DASHBOARD": {
     "ACHIEVEMENTS": "Achievements",
     "ACHIEVEMENTS_NAME": "Achievement name",
@@ -151,7 +217,19 @@
     "QUIZ_STATUS": "Moderators works",
     "PLAYED_AMOUNT": "Played quizzes amount",
     "CORRECT_PERCENT": "Correct answer percents",
-    "FRIEND_PREFERENCE": "Friend preferences"
+    "FRIEND_PREFERENCE": "Friend preferences",
+    "ACHIEVEMENT_VALIDATION": {
+      "NAME": "Please enter name of achievement",
+      "DESCRIPTION": "Please enter description of achievement",
+      "CONDITION": "Please add one or more condition",
+      "CHARACTERISTIC": "Please choose characteristic of your condition",
+      "OPERATOR": "Please choose operator of your condition",
+      "VALUE": "Please enter value of your condition",
+      "SUCCESSFUL": "Adding successful",
+      "ERRORED": "Error while adding achievement!",
+      "RECALCULATION_SUCCESSFUL": "Recalculation successful",
+      "RECALCULATION_ERRORED": "Error while recalculation!"
+    }
   },
   "CHAT": {
     "CREATE_CHAT": "Create chat",
@@ -186,7 +264,7 @@
     "mailConfirm": {
       "registrationSuccessfully": "Your registration has been successfully confirmed.",
       "plsSignIn": "Please, sign in to start",
-      "SignIn": "Sign in",
+      "signIn": "Sign in",
       "noToken": "Sorry, but your token is unavailable."
     },
     "LOGIN": {
@@ -210,6 +288,17 @@
     "QUESTION FIRST":"Question first, answers later",
     "FIRST BONUS":"Bonus for the quickest player",
     "COMBO BONUS": "Bonus for combo of right answers",
-    "INTERMEDIATE RESULT": "Show intermediate results"
+    "INTERMEDIATE RESULT": "Show intermediate results",
+    "PLAY": "PLAY"
+  },
+  "HOME": {
+    "PLAY": "Play now"
+  },
+  "NOTIFICATIONS": {
+    "CREATED_NEWS": "created news!",
+    "CREATED_QUIZ": "created a quiz, hurry to assemble a team!",
+    "GAME_INVITATION": "invites you to the game!",
+    "FRIEND_INVITATION": "added you as a friend!",
+    "MESSAGE": "you have message in chat"
   }
 }

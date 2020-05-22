@@ -1,11 +1,11 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.UserDao;
-import com.qucat.quiz.repositories.dao.mappers.extractors.FriendActivityExtractor;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
+import com.qucat.quiz.repositories.dao.mappers.extractors.FriendActivityExtractor;
 import com.qucat.quiz.repositories.entities.FriendActivity;
-import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -307,7 +307,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public boolean checkUsersFriendship(int firstUserId, int secondUserId) {
         return jdbcTemplate.queryForObject(friendsQueries.get("checkFriendship"),
                 new Object[]{firstUserId, secondUserId},
-                (resultSet, number) -> resultSet.getInt("row_count")) > 0 ? true : false;
+                (resultSet, number) -> resultSet.getInt("row_count")) > 0;
     }
 
     @Override

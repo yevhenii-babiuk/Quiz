@@ -2,11 +2,7 @@ package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.DashboardDao;
 import com.qucat.quiz.repositories.dao.mappers.UserMapper;
-import com.qucat.quiz.repositories.dto.statistic.AdminStatistics;
-import com.qucat.quiz.repositories.dto.statistic.BestQuiz;
-import com.qucat.quiz.repositories.dto.statistic.CategoryStatistics;
-import com.qucat.quiz.repositories.dto.statistic.ComparedScores;
-import com.qucat.quiz.repositories.dto.statistic.QuizStatistics;
+import com.qucat.quiz.repositories.dto.statistic.*;
 import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;

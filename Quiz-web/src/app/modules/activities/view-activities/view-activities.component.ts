@@ -88,7 +88,6 @@ export class ViewActivitiesComponent implements OnInit {
   clearActivities(): void {
     this.isWaiting = false;
     this.activities = [];
-    console.log("clear");
   }
 
   getFilteredActivities(): void {

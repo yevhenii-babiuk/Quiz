@@ -96,7 +96,7 @@ export class ViewProfile implements OnInit {
       });
 
     this.loadedPhoto=false;
-    this.alertService.success("Photo is changed");
+    this.alertService.success("alert.photoChanged");
 
   }
 
@@ -114,15 +114,10 @@ export class ViewProfile implements OnInit {
   recalculateAchievement() {
     this.achievementService.recalculateAchievements().subscribe(
       data => {
-        if (data) {
-          this.alertService.success('Recalculation is successful', false);
-        } else {
-          this.alertService.error('Recalculation is not successful', false);
-        }
+          this.alertService.success('DASHBOARD.ACHIEVEMENT_VALIDATION.RECALCULATION_SUCCESSFUL');
       },
       error => {
-        this.alertService.error('Error while recalculation!');
-        console.log(error);
+        this.alertService.error('DASHBOARD.ACHIEVEMENT_VALIDATION.RECALCULATION_ERRORED');
       });
   }
 
@@ -147,15 +142,10 @@ export class ViewProfile implements OnInit {
     this.profileService.changeStatus(this.userData.id, status)
       .subscribe(
         data => {
-          if (data) {
-            this.alertService.success('Status was successfully changed', false);
-          } else {
-            this.alertService.error('Status was successfully changed', false);
-          }
+            this.alertService.success('viewProfile.CHANGED_STATUS_SUCCESSFUL');
         },
         error => {
-          this.alertService.error('Error while changing status!');
-          console.log(error);
+          this.alertService.error('viewProfile.CHANGED_STATUS_ERRORED');
         });
   }
 }

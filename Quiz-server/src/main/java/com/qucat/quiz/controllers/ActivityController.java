@@ -27,4 +27,18 @@ public class ActivityController {
         return userService.getFilteredFriendsActivityPage(id, categoryFilter[0],
                 categoryFilter[1], categoryFilter[2], categoryFilter[3], Optional.of(pageNumber), Optional.of(10)).toList();
     }
+
+    @GetMapping("{id}/pages")
+    public List<FriendActivity> getActivitiesPage(@PathVariable int id,
+                                                  @RequestParam(value = "pageNumber") int pageNumber) {
+        return userService.getAllFriendsActivityPage(id, Optional.of(pageNumber), Optional.of(10)).toList();
+    }
+
+    @GetMapping("/filter/pages")
+    public List<FriendActivity> getFilteredActivitiesPage(@RequestParam(value = "id") int userId,
+                                                          @RequestParam(value = "categoryFilter") boolean[] categoryFilter,
+                                                          @RequestParam(value = "pageNumber") int pageNumber) {
+        return userService.getFilteredFriendsActivityPage(userId, categoryFilter[0],
+                categoryFilter[1], categoryFilter[2], categoryFilter[3], Optional.of(pageNumber), Optional.of(10)).toList();
+    }
 }

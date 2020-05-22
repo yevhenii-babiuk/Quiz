@@ -1,8 +1,8 @@
 package com.qucat.quiz.repositories.dao;
 
 import com.qucat.quiz.repositories.entities.FriendActivity;
-import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

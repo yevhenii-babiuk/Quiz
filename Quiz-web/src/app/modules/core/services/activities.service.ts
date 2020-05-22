@@ -6,8 +6,6 @@ import {catchError} from "rxjs/operators";
 
 import {url} from "../../../../environments/environment.prod";
 import {Activity} from "../models/activity";
-import {Announcement} from "../models/announcement";
-import {Message} from "../models/message";
 
 @Injectable({
   providedIn: 'root'

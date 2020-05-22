@@ -14,6 +14,8 @@
     "ANNOUNCEMENTS": "Новини",
     "TOP": "Рейтинг учасників",
     "PROFILE": "Профіль",
+    "CREATE_ADMIN": "Створити адміна або модератора",
+    "CREATE_MODER": "Створити модератора",
     "ACHIEVEMENT": "Створити досягнення",
     "CHATS": "Повідомлення"
   },
@@ -27,7 +29,14 @@
     "enterMail": "Введіть поштову адресу!",
     "resetSuccessful": "Скидання паролю успішне. Провірте поштову адресу",
     "errorReset": "Помилка при скиданні паролю!",
-    "errorApplyingPass": "Помилка при застосуванні новго паролю"
+    "errorApplyingPass": "Помилка при застосуванні нового паролю",
+    "adminCreatedSuccessful": "Створення успішне",
+    "adminCreatedNoSuccessful": "Створення не успішне",
+    "errorCreatedAdmin": "Помилка при створенні",
+    "photoChanged": "Фото змінено",
+    "editSuccessful": "Ви успішно відредагували свій профіль",
+    "passwordsDontMatch": "Паролі не збігаються",
+    "fillAllRequiredFields": "Заповніть всі обов'язкові поля"
   },
   "USERLIST": {
     "LOGIN": "Логін",
@@ -47,7 +56,8 @@
     "SUBTITLE": "Підзаголовок",
     "TEXT": "Зміст",
     "UPLOAD": "Додати зображення",
-    "SUBMIT": "Підтвердити"
+    "SUBMIT": "Підтвердити",
+    "ALERT": "Новина має містити заголовок та текст"
   },
   "quiz": {
     "createQuiz": "Створити вікторину",
@@ -98,6 +108,22 @@
       "addLessCorrectAnswer": "Будь ласка, додайте менше коректних відповідей для "
     }
   },
+  "CREATE_ADMIN": {
+    "TITLE": "Створити адміна/модератора",
+    "BUTTON": "Створити",
+    "LOGIN": "Логін",
+    "PASSWORD": "Пароль",
+    "FIRST_NAME": "Ім'я",
+    "NO_VALID_FIRST_NAME": "Ім'я повинне містити як мінімум 2 символи і не містити цифр",
+    "LAST_NAME": "Прізвище",
+    "NO_VALID_LAST_NAME": "Прізвище повинне містити як мінімум 2 символи і не містити цифр",
+    "NO_VALID_LOGIN": "Логін повинен бути непустим!",
+    "EMAIL": "Поштовий ящик",
+    "NO_VALID_MAIL": "Поштовий ящик повинен відповідати патерну: example@gmail.com",
+    "NO_VALID_PASSWORD": "Пароль повинен містити як мінімум 8 символів",
+    "CONFIRM_PASSWORD": "Підтвердження паролю",
+    "NO_MATCH_PASSWORD": "Паролі не збігаються!"
+  },
   "DASHBOARD": {
     "ACHIEVEMENTS": "Досягнення",
     "ACHIEVEMENTS_NAME": "Назва досягнення",
@@ -113,7 +139,19 @@
     "QUIZ_STATUS": "Робота модераторів",
     "PLAYED_AMOUNT": "Кількість зіграних вікторин",
     "CORRECT_PERCENT": "Відсоток правильних відповідей",
-    "FRIEND_PREFERENCE": "Переваги друзів"
+    "FRIEND_PREFERENCE": "Переваги друзів",
+    "ACHIEVEMENT_VALIDATION": {
+      "NAME": "Будь ласка, введіть ім'я досягнення",
+      "DESCRIPTION": "Будь ласка, введіть опис досягнення",
+      "CONDITION": "Будь ласка, додайте одну або більше умов",
+      "CHARACTERISTIC": "Будь ласка, оберіть характеристику умови",
+      "OPERATOR": "Будь ласка, оберіть оперетор умови",
+      "VALUE": "Будь ласка, введіть значення умови",
+      "SUCCESSFUL": "Створення успішне",
+      "ERRORED": "Помилка при створенні",
+      "RECALCULATION_SUCCESSFUL": "Перерахунок успішний",
+      "RECALCULATION_ERRORED": "Не вдалося перерахувати досягнення"
+    }
   },
   "CHAT": {
     "CREATE_CHAT": "Створити чат",
@@ -148,7 +186,7 @@
     "mailConfirm": {
       "registrationSuccessfully": "Реєстрація успішно підтверджена",
       "plsSignIn": "Будь ласка, увійдіть",
-      "SignIn": "Увійти",
+      "signIn": "Увійти",
       "noToken": "Вибачте, ваш токен недійсний."
     },
     "LOGIN": {
@@ -178,7 +216,9 @@
     "deleteFromFriends": "Видалити з друзів",
     "achievements": "Перерахувати досягнення",
     "activate": "Активувати",
-    "deactivate": "Деактивувати"
+    "deactivate": "Деактивувати",
+    "CHANGED_STATUS_SUCCESSFUL": "Статус успішно змінений",
+    "CHANGED_STATUS_ERRORED": "Помилка зміни статуса!"
   },
   "editProfile": {
     "title": "Редагувати профіль",
@@ -212,5 +252,15 @@
     "COMBO BONUS": "Бонус за декілька послідовних правильних відповідей",
     "INTERMEDIATE RESULT": "Показувати проміжні результати",
     "PLAY": "ГРАТИ"
+  },
+  "HOME": {
+    "PLAY": "Грати зараз"
+  },
+  "NOTIFICATIONS": {
+    "CREATED_NEWS": "створив новину!",
+    "CREATED_QUIZ": "створив вікторину, поспішай зібирати команду!",
+    "GAME_INVITATION": "запрошує Вас у гру!",
+    "FRIEND_INVITATION": "додав Вас у друзі!",
+    "MESSAGE": "ви отрмали нове повідомлення в чаті"
   }
 }

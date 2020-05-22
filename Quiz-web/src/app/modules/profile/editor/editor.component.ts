@@ -43,11 +43,11 @@ export class EditorComponent implements OnInit {
 
   edit(id: number, firstname: string, secondname: string, email: string, profile: string, password: string, confirmPassword: string) {
     if (password != confirmPassword) {
-      this.alertService.error('passwords don`t match');
+      this.alertService.error('alert.passwordsDontMatch');
       return;
     }
     if (firstname == "" || secondname == "" || email == "" || password == "" || confirmPassword == "") {
-      this.alertService.error('fill all required fields');
+      this.alertService.error('alert.fillAllRequiredFields');
       return;
     }
     let editedUser: User = {
@@ -68,7 +68,7 @@ export class EditorComponent implements OnInit {
 
     this.profileService.updateUser(editedUser).subscribe(data => {
       editedUser = data;
-      this.alertService.success('You have successfully edited your profile');
+      this.alertService.success('alert.editSuccessful');
     });
   }
 

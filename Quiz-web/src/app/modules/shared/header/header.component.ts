@@ -14,7 +14,11 @@ import {TranslateService} from '@ngx-translate/core';
 export class HeaderComponent implements OnInit {
   id: number;
   role: Role;
-  @Input() isOpened:boolean;
+  @Input()
+  showNotification: boolean;
+  @Input()
+  showMessage: boolean;
+  @Input() isOpened: boolean;
   @Output()
   public buttonClicked: EventEmitter<any> = new EventEmitter();
 
@@ -26,10 +30,29 @@ export class HeaderComponent implements OnInit {
     public translate: TranslateService
   ) {
     this.role = this.securityService.getCurrentRole();
+    this.showNotification = false;
+    this.showMessage = false;
   }
 
   ngOnInit(): void {
   }
+
+  getMessage(showMessage: boolean) {
+    if (showMessage) {
+      if (this.showNotification) {
+        this.showNotification = false;
+      }
+    } this.showMessage = showMessage;
+  }
+
+  getNotification(showNotification: boolean) {
+    if (showNotification) {
+      if (this.showMessage) {
+        this.showMessage = !this.showMessage;
+      }
+    }this.showNotification = showNotification;
+  }
+
 
   search(event: any) {
     this.redirect.navigate(['/quizzes'], {queryParams:{quizName: event.target.value}});

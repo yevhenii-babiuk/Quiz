@@ -40,11 +40,14 @@ import {ChatModule} from "./modules/chat/chat.module";
 import {ChatRoutingModule} from "./modules/chat/chat-routing.module";
 import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {CreateAdminRoutingModule} from "./modules/create-admin/create-admin-routing.module";
+import {CreateAdminModule} from "./modules/create-admin/create-admin.module";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
+import {NotificationMenuComponent} from "./modules/shared/notification-menu/notification-menu.component";
 
 @NgModule({
   declarations: [
@@ -84,6 +87,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ChatModule,
     ChatRoutingModule,
     AchievementRoutingModule,
+    CreateAdminModule,
+    CreateAdminRoutingModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
@@ -95,7 +100,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   providers: [
     {provide:HTTP_INTERCEPTORS, useClass:BasicAuthHtppInterceptorService, multi:true},
     AuthGuardService, RoleGuardService, { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
-    JwtHelperService],
+    JwtHelperService, NotificationMenuComponent],
   bootstrap: [AppComponent]
 })
 

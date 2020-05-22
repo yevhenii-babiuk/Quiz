@@ -1,11 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-
-import { AuthenticationService } from '../../core/services/authentication.service';
-import { AlertService } from '../../core/services/alert.service';
+import {Component, OnInit} from '@angular/core';
+import {Router} from '@angular/router';
+import {NotificationMenuComponent} from "../../shared/notification-menu/notification-menu.component";
+import {AuthenticationService} from '../../core/services/authentication.service';
+import {AlertService} from '../../core/services/alert.service';
 import {TranslateService} from "@ngx-translate/core";
 
-import { User } from '../../core/models/user';
+import {User} from '../../core/models/user';
 
 @Component({
   selector: 'app-login',
@@ -16,10 +16,12 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authenticationService: AuthenticationService,
+    private notificationMenuComponent: NotificationMenuComponent,
     private alertService: AlertService,
     public translate: TranslateService,
     private router: Router
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
   }
