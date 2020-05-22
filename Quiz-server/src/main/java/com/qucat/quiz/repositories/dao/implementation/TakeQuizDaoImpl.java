@@ -6,6 +6,7 @@ import com.qucat.quiz.repositories.entities.TakeQuiz;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 
@@ -90,5 +92,20 @@ public class TakeQuizDaoImpl extends GenericDaoImpl<TakeQuiz> implements TakeQui
         return new Object[]{
                 takeQuiz.getScore(), takeQuiz.getUserId(), takeQuiz.getQuizId()
         };
+    }
+
+    @Override
+    public int save(TakeQuiz takeQuiz) {
+        String insertQuery = getInsertQuery();
+        try {
+            jdbcTemplate.update(connection -> {
+                PreparedStatement preparedStatement = connection
+                        .prepareStatement(insertQuery);
+                return getInsertPreparedStatement(preparedStatement, takeQuiz);
+            });
+        } catch (DuplicateKeyException e) {
+            return -1;
+        }
+        return 0;
     }
 }
