@@ -82,4 +82,17 @@ public class ChatDaoImpl extends GenericDaoImpl<Chat> implements ChatDao {
     public void removeChatMember(int chatId, int userId) {
         jdbcTemplate.update(chatQueries.get("removeChatMember"), chatId, userId);
     }
+
+    @Override
+    public boolean checkChatAffiliation(int chatId, int userId) {
+        Number total = jdbcTemplate.queryForObject(chatQueries.get("checkChatAffiliation"),
+                new Object[]{chatId, userId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        if (total == null) {
+            return false;
+        }
+
+        return total.intValue() > 0;
+    }
 }

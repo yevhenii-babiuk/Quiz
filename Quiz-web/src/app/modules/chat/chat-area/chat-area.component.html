@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <div class="msg_history" (scroll)="scrollHandler($event)">
+  <div class="msg_history" #msgScroll (scroll)="scrollHandler($event)">
 
     <ng-container *ngFor="let message of messages">
       <div *ngIf="message.authorId == this.id; else incoming">

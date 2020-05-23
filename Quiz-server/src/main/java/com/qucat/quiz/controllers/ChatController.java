@@ -44,4 +44,9 @@ public class ChatController {
     public void leaveChat(@PathVariable int id, @PathVariable int chatId) {
         chatService.removeMemberFromChat(chatId, id);
     }
+
+    @GetMapping("api/v1/users/{id}/chat/{chatId}/check")
+    public boolean checkChatAffiliation(@PathVariable int id, @PathVariable int chatId) {
+        return chatService.checkChatAffiliation(chatId, id);
+    }
 }
