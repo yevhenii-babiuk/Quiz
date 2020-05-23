@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.dao.mappers.UserMapper;
 import com.qucat.quiz.repositories.dto.statistic.*;
 import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +13,9 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import java.util.List;
 import java.util.Map;
@@ -27,6 +31,8 @@ public class DashboardDaoImpl implements DashboardDao {
     @Qualifier("postgresJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
 
+    @Autowired
+    private PlatformTransactionManager platformTransactionManager;
 
     @Override
     public List<User> getTopUsers(int limit) {
@@ -110,14 +116,29 @@ public class DashboardDaoImpl implements DashboardDao {
                 ));
     }
 
+    @Test
+    private void createTemporaryTable() {
+        jdbcTemplate.update(dashboardQueries.get("createTemporaryTable"));
+    }
+
     @Override
     public List<AdminStatistics> getAmountOfCreatedAndPublishedQuizzes() {
-        return jdbcTemplate.query(dashboardQueries.get("getAmountOfPublishedQuizzes"), (rs, rowNum) ->
-                new AdminStatistics(
-                        rs.getDate("date"),
-                        rs.getInt("created"),
-                        rs.getInt("published")
-                ));
+        DefaultTransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
+        TransactionStatus status = platformTransactionManager.getTransaction(paramTransactionDefinition);
+        List<AdminStatistics> adminStatistics = null;
+        try {
+            createTemporaryTable();
+            adminStatistics = jdbcTemplate.query(dashboardQueries.get("getAmountOfPublishedQuizzes"), (rs, rowNum) ->
+                    new AdminStatistics(
+                            rs.getDate("date"),
+                            rs.getInt("created"),
+                            rs.getInt("published")
+                    ));
+            platformTransactionManager.commit(status);
+        } catch (Exception e) {
+            platformTransactionManager.rollback(status);
+        }
+        return adminStatistics;
     }
 
 }

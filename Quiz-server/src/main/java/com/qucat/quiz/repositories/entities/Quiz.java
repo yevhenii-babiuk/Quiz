@@ -2,6 +2,7 @@ package com.qucat.quiz.repositories.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.qucat.quiz.repositories.entities.enums.QuizStatus;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Data
 @Builder
+@AllArgsConstructor
 public class Quiz {
     private int id;
     private String name;
