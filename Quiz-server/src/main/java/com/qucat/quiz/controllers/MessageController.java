@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -31,6 +32,7 @@ public class MessageController {
     @Autowired
     private WebSocketSenderService webSocketSenderService;
 
+    @PreAuthorize("hasRole('USER')")
     @MessageMapping("/{chatId}")
     public void receiveMessage(@DestinationVariable String chatId, String message) {
         Gson gson = new Gson();
@@ -45,6 +47,7 @@ public class MessageController {
         }
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("api/v1/chat/{chatId}/messages")
     public List<Message> getChatMessages(@PathVariable int chatId,
                                          @RequestParam(value = "pageNumber") int pageNumber) {

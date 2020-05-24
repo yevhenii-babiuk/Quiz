@@ -35,7 +35,8 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Announcement announcement) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           Announcement announcement) throws SQLException {
         preparedStatement.setInt(1, announcement.getAuthorId());
         preparedStatement.setBoolean(2, announcement.isPublished());
         preparedStatement.setString(3, announcement.getTitle());
@@ -53,7 +54,10 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
     @Override
     protected Object[] getUpdateParameters(Announcement announcement) {
         return new Object[]{announcement.isPublished(), announcement.getTitle(),
-                announcement.getSubtitle(), announcement.getFullText(), announcement.getImageId(), announcement.getId()};
+                announcement.getSubtitle(),
+                announcement.getFullText(),
+                announcement.getImageId(),
+                announcement.getId()};
     }
 
     @Override

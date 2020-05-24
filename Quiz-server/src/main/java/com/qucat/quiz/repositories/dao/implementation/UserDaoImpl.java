@@ -48,7 +48,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, User user) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           User user) throws SQLException {
         preparedStatement.setString(1, user.getLogin());
         preparedStatement.setString(2, user.getPassword());
         preparedStatement.setString(3, user.getMail());
@@ -83,10 +84,18 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Override
     protected Object[] getUpdateParameters(User user) {
-        return new Object[]{user.getLogin(), user.getPassword(), user.getMail(),
-                user.getStatus().name().toLowerCase(), user.getRole().name().toLowerCase(),
-                user.getFirstName(), user.getSecondName(), user.getRegistrationDate(),
-                user.getProfile(), user.getScore(), user.getImageId(), user.getId()};
+        return new Object[]{user.getLogin(),
+                user.getPassword(),
+                user.getMail(),
+                user.getStatus().name().toLowerCase(),
+                user.getRole().name().toLowerCase(),
+                user.getFirstName(),
+                user.getSecondName(),
+                user.getRegistrationDate(),
+                user.getProfile(),
+                user.getScore(),
+                user.getImageId(),
+                user.getId()};
     }
 
     @Override
@@ -99,7 +108,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         User user;
         try {
             user = jdbcTemplate.queryForObject(usersQueries.get("getUser"),
-                    new Object[]{id}, new UserMapper());
+                    new Object[]{id},
+                    new UserMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -111,7 +121,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         User user;
         try {
             user = jdbcTemplate.queryForObject(usersQueries.get("selectByLoginAndPassword"),
-                    new Object[]{login, password}, new UserMapper()
+                    new Object[]{login, password},
+                    new UserMapper()
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -124,7 +135,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         User user;
         try {
             user = jdbcTemplate.queryForObject(usersQueries.get("selectByMail"),
-                    new Object[]{mail}, new UserMapper());
+                    new Object[]{mail},
+                    new UserMapper());
         } catch (NullPointerException | EmptyResultDataAccessException e) {
             return null;
         }
@@ -231,7 +243,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
+    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                           boolean publishQuiz, boolean achievement) {
         String query = buildActivityFilterQuery(addFriend, markQuizAsFavorite, publishQuiz, achievement);
         query = friendsActivityQueries.get("activitySelectStart") + query + friendsActivityQueries.get("activitySelectEnd");
         return jdbcTemplate.query(query,
@@ -240,7 +253,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     }
 
     @Override
-    public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement, Pageable pageable) {
+    public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
+                                                               boolean publishQuiz, boolean achievement, Pageable pageable) {
         String innerQuery = buildActivityFilterQuery(addFriend, markQuizAsFavorite, publishQuiz, achievement);
         String query = friendsActivityQueries.get("activitySelectStart") + innerQuery + friendsActivityQueries.get("activitySelectEnd");
         String countQuery = friendsActivityQueries.get("activityCountStart") + innerQuery + friendsActivityQueries.get("activityCountEnd");
@@ -293,7 +307,9 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     public Page<User> searchUsersByLogin(String login, Role role, Pageable pageable) {
         login = '%' + login + '%';
 
-        Number total = jdbcTemplate.queryForObject(usersQueries.get("countRowsForSearchByLogin").replace(";", " AND role = cast(? AS user_role);"),
+        Number total = jdbcTemplate.queryForObject(usersQueries
+                        .get("countRowsForSearchByLogin")
+                        .replace(";", " AND role = cast(? AS user_role);"),
                 new Object[]{login, role.name().toLowerCase()},
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
@@ -328,7 +344,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         jdbcTemplate.update(usersQueries.get("updateUserScore"), score, userId);
     }
 
-    private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite, boolean publishQuiz, boolean achievement) {
+    private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite,
+                                            boolean publishQuiz, boolean achievement) {
         String query = "";
         boolean isUnion = false;
 
@@ -369,6 +386,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
     @Override
     public void updateUserPhoto(int imageId, int userId) {
-        jdbcTemplate.update(usersQueries.get("updateUserPhoto"), imageId, userId);
+        jdbcTemplate.update(usersQueries.get("updateUserPhoto"),
+                imageId, userId);
     }
 }

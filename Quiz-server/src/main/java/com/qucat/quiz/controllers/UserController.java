@@ -7,6 +7,7 @@ import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import com.qucat.quiz.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -43,34 +44,39 @@ public class UserController {
                 userService.searchUsersByLogin(filter, Role.USER, Optional.of(pageNumber), Optional.of(10)).toList();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}/friends")
     public List<User> getFriends(@PathVariable int id) {
         return userService.getUserFriends(id);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/{id}/checkFriend/{friendId}")
     public boolean checkFriend(@PathVariable int id, @PathVariable int friendId) {
         return userService.checkUsersFriendship(id, friendId);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/{id}/addFriend")
     public boolean addFriend(@PathVariable int id,
                              @RequestBody int friendId) {
         return userService.addUserFriend(id, friendId);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/{id}/removeFriend")
     public boolean removeFriend(@PathVariable int id,
                                 @RequestBody int friendId) {
         return userService.deleteUserFriend(id, friendId);
     }
 
-
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/{id}/status/change")
     public void changeUserStatus(@PathVariable int id, @RequestBody String newStatus) {
         userService.updateUserStatus(id, UserAccountStatus.valueOf(newStatus));
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/create")
     public boolean createUser(@RequestBody @Valid User user) {
         return userService.createUser(user);

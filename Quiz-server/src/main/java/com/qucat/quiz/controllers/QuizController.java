@@ -9,6 +9,7 @@ import com.qucat.quiz.services.QuizService;
 import com.qucat.quiz.services.TagService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class QuizController {
         quizService.updateQuizStatus(id, QuizStatus.valueOf(status));
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PutMapping("/quiz/{id}/user/{userId}/setFavorite")
     public void updateQuizIsFavorite(@PathVariable int id,
                                      @PathVariable int userId,

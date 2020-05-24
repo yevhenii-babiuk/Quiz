@@ -30,7 +30,8 @@ public class AchievementCharacteristicDaoImpl extends GenericDaoImpl<Achievement
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, AchievementCharacteristic achievementCharacteristic) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           AchievementCharacteristic achievementCharacteristic) throws SQLException {
         preparedStatement.setString(1, achievementCharacteristic.getName());
         preparedStatement.setString(2, achievementCharacteristic.getScript());
         return preparedStatement;
@@ -43,6 +44,7 @@ public class AchievementCharacteristicDaoImpl extends GenericDaoImpl<Achievement
 
     @Override
     protected Object[] getUpdateParameters(AchievementCharacteristic achievementCharacteristic) {
-        return new Object[]{achievementCharacteristic.getName(), achievementCharacteristic.getScript(), achievementCharacteristic.getId()};
+        return new Object[]{achievementCharacteristic.getName(),
+                achievementCharacteristic.getScript(), achievementCharacteristic.getId()};
     }
 }

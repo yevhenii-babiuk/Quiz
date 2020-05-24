@@ -29,17 +29,19 @@ public class AchievementController {
         return userAchievementsService.getAchievementsByUserId(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @GetMapping("/achievement/characteristics")
     public List<AchievementCharacteristic> getAchievementCharacteristics() {
         return achievementCharacteristicService.getAll();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PostMapping("/achievement/create")
     public boolean createAchievement(@RequestBody Achievement achievement) {
         return achievementService.createAchievement(achievement);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN')")
     @PutMapping("/achievement/recalculate")
     public void recalculateUserAchievements() {
         achievementService.updateUserAchievementLists();

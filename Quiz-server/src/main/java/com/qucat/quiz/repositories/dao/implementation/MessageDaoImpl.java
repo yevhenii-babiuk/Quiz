@@ -53,7 +53,8 @@ public class MessageDaoImpl extends GenericDaoImpl<Message> implements MessageDa
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Message message) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           Message message) throws SQLException {
         preparedStatement.setInt(1, message.getChatId());
         preparedStatement.setInt(2, message.getAuthorId());
         preparedStatement.setString(3, message.getMessageText());

@@ -23,8 +23,6 @@ export class QuizzesComponent implements OnInit {
   quizStatuses: string[] = [
     'ACTIVATED',
     'UNPUBLISHED',
-    'UNVALIDATED',
-    'UNSAVED',
     'DEACTIVATED'
   ];
   isWaiting: boolean = false;
