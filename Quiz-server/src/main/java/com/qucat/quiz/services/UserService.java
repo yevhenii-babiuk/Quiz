@@ -136,6 +136,7 @@ public class UserService {
         }
         User user = userDao.get(id);
         user.setStatus(UserAccountStatus.ACTIVATED);
+        emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.activationAccount.findByLang(Lang.EN));
         userDao.update(user);
         return true;
     }
@@ -315,6 +316,18 @@ public class UserService {
     }
 
     public void updateUserStatus(int userId, UserAccountStatus status) {
+        User user = userDao.get(userId);
+        if (user == null) {
+            return;
+        }
+        //todo get lang
+        if (status == UserAccountStatus.UNACTIVATED && user.getStatus() == UserAccountStatus.ACTIVATED) {
+            emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.deactivationAccount.findByLang(Lang.EN));
+        }
+        if (status == UserAccountStatus.ACTIVATED && user.getStatus() == UserAccountStatus.UNACTIVATED) {
+            emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.activationAccount.findByLang(Lang.EN));
+        }
+
         userDao.updateUserStatus(userId, status);
     }
 
