@@ -13,6 +13,7 @@ public class UserDto {
     private String login;
     private int registerId;
     private int score;
+    private int percent;
     private int comboAnswer;
     private int quizId;
 
