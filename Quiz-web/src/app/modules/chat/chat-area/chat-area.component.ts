@@ -87,7 +87,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
           that.receivedEvent = JSON.parse(message.body);
           if (that.receivedEvent.type == that.eventType.MESSAGE) {
             that.messages.push(that.receivedEvent.message);
-            setTimeout(() => that.scrollToBottom(), 0.05);
+            setTimeout(() => that.scrollToBottom(), 2);
           }
         }
       });
@@ -170,7 +170,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
 
           if (this.isInit) {
             this.isInit = false;
-            setTimeout(() => this.scrollToBottom(), 5);
+            setTimeout(() => this.scrollToBottom(), 10);
           } else {
             this.scrollToBottom();
           }
