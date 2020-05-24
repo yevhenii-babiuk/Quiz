@@ -28,7 +28,8 @@ public class MessageService {
             log.warn("Chat id can`t be 0");
             throw new IllegalArgumentException("0 can`t be chat`s identifier");
         }
-        return messageDao.getMessagesFromChat(chatId, PageRequest.of(page.orElse(0), size.orElse(10),
+        return messageDao.getMessagesFromChat(chatId, PageRequest.of(
+                page.orElse(0), size.orElse(10),
                 Sort.Direction.ASC, "creationDate"));
     }
 }

@@ -36,7 +36,8 @@ public class UserAchievementsDaoImpl extends GenericDaoImpl<UserAchievement> imp
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, UserAchievement userAchievement) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           UserAchievement userAchievement) throws SQLException {
         preparedStatement.setInt(1, userAchievement.getUserId());
         preparedStatement.setInt(2, userAchievement.getAchievementId());
         return preparedStatement;
@@ -56,7 +57,8 @@ public class UserAchievementsDaoImpl extends GenericDaoImpl<UserAchievement> imp
     @Override
     public List<Achievement> getAchievementsByUserId(int userId) {
         return jdbcTemplate.query(userAchievementsQueries.get("getAchievementsByUserId"),
-                new Object[]{userId}, new AchievementMapper());
+                new Object[]{userId},
+                new AchievementMapper());
     }
 
     @Override

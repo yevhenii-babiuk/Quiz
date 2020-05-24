@@ -14,7 +14,6 @@ public class TokenService {
     @Autowired
     private TokenDao tokenDao;
 
-
     public void deleteOldTokens() {
         tokenDao.deleteOldTokens();
     }

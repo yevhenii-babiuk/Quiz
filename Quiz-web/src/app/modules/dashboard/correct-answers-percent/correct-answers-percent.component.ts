@@ -46,9 +46,6 @@ export class CorrectAnswersPercentComponent implements OnInit {
       dataShadow.push(yMax);
     }
     this.options = {
-      title: {
-        text: 'Percents of correct answers'
-      },
       xAxis: {
         data: dataAxis,
         axisLabel: {

@@ -33,7 +33,8 @@ public class AchievementConditionDaoImpl extends GenericDaoImpl<AchievementCondi
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, AchievementCondition achievementCondition) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           AchievementCondition achievementCondition) throws SQLException {
         preparedStatement.setString(1, achievementCondition.getOperator().name().toLowerCase());
         preparedStatement.setInt(2, achievementCondition.getValue());
         preparedStatement.setInt(3, achievementCondition.getAchievementId());
@@ -48,8 +49,11 @@ public class AchievementConditionDaoImpl extends GenericDaoImpl<AchievementCondi
 
     @Override
     protected Object[] getUpdateParameters(AchievementCondition achievementCondition) {
-        return new Object[]{achievementCondition.getOperator().name().toLowerCase(), achievementCondition.getValue(),
-                achievementCondition.getAchievementId(), achievementCondition.getCharacteristicId(), achievementCondition.getId()};
+        return new Object[]{achievementCondition.getOperator().name().toLowerCase(),
+                achievementCondition.getValue(),
+                achievementCondition.getAchievementId(),
+                achievementCondition.getCharacteristicId(),
+                achievementCondition.getId()};
     }
 
 

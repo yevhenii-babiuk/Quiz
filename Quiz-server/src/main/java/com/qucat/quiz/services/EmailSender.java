@@ -51,7 +51,9 @@ public class EmailSender {
         }
     }
 
-    public void sendMessage(String receiverEmailAddress, String username, String url, String quizName, String categoryName, MessageInfo.MessageInfoItem messageInfoItem) {
+    public void sendMessage(String receiverEmailAddress, String username, String url,
+                            String quizName, String categoryName,
+                            MessageInfo.MessageInfoItem messageInfoItem) {
         try {
             Map<String, String> replace = new HashMap<>();
             replace.put(USERNAME_TOKEN, username);
@@ -78,9 +80,12 @@ public class EmailSender {
         return message;
     }
 
-    private void setContent(Message message, MessageInfo.MessageInfoItem messageInfoItem, Map<String, String> replace) throws MessagingException, IOException {
+    private void setContent(Message message, MessageInfo.MessageInfoItem messageInfoItem,
+                            Map<String, String> replace) throws MessagingException, IOException {
         message.setSubject(messageInfoItem.getSubject());
-        String content = new String(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(messageInfoItem.getFilename())).readAllBytes());
+        String content = new String(Objects.requireNonNull(
+                getClass().getClassLoader().getResourceAsStream(
+                        messageInfoItem.getFilename())).readAllBytes());
         for (Map.Entry<String, String> entry : replace.entrySet()) {
             content = content.replaceFirst(entry.getKey(), entry.getValue());
         }

@@ -45,7 +45,8 @@ public class AchievementDaoImpl extends GenericDaoImpl<Achievement> implements A
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Achievement achievement) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           Achievement achievement) throws SQLException {
         preparedStatement.setString(1, achievement.getDescription());
         preparedStatement.setString(2, achievement.getName());
         return preparedStatement;
@@ -58,14 +59,18 @@ public class AchievementDaoImpl extends GenericDaoImpl<Achievement> implements A
 
     @Override
     protected Object[] getUpdateParameters(Achievement achievement) {
-        return new Object[]{achievement.getDescription(), achievement.getName(), achievement.getId()};
+        return new Object[]{achievement.getDescription(),
+                achievement.getName(),
+                achievement.getId()};
     }
 
     private String generateCondition(Achievement achievement) {
         List<String> conditions = new ArrayList<>();
         for (AchievementCondition condition : achievement.getConditions()) {
-            conditions.add(String.format("( %s ) %s %s", condition.getCharacteristic().getScript(),
-                    condition.getOperator().getOperator(), condition.getValue()));
+            conditions.add(String.format("( %s ) %s %s",
+                    condition.getCharacteristic().getScript(),
+                    condition.getOperator().getOperator(),
+                    condition.getValue()));
         }
         return String.join(" AND ", conditions);
     }
