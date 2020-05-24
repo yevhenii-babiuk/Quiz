@@ -196,11 +196,11 @@
               <div *ngSwitchCase="'TRUE_FALSE'" class="row mx-0 mt-2">
                 <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'primary': 'secondary'}}"
                      (click)="setCorrectAnswer(question, true)">
-                  placeholder="{{'quiz.questionTypes.true'|translate}}"
+                  {{'quiz.questionTypes.true'|translate}}
                 </div>
                 <div class="col-sm-4 mx-3 btn btn-{{question.options[0].isCorrect?'secondary': 'primary'}}"
                      (click)="setCorrectAnswer(question, false)">
-                  placeholder="{{'quiz.questionTypes.false'|translate}}"
+                  {{'quiz.questionTypes.false'|translate}}
                 </div>
               </div>
 
