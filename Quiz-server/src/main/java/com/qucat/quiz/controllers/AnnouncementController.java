@@ -3,6 +3,7 @@ package com.qucat.quiz.controllers;
 import com.qucat.quiz.repositories.entities.Announcement;
 import com.qucat.quiz.services.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class AnnouncementController {
         return announcementService.createAnnouncement(announcement);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('MODERATOR')")
     @PutMapping("/announcement")
     public void updateAnnouncement(@RequestBody Announcement announcement) {
         announcementService.updateAnnouncement(announcement);
@@ -31,6 +33,7 @@ public class AnnouncementController {
         return announcementService.getAnnouncementById(id);
     }
 
+    @PreAuthorize("hasRole('ADMIN') or hasRole('SUPER_ADMIN') or hasRole('MODERATOR')")
     @DeleteMapping("/announcement/{id}")
     public void deleteAnnouncement(@PathVariable int id) {
         announcementService.deleteAnnouncement(id);
