@@ -65,7 +65,7 @@ public class GameService {
         if (characteristic.size() == currCharacteristic) {
             currCharacteristic = 0;
         }
-        return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);//todo
+        return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);
     }
 
     public UserDto connectUser(String gameId, int userId) {

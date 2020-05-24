@@ -56,7 +56,8 @@ public class TakeQuizDaoImpl extends GenericDaoImpl<TakeQuiz> implements TakeQui
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, TakeQuiz takeQuiz) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           TakeQuiz takeQuiz) throws SQLException {
         preparedStatement.setInt(1, takeQuiz.getUserId());
         preparedStatement.setInt(2, takeQuiz.getQuizId());
         preparedStatement.setBoolean(3, takeQuiz.isCompleted());
@@ -73,7 +74,9 @@ public class TakeQuizDaoImpl extends GenericDaoImpl<TakeQuiz> implements TakeQui
     @Override
     protected Object[] getUpdateParameters(TakeQuiz takeQuiz) {
         return new Object[]{
-                takeQuiz.getScore(), takeQuiz.getUserId(), takeQuiz.getQuizId()
+                takeQuiz.getScore(),
+                takeQuiz.getUserId(),
+                takeQuiz.getQuizId()
         };
     }
 

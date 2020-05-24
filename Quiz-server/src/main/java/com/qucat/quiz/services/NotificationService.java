@@ -19,7 +19,8 @@ public class NotificationService {
     @Autowired
     private UserService userService;
 
-    public Notification generateNotification(int authorId, int objectId, int userId, NotificationType notificationType) {
+    public Notification generateNotification(int authorId, int objectId,
+                                             int userId, NotificationType notificationType) {
         User notificationAuthor = userService.getUserDataById(authorId);
 
         Notification notification = Notification.builder()

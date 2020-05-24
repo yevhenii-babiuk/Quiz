@@ -26,7 +26,9 @@ public class SuggestionDaoImpl implements SuggestionDao {
 
     @Override
     public Map<String, String> getLoginAndEmail(int quizId) {
-        return jdbcTemplate.query(suggestionsQueries.get("getEmail"), new Object[]{quizId, quizId}, (ResultSet rs) -> {
+        return jdbcTemplate.query(suggestionsQueries.get("getEmail"),
+                new Object[]{quizId, quizId},
+                (ResultSet rs) -> {
             Map<String, String> results = new HashMap<>();
             while (rs.next()) {
                 results.put(rs.getString("login"), rs.getString("email"));

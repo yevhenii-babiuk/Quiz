@@ -104,8 +104,10 @@ public class GameDaoImpl implements GameDao {
         try {
             return jdbcTemplate.update(
                     queries.get("saveAnswer"), answer.getUserId(),
-                    answer.getPercent(), answer.getQuestionId(),
-                    answer.getTime(), answer.getGameId());
+                    answer.getPercent(),
+                    answer.getQuestionId(),
+                    answer.getTime(),
+                    answer.getGameId());
         } catch (DuplicateKeyException e) {
             log.warn("image is already exist id={} ", answer.getId());
             return -1;
@@ -116,8 +118,10 @@ public class GameDaoImpl implements GameDao {
     public int saveSettings(GameDto game) {
         return jdbcTemplate.update(
                 queries.get("saveSettings"), game.getGameId(),
-                game.getTime(), game.isQuestionAnswerSequence(),
-                game.isCombo(), game.isIntermediateResult(),
+                game.getTime(),
+                game.isQuestionAnswerSequence(),
+                game.isCombo(),
+                game.isIntermediateResult(),
                 game.isQuickAnswerBonus());
     }
 
@@ -126,7 +130,8 @@ public class GameDaoImpl implements GameDao {
         try {
             jdbcTemplate.update(
                     queries.get("saveQuiz"), quiz.getId(),
-                    quiz.getName(), quiz.getQuestionNumber(),
+                    quiz.getName(),
+                    quiz.getQuestionNumber(),
                     quiz.getImageId());
         } catch (DuplicateKeyException e) {
             log.warn("quiz is already exist id={} ", quiz.getId());
@@ -138,8 +143,10 @@ public class GameDaoImpl implements GameDao {
         try {
             jdbcTemplate.update(queries.get("saveQuestion"),
                     question.getId(),
-                    question.getQuizId(), question.getType().name().toLowerCase(),
-                    question.getContent(), question.getScore(),
+                    question.getQuizId(),
+                    question.getType().name().toLowerCase(),
+                    question.getContent(),
+                    question.getScore(),
                     question.getImageId());
         } catch (DuplicateKeyException e) {
             log.warn("question is already exist id={} ", question.getId());
@@ -151,8 +158,10 @@ public class GameDaoImpl implements GameDao {
         try {
             jdbcTemplate.update(queries.get("saveOption"),
                     option.getId(),
-                    option.getQuestionId(), option.getContent(),
-                    option.isCorrect(), option.getSequenceOrder(),
+                    option.getQuestionId(),
+                    option.getContent(),
+                    option.isCorrect(),
+                    option.getSequenceOrder(),
                     option.getImageId());
         } catch (DuplicateKeyException e) {
             log.warn("question option is already exist id={} ", option.getId());
@@ -185,7 +194,8 @@ public class GameDaoImpl implements GameDao {
     public void saveImage(Image image) {
         try {
             jdbcTemplate.update(queries.get("saveImage"),
-                    image.getId(), image.getSrc());
+                    image.getId(),
+                    image.getSrc());
         } catch (DuplicateKeyException e) {
             log.warn("image is already exist id={} ", image.getId());
         }
@@ -211,8 +221,10 @@ public class GameDaoImpl implements GameDao {
     @Override
     public void updateGameQuestion(GameQuestionDto gameQuestion) {
         jdbcTemplate.update(queries.get("updateGameQuestion"),
-                gameQuestion.getGameId(), gameQuestion.getQuestionId(),
-                gameQuestion.isCurrent(), gameQuestion.getFinishTime(),
+                gameQuestion.getGameId(),
+                gameQuestion.getQuestionId(),
+                gameQuestion.isCurrent(),
+                gameQuestion.getFinishTime(),
                 gameQuestion.getId());
     }
 
@@ -230,15 +242,20 @@ public class GameDaoImpl implements GameDao {
     @Override
     public GameDto getGame(String id) {
         return jdbcTemplate.queryForObject(queries.get("getGame"),
-                new Object[]{id}, new GameDtoMapper());
+                new Object[]{id},
+                new GameDtoMapper());
 
     }
 
     @Override
     public void updateUserDto(UserDto user) {
         jdbcTemplate.update(queries.get("updateUser"),
-                user.getGameId(), user.getLogin(), user.getRegisterId(), user.getScore(),
-                user.getComboAnswer(), user.getId());
+                user.getGameId(),
+                user.getLogin(),
+                user.getRegisterId(),
+                user.getScore(),
+                user.getComboAnswer(),
+                user.getId());
     }
 
     @Override
@@ -259,7 +276,8 @@ public class GameDaoImpl implements GameDao {
     @Override
     public GameQuestionDto getGameQuestion(String gameId, int random) {
         return jdbcTemplate.queryForObject(queries.get("getGameQuestion"),
-                new Object[]{gameId, random}, new GameQuestionMapper());
+                new Object[]{gameId, random},
+                new GameQuestionMapper());
     }
 
     @Override
@@ -312,7 +330,6 @@ public class GameDaoImpl implements GameDao {
             return;
         }
         List<Integer> existId = getAlreadyExistImage(new ArrayList<>(images.keySet()));
-
 
         for (Integer imageId : existId) {
             if (images.get(imageId) != null) {

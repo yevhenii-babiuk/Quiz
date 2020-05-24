@@ -51,7 +51,7 @@ public class ImageDaoImpl extends GenericDaoImpl<Image> implements ImageDao {
         try {
             id = jdbcTemplate.queryForObject(imageQueries.get("getIdBySrc"),
                     new Object[]{src}, Integer.class);
-        } catch (NullPointerException | EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException | NullPointerException e) {
             return -1;
         }
         return id != null ? id.intValue() : -1;

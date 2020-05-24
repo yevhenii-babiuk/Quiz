@@ -192,8 +192,6 @@ public class UserService {
     public User getUserDataById(int id) {
         User user = userDao.get(id);
 
-        //throw new NoSuchElementException("Such user not exist");
-
         return user;
     }
 
@@ -265,13 +263,15 @@ public class UserService {
         return friendsActivityPage;
     }
 
-    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend,
+                                                           boolean markQuizAsFavorite,
                                                            boolean publishQuiz, boolean achievement) {
         if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
             log.info("getFilteredFriendsActivity: Nothing to get");
             return null;
         }
-        return userDao.getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        return userDao.getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite,
+                publishQuiz, achievement);
     }
 
     public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
