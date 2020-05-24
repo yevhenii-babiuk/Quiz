@@ -19,10 +19,18 @@ public enum MessageInfo {
     suggestion(
             new MessageInfoItem(Lang.UA, "mail/suggestions-ua.html", "Пропозиції від QuCat"),
             new MessageInfoItem(Lang.EN, "mail/suggestions-en.html", "Suggestions from QuCat")
+    ),
+    deactivationAccount(
+            new MessageInfoItem(Lang.UA, "mail/deactivationAccount-ua.html", "Ваш акаунт на QuCat деактивовано"),
+            new MessageInfoItem(Lang.EN, "mail/deactivationAccount-en.html", "Your account on QuCat was deactivated")
+    ),
+    activationAccount(
+            new MessageInfoItem(Lang.UA, "mail/activationAccount-ua.html", "Ваш акаунт на QuCat активовано"),
+            new MessageInfoItem(Lang.EN, "mail/activationAccount-en.html", "Your account on QuCat was activated")
     );
 
 
-    private List<MessageInfoItem> items;
+    private final List<MessageInfoItem> items;
 
     MessageInfo(MessageInfoItem... items) {
         this.items = asList(items);

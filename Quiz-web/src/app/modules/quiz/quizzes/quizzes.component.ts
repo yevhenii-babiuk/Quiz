@@ -33,11 +33,11 @@ export class QuizzesComponent implements OnInit {
 
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private quizzesService: QuizzesService,
-    public translate: TranslateService,
-    private securityService: SecurityService
+      private route: ActivatedRoute,
+      private router: Router,
+      private quizzesService: QuizzesService,
+      public translate: TranslateService,
+      public securityService: SecurityService
   ) {
   }
 
