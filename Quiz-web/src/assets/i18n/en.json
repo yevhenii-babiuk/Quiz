@@ -86,44 +86,6 @@
       "tags": "Tags",
       "description": "Description",
       "questionType": "Question type"
-    }
-  },
-  "viewProfile": {
-    "login": "Login:",
-    "firstName": "Name:",
-    "lastName": "Surname:",
-    "description": "Description:",
-    "murrs": "Murrs:",
-    "edit": "Edit",
-    "savePhoto": "Save photo",
-    "addToFriends": "Add to friends",
-    "deleteFromFriends": "Delete from friends",
-    "achievements": "Calculate achievements",
-    "activate": "Activate",
-    "deactivate": "Deactivate"
-  },
-  "editProfile": {
-    "title": "Edit profile",
-    "firstName": "First name",
-    "lastName": "Last Name",
-    "description": "Description",
-    "password": "Password",
-    "confirmPassword": "Confirm password",
-    "save": "Save"
-  },
-  "activities": {
-    "user": "User",
-    "getAchievement": "received an achievement ",
-    "createQuiz": "created a new quiz",
-    "addQuiz": "added quiz",
-    "favouriteList": "to the list of favourite quizzes",
-    "addUser": "added user",
-    "toFriends": "to friends",
-    "categoryTypes": {
-      "addFriend": "Added friends",
-      "favouriteQuizzes": "Added quizzes to favorites list",
-      "createdQuizzes": "Created quizzes",
-      "achievements": "Achievements"
     },
     "editQuiz": {
       "enterQuizName": "Enter quiz name",
@@ -167,7 +129,7 @@
     "firstName": "Name:",
     "lastName": "Surname:",
     "description": "Description:",
-    "murrs": "Murrs:",
+    "score": "Score:",
     "edit": "Edit",
     "savePhoto": "Save photo",
     "addToFriends": "Add to friends",

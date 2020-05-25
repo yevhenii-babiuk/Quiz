@@ -5,7 +5,6 @@ import com.qucat.quiz.repositories.dao.mappers.UserMapper;
 import com.qucat.quiz.repositories.dto.statistic.*;
 import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -116,7 +115,6 @@ public class DashboardDaoImpl implements DashboardDao {
                 ));
     }
 
-    @Test
     private void createTemporaryTable() {
         jdbcTemplate.update(dashboardQueries.get("createTemporaryTable"));
     }

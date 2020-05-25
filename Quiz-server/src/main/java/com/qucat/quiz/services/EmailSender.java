@@ -33,14 +33,13 @@ public class EmailSender {
     private final String QUIZCATEGORY_TOKEN = "&\\{quizCategory}";
     private final String URL_TOKEN = "&\\{url}";
     private final String CONTENT_ENCODING = "text/html ; charset=utf-8";
-    private Message message;
 
     @Autowired
     private Session emailSession;
 
     public void sendMessage(String receiverEmailAddress, String username, String url, MessageInfo.MessageInfoItem messageInfoItem) {
         try {
-            message = generateMessage(receiverEmailAddress);
+            Message message = generateMessage(receiverEmailAddress);
             Map<String, String> replace = new TreeMap<>();
             replace.put(USERNAME_TOKEN, username);
             replace.put(URL_TOKEN, url);
@@ -58,11 +57,9 @@ public class EmailSender {
             replace.put(QUIZNAME_TOKEN, quizName);
             replace.put(QUIZCATEGORY_TOKEN, categoryName);
             replace.put(URL_TOKEN, url);
-            synchronized (this) {
-                message = generateMessage(receiverEmailAddress);
-                setContent(message, messageInfoItem, replace);
-                Transport.send(message);
-            }
+            Message message = generateMessage(receiverEmailAddress);
+            setContent(message, messageInfoItem, replace);
+            Transport.send(message);
         } catch (MessagingException | IOException e) {
             log.error("cant send message", e);
         }
