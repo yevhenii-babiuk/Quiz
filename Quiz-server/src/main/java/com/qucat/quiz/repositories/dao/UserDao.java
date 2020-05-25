@@ -2,6 +2,7 @@ package com.qucat.quiz.repositories.dao;
 
 import com.qucat.quiz.repositories.entities.FriendActivity;
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.enums.Lang;
 import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import org.springframework.data.domain.Page;
@@ -59,4 +60,8 @@ public interface UserDao extends GenericDao<User> {
     void updateUserStatus(int id, UserAccountStatus status);
 
     void updateUserScore(int userId, int score);
+
+    Lang getUserLanguage(int userId);
+
+    void updateUserLanguage(int userId, Lang lang);
 }
