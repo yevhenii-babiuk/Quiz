@@ -8,8 +8,8 @@ import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +37,6 @@ public class GameService {
     @Autowired
     private WebSocketSenderService socketSenderService;
 
-    private ApplicationContext context;
-
     @Value("${url}")
     private String URL;
 
@@ -50,11 +48,6 @@ public class GameService {
 
     private int currAnimal = 0;
     private int currCharacteristic = 0;
-
-    @Autowired
-    public void context(ApplicationContext context) {
-        this.context = context;
-    }
 
     private synchronized String getNewName() {
         currAnimal++;
@@ -90,8 +83,13 @@ public class GameService {
         return user;
     }
 
+    @Lookup
+    public GameProcess createGameProcess() {
+        return null;
+    }
+
     public void startGame(String gameId) {
-        GameProcess gameProcess = context.getBean(GameProcess.class);
+        GameProcess gameProcess = createGameProcess();
         gameProcess.setGameId(gameId);
         gameProcess.run();
     }

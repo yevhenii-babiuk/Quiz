@@ -4,10 +4,22 @@
 -->
 <div class="container" *ngIf="quiz">
   <button *ngIf="securityService.getCurrentRole()=='USER'" [ngStyle]="{'background-color': COLORS.AMBER}"
-          class="btn form-control mb-3" routerLink="gameSettings">
+          class="btn form-control" routerLink="gameSettings">
     {{ 'quiz.viewQuiz.playQuiz' | translate }}
   </button>
-  <p class="text-center font-weight-bold">{{quiz.name | uppercase}}</p>
+  <div class="row">
+    <div class="ml-auto"></div>
+    <div class="row">
+      <div class="my-auto">
+        <p class="my-auto font-weight-bold">{{quiz.name | uppercase}}</p>
+      </div>
+      <div *ngIf="userId && securityService.getCurrentRole()=='USER'" class="ml-2 p-2" (click)="changeStar()">
+        <img src="assets/img/star-{{quiz.isFavorite?'full':'empty'}}.png" height="30" alt="sign">
+      </div>
+    </div>
+    <div class="mr-auto"></div>
+  </div>
+
 
   <div class="row mx-0" *ngIf="securityService.getCurrentId() &&
   (securityService.getCurrentRole()!='USER'|| securityService.getCurrentId()==quiz.authorId)">
@@ -27,7 +39,7 @@
   <div class="row mx-0">
 
     <div class="col-sm-3">
-      <img class="card-img-top" src="data:image/jpeg;base64,{{quiz.image.src}}" alt="Card image cap">
+      <img class="card-img-top p-3" src="data:image/jpeg;base64,{{quiz.image.src}}" alt="Card image cap">
     </div>
 
 
@@ -45,10 +57,7 @@
         </label>
       </div>
       <div class="row">
-        <div *ngIf="userId && securityService.getCurrentRole()=='USER'" (click)="changeStar()">
-          <img src="assets/img/star-{{quiz.isFavorite?'full':'empty'}}.png" height="50" alt="sign">
-        </div>
-        <div class="mat-app-background col" *ngIf="quiz.tags.length>0">
+        <div class="col" *ngIf="quiz.tags.length>0">
           <mat-form-field class="example-chip-list w-100">
             <mat-chip-list aria-label="Fruit selection w-100" placeholder="{{ 'quiz.viewQuiz.tags' | translate }}">
               <mat-chip
