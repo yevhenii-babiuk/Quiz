@@ -31,7 +31,8 @@ public class TagDaoImpl extends GenericDaoImpl<Tag> implements TagDao {
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Tag tag) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           Tag tag) throws SQLException {
         preparedStatement.setString(1, tag.getName());
         return preparedStatement;
     }
@@ -43,13 +44,15 @@ public class TagDaoImpl extends GenericDaoImpl<Tag> implements TagDao {
 
     @Override
     protected Object[] getUpdateParameters(Tag tag) {
-        return new Object[]{tag.getName(), tag.getId()};
+        return new Object[]{tag.getName(),
+                tag.getId()};
     }
 
     @Override
     public List<Tag> getByQuizId(int id) {
         return jdbcTemplate.query(tagQueries.get("getByQuizId"),
-                new Object[]{id}, new TagMapper());
+                new Object[]{id},
+                new TagMapper());
     }
 
     @Override
@@ -58,7 +61,7 @@ public class TagDaoImpl extends GenericDaoImpl<Tag> implements TagDao {
         try {
             id = jdbcTemplate.queryForObject(tagQueries.get("getIdByName"),
                     new Object[]{name}, Integer.class);
-        } catch (NullPointerException | EmptyResultDataAccessException e) {
+        } catch (EmptyResultDataAccessException | NullPointerException e) {
             return -1;
         }
         return id != null ? id.intValue() : -1;

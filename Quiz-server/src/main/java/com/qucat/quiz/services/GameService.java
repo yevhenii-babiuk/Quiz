@@ -8,8 +8,8 @@ import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Lookup;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
@@ -37,8 +37,6 @@ public class GameService {
     @Autowired
     private WebSocketSenderService socketSenderService;
 
-    private ApplicationContext context;
-
     @Value("${url}")
     private String URL;
 
@@ -51,11 +49,6 @@ public class GameService {
     private int currAnimal = 0;
     private int currCharacteristic = 0;
 
-    @Autowired
-    public void context(ApplicationContext context) {
-        this.context = context;
-    }
-
     private synchronized String getNewName() {
         currAnimal++;
         currCharacteristic++;
@@ -65,9 +58,10 @@ public class GameService {
         if (characteristic.size() == currCharacteristic) {
             currCharacteristic = 0;
         }
-        return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);//todo
+        return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);
     }
 
+    //todo create test Alexandra
     public UserDto connectUser(String gameId, int userId) {
         UserDto user;
         if (userId != 0) {
@@ -89,12 +83,16 @@ public class GameService {
         return user;
     }
 
+    @Lookup
+    public GameProcess createGameProcess() {
+        return null;
+    }
+
     public void startGame(String gameId) {
-        GameProcess gameProcess = context.getBean(GameProcess.class);
+        GameProcess gameProcess = createGameProcess();
         gameProcess.setGameId(gameId);
         gameProcess.run();
     }
-
 
     private void calculateCorrectForAnswer(AnswerDto answer, Question question) {
         log.info("answer input" + answer);
@@ -159,7 +157,7 @@ public class GameService {
         if (gameQuestionDto == null || gameQuestionDto.getQuestionId() == 0) {
             return null;
         }
-        return gameDao.getQuestionById(gameQuestionDto.getQuestionId());//todo check timer. check answer
+        return gameDao.getQuestionById(gameQuestionDto.getQuestionId());
     }
 
     private String generateAccessCode() {
@@ -188,13 +186,19 @@ public class GameService {
 
     }
 
+
     public String createRoom(GameDto game) {
         String gameId = generateAccessCode();
         game.setGameId(gameId);
 
         Quiz quiz = quizService.getQuizById(game.getQuizId());
-        QuizDto quizDto = new QuizDto(quiz.getId(), quiz.getName(), quiz.getQuestionNumber(),
-                quiz.getImageId(), quiz.getImage(), quiz.getQuestions());
+        QuizDto quizDto = new QuizDto(
+                quiz.getId(),
+                quiz.getName(),
+                quiz.getQuestionNumber(),
+                quiz.getImageId(),
+                quiz.getImage(),
+                quiz.getQuestions());
         saveQuiz(game, quizDto);
         return gameId;
     }

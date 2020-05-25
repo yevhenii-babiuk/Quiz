@@ -40,7 +40,8 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Quiz quiz) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           Quiz quiz) throws SQLException {
         preparedStatement.setString(1, quiz.getName());
         preparedStatement.setInt(2, quiz.getAuthorId());
         preparedStatement.setInt(3, quiz.getCategoryId());
@@ -72,21 +73,33 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
     @Override
     protected Object[] getUpdateParameters(Quiz quiz) {
-        return new Object[]{quiz.getName(), quiz.getAuthorId(), quiz.getCategoryId(), quiz.getStatus().name().toLowerCase(),
-                quiz.getPublishedDate(), quiz.getUpdatedDate(),
-                quiz.getCreatedDate(), quiz.getQuestionNumber(), quiz.getMaxScore(), quiz.getImageId(), quiz.getDescription(), quiz.getId()};
+        return new Object[]{quiz.getName(),
+                quiz.getAuthorId(),
+                quiz.getCategoryId(),
+                quiz.getStatus().name().toLowerCase(),
+                quiz.getPublishedDate(),
+                quiz.getUpdatedDate(),
+                quiz.getCreatedDate(),
+                quiz.getQuestionNumber(),
+                quiz.getMaxScore(),
+                quiz.getImageId(),
+                quiz.getDescription(),
+                quiz.getId()};
     }
 
 
     @Override
     public List<Quiz> getAllFullInfo() {
-        return jdbcTemplate.query(quizQueries.get("getFullInfo"), new QuizExtractor());
+        return jdbcTemplate.query(quizQueries.get("getFullInfo"),
+                new QuizExtractor());
     }
 
     @Override
     public Quiz getFullInfo(int id) {
         String getQuery = quizQueries.get("getFullInfo").replace(";", " WHERE quiz.id = ?;");
-        List<Quiz> result = jdbcTemplate.query(getQuery, new Object[]{id}, new QuizExtractor());
+        List<Quiz> result = jdbcTemplate.query(getQuery,
+                new Object[]{id},
+                new QuizExtractor());
         return result.size() == 0 ? null : result.get(0);
     }
 
@@ -160,9 +173,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                                                            String name, String author, List<String> category,
                                                            Timestamp minDate, Timestamp maxDate, List<String> tags,
                                                            QuizStatus[] status) {
-
         PreparedStatement preparedStatement = null;
-
         try {
             preparedStatement = jdbcTemplate.getDataSource().getConnection().prepareStatement(query);
             int paramIndex = 1;
@@ -315,14 +326,13 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
     @Override
     public Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category,
                                      Timestamp minDate, Timestamp maxDate, List<String> tags, QuizStatus[] status) {
+        PreparedStatement psId = getQuizIdQuery(pageable, name, author, category, minDate, maxDate, tags, status);
+        PreparedStatement psRows = getQuizCount(psId.toString(), name, author, category, minDate, maxDate, tags, status);
+        PreparedStatement psForPage = null;
+
         List<Integer> id = new ArrayList<>();
         List<Quiz> quizzes = new ArrayList<>();
         int quizCount = 0;
-        PreparedStatement psId = getQuizIdQuery(pageable, name, author, category,
-                minDate, maxDate, tags, status);
-        PreparedStatement psRows = getQuizCount(psId.toString(), name, author, category,
-                minDate, maxDate, tags, status);
-        PreparedStatement psForPage = null;
         try {
             ResultSet rs = psId.executeQuery();
             while (rs.next()) {
@@ -335,7 +345,6 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                     quizzes = qe.extractData(psForPage.executeQuery());
                 }
             }
-
             ResultSet rsRowsNum = psRows.executeQuery();
             if (rsRowsNum.next()) {
                 quizCount = rsRowsNum.getInt("quiz_id");
@@ -356,6 +365,9 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         }
         if (quizzes == null) {
             return empty(Pageable.unpaged());
+        }
+        for (Quiz quiz : quizzes) {
+            quiz.setQuestions(null);
         }
         return new PageImpl<>(quizzes, pageable, quizCount);
     }

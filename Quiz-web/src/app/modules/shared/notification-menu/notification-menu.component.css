@@ -63,6 +63,8 @@
 }
 
 .notification-wrapper .notification-header {
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
   padding: 10px;
   color: #ffffff;
   background-color: #212531;

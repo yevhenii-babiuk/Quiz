@@ -36,7 +36,8 @@ public class TokenDaoImpl implements TokenDao {
         Token token;
         try {
             token = jdbcTemplate.queryForObject(selectQuery,
-                    new Object[]{id}, new TokenRowMapper());
+                    new Object[]{id},
+                    new TokenRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -49,7 +50,8 @@ public class TokenDaoImpl implements TokenDao {
         int id;
         try {
             id = jdbcTemplate.queryForObject(userIdQuery,
-                    new Object[]{token.getToken(), token.getTokenType().name().toLowerCase()},
+                    new Object[]{token.getToken(),
+                            token.getTokenType().name().toLowerCase()},
                     Integer.class);
         } catch (EmptyResultDataAccessException | NullPointerException e) {
             return 0;

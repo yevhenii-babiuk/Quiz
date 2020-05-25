@@ -57,6 +57,7 @@ public class UserService {
     @Value("${url}")
     private String URL;
 
+    //todo create test Yevhenii
     @Transactional
     public boolean registerUser(User user) {
         user.setRole(Role.USER);
@@ -136,6 +137,7 @@ public class UserService {
         }
         User user = userDao.get(id);
         user.setStatus(UserAccountStatus.ACTIVATED);
+        emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.activationAccount.findByLang(Lang.EN));
         userDao.update(user);
         return true;
     }
@@ -156,6 +158,7 @@ public class UserService {
         int id = tokenService.getUserId(token);
         return id != 0;
     }
+
 
     public boolean editPassword(String tokenStr, String password) {
         Token token = Token.builder()
@@ -190,8 +193,6 @@ public class UserService {
 
     public User getUserDataById(int id) {
         User user = userDao.get(id);
-
-        //throw new NoSuchElementException("Such user not exist");
 
         return user;
     }
@@ -264,13 +265,15 @@ public class UserService {
         return friendsActivityPage;
     }
 
-    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend, boolean markQuizAsFavorite,
+    public List<FriendActivity> getFilteredFriendsActivity(int userId, boolean addFriend,
+                                                           boolean markQuizAsFavorite,
                                                            boolean publishQuiz, boolean achievement) {
         if (!addFriend && !markQuizAsFavorite && !publishQuiz && !achievement) {
             log.info("getFilteredFriendsActivity: Nothing to get");
             return null;
         }
-        return userDao.getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite, publishQuiz, achievement);
+        return userDao.getFilteredFriendsActivity(userId, addFriend, markQuizAsFavorite,
+                publishQuiz, achievement);
     }
 
     public Page<FriendActivity> getFilteredFriendsActivityPage(int userId, boolean addFriend, boolean markQuizAsFavorite,
@@ -314,7 +317,20 @@ public class UserService {
         userDao.updateUserPhoto(user.getImageId(), user.getId());
     }
 
+    //todo create test Anna
     public void updateUserStatus(int userId, UserAccountStatus status) {
+        User user = userDao.get(userId);
+        if (user == null) {
+            return;
+        }
+        //todo get lang
+        if (status == UserAccountStatus.UNACTIVATED && user.getStatus() == UserAccountStatus.ACTIVATED) {
+            emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.deactivationAccount.findByLang(Lang.EN));
+        }
+        if (status == UserAccountStatus.ACTIVATED && user.getStatus() == UserAccountStatus.UNACTIVATED) {
+            emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.activationAccount.findByLang(Lang.EN));
+        }
+
         userDao.updateUserStatus(userId, status);
     }
 

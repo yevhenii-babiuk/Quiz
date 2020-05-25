@@ -20,7 +20,7 @@
 
     </div>
 
-    <div class="notification-container">
+    <div class="notification-container shadow" style="border-radius: 4px;">
       <ng-container *ngFor="let notification of messages">
         <div class="notification-item" (mouseover)="setViewed(notification)">
           <button type="button" (click)="deleteNotification(notification.linkAction, notification.id)" class="close"

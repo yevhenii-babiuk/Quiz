@@ -20,6 +20,7 @@ import {User} from "../../core/models/user";
 export class ChatAreaComponent implements OnInit, OnDestroy {
   isWaiting: boolean = false;
   isOver: boolean = false;
+  isInit: boolean = true;
 
   id: number;
   chat: Chat = new Chat();
@@ -31,7 +32,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   selectedFriend: User;
   friends: User[] = [];
 
-  // @ViewChild('scrollMe') private myScrollContainer: ElementRef;
+  @ViewChild('msgScroll') private myScrollContainer: ElementRef;
 
   private stompClient;
   eventType = EventType;
@@ -47,17 +48,23 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.id = this.securityService.getCurrentId();
     this.chat.id = +this.route.snapshot.paramMap.get('chatId');
 
+    this.chatService.checkChatAffiliation(this.id, this.chat.id)
+      .subscribe(
+        answer => {
+          if (!answer) {
+            this.router.navigate([`chats`]).then();
+          }
+        }
+      );
+
     this.chatService.getChat(this.chat.id)
       .subscribe(
         chat => {
           this.chat = chat;
-        },
-        err => {
-          console.log(err);
         }
       );
 
-    this.getNew();
+    this.getMessages();
 
     this.initializeWebSocketConnection();
   }
@@ -65,13 +72,9 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
   }
 
-  // scrollToBottom(): void {
-  //   try {
-  //     this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
-  //   } catch(err) {
-  //     console.log(err);
-  //   }
-  // }
+  scrollToBottom(): void {
+    this.myScrollContainer.nativeElement.scrollTop = this.myScrollContainer.nativeElement.scrollHeight;
+  }
 
   initializeWebSocketConnection() {
     let ws = new SockJS(socket);
@@ -83,7 +86,9 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         if (message.body) {
           that.receivedEvent = JSON.parse(message.body);
           if (that.receivedEvent.type == that.eventType.MESSAGE) {
+            that.receivedEvent.message.creationDate = new Date();
             that.messages.push(that.receivedEvent.message);
+            setTimeout(() => that.scrollToBottom(), 2);
           }
         }
       });
@@ -101,7 +106,6 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
 
     this.stompClient.send("/chat/" + this.chat.id, {}, JSON.stringify(this.message));
     this.message.messageText = '';
-    // this.scrollToBottom();
   }
 
   ngOnDestroy(): void {
@@ -110,12 +114,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
   }
 
   updateChat() {
-    this.chatService.updateChat(this.chat)
-      .subscribe(
-        err => {
-          console.log(err);
-        }
-      );
+    this.chatService.updateChat(this.chat).subscribe();
   }
 
   leaveChat() {
@@ -123,9 +122,6 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
       .subscribe(
         data => {
           this.router.navigate([`chats`]).then();
-        },
-        error => {
-          console.log(error)
         }
       )
   }
@@ -137,30 +133,23 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
           friends => {
             this.friends = friends;
             this.isLoaded = true;
-          },
-          err => {
-            console.log(err);
           })
     }
   }
 
   inviteFriend() {
-    console.log(this.selectedFriend.id)
     if (this.selectedFriend) {
       this.chatService.inviteToChat(this.selectedFriend, this.chat.id)
         .subscribe(
           data => {
             this.invitation = false;
             this.chat.users.push(this.selectedFriend);
-          },
-          err => {
-            console.log(err);
           }
         );
     }
   }
 
-  getNew(): void {
+  getMessages(): void {
     if (this.isWaiting) {
       return;
     }
@@ -169,7 +158,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.chatService.getMessages(this.chat.id, this.messages.length)
       .subscribe(
         messages => {
-          if (messages.length < 10){
+          if (messages.length < 10) {
             this.isOver = true;
           }
 
@@ -179,22 +168,27 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
           }
           this.isWaiting = false;
           this.messages = messages.reverse().concat(this.messages);
-        },
-        err => {
-          console.log(err);
+
+          if (this.isInit) {
+            this.isInit = false;
+            setTimeout(() => this.scrollToBottom(), 10);
+          } else {
+            this.scrollToBottom();
+          }
+
         })
   }
 
   @HostListener('scroll', ['$event'])
   scrollHandler(event) {
-    if (event.srcElement.scrollHeight - event.srcElement.scrollTop - event.srcElement.clientHeight > (event.srcElement.scrollTopMax - 20)) {
-      if (!this.isOver){
-        this.getNew();
+    if (event.target.scrollHeight - event.target.scrollTop - event.target.clientHeight > (event.target.scrollTopMax - 20)) {
+      if (!this.isOver) {
+        this.getMessages();
       }
     }
   }
 
   onChange(value: string) {
-    this.selectedFriend=this.friends.filter(value1 => value1.login==value)[0];
+    this.selectedFriend = this.friends.filter(value1 => value1.login == value)[0];
   }
 }

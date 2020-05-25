@@ -27,9 +27,6 @@ export class ChatListComponent implements OnInit {
       .subscribe(
         chats => {
           this.chats = chats;
-        },
-        err => {
-          console.log(err);
         })
   }
 
@@ -40,9 +37,6 @@ export class ChatListComponent implements OnInit {
         data => {
           this.creation = false;
           window.location.reload();
-        },
-        err => {
-          console.log(err);
         }
       )
   }

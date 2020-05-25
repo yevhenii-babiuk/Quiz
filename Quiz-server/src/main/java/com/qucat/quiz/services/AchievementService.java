@@ -6,6 +6,7 @@ import com.qucat.quiz.repositories.entities.AchievementCondition;
 import com.qucat.quiz.repositories.entities.UserAchievement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -47,6 +48,7 @@ public class AchievementService {
         return true;
     }
 
+    //todo create test Andrii
     @Transactional
     public boolean updateAchievement(Achievement achievement) {
         if (achievement == null || achievement.getConditions().isEmpty()) {
@@ -90,6 +92,8 @@ public class AchievementService {
         return achievementDao.getAll();
     }
 
+    //todo create test Andrii
+    @Scheduled(cron = "0 0 * * * *")
     public void updateUserAchievementLists() {
         List<Achievement> achievements = getAllAchievement();
         List<UserAchievement> beforeUpdateAchievements = userAchievementsService.getAchievementsForAll();

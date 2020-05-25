@@ -32,7 +32,8 @@ public class ChatDaoImpl extends GenericDaoImpl<Chat> implements ChatDao {
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Chat chat) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           Chat chat) throws SQLException {
         preparedStatement.setString(1, chat.getName());
         return preparedStatement;
     }
@@ -49,24 +50,31 @@ public class ChatDaoImpl extends GenericDaoImpl<Chat> implements ChatDao {
 
     @Override
     public List<Chat> getAllFullInfo() {
-        return jdbcTemplate.query(chatQueries.get("getFullInfo"), new ChatExtractor());
+        return jdbcTemplate.query(chatQueries.get("getFullInfo"),
+                new ChatExtractor());
     }
 
     @Override
     public List<Chat> getAllFullInfoForUser(int id) {
-        return jdbcTemplate.query(chatQueries.get("getFullInfoForUser"), new Object[]{id}, new ChatExtractor());
+        return jdbcTemplate.query(chatQueries.get("getFullInfoForUser"),
+                new Object[]{id},
+                new ChatExtractor());
     }
 
     @Override
     public Chat getFullInfo(int id) {
         String getQuery = chatQueries.get("getFullInfo").replace(";", " WHERE chat_id = ?;");
-        List<Chat> result = jdbcTemplate.query(getQuery, new Object[]{id}, new ChatExtractor());
+        List<Chat> result = jdbcTemplate.query(getQuery,
+                new Object[]{id},
+                new ChatExtractor());
         return result.size() == 0 ? null : result.get(0);
     }
 
     @Override
     public List<Chat> getChatsForUser(int userId) {
-        return jdbcTemplate.query(chatQueries.get("getUsersChat"), new Object[]{userId}, new ChatMapper());
+        return jdbcTemplate.query(chatQueries.get("getUsersChat"),
+                new Object[]{userId},
+                new ChatMapper());
     }
 
     @Override
@@ -81,5 +89,18 @@ public class ChatDaoImpl extends GenericDaoImpl<Chat> implements ChatDao {
     @Override
     public void removeChatMember(int chatId, int userId) {
         jdbcTemplate.update(chatQueries.get("removeChatMember"), chatId, userId);
+    }
+
+    @Override
+    public boolean checkChatAffiliation(int chatId, int userId) {
+        Number total = jdbcTemplate.queryForObject(chatQueries.get("checkChatAffiliation"),
+                new Object[]{chatId, userId},
+                (resultSet, number) -> resultSet.getInt("row_count"));
+
+        if (total == null) {
+            return false;
+        }
+
+        return total.intValue() > 0;
     }
 }

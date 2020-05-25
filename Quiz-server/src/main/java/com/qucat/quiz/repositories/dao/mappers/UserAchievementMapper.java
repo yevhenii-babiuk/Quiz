@@ -13,7 +13,6 @@ public class UserAchievementMapper implements RowMapper<UserAchievement> {
                 .userId(resultSet.getInt("user_id"))
                 .achievementId(resultSet.getInt("achievement_id"))
                 .id(resultSet.getInt("id"))
-                //.date(resultSet.getDate("achievement_date"))todo mb delete
                 .build();
     }
 }

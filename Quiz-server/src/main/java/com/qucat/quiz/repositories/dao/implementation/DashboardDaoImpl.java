@@ -35,7 +35,9 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<User> getTopUsers(int limit) {
-        return jdbcTemplate.query(dashboardQueries.get("getTopUsers"), new Object[]{limit}, new UserMapper());
+        return jdbcTemplate.query(dashboardQueries.get("getTopUsers"),
+                new Object[]{limit},
+                new UserMapper());
     }
 
     @Override
@@ -43,7 +45,8 @@ public class DashboardDaoImpl implements DashboardDao {
         User user;
         try {
             user = jdbcTemplate.queryForObject(dashboardQueries.get("getBestUserByQuizId"),
-                    new Object[]{quizId}, new UserMapper()
+                    new Object[]{quizId},
+                    new UserMapper()
             );
         } catch (EmptyResultDataAccessException e) {
             return null;
@@ -53,7 +56,9 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<CategoryStatistics> getStatisticInTheCategory(int userId) {
-        return jdbcTemplate.query(dashboardQueries.get("getStatisticInTheCategoryById"), new Object[]{userId}, (rs, rowNum) ->
+        return jdbcTemplate.query(dashboardQueries.get("getStatisticInTheCategoryById"),
+                new Object[]{userId},
+                (rs, rowNum) ->
                 new CategoryStatistics(
                         rs.getInt("category_id"),
                         rs.getString("name"),
@@ -64,7 +69,9 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<QuizStatistics> getPercentOfCorrectAnswers(int userId) {
-        return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersById"), new Object[]{userId}, (rs, rowNum) ->
+        return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersById"),
+                new Object[]{userId},
+                (rs, rowNum) ->
                 new QuizStatistics(
                         rs.getString("name"),
                         rs.getDouble("correct_answers_persentage")
@@ -74,7 +81,9 @@ public class DashboardDaoImpl implements DashboardDao {
     @Override
     public BestQuiz getTheMostSuccessfulQuiz(int userId) {
         try {
-            return jdbcTemplate.queryForObject(dashboardQueries.get("getMaxScoreById"), new Object[]{userId}, (rs, rowNum) ->
+            return jdbcTemplate.queryForObject(dashboardQueries.get("getMaxScoreById"),
+                    new Object[]{userId},
+                    (rs, rowNum) ->
                     new BestQuiz(
                             rs.getString("name"),
                             rs.getTimestamp("take_date"),
@@ -87,7 +96,9 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<ComparedScores> getComparedScores(int userId) {
-        return jdbcTemplate.query(dashboardQueries.get("getComparedScores"), new Object[]{userId}, (rs, rowNum) ->
+        return jdbcTemplate.query(dashboardQueries.get("getComparedScores"),
+                new Object[]{userId},
+                (rs, rowNum) ->
                 new ComparedScores(
                         rs.getInt("id"),
                         rs.getString("name"),
@@ -99,7 +110,9 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<QuizStatistics> getFriendsPreferences(int userId) {
-        return jdbcTemplate.query(dashboardQueries.get("getFriendsPreferences"), new Object[]{userId}, (rs, rowNum) ->
+        return jdbcTemplate.query(dashboardQueries.get("getFriendsPreferences"),
+                new Object[]{userId},
+                (rs, rowNum) ->
                 new QuizStatistics(
                         rs.getString("name"),
                         rs.getDouble("count")
@@ -108,7 +121,8 @@ public class DashboardDaoImpl implements DashboardDao {
 
     @Override
     public List<QuizStatistics> getStatisticOfQuizzesPlayed() {
-        return jdbcTemplate.query(dashboardQueries.get("getStatisticOfQuizzesPlayed"), (rs, rowNum) ->
+        return jdbcTemplate.query(dashboardQueries.get("getStatisticOfQuizzesPlayed"),
+                (rs, rowNum) ->
                 new QuizStatistics(
                         rs.getString("name"),
                         rs.getDouble("count")

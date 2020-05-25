@@ -20,5 +20,6 @@ public interface ChatDao extends GenericDao<Chat> {
 
     void removeChatMember(int chatId, int userId);
 
+    boolean checkChatAffiliation(int chatId, int userId);
 
 }

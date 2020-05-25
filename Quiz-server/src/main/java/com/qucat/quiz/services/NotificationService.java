@@ -19,6 +19,7 @@ public class NotificationService {
     @Autowired
     private UserService userService;
 
+    //todo create test Dima
     public Notification generateNotification(int authorId, int objectId, int userId, NotificationType notificationType) {
         User notificationAuthor = userService.getUserDataById(authorId);
 
@@ -93,7 +94,6 @@ public class NotificationService {
         List<Notification> list = notificationDao.getMessagesByUserId(userId);
         return list;
     }
-
 
     public void deleteAllUserNotifications(int userId) {
         notificationDao.deleteAllByUserId(userId);

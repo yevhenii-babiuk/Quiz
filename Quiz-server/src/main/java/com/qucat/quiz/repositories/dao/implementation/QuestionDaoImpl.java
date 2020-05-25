@@ -49,14 +49,19 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
 
     @Override
     protected Object[] getUpdateParameters(Question question) {
-        return new Object[]{question.getQuizId(), question.getType().name().toLowerCase(), question.getContent(),
-                question.getScore(), question.getImageId(), question.getId()};
+        return new Object[]{question.getQuizId(),
+                question.getType().name().toLowerCase(),
+                question.getContent(),
+                question.getScore(),
+                question.getImageId(),
+                question.getId()};
     }
 
     @Override
     public List<Question> getByQuizId(int id) {
         return jdbcTemplate.query(questionQueries.get("getByQuizId"),
-                new Object[]{id}, new QuestionMapper());
+                new Object[]{id},
+                new QuestionMapper());
     }
 
     @Override

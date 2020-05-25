@@ -11,8 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Data
@@ -58,6 +61,9 @@ public class GameProcess implements Runnable {
     private void sendResults(boolean isFinal, int currQuestion) {
         Users users = new Users(gameDao.getUsersByGame(gameId), isFinal);
         socketSenderService.sendResults(gameId, users, currQuestion);
+        if (isFinal) {
+            return;
+        }
         try {
             Thread.sleep((long) 1e4);
         } catch (InterruptedException e) {
@@ -65,10 +71,16 @@ public class GameProcess implements Runnable {
         }
     }
 
+    //todo create test Alexandra
     @Override
     public void run() {
         GameDto gameDto = gameDao.getGame(gameId);
+        gameDto.setCountQuestions(gameDao.getCountGameQuestion(gameId));
+
         int currentQuestion = 0;
+        Map<Integer, Integer> answersPercents = new HashMap<>();
+        setUsersId(answersPercents);
+
         while (gameDao.getCountGameQuestion(gameId) != 0) {
             currentQuestion++;
             int count = gameDao.getCountGameQuestion(gameId);
@@ -90,11 +102,13 @@ public class GameProcess implements Runnable {
 
 
             question = gameDao.getQuestionById(questionDto.getQuestionId());
-            List<AnswerDto> answers = gameDao.getAnswersToCurrentQuestionByGameId(gameId);
+            List<AnswerDto> currAnswers = gameDao.getAnswersToCurrentQuestionByGameId(gameId);
 
-            checkAnswers(gameDto, question, answers);
+            checkAnswers(gameDto, question, currAnswers);
 
-            quickAnswerBonus(gameDto, answers);
+            quickAnswerBonus(gameDto, currAnswers);
+
+            updatePercents(answersPercents, currAnswers);
 
             if (gameDto.isIntermediateResult() && count != 1) {
                 sendResults(false, currentQuestion);
@@ -103,10 +117,40 @@ public class GameProcess implements Runnable {
             gameDao.deleteGameQuestion(questionDto.getId());
         }
         sendResults(true, currentQuestion);
+
         List<UserDto> users = gameDao.getUsersByGame(gameId);
-        users.forEach(userDto -> userDto.setQuizId(gameDto.getQuizId()));
+        updateUserToSave(users, gameDto, answersPercents);
         takeQuizService.saveUsersResults(users);
         gameDao.deleteGame(gameId);
+    }
+
+    private void updatePercents(Map<Integer, Integer> answersPercents, List<AnswerDto> currAnswers) {
+        currAnswers.forEach(answer -> {
+            int registerId = answer.getUser().getRegisterId();
+            if (registerId != 0) {
+                answersPercents.replace(registerId, answersPercents.get(registerId) + answer.getPercent());
+            }
+        });
+    }
+
+    private void setUsersId(Map<Integer, Integer> answersPercents) {
+        List<UserDto> users = gameDao.getUsersByGame(gameId);
+        for (UserDto user : users) {
+            if (user.getRegisterId() != 0) {
+                answersPercents.put(user.getRegisterId(), 0);
+            }
+        }
+    }
+
+    private void updateUserToSave(List<UserDto> users, GameDto gameDto, Map<Integer, Integer> answersPercents) {
+        int countQuestion = gameDto.getCountQuestions();
+        users = users.stream()
+                .filter(userDto -> userDto.getRegisterId() != 0)
+                .collect(Collectors.toList());
+        for (UserDto user : users) {
+            user.setPercent(answersPercents.get(user.getRegisterId()) / countQuestion);
+            user.setQuizId(gameDto.getQuizId());
+        }
     }
 
     private void checkAnswers(GameDto gameDto, Question question, List<AnswerDto> answers) {
