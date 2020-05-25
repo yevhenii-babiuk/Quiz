@@ -70,7 +70,7 @@ export class NotificationMenuComponent implements OnInit {
   }
 
   deleteNotification(linkAction: string, id: number) {
-    this.notifications.splice(this.notifications.indexOf(linkAction));
+    this.notifications.splice(this.notifications.indexOf(linkAction), 1);
     this.notificationService.deleteNotificationById(id).subscribe();
   }
 
@@ -104,9 +104,9 @@ export class NotificationMenuComponent implements OnInit {
       });
   }
 
-  updateSettings(notificationFilters: NotificationFilters) {
-    this.notificationService.updateSettings(notificationFilters).subscribe();
-    console.log(notificationFilters);
+  updateSettings() {
+    this.notificationService.updateSettings(this.notificationFilters).subscribe();
+    console.log(this.notificationFilters);
   }
 
   ngOnInit(): void {

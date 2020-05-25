@@ -17,7 +17,7 @@
     "CREATE_ADMIN": "Create admin or moderator",
     "CREATE_MODER": "Create moderator",
     "ACHIEVEMENT": "Create achievement",
-    "CHATS": "Chats",
+    "CHATS": "Chats"
   },
   "alert": {
     "errorLogin": "Error while login",
@@ -32,7 +32,7 @@
     "errorApplyingPass": "Error while applying new pass",
     "adminCreatedSuccessful": "Creation successful",
     "adminCreatedNoSuccessful": "Creation is not successful",
-    "errorCreatedAdmin": "Error while creation!"
+    "errorCreatedAdmin": "Error while creation!",
     "errorApplyingPass": "Error while applying new pass",
     "photoChanged": "Photo is changed",
     "editSuccessful": "You have successfully edited your profile"

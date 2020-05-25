@@ -1,6 +1,7 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.QuizDao;
+import com.qucat.quiz.repositories.entities.NotificationType;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.Tag;
@@ -36,6 +37,9 @@ public class QuizService {
     @Autowired
     private SuggestionsService suggestionsService;
 
+    @Autowired
+    private WebSocketSenderService webSocketSenderService;
+
     @Transactional
     public boolean createQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -63,6 +67,7 @@ public class QuizService {
 
         log.info("createQuiz: Quiz successfully saved");
         suggestionsService.sendSuggestion(quizId, quiz.getName(), quiz.getCategory().getName());
+        webSocketSenderService.sendNotification(quiz.getAuthorId(), quizId, NotificationType.CREATED_QUIZ);
         return true;
     }
 

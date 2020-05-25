@@ -65,19 +65,14 @@ public class WebSocketSenderService {
 
         if (notificationType == NotificationType.CREATED_NEWS | notificationType == NotificationType.CREATED_QUIZ
                 | notificationType == NotificationType.MESSAGE) {
-            Notification notification;
-
             List<Integer> friendsId;
             if (notificationType == NotificationType.MESSAGE) {
                 friendsId = friendListDao.getForNotification(objectId, notificationType);
-                System.out.println(friendsId);
             } else {
                 friendsId = friendListDao.getForNotification(authorId, notificationType);
             }
-
             for (int friendId : friendsId) {
-                notification = notificationService.generateNotification(authorId, objectId, friendId, notificationType);
-                System.out.println(notification);
+                Notification notification = notificationService.generateNotification(authorId, objectId, friendId, notificationType);
                 this.template.convertAndSend("/notification" + friendId,
                         gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
                                 .notification(notification).build()));
