@@ -57,6 +57,7 @@ public class UserService {
     @Value("${url}")
     private String URL;
 
+    //todo create test Yevhenii
     @Transactional
     public boolean registerUser(User user) {
         user.setRole(Role.USER);
@@ -157,6 +158,7 @@ public class UserService {
         int id = tokenService.getUserId(token);
         return id != 0;
     }
+
 
     public boolean editPassword(String tokenStr, String password) {
         Token token = Token.builder()
@@ -315,6 +317,7 @@ public class UserService {
         userDao.updateUserPhoto(user.getImageId(), user.getId());
     }
 
+    //todo create test Anna
     public void updateUserStatus(int userId, UserAccountStatus status) {
         User user = userDao.get(userId);
         if (user == null) {

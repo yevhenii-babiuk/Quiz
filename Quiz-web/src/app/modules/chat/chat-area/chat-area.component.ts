@@ -86,6 +86,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
         if (message.body) {
           that.receivedEvent = JSON.parse(message.body);
           if (that.receivedEvent.type == that.eventType.MESSAGE) {
+            that.receivedEvent.message.creationDate = new Date();
             that.messages.push(that.receivedEvent.message);
             setTimeout(() => that.scrollToBottom(), 2);
           }

@@ -18,6 +18,7 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Autowired
     private UserDao uDao;
 
+    //todo create test Yevhen
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = uDao.getUserByLogin(username);
