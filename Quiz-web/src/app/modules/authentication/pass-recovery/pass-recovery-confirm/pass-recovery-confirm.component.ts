@@ -17,6 +17,7 @@ export class PassRecoveryConfirmComponent implements OnInit {
 
   isConfirmed: boolean;
   token: string;
+  newPassword: string="";
 
   constructor(
     private authenticationService: AuthenticationService,
@@ -45,8 +46,8 @@ export class PassRecoveryConfirmComponent implements OnInit {
       );
   }
 
-  createNewPass(password: string) {
-    this.authenticationService.createNewPass(this.token, password)
+  createNewPass() {
+    this.authenticationService.createNewPass(this.token, this.newPassword)
       .subscribe(
         data => {
           this.router.navigate(['/login']).then();

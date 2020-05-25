@@ -7,15 +7,12 @@ import org.springframework.jdbc.core.ResultSetExtractor;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class AnnouncementExtractor implements ResultSetExtractor<List<Announcement>> {
     @Override
     public List<Announcement> extractData(ResultSet resultSet) throws SQLException, DataAccessException {
-        Map<Integer, Announcement> announcements = new HashMap<>();
+        List<Announcement> announcements = new ArrayList<>();
 
         while (resultSet.next()) {
             Announcement announcement = Announcement.builder()
@@ -34,9 +31,9 @@ public class AnnouncementExtractor implements ResultSetExtractor<List<Announceme
                                     .build()
                     )
                     .build();
-            announcements.put(resultSet.getInt("id"), announcement);
+            announcements.add(announcement);
         }
 
-        return new ArrayList<>(announcements.values());
+        return announcements;
     }
 }

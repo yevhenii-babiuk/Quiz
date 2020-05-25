@@ -10,6 +10,7 @@ export class WebsocketEvent {
   message: Message;
   type:EventType;
   notification: NotificationDto;
+  currQuestion: number;
 }
 
 export enum EventType {

@@ -63,14 +63,14 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
     @Override
     public List<Announcement> getByAuthorLogin(String login) {
         return jdbcTemplate.query(
-                announcementQueries.get("getAllInfo").replace(";", " WHERE u.login = ?;"),
+                announcementQueries.get("getAllInfo").replace(";", " ORDER BY created_date DESC WHERE u.login = ?;"),
                 new Object[]{login}, new AnnouncementExtractor()
         );
     }
 
     @Override
     public List<Announcement> getAllInfo() {
-        return jdbcTemplate.query(announcementQueries.get("getAllInfo"), new AnnouncementExtractor());
+        return jdbcTemplate.query(announcementQueries.get("getAllInfo").replace(";", " ORDER BY created_date DESC;"), new AnnouncementExtractor());
     }
 
     @Override
@@ -88,7 +88,7 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
                 new Object[]{},
                 (resultSet, number) -> resultSet.getInt("row_count"));
         List<Announcement> announcements = jdbcTemplate.query(
-                announcementQueries.get("getAllInfo").replace(";", " LIMIT ? OFFSET ?;"),
+                announcementQueries.get("getAllInfo").replace(";", " ORDER BY created_date DESC LIMIT ? OFFSET ?;"),
                 new Object[]{pageable.getPageSize(), pageable.getOffset()},
                 new AnnouncementExtractor());
         return new PageImpl<>(announcements != null ? announcements : new ArrayList<>(), pageable, total != null ? total.intValue() : 0);
@@ -101,7 +101,7 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
         List<Announcement> announcements = jdbcTemplate.query(
-                announcementQueries.get("getAllInfo").replace(";", " WHERE is_published = ? LIMIT ? OFFSET ?;"),
+                announcementQueries.get("getAllInfo").replace(";", " WHERE is_published = ? ORDER BY created_date DESC LIMIT ? OFFSET ?;"),
                 new Object[]{isPublished, pageable.getPageSize(), pageable.getOffset()},
                 new AnnouncementExtractor());
         return new PageImpl<>(announcements != null ? announcements : new ArrayList<>(), pageable, total != null ? total.intValue() : 0);
@@ -114,7 +114,7 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
         List<Announcement> announcements = jdbcTemplate.query(
-                announcementQueries.get("getAllInfo").replace(";", " WHERE a.id = ? LIMIT ? OFFSET ?;"),
+                announcementQueries.get("getAllInfo").replace(";", " WHERE a.id = ? ORDER BY created_date DESC LIMIT ? OFFSET ?;"),
                 new Object[]{authorId, pageable.getPageSize(), pageable.getOffset()},
                 new AnnouncementExtractor());
         return new PageImpl<>(announcements != null ? announcements : new ArrayList<>(), pageable, total != null ? total.intValue() : 0);
@@ -127,7 +127,7 @@ public class AnnouncementDaoImpl extends GenericDaoImpl<Announcement> implements
                 (resultSet, number) -> resultSet.getInt("row_count"));
 
         List<Announcement> announcements = jdbcTemplate.query(
-                announcementQueries.get("getAllInfo").replace(";", " WHERE u.login = ? LIMIT ? OFFSET ?;"),
+                announcementQueries.get("getAllInfo").replace(";", " WHERE u.login = ? ORDER BY created_date DESC LIMIT ? OFFSET ?;"),
                 new Object[]{login, pageable.getPageSize(), pageable.getOffset()},
                 new AnnouncementExtractor());
         return new PageImpl<>(announcements != null ? announcements : new ArrayList<>(), pageable, total != null ? total.intValue() : 0);

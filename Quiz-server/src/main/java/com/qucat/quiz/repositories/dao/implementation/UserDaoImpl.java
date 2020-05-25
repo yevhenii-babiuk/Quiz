@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.dao.mappers.UserMapper;
 import com.qucat.quiz.repositories.dao.mappers.extractors.FriendActivityExtractor;
 import com.qucat.quiz.repositories.entities.FriendActivity;
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.enums.Lang;
 import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import lombok.extern.slf4j.Slf4j;
@@ -342,6 +343,18 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     @Override
     public void updateUserScore(int userId, int score) {
         jdbcTemplate.update(usersQueries.get("updateUserScore"), score, userId);
+    }
+
+    @Override
+    public Lang getUserLanguage(int userId) {
+        return jdbcTemplate.queryForObject(usersQueries.get("getLanguage"),
+                new Object[]{userId},
+                (resultSet, number) -> Lang.valueOf(resultSet.getString("language").toUpperCase()));
+    }
+
+    @Override
+    public void updateUserLanguage(int userId, Lang lang) {
+        jdbcTemplate.update(usersQueries.get("updateLanguage"), lang.getCode(), userId);
     }
 
     private String buildActivityFilterQuery(boolean addFriend, boolean markQuizAsFavorite,
