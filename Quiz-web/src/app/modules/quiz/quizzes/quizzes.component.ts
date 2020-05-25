@@ -23,8 +23,6 @@ export class QuizzesComponent implements OnInit {
   quizStatuses: string[] = [
     'ACTIVATED',
     'UNPUBLISHED',
-    'UNVALIDATED',
-    'UNSAVED',
     'DEACTIVATED'
   ];
   isWaiting: boolean = false;
@@ -33,11 +31,11 @@ export class QuizzesComponent implements OnInit {
 
 
   constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private quizzesService: QuizzesService,
-    public translate: TranslateService,
-    private securityService: SecurityService
+      private route: ActivatedRoute,
+      private router: Router,
+      private quizzesService: QuizzesService,
+      public translate: TranslateService,
+      public securityService: SecurityService
   ) {
   }
 

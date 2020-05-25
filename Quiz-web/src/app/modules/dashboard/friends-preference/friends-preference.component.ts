@@ -105,6 +105,5 @@ export class FriendsPreferenceComponent implements OnInit {
 
   onChartInit(e: any) {
     this.echartsInstance = e;
-    console.log('on chart init:', e);
   }
 }

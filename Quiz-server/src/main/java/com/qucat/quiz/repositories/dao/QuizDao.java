@@ -27,6 +27,7 @@ public interface QuizDao extends GenericDao<Quiz> {
     Page<Quiz> findAllForPage(Pageable pageable, String name, String author, List<String> category, Timestamp minDate,
                               Timestamp maxDate, List<String> tags, QuizStatus[] status);
 
+
     Page<Quiz> getCompletedQuizzesByUserId(int userId, Pageable pageable);
 
     Page<Quiz> getCreatedQuizzesByUserId(int userId, Pageable pageable);

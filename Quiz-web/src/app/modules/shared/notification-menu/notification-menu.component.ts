@@ -106,7 +106,6 @@ export class NotificationMenuComponent implements OnInit {
 
   updateSettings() {
     this.notificationService.updateSettings(this.notificationFilters).subscribe();
-    console.log(this.notificationFilters);
   }
 
   ngOnInit(): void {
@@ -116,7 +115,6 @@ export class NotificationMenuComponent implements OnInit {
       this.notificationService.getSettingsByUserId(this.securityService.getCurrentId()).subscribe(
         notificationFilters => {
           this.notificationFilters = notificationFilters;
-          console.log("notification settings: " + this.notificationFilters.newAnnouncement);
         },
         err => {
           console.log(err);

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import {ActivatedRoute} from '@angular/router';
 
-import { AuthenticationService } from '../../../core/services/authentication.service';
+import {AuthenticationService} from '../../../core/services/authentication.service';
 
 @Component({
   selector: 'app-mail-confirm',
@@ -14,25 +13,26 @@ export class MailConfirmComponent implements OnInit {
   isConfirmed: boolean;
 
   constructor(
-      private authenticationService: AuthenticationService,
-      private route: ActivatedRoute,
-      private location: Location
-  ) { }
+    private authenticationService: AuthenticationService,
+    private route: ActivatedRoute,
+  ) {
+  }
 
   ngOnInit() {
-   this.confirm();
- }
+    this.confirm();
+  }
 
- confirm(): void {
-   const token = this.route.snapshot.paramMap.get('token');
-   this.authenticationService.confirmMail(token)
-   .subscribe(
-     isConfirmed => { this.isConfirmed = isConfirmed; },
-     error => {
-       this.isConfirmed = false;
-       console.log(error);
-     }
-   );
- }
+  confirm(): void {
+    const token = this.route.snapshot.paramMap.get('token');
+    this.authenticationService.confirmMail(token)
+      .subscribe(
+        isConfirmed => {
+          this.isConfirmed = isConfirmed;
+        },
+        error => {
+          this.isConfirmed = false;
+        }
+      );
+  }
 
 }

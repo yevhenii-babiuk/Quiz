@@ -45,7 +45,7 @@
         </label>
       </div>
       <div class="row">
-        <div *ngIf="userId" (click)="changeStar()">
+        <div *ngIf="userId && securityService.getCurrentRole()=='USER'" (click)="changeStar()">
           <img src="assets/img/star-{{quiz.isFavorite?'full':'empty'}}.png" height="50" alt="sign">
         </div>
         <div class="mat-app-background col" *ngIf="quiz.tags.length>0">

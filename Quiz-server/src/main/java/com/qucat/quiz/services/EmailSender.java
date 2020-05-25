@@ -17,7 +17,6 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
 
 
 @Slf4j
@@ -25,23 +24,20 @@ import java.util.TreeMap;
 @PropertySource("classpath:mail/application-mail-config.properties")
 public class EmailSender {
 
-    @Value("${login}")
-    private String login;
-
     private final String USERNAME_TOKEN = "&\\{userName}";
     private final String QUIZNAME_TOKEN = "&\\{quizName}";
     private final String QUIZCATEGORY_TOKEN = "&\\{quizCategory}";
     private final String URL_TOKEN = "&\\{url}";
     private final String CONTENT_ENCODING = "text/html ; charset=utf-8";
-    private Message message;
-
+    @Value("${login}")
+    private String login;
     @Autowired
     private Session emailSession;
 
     public void sendMessage(String receiverEmailAddress, String username, String url, MessageInfo.MessageInfoItem messageInfoItem) {
         try {
-            message = generateMessage(receiverEmailAddress);
-            Map<String, String> replace = new TreeMap<>();
+            Message message = generateMessage(receiverEmailAddress);
+            Map<String, String> replace = new HashMap<>();
             replace.put(USERNAME_TOKEN, username);
             replace.put(URL_TOKEN, url);
             setContent(message, messageInfoItem, replace);
@@ -51,7 +47,9 @@ public class EmailSender {
         }
     }
 
-    public void sendMessage(String receiverEmailAddress, String username, String url, String quizName, String categoryName, MessageInfo.MessageInfoItem messageInfoItem) {
+    public void sendMessage(String receiverEmailAddress, String username, String url,
+                            String quizName, String categoryName,
+                            MessageInfo.MessageInfoItem messageInfoItem) {
         try {
             Map<String, String> replace = new HashMap<>();
             replace.put(USERNAME_TOKEN, username);
@@ -59,7 +57,7 @@ public class EmailSender {
             replace.put(QUIZCATEGORY_TOKEN, categoryName);
             replace.put(URL_TOKEN, url);
             synchronized (this) {
-                message = generateMessage(receiverEmailAddress);
+                Message message = generateMessage(receiverEmailAddress);
                 setContent(message, messageInfoItem, replace);
                 Transport.send(message);
             }
@@ -67,6 +65,21 @@ public class EmailSender {
             log.error("cant send message", e);
         }
     }
+
+
+    public void sendMessage(String receiverEmailAddress, String username, MessageInfo.MessageInfoItem messageInfoItem) {
+        try {
+            Map<String, String> replace = new HashMap<>();
+            replace.put(USERNAME_TOKEN, username);
+            Message message = generateMessage(receiverEmailAddress);
+            setContent(message, messageInfoItem, replace);
+            Transport.send(message);
+
+        } catch (MessagingException | IOException e) {
+            log.error("cant send message", e);
+        }
+    }
+
 
     private Message generateMessage(String receiverEmailAddress) throws MessagingException {
         Message message = new MimeMessage(emailSession);
@@ -78,9 +91,12 @@ public class EmailSender {
         return message;
     }
 
-    private void setContent(Message message, MessageInfo.MessageInfoItem messageInfoItem, Map<String, String> replace) throws MessagingException, IOException {
+    private void setContent(Message message, MessageInfo.MessageInfoItem messageInfoItem,
+                            Map<String, String> replace) throws MessagingException, IOException {
         message.setSubject(messageInfoItem.getSubject());
-        String content = new String(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(messageInfoItem.getFilename())).readAllBytes());
+        String content = new String(Objects.requireNonNull(
+                getClass().getClassLoader().getResourceAsStream(
+                        messageInfoItem.getFilename())).readAllBytes());
         for (Map.Entry<String, String> entry : replace.entrySet()) {
             content = content.replaceFirst(entry.getKey(), entry.getValue());
         }

@@ -58,6 +58,13 @@ export class ChatService {
       );
   }
 
+  checkChatAffiliation(id: number, chatId: number) {
+    return this.http.get<boolean>(`${url}/users/${id}/chat/${chatId}/check`)
+      .pipe(
+        catchError(this.handleError<boolean>(false))
+      );
+  }
+
   private handleError<T>(result?: T) {
     return (error: any): Observable<T> => {
       console.error(error);

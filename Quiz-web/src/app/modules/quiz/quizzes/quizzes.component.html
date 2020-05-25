@@ -1,7 +1,4 @@
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-
-<button class="btn btn-warning form-control mb-3" routerLink="../createQuiz">
+<button *ngIf="securityService.getCurrentRole()=='USER'" class="btn btn-warning form-control mb-3" routerLink="../createQuiz">
   {{ 'quiz.createQuiz' | translate }}
 </button>
 

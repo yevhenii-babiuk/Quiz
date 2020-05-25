@@ -35,7 +35,6 @@ export class PassRecoveryComponent implements OnInit {
         },
         error => {
           this.alertService.error('alert.errorReset');
-          console.log(error);
         });
   }
 }

@@ -29,7 +29,8 @@ public class CategoryDaoImpl extends GenericDaoImpl<Category> implements Categor
     }
 
     @Override
-    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement, Category category) throws SQLException {
+    protected PreparedStatement getInsertPreparedStatement(PreparedStatement preparedStatement,
+                                                           Category category) throws SQLException {
         preparedStatement.setString(1, category.getName());
         return preparedStatement;
     }

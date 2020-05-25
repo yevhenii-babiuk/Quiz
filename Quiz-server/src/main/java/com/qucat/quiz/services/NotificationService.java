@@ -78,7 +78,6 @@ public class NotificationService {
     }
 
     public void deleteNotificationById(int id) {
-        System.out.println("delete notification " + id);
         notificationDao.deleteById(id);
     }
 

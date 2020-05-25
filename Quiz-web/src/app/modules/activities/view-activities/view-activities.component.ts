@@ -35,19 +35,24 @@ export class ViewActivitiesComponent implements OnInit {
       activityType: 'achievements',
       selected: false
     }
-  ]
+  ];
 
   activities: Activity[] = [];
   userId: number;
   role: Role;
   isWaiting: boolean;
+  isFiltering: boolean;
 
   @HostListener("window:scroll", ["$event"])
   onWindowScroll() {
 
     if (document.documentElement.scrollHeight - document.documentElement.scrollTop -
       document.documentElement.clientHeight < 40) {
-      this.getActivities();
+      if (this.isFiltering) {
+        this.getFilteredActivities()
+      } else {
+        this.getActivities();
+      }
     }
 
   }
@@ -58,9 +63,10 @@ export class ViewActivitiesComponent implements OnInit {
   ) {
   }
 
+
   getActivities(): void {
     this.userId = this.securityService.getCurrentId();
-    console.log(this.userId);
+    this.isFiltering = false;
     if (this.isWaiting) {
       return;
     }
@@ -79,9 +85,13 @@ export class ViewActivitiesComponent implements OnInit {
 
   }
 
-
-  public getFilteredActivities() {
+  clearActivities(): void {
+    this.isWaiting = false;
     this.activities = [];
+  }
+
+  getFilteredActivities(): void {
+    this.isFiltering = true;
     let resultSelected = [];
     this.userId = this.securityService.getCurrentId();
     this.activityCategories.forEach(function (value) {
@@ -93,14 +103,16 @@ export class ViewActivitiesComponent implements OnInit {
       this.getActivities();
       return;
     }
-
-    this.activitiesService.getFilterActivities(this.userId, resultSelected)
+    if (this.isWaiting) {
+      return;
+    }
+    this.isWaiting = true;
+    this.activitiesService.getFilterActivitiesPage(this.userId, resultSelected, this.activities.length)
       .subscribe(
         activities => {
-          if (activities.length == 0) {
-            return;
+          if (activities.length == 10) {
+            this.isWaiting = false;
           }
-
           this.activities = this.activities.concat(activities);
         },
         err => {

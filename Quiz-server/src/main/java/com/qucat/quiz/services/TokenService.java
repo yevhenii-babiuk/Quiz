@@ -4,6 +4,7 @@ import com.qucat.quiz.repositories.dao.TokenDao;
 import com.qucat.quiz.repositories.entities.Token;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -14,7 +15,7 @@ public class TokenService {
     @Autowired
     private TokenDao tokenDao;
 
-
+    @Scheduled(cron = "0 0 * * * *")
     public void deleteOldTokens() {
         tokenDao.deleteOldTokens();
     }
