@@ -83,11 +83,12 @@ export class PlayQuestionComponent implements OnInit {
     this.answer.trueFalse = value;
   }
 
-  setSequence(opId: number, seqId: number) {
+  setSequence(opId: number, seqId: string) {
+    console.log(opId, seqId);
     if (this.sequence.has(opId)) {
       this.sequence.delete(opId);
     }
-    this.sequence.set(opId, seqId);
+    this.sequence.set(opId, +seqId);
   }
 
 }

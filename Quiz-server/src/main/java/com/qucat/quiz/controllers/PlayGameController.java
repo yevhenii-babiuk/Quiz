@@ -25,6 +25,8 @@ public class PlayGameController {
     public void onReceiveAnswer(@DestinationVariable String gameId, String message) {
         Gson g = new Gson();
         AnswerDto answerDto = g.fromJson(message, AnswerDto.class);
+        System.out.println(message);
+        System.out.println(answerDto);
         gameService.setAnswer(answerDto);
     }
 
