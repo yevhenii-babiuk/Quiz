@@ -27,7 +27,7 @@
   <div class="row mx-0">
 
     <div class="col-sm-3">
-      <img class="card-img-top" src="data:image/jpeg;base64,{{quiz.image.src}}" alt="Card image cap">
+      <img class="card-img-top p-3" src="data:image/jpeg;base64,{{quiz.image.src}}" alt="Card image cap">
     </div>
 
 
@@ -48,7 +48,7 @@
         <div *ngIf="userId && securityService.getCurrentRole()=='USER'" (click)="changeStar()">
           <img src="assets/img/star-{{quiz.isFavorite?'full':'empty'}}.png" height="50" alt="sign">
         </div>
-        <div class="mat-app-background col" *ngIf="quiz.tags.length>0">
+        <div class="col" *ngIf="quiz.tags.length>0">
           <mat-form-field class="example-chip-list w-100">
             <mat-chip-list aria-label="Fruit selection w-100" placeholder="{{ 'quiz.viewQuiz.tags' | translate }}">
               <mat-chip
