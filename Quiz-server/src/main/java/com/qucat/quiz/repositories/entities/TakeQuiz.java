@@ -13,6 +13,7 @@ public class TakeQuiz {
     private int quizId;
     private boolean isCompleted;
     private int score;
+    private float correctAnswersPercentage;
     private Date takeDate;
 
 }
