@@ -22,6 +22,9 @@ export class PlayQuestionComponent implements OnInit {
   @Input()
   question: Question;
 
+  @Input() questionNumber: number;
+  @Input() questionsCount: number;
+
   @Output()
   public sendAnswer: EventEmitter<any> = new EventEmitter();
 

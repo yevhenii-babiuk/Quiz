@@ -10,6 +10,7 @@ import * as SockJS from 'sockjs-client';
 import {UserDto} from "../../core/models/userDto";
 import {socket} from "../../../../environments/environment.prod";
 import {EventType, WebsocketEvent} from "../../core/models/websocketEvent";
+import {GameDto} from "../../core/models/gameDto";
 
 @Component({
   selector: 'app-game',
@@ -18,12 +19,10 @@ import {EventType, WebsocketEvent} from "../../core/models/websocketEvent";
 })
 export class GameComponent implements OnInit, OnDestroy {
 
+  game: GameDto;
   question: Question;
   receivedQuestion: Question;
   players: String[] = [];
-  hostId: number;
-  time: number;
-  image: string;
   private stompClient;
   public gameResults: Users;
   eventType = EventType;
@@ -47,9 +46,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.playGameService.getGame(this.gameId).subscribe(
       game => {
-        this.hostId = game.hostId;
-        this.time = game.time;
-        this.image = game.image;
+        this.game = game;
         this.isWaiting = true;
         console.log(game);
       }, err => {
@@ -74,6 +71,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.playGameService.getCurrentQuestion(this.gameId, this.currentUser.id).subscribe(
           question => {
             if (question) {
+              console.log("current q");
               this.isWaiting = false;
               this.gameResults = null;
               this.question = this.receivedEvent.question;
@@ -88,8 +86,6 @@ export class GameComponent implements OnInit, OnDestroy {
         console.log(err);
         this.redirect.navigate(['home']);
       });
-
-
   }
 
   initializeWebSocketConnection() {
@@ -145,6 +141,8 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    localStorage.removeItem("endTime" + this.question.id);
+    localStorage.removeItem("playerId");
     this.s.unsubscribe();
     this.stompClient.disconnect();
   }
