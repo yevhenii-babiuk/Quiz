@@ -71,6 +71,7 @@ public class GameProcess implements Runnable {
         }
     }
 
+    //todo create test Alexandra
     @Override
     public void run() {
         GameDto gameDto = gameDao.getGame(gameId);

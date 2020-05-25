@@ -15,7 +15,7 @@ public class TagService {
     @Autowired
     private TagDao tagDao;
 
-    public List<Tag> getTagsByQuizId(@RequestParam int quizId) {
+    public List<Tag> getTagsByQuizId(int quizId) {
         return tagDao.getByQuizId(quizId);
     }
 

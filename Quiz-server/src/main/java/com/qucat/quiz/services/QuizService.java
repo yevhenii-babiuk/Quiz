@@ -40,6 +40,7 @@ public class QuizService {
     @Autowired
     private WebSocketSenderService webSocketSenderService;
 
+    //todo create test Tetyana
     @Transactional
     public boolean createQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -87,6 +88,7 @@ public class QuizService {
         }
     }
 
+    //todo create test Tetyana
     @Transactional
     public void updateQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -188,9 +190,6 @@ public class QuizService {
     }
 
     public boolean setQuizIsFavorite(int userId, int quizId, boolean isFavorite) {
-        log.info(String.valueOf(userId));
-        log.info(String.valueOf(quizId));
-        log.info(String.valueOf(isFavorite));
         if (isFavorite) {
             return quizDao.markQuizAsFavorite(userId, quizId);
         } else {

@@ -68,6 +68,7 @@ public class GameService {
         return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);
     }
 
+    //todo create test Alexandra
     public UserDto connectUser(String gameId, int userId) {
         UserDto user;
         if (userId != 0) {
@@ -94,7 +95,6 @@ public class GameService {
         gameProcess.setGameId(gameId);
         gameProcess.run();
     }
-
 
     private void calculateCorrectForAnswer(AnswerDto answer, Question question) {
         log.info("answer input" + answer);
@@ -159,7 +159,7 @@ public class GameService {
         if (gameQuestionDto == null || gameQuestionDto.getQuestionId() == 0) {
             return null;
         }
-        return gameDao.getQuestionById(gameQuestionDto.getQuestionId());//todo check timer. check answer
+        return gameDao.getQuestionById(gameQuestionDto.getQuestionId());
     }
 
     private String generateAccessCode() {
@@ -188,13 +188,19 @@ public class GameService {
 
     }
 
+
     public String createRoom(GameDto game) {
         String gameId = generateAccessCode();
         game.setGameId(gameId);
 
         Quiz quiz = quizService.getQuizById(game.getQuizId());
-        QuizDto quizDto = new QuizDto(quiz.getId(), quiz.getName(), quiz.getQuestionNumber(),
-                quiz.getImageId(), quiz.getImage(), quiz.getQuestions());
+        QuizDto quizDto = new QuizDto(
+                quiz.getId(),
+                quiz.getName(),
+                quiz.getQuestionNumber(),
+                quiz.getImageId(),
+                quiz.getImage(),
+                quiz.getQuestions());
         saveQuiz(game, quizDto);
         return gameId;
     }

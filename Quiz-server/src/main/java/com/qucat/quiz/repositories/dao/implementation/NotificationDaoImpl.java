@@ -50,8 +50,14 @@ public class NotificationDaoImpl extends GenericDaoImpl<Notification> implements
 
     @Override
     protected Object[] getUpdateParameters(Notification notification) {
-        return new Object[]{notification.getUserId(), notification.isViewed(), notification.getAuthor(),
-                notification.getAction(), notification.getAuthorLink(), notification.getActionLink(), notification.isMessage(), notification.getId()};
+        return new Object[]{notification.getUserId(),
+                notification.isViewed(),
+                notification.getAuthor(),
+                notification.getAction(),
+                notification.getAuthorLink(),
+                notification.getActionLink(),
+                notification.isMessage(),
+                notification.getId()};
     }
 
     @Override
