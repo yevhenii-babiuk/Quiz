@@ -1,5 +1,6 @@
 package com.qucat.quiz.repositories.entities;
 
+import com.qucat.quiz.repositories.entities.enums.Lang;
 import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import lombok.Builder;
@@ -50,5 +51,7 @@ public class User {
     private int imageId;
 
     private Image image;
+
+    private Lang language;
 
 }
