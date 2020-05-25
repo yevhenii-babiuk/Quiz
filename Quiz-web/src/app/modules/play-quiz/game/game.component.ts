@@ -59,6 +59,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.currentUser = user;
         if (!securityService.getCurrentId() && !localStorage.getItem("playerId"))
           localStorage.setItem("playerId", String(this.currentUser.id));
+        if(!this.players) this.players.push(this.currentUser.login);
         this.playGameService.getJoinedPlayers(this.gameId).subscribe(
           players => {
             if (players)
@@ -71,10 +72,9 @@ export class GameComponent implements OnInit, OnDestroy {
         this.playGameService.getCurrentQuestion(this.gameId, this.currentUser.id).subscribe(
           question => {
             if (question) {
-              console.log("current q");
               this.isWaiting = false;
               this.gameResults = null;
-              this.question = this.receivedEvent.question;
+              this.question = question;
             }
           }, err => {
             console.log(err);
