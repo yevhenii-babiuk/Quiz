@@ -77,10 +77,10 @@
 
             <div class="form-group row p-3 m-2 border border-light bg-light col">
 
-              <select class="form-control col-2" [disabled]="isSend">
+              <select #sel class="form-control col-2" [disabled]="isSend" (change)="setSequence(questionOption.id, sel.value)">
                 <option></option>
                 <option *ngFor="let qo of question.options; let i = index"
-                        (click)="setSequence(questionOption.id, i+1)">{{i + 1}}</option>
+                        [value]="i+1">{{i + 1}}</option>
               </select>
               <label class="col">{{questionOption.content}}</label>
               <img *ngIf="questionOption.imageId!=-1 && questionOption.image "
