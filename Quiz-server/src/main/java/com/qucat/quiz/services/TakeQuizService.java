@@ -2,11 +2,13 @@ package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.TakeQuizDao;
 import com.qucat.quiz.repositories.dto.game.UserDto;
+import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.TakeQuiz;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Slf4j
@@ -19,19 +21,39 @@ public class TakeQuizService {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private QuizService quizService;
+
     public void saveUsersResults(List<UserDto> users) {
-        for (UserDto user : users) {
-            if (user.getRegisterId() == 0) {
-                continue;
-            }
-            TakeQuiz takeQuiz = takeQuizDao.getUserResultByQuiz(
-                    user.getRegisterId(), user.getQuizId());
-            if (takeQuiz != null && user.getScore() > takeQuiz.getScore()) {
-                takeQuizDao.update(createNewTakeQuiz(user));
-            } else if (takeQuiz == null) {
-                takeQuizDao.save(createNewTakeQuiz(user));
-            }
-            userService.updateUsersScore(user);
+
+        users.stream()
+                .filter(user -> user.getRegisterId() != 0)
+                .forEach(this::saveOrUpdateResult);
+
+        users.stream()
+                .max(Comparator
+                        .comparing(UserDto::getRegisterId))
+                .ifPresent(this::updateQuizMaxScore);
+
+    }
+
+    private void saveOrUpdateResult(UserDto user) {
+        TakeQuiz takeQuiz = takeQuizDao.getUserResultByQuiz(
+                user.getRegisterId(), user.getQuizId());
+        if (takeQuiz != null && user.getScore() > takeQuiz.getScore()) {
+            takeQuizDao.update(createNewTakeQuiz(user));
+        } else if (takeQuiz == null) {
+            takeQuizDao.save(createNewTakeQuiz(user));
+        }
+        userService.updateUsersScore(user);
+    }
+
+    private void updateQuizMaxScore(UserDto user) {
+        Quiz quiz = quizService.getQuizById(user.getQuizId());
+
+        if (user.getScore() > quiz.getMaxScore()) {
+            quiz.setMaxScore(user.getScore());
+            quizService.updateQuiz(quiz);
         }
     }
 
@@ -39,6 +61,7 @@ public class TakeQuizService {
         return TakeQuiz.builder()
                 .userId(user.getRegisterId())
                 .score(user.getScore())
+                .correctAnswersPercentage(user.getPercent())
                 .quizId(user.getQuizId())
                 .isCompleted(true)
                 .build();
