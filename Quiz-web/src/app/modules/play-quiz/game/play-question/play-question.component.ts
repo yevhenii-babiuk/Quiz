@@ -87,7 +87,6 @@ export class PlayQuestionComponent implements OnInit {
   }
 
   setSequence(opId: number, seqId: string) {
-    console.log(opId, seqId);
     if (this.sequence.has(opId)) {
       this.sequence.delete(opId);
     }
