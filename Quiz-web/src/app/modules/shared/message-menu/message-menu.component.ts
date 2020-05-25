@@ -57,7 +57,7 @@ export class MessageMenuComponent implements OnInit {
   }
 
   deleteNotification(linkAction: string, id: number) {
-    this.messages.splice(this.messages.indexOf(linkAction));
+    this.messages.splice(this.messages.indexOf(linkAction), 1);
     this.notificationService.deleteNotificationById(id).subscribe();
   }
 

@@ -1,6 +1,7 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.QuizDao;
+import com.qucat.quiz.repositories.entities.NotificationType;
 import com.qucat.quiz.repositories.entities.Question;
 import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.Tag;
@@ -36,6 +37,10 @@ public class QuizService {
     @Autowired
     private SuggestionsService suggestionsService;
 
+    @Autowired
+    private WebSocketSenderService webSocketSenderService;
+
+    //todo create test Tetyana
     @Transactional
     public boolean createQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -63,6 +68,7 @@ public class QuizService {
 
         log.info("createQuiz: Quiz successfully saved");
         suggestionsService.sendSuggestion(quizId, quiz.getName(), quiz.getCategory().getName());
+        webSocketSenderService.sendNotification(quiz.getAuthorId(), quizId, NotificationType.CREATED_QUIZ);
         return true;
     }
 
@@ -82,6 +88,7 @@ public class QuizService {
         }
     }
 
+    //todo create test Tetyana
     @Transactional
     public void updateQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -183,9 +190,6 @@ public class QuizService {
     }
 
     public boolean setQuizIsFavorite(int userId, int quizId, boolean isFavorite) {
-        log.info(String.valueOf(userId));
-        log.info(String.valueOf(quizId));
-        log.info(String.valueOf(isFavorite));
         if (isFavorite) {
             return quizDao.markQuizAsFavorite(userId, quizId);
         } else {

@@ -13,6 +13,8 @@ public class TakeQuizMapper implements RowMapper<TakeQuiz> {
                 .userId(resultSet.getInt("user_id"))
                 .quizId(resultSet.getInt("quiz_id"))
                 .isCompleted(resultSet.getBoolean("is_completed"))
+                .score(resultSet.getInt("score"))
+                .correctAnswersPercentage(resultSet.getFloat("correct_answers_persentage"))
                 .takeDate(resultSet.getDate("take_date"))
                 .build();
     }
