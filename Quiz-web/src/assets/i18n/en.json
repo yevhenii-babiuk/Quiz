@@ -17,7 +17,8 @@
     "CREATE_ADMIN": "Create admin or moderator",
     "CREATE_MODER": "Create moderator",
     "ACHIEVEMENT": "Create achievement",
-    "CHATS": "Chats"
+    "CHATS": "Chats",
+    "MY_QUIZZES": "My quizzes"
   },
   "alert": {
     "errorLogin": "Error while login",
