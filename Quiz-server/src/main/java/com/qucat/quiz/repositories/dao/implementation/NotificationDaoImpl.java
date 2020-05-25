@@ -50,14 +50,8 @@ public class NotificationDaoImpl extends GenericDaoImpl<Notification> implements
 
     @Override
     protected Object[] getUpdateParameters(Notification notification) {
-        return new Object[]{notification.getUserId(),
-                notification.isViewed(),
-                notification.getAuthor(),
-                notification.getAction(),
-                notification.getAuthorLink(),
-                notification.getActionLink(),
-                notification.isMessage(),
-                notification.getId()};
+        return new Object[]{notification.getUserId(), notification.isViewed(), notification.getAuthor(),
+                notification.getAction(), notification.getAuthorLink(), notification.getActionLink(), notification.isMessage(), notification.getId()};
     }
 
     @Override
@@ -74,7 +68,7 @@ public class NotificationDaoImpl extends GenericDaoImpl<Notification> implements
 
 
     @Override
-    public void deleteAllByUserId(int id) {
-        jdbcTemplate.update(notificationQueries.get("deleteAllByUserId"), id);
+    public void deleteAllByUserId(int userId) {
+        jdbcTemplate.update(notificationQueries.get("deleteAllByUserId"), userId);
     }
 }

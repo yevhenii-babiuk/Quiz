@@ -33,7 +33,6 @@ export class NotificationService {
   }
 
   updateNotificationView(notification: NotificationDto) {
-    console.log("put request");
     return this.http.put<string>(`${url}/notification`, notification, this.httpOptions);
   }
 
@@ -53,7 +52,6 @@ export class NotificationService {
 
 
   getSettingsByUserId(userId: number): Observable<NotificationFilters> {
-    console.log("getSettingsByUserId");
     return this.http.get<NotificationFilters>(`${url}/notification/settings/${userId}`)
       .pipe(
         catchError(this.handleError<NotificationFilters>())
