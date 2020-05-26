@@ -117,7 +117,7 @@ class AchievementServiceTest {
     }
 
     @Test
-    void updateAchievement() {
+    public void updateAchievement() {
         assertTrue(achievementService.updateAchievement(achievementAfterUpdate));
 
         Mockito.verify(achievementConditionService).addConditions(toInsert.capture());//set values into toInsert
@@ -128,6 +128,6 @@ class AchievementServiceTest {
     }
 
     @Test
-    void updateUserAchievementLists() {
+    public void updateUserAchievementLists() {
     }
 }
