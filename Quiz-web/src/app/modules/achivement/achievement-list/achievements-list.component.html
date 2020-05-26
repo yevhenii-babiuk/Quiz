@@ -1,17 +1,21 @@
-<h4 *ngIf="cards.length>0"><p style="text-align:center">{{'DASHBOARD.ACHIEVEMENTS' | translate}}</p></h4>
+<h4 *ngIf="cards && cards.length>0"><p style="text-align:center">{{'DASHBOARD.ACHIEVEMENTS' | translate}}</p></h4>
 <mdb-carousel [isControls]="true" class="carousel-multi-item multi-animation m-2" [type]="'carousel-multi-item'"
               [animation]="'slide'">
   <mdb-carousel-item class=" row w-100"  *ngFor="let item of slides; let i = index">
     <div class="col-md-2" *ngFor="let card of item; let cardIndex = index">
-      <mdb-card class="my-2">
-        <mdb-card-img src="../../../../assets/img/achivement.png" class="m-4"></mdb-card-img>
+      <mdb-card class="my-2" data-toggle="tooltip" title="{{card.description}}">
+        <mdb-card-img src="assets/img/achievement-icon/{{(card.id%29)+1}}.png" class="m-1"></mdb-card-img>
         <mdb-card-body>
           <mdb-card-title>
             <h4>{{card.name}}</h4>
           </mdb-card-title>
-          <p>{{card.description}}</p>
         </mdb-card-body>
       </mdb-card>
     </div>
   </mdb-carousel-item>
 </mdb-carousel>
+<script>
+  $(document).ready(function(){
+    $('[data-toggle="tooltip"]').tooltip();
+  });
+</script>
