@@ -19,7 +19,7 @@
           <td><img src="assets/img/userIcons/{{(user.id%50)+1}}.png" height="50" class="avatar" alt="Avatar"></td>
           <td><a routerLink="/users/{{user.id}}" > {{user.login}}</a></td>
           <td>{{user.score}} <img src="../../assets/img/score.png" width="30" height="30" align="bottom"/></td>
-          <td>{{user.registrationDate | date:'MMMM d, yyyy'}}</td>
+          <td>{{  user.registrationDate | date: 'longDate' : '' : translate.currentLang }}</td>
         </tr>
       </ng-container>
       </tbody>

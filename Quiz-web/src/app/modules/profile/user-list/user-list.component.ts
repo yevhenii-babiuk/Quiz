@@ -4,6 +4,9 @@ import {SecurityService} from "../../core/services/security.service";
 import {ProfileService} from "../../core/services/profile.service";
 import {User} from "../../core/models/user";
 import {TranslateService} from "@ngx-translate/core";
+import {registerLocaleData} from "@angular/common";
+import localeUa from "@angular/common/locales/uk";
+import localeEnGb from "@angular/common/locales/en-GB";
 
 @Component({
   selector: 'app-userlist',
@@ -59,6 +62,9 @@ export class UserListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getNew();
+
+    registerLocaleData(localeUa, 'ua');
+    registerLocaleData(localeEnGb, 'en-GB');
   }
 
   onKeyUp(event: Event) {
