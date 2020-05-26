@@ -70,7 +70,7 @@ public class NotificationService {
         return true;
     }
 
-    @Scheduled(cron = "**14**")
+    @Scheduled(cron = "* * * 14 * *")
     private void deleteOldNotifications() {
         notificationDao.deleteOldNotifications();
     }
