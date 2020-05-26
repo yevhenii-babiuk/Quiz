@@ -32,7 +32,7 @@ export class AchievementsListComponent implements OnInit {
   getCharacteristics() {
     this.achievementService.getUserAchievements(this.currentId).subscribe(achivement => {
         this.cards = achivement;
-        this.slides = this.chunk(this.cards, 4);
+        this.slides = this.chunk(this.cards, 6);
       },
       err => {
         console.log(err);
