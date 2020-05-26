@@ -13,7 +13,13 @@
     <div class="row form-group">
       <div class="col-sm"></div>
       <div class="col-sm">
-        <input type="password" class="form-control" placeholder="{{'AUTHENTICATION.password'|translate}}" #password>
+        <!--        <input type="password" class="form-control" placeholder="{{'AUTHENTICATION.password'|translate}}" #password>-->
+        <input type="password" placeholder="{{'AUTHENTICATION.password'|translate}}"
+               class="form-control" [(ngModel)]="newPassword" #password="ngModel"
+               pattern="^.{8,}$" aria-describedby="passHelp">
+        <small id="passHelp" class="form-text text-danger" [hidden]="password.valid || password.untouched">
+          {{'AUTHENTICATION.registration.noValidPassword'|translate}}
+        </small>
       </div>
       <div class="col-sm"></div>
     </div>
@@ -21,7 +27,7 @@
     <div class="row form-group">
       <div class="col-sm"></div>
       <div class="col-sm text-center">
-        <button class="btn btn-block btn-warning" (click)="createNewPass(password.value)">
+        <button [disabled]="!password.valid || (newPassword.length < 1)" class="btn btn-block btn-warning" (click)="createNewPass()">
           {{ 'AUTHENTICATION.PASS_RECOVERY.APPLY' | translate }}
         </button>
       </div>

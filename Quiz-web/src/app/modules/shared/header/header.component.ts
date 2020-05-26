@@ -42,7 +42,8 @@ export class HeaderComponent implements OnInit {
       if (this.showNotification) {
         this.showNotification = false;
       }
-    } this.showMessage = showMessage;
+    }
+    this.showMessage = showMessage;
   }
 
   getNotification(showNotification: boolean) {
@@ -50,14 +51,16 @@ export class HeaderComponent implements OnInit {
       if (this.showMessage) {
         this.showMessage = !this.showMessage;
       }
-    }this.showNotification = showNotification;
+    }
+    this.showNotification = showNotification;
   }
 
 
   search(event: any) {
-    this.redirect.navigate(['/quizzes'], {queryParams:{quizName: event.target.value}});
+    this.redirect.navigate(['/quizzes'], {queryParams: {quizName: event.target.value}});
   }
-  logout(){
+
+  logout() {
     this.authService.logOut();
     this.redirect.navigate(['home']);
   }
