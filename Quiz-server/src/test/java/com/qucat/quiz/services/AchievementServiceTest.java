@@ -6,13 +6,16 @@ import com.qucat.quiz.repositories.entities.AchievementCondition;
 import com.qucat.quiz.repositories.entities.enums.ConditionOperator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.*;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@RunWith(MockitoJUnitRunner.class)
 class AchievementServiceTest {
 
 
