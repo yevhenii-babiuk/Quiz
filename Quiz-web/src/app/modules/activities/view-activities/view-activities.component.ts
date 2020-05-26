@@ -5,6 +5,9 @@ import {ActivitiesService} from "../../core/services/activities.service";
 import {Activity} from "../../core/models/activity";
 import {FriendActivityType} from "../../core/models/friendActivityType";
 import {TranslateService} from "@ngx-translate/core";
+import {registerLocaleData} from "@angular/common";
+import localeUa from "@angular/common/locales/uk";
+import localeEnGb from "@angular/common/locales/en-GB";
 
 
 @Component({
@@ -122,6 +125,9 @@ export class ViewActivitiesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getActivities();
+
+    registerLocaleData(localeUa, 'ua');
+    registerLocaleData(localeEnGb, 'en-GB');
   }
 
 }

@@ -23,7 +23,7 @@
         </h2>
         <p class="post-meta">{{ 'ANNOUNCEMENT.POST BY' | translate }}
           {{announcement.authorLogin}}
-          on {{announcement.createdDate | date:'MMMM d, yyyy'}}</p>
+           {{  announcement.createdDate | date: 'longDate' : '' : translate.currentLang }}</p>
         <hr>
       </div>
     </div>

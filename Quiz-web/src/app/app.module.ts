@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {NgModule, OnInit} from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import {FormsModule} from '@angular/forms';
@@ -30,6 +30,9 @@ import {DashboardRoutingModule} from "./modules/dashboard/dashboard-routing.modu
 import {PlayQuizModule} from "./modules/play-quiz/play-quiz.module";
 import {PlayQuizRoutingModule} from "./modules/play-quiz/play-quiz-routing.module";
 
+import localeEnGb from '@angular/common/locales/en-GB';
+import localeUa from '@angular/common/locales/uk';
+
 /*import {WebsocketModule} from "./modules/websocket/websocket.module";*/
 import {ActivitiesRoutingModule} from "./modules/activities/activities-routing.module";
 import {ActivitiesModule} from "./modules/activities/activities.module";
@@ -48,6 +51,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(httpClient);
 }
 import {NotificationMenuComponent} from "./modules/shared/notification-menu/notification-menu.component";
+import {registerLocaleData} from "@angular/common";
 
 @NgModule({
   declarations: [
