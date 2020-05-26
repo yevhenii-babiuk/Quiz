@@ -111,7 +111,6 @@ public class AchievementServiceTest {
     @Before
     public void initMocks() {
         setValues();
-        MockitoAnnotations.initMocks(this);
         Mockito.when(achievementDao.get(achievementBeforeUpdate.getId())).thenReturn(achievementBeforeUpdate);
 
     }
