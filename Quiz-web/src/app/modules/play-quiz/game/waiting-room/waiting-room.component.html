@@ -13,14 +13,22 @@
   </div>
   <div class="col">
     <ng-container *ngFor="let player of players">
-      <div class="row border border-dark rounded w-75 mx-auto mb-2">
+      <div *ngIf="currentUser.login == player" class="row border border-warning rounded w-75 mx-auto mb-2">
         <div class="col-1">
-        <span style="font-size: 4vh;">
-          <i class="fa fa-user"></i>
+          <img src="assets/img/waiting-room-icons/{{(player.length * 3) % 11 + 1}}.png" height="37" class="avatar" alt="">
+        </div>
+        <div class="col-8 ml-3 mt-1" >
+        <span style="font-size: 3vh;font-family:georgia,garamond,serif;">
+          {{player}}
         </span>
         </div>
-        <div class="col-8 mt-1" >
-        <span style="font-size: 3vh;">
+      </div>
+      <div *ngIf="currentUser.login != player" class="row border border-dark rounded w-75 mx-auto mb-2">
+        <div class="col-1">
+          <img src="assets/img/waiting-room-icons/{{(player.length * 3) % 11 + 1}}.png" height="37" class="avatar" alt="">
+        </div>
+        <div class="col-8 ml-3 mt-1" >
+        <span style="font-size: 3vh;font-family:georgia,garamond,serif;">
           {{player}}
         </span>
         </div>

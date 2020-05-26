@@ -62,6 +62,7 @@ public class TakeQuizDaoImpl extends GenericDaoImpl<TakeQuiz> implements TakeQui
         preparedStatement.setInt(2, takeQuiz.getQuizId());
         preparedStatement.setBoolean(3, takeQuiz.isCompleted());
         preparedStatement.setInt(4, takeQuiz.getScore());
+        preparedStatement.setFloat(5, takeQuiz.getCorrectAnswersPercentage());
 
         return preparedStatement;
     }
@@ -75,6 +76,7 @@ public class TakeQuizDaoImpl extends GenericDaoImpl<TakeQuiz> implements TakeQui
     protected Object[] getUpdateParameters(TakeQuiz takeQuiz) {
         return new Object[]{
                 takeQuiz.getScore(),
+                takeQuiz.getCorrectAnswersPercentage(),
                 takeQuiz.getUserId(),
                 takeQuiz.getQuizId()
         };

@@ -66,7 +66,6 @@ public class QuizService {
         addQuizTags(quiz);
 
         log.info("createQuiz: Quiz successfully saved");
-        suggestionsService.sendSuggestion(quizId, quiz.getName(), quiz.getCategory().getName());
         webSocketSenderService.sendNotification(quiz.getAuthorId(), quizId, NotificationType.CREATED_QUIZ);
         return true;
     }
@@ -87,6 +86,7 @@ public class QuizService {
         }
     }
 
+    //todo create test Tetyana
     @Transactional
     public void updateQuiz(Quiz quiz) {
         if (quiz == null) {
@@ -185,12 +185,17 @@ public class QuizService {
 
     public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
         quizDao.updateQuizStatus(quizId, quizStatus);
+        sendSuggestion(quizId, quizStatus);
+    }
+
+    private void sendSuggestion(int quizId, QuizStatus quizStatus) {
+        if (quizStatus.equals(QuizStatus.ACTIVATED)) {
+            Quiz quiz = getQuizById(quizId);
+            suggestionsService.sendSuggestion(quizId, quiz.getName(), quiz.getCategory().getName());
+        }
     }
 
     public boolean setQuizIsFavorite(int userId, int quizId, boolean isFavorite) {
-        log.info(String.valueOf(userId));
-        log.info(String.valueOf(quizId));
-        log.info(String.valueOf(isFavorite));
         if (isFavorite) {
             return quizDao.markQuizAsFavorite(userId, quizId);
         } else {

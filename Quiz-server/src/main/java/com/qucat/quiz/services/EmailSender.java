@@ -29,8 +29,10 @@ public class EmailSender {
     private final String QUIZCATEGORY_TOKEN = "&\\{quizCategory}";
     private final String URL_TOKEN = "&\\{url}";
     private final String CONTENT_ENCODING = "text/html ; charset=utf-8";
+
     @Value("${login}")
     private String login;
+
     @Autowired
     private Session emailSession;
 
@@ -56,11 +58,10 @@ public class EmailSender {
             replace.put(QUIZNAME_TOKEN, quizName);
             replace.put(QUIZCATEGORY_TOKEN, categoryName);
             replace.put(URL_TOKEN, url);
-            synchronized (this) {
-                Message message = generateMessage(receiverEmailAddress);
-                setContent(message, messageInfoItem, replace);
-                Transport.send(message);
-            }
+
+            Message message = generateMessage(receiverEmailAddress);
+            setContent(message, messageInfoItem, replace);
+            Transport.send(message);
         } catch (MessagingException | IOException e) {
             log.error("cant send message", e);
         }

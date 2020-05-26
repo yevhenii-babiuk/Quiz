@@ -4,6 +4,7 @@ import {ProfileService} from "../../core/services/profile.service";
 import {AlertService} from "../../core/services/alert.service";
 import {SecurityService} from "../../core/services/security.service";
 import {TranslateService} from "@ngx-translate/core";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-editor',
@@ -23,6 +24,7 @@ export class EditorComponent implements OnInit {
     private alertService: AlertService,
     private securityService: SecurityService,
     public translate: TranslateService,
+    private router: Router
   ) {
   }
 
@@ -69,6 +71,7 @@ export class EditorComponent implements OnInit {
     this.profileService.updateUser(editedUser).subscribe(data => {
       editedUser = data;
       this.alertService.success('alert.editSuccessful');
+      this.router.navigate(['profile']).then();
     });
   }
 

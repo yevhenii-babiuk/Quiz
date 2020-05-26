@@ -3,6 +3,9 @@ import {User} from "../../core/models/user";
 import {ProfileService} from "../../core/services/profile.service";
 import {SecurityService} from "../../core/services/security.service";
 import {TranslateService} from "@ngx-translate/core";
+import {registerLocaleData} from "@angular/common";
+import localeUa from "@angular/common/locales/uk";
+import localeEnGb from "@angular/common/locales/en-GB";
 
 @Component({
   selector: 'app-friend-list',
@@ -33,6 +36,9 @@ export class FriendListComponent implements OnInit {
         err => {
           console.log(err);
         })
+
+    registerLocaleData(localeUa, 'ua');
+    registerLocaleData(localeEnGb, 'en-GB');
   }
 
 }

@@ -58,8 +58,8 @@ public class PlayGameController {
     }
 
     @GetMapping("api/v1/game/{gameId}/joinedUser")
-    public List<String> getJoinedUsers(@PathVariable int gameId) {
-        return null;
+    public List<String> getJoinedUsers(@PathVariable String gameId) {
+        return gameService.getUsersByGameId(gameId);
     }
 
 }

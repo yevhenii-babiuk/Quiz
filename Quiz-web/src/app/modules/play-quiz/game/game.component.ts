@@ -10,6 +10,7 @@ import * as SockJS from 'sockjs-client';
 import {UserDto} from "../../core/models/userDto";
 import {socket} from "../../../../environments/environment.prod";
 import {EventType, WebsocketEvent} from "../../core/models/websocketEvent";
+import {GameDto} from "../../core/models/gameDto";
 
 @Component({
   selector: 'app-game',
@@ -18,16 +19,15 @@ import {EventType, WebsocketEvent} from "../../core/models/websocketEvent";
 })
 export class GameComponent implements OnInit, OnDestroy {
 
+  game: GameDto;
   question: Question;
   receivedQuestion: Question;
   players: String[] = [];
-  hostId: number;
-  time: number;
-  image: string;
   private stompClient;
   public gameResults: Users;
   eventType = EventType;
   receivedEvent: WebsocketEvent;
+  currQuestion: number;
   s: any;
 
   public currentUser: UserDto;
@@ -47,9 +47,7 @@ export class GameComponent implements OnInit, OnDestroy {
 
     this.playGameService.getGame(this.gameId).subscribe(
       game => {
-        this.hostId = game.hostId;
-        this.time = game.time;
-        this.image = game.image;
+        this.game = game;
         this.isWaiting = true;
         console.log(game);
       }, err => {
@@ -62,6 +60,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.currentUser = user;
         if (!securityService.getCurrentId() && !localStorage.getItem("playerId"))
           localStorage.setItem("playerId", String(this.currentUser.id));
+        if(this.players.length==0) this.players.push(this.currentUser.login);
         this.playGameService.getJoinedPlayers(this.gameId).subscribe(
           players => {
             if (players)
@@ -76,7 +75,7 @@ export class GameComponent implements OnInit, OnDestroy {
             if (question) {
               this.isWaiting = false;
               this.gameResults = null;
-              this.question = this.receivedEvent.question;
+              this.question = question;
             }
           }, err => {
             console.log(err);
@@ -88,8 +87,6 @@ export class GameComponent implements OnInit, OnDestroy {
         console.log(err);
         this.redirect.navigate(['home']);
       });
-
-
   }
 
   initializeWebSocketConnection() {
@@ -108,6 +105,7 @@ export class GameComponent implements OnInit, OnDestroy {
             that.isWaiting = false;
             that.gameResults = null;
             that.receivedQuestion = that.receivedEvent.question;
+            that.currQuestion = that.receivedEvent.currQuestion;
             if (that.question && that.receivedQuestion.id == that.question.id) that.question = that.receivedQuestion;
             else {
               if (that.question != null) localStorage.removeItem("endTime" + that.question.id);
@@ -145,6 +143,8 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    localStorage.removeItem("endTime" + this.question.id);
+    localStorage.removeItem("playerId");
     this.s.unsubscribe();
     this.stompClient.disconnect();
   }

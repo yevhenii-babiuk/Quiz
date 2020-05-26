@@ -68,7 +68,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/api/v1/quiz/**",
                         "/api/v1/announcements",
                         "/api/v1/categories",
-                        "/api/v1/tags")
+                        "/api/v1/tags",
+                        "/api-docs",
+                        "/api/v1/api-docs",
+                        "/swagger-ui.html",
+                        "/v2/api-docs",
+                        "/api/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**")
                 .permitAll()
                 .antMatchers("/",
                         "/favicon.ico",
@@ -80,7 +90,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/**/*.woff2",
                         "/**/*.css",
                         "/**/*.js",
-                        "/**/*.json")
+                        "/**/*.json",
+                        "/**/*.html",
+                        "**/swagger-resources/**",
+                        "/webjars/**")
                 .permitAll()
                 //.antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 // all other requests need to be authenticated
