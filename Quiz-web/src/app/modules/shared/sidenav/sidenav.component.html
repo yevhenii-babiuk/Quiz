@@ -48,6 +48,9 @@
         <a routerLink="../userQuizzes">{{'SIDENAV.MY_QUIZZES' | translate}}</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
+        <a routerLink="../userQuizzes">{{'SIDENAV.MY_QUIZZES' | translate}}</a>
+      </li>
+      <li *ngIf="authenticationService.isAuthenticated()">
         <a routerLink="../profile/dashboard">{{'SIDENAV.STATISTIC' | translate}}</a>
       </li>
       <li *ngIf="authenticationService.isAuthenticated()">
