@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -49,6 +50,7 @@ public class GameService {
     private int currAnimal = 0;
     private int currCharacteristic = 0;
 
+
     private synchronized String getNewName() {
         currAnimal++;
         currCharacteristic++;
@@ -59,6 +61,12 @@ public class GameService {
             currCharacteristic = 0;
         }
         return characteristic.get(currCharacteristic) + " " + animals.get(currAnimal);
+    }
+
+    public List<String> getUsersByGameId(String gameId) {
+        return gameDao.getUsersByGame(gameId).stream()
+                .map(UserDto::getLogin)
+                .collect(Collectors.toList());
     }
 
     //todo create test Alexandra
@@ -203,9 +211,10 @@ public class GameService {
         return gameId;
     }
 
-    public String getQRCode(int quizId, String accessCode) {
+    private String getQRCode(int quizId, String accessCode) {
         return Base64.getEncoder().encodeToString(qrCodeGenerator.getQRCodeImage(
                 URL + "quiz/" + quizId + "/game/" + accessCode + "/play",
                 200, 200));
     }
+
 }
