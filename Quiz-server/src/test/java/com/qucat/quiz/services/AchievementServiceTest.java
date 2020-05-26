@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AchievementServiceTest {
@@ -111,7 +112,7 @@ public class AchievementServiceTest {
     @Before
     public void initMocks() {
         setValues();
-        Mockito.when(achievementDao.get(achievementBeforeUpdate.getId())).thenReturn(achievementBeforeUpdate);
+        when(achievementDao.get(achievementBeforeUpdate.getId())).thenReturn(achievementBeforeUpdate);
 
     }
 
@@ -119,8 +120,8 @@ public class AchievementServiceTest {
     public void updateAchievement() {
         assertTrue(achievementService.updateAchievement(achievementAfterUpdate));
 
-        Mockito.verify(achievementConditionService).addConditions(toInsert.capture());//set values into toInsert
-        Mockito.verify(achievementConditionService).removeConditions(toDelete.capture());
+        verify(achievementConditionService).addConditions(toInsert.capture());//set values into toInsert
+        verify(achievementConditionService).removeConditions(toDelete.capture());
 
         assertTrue(toDelete.getValue().containsAll(toDeleteExpected) && toDeleteExpected.containsAll(toDelete.getValue()));//equals without order
         assertTrue(toInsert.getValue().containsAll(toInsertExpected) && toInsertExpected.containsAll(toInsert.getValue()));
