@@ -6,6 +6,7 @@ import com.qucat.quiz.repositories.entities.NotificationType;
 import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,13 +61,17 @@ public class NotificationService {
     }
 
     public boolean createNotification(Notification notification) {
-        System.out.println(notification);
         int notificationId = notificationDao.save(notification);
         if (notificationId == -1) {
             log.info("createNotification: Notification wasn't saved");
             return false;
         }
         return true;
+    }
+
+    @Scheduled(cron = "**14**")
+    private void deleteOldNotifications() {
+        notificationDao.deleteOldNotifications();
     }
 
     public void updateNotification(Notification notification) {

@@ -299,6 +299,14 @@
     "CREATED_QUIZ": "created a quiz, hurry to assemble a team!",
     "GAME_INVITATION": "invites you to the game!",
     "FRIEND_INVITATION": "added you as a friend!",
-    "MESSAGE": "you have message in chat"
+    "MESSAGE": "you have message in chat",
+    "MESSAGE_TITLE": "Chat",
+    "NOTIFICATION_TITLE": "Notifications",
+    "SETTING_TITLE": "Receive notifications:",
+    "CHECKBOX_1":"Creating news with friends",
+    "CHECKBOX_2":"Creating a quiz with friends",
+    "CHECKBOX_3":"Game invitations",
+    "CHECKBOX_4":"Friends invitations",
+    "REVIEW": "Review"
   }
 }
