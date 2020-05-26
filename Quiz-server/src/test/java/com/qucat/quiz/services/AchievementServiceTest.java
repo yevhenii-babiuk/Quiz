@@ -4,8 +4,8 @@ import com.qucat.quiz.repositories.dao.AchievementDao;
 import com.qucat.quiz.repositories.entities.Achievement;
 import com.qucat.quiz.repositories.entities.AchievementCondition;
 import com.qucat.quiz.repositories.entities.enums.ConditionOperator;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.*;
 import org.mockito.junit.MockitoJUnitRunner;
@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(MockitoJUnitRunner.class)
-class AchievementServiceTest {
+public class AchievementServiceTest {
 
 
     @Captor
@@ -108,7 +108,7 @@ class AchievementServiceTest {
                 .build();
     }
 
-    @BeforeEach
+    @Before
     public void initMocks() {
         setValues();
         MockitoAnnotations.initMocks(this);
