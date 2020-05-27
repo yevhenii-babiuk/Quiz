@@ -11,6 +11,8 @@ public interface NotificationDao extends GenericDao<Notification> {
 
     List<Notification> getMessagesByUserId(int userId);
 
+    void deleteOldNotifications();
+
     void deleteAllByUserId(int id);
 
 }

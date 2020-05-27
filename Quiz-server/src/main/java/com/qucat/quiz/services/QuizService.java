@@ -40,7 +40,6 @@ public class QuizService {
     @Autowired
     private WebSocketSenderService webSocketSenderService;
 
-    //todo create test Tetyana
     @Transactional
     public int createQuiz(Quiz quiz) {
         if (quiz == null) {

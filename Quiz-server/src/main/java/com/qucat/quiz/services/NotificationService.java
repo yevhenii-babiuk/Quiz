@@ -6,6 +6,7 @@ import com.qucat.quiz.repositories.entities.NotificationType;
 import com.qucat.quiz.repositories.entities.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -67,6 +68,11 @@ public class NotificationService {
             return false;
         }
         return true;
+    }
+
+    @Scheduled(cron = "* * * 14 * *")
+    public void deleteOldNotifications() {
+        notificationDao.deleteOldNotifications();
     }
 
     public void updateNotification(Notification notification) {
