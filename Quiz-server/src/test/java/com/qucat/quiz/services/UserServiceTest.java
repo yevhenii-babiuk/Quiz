@@ -190,6 +190,7 @@ public class UserServiceTest {
 
         boolean result = mockService.registerUser(mockUser);
 
+        verify(userDao).save(any(User.class));
         assertTrue(result);
     }
 
