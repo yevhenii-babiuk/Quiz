@@ -48,10 +48,13 @@ public class GameProcess implements Runnable {
     }
 
     private void waitAllAnswer(int secondLeft) {
-        while (!checkAllSendAnswer() && secondLeft != -1) {
+        while (secondLeft != -1) {
             try {
                 Thread.sleep(1000);
                 secondLeft--;
+                if (checkAllSendAnswer()){
+                    break;
+                }
             } catch (InterruptedException e) {
                 log.error("Thread was interrupted", e);
             }
