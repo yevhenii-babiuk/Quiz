@@ -48,7 +48,6 @@ public class AchievementService {
         return true;
     }
 
-    //todo create test Andrii
     @Transactional
     public boolean updateAchievement(Achievement achievement) {
         if (achievement == null || achievement.getConditions().isEmpty()) {
@@ -94,7 +93,7 @@ public class AchievementService {
 
     //todo create test Andrii
     @Scheduled(cron = "0 0 * * * *")
-    public void updateUserAchievementLists() {
+    public synchronized void updateUserAchievementLists() {
         List<Achievement> achievements = getAllAchievement();
         List<UserAchievement> beforeUpdateAchievements = userAchievementsService.getAchievementsForAll();
         List<UserAchievement> afterUpdateAchievements = achievementDao.getNewUserAchievements(achievements);
