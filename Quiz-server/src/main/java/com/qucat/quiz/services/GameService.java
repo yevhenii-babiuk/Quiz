@@ -133,8 +133,8 @@ public class GameService {
             case SELECT_SEQUENCE:
                 Map<Integer, Integer> sequence = answer.getSequence();
                 for (QuestionOption option : question.getOptions()) {
-                    if (sequence.containsKey(option.getId()) &&
-                            option.getSequenceOrder() == sequence.get(option.getId())) {
+                    if (sequence.containsKey(option.getId())
+                            && option.getSequenceOrder() == sequence.get(option.getId())) {
                         correctAnswer++;
                     }
 

@@ -52,7 +52,7 @@ public class GameProcess implements Runnable {
             try {
                 Thread.sleep(1000);
                 secondLeft--;
-                if (checkAllSendAnswer()){
+                if (checkAllSendAnswer()) {
                     break;
                 }
             } catch (InterruptedException e) {
