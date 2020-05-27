@@ -57,7 +57,6 @@ public class UserService {
     @Value("${url}")
     private String URL;
 
-    //todo create test Yevhenii
     @Transactional
     public boolean registerUser(User user) {
         user.setRole(Role.USER);
