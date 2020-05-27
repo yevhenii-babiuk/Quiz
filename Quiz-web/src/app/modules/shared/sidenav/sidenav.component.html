@@ -44,6 +44,9 @@
       <li *ngIf="securityService.getCurrentRole()==roleEnum.USER && authenticationService.isAuthenticated()">
         <a routerLink="../activities">{{'SIDENAV.ACTIVITY' | translate}}</a>
       </li>
+      <li *ngIf="securityService.getCurrentRole()==roleEnum.USER">
+        <a routerLink="../userQuizzes">{{'SIDENAV.MY_QUIZZES' | translate}}</a>
+      </li>
       <li *ngIf="authenticationService.isAuthenticated()">
         <a routerLink="../userQuizzes">{{'SIDENAV.MY_QUIZZES' | translate}}</a>
       </li>

@@ -11,6 +11,10 @@ import {socket} from "../../../../environments/environment.prod";
 import {EventType, WebsocketEvent} from "../../core/models/websocketEvent";
 import {ProfileService} from "../../core/services/profile.service";
 import {User} from "../../core/models/user";
+import {TranslateService} from "@ngx-translate/core";
+import {registerLocaleData} from "@angular/common";
+import localeUa from "@angular/common/locales/uk";
+import localeEnGb from "@angular/common/locales/en-GB";
 
 @Component({
   selector: 'app-chat-area',
@@ -43,7 +47,8 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
               private securityService: SecurityService,
               private route: ActivatedRoute,
               private router: Router,
-              private profileService: ProfileService) {
+              private profileService: ProfileService,
+              public translate: TranslateService) {
 
     this.id = this.securityService.getCurrentId();
     this.chat.id = +this.route.snapshot.paramMap.get('chatId');
@@ -69,7 +74,9 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.initializeWebSocketConnection();
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void  {
+    registerLocaleData(localeUa, 'ua');
+    registerLocaleData(localeEnGb, 'en-GB');
   }
 
   scrollToBottom(): void {

@@ -37,8 +37,7 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
         preparedStatement.setInt(1, question.getQuizId());
         preparedStatement.setString(2, question.getType().name().toLowerCase());
         preparedStatement.setString(3, question.getContent());
-        preparedStatement.setInt(4, question.getScore());
-        preparedStatement.setInt(5, question.getImageId());
+        preparedStatement.setInt(4, question.getImageId());
         return preparedStatement;
     }
 
@@ -52,7 +51,6 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
         return new Object[]{question.getQuizId(),
                 question.getType().name().toLowerCase(),
                 question.getContent(),
-                question.getScore(),
                 question.getImageId(),
                 question.getId()};
     }

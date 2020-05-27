@@ -4,7 +4,7 @@
     <div class="form-control h-auto row mx-0 my-1 mt-5 p-4 border-dark border ">
       <div class="d-inline">
         <h5 *ngIf="questionNumber" class="d-inline">{{questionNumber}}/{{questionsCount}}</h5>
-        <h5 class="d-inline offset-11">{{ subscribeTimer | timerFormat}}</h5>
+        <h5 class="d-inline offset-10">{{ subscribeTimer | timerFormat}}</h5>
       </div>
 
       <div class="col p-md-3" *ngIf="question.content">
@@ -75,16 +75,19 @@
         <div *ngIf="question.type=='SELECT_SEQUENCE'">
           <div class="row mx-0" *ngFor="let questionOption of question.options">
 
-            <div class="form-group row p-3 m-2 border border-light bg-light col">
+            <div class="form-group p-3 m-2 border border-light bg-light col">
 
-              <select #sel class="form-control col-2" [disabled]="isSend" (change)="setSequence(questionOption.id, sel.value)">
-                <option></option>
-                <option *ngFor="let qo of question.options; let i = index"
-                        [value]="i+1">{{i + 1}}</option>
-              </select>
-              <label class="col">{{questionOption.content}}</label>
-              <img *ngIf="questionOption.imageId!=-1 && questionOption.image "
-                   src="data:image/jpeg;base64,{{questionOption.image.src}}" class="w-75 mx-auto d-inline p-3" alt="">
+              <div class="row">
+                <select class="col-2  form-control" [disabled]="isSend">
+                  <option></option>
+                  <option *ngFor="let qo of question.options; let i = index"
+                          (click)="setSequence(questionOption.id, i+1)">{{i + 1}}</option>
+                </select>
+                <label class="col">{{questionOption.content}}</label>
+              </div>
+
+              <img  *ngIf="questionOption.imageId!=-1 && questionOption.image "
+                   src="data:image/jpeg;base64,{{questionOption.image.src}}" class="w-25 mx-auto row p-3" alt="">
             </div>
 
           </div>

@@ -4,6 +4,9 @@ import {AnnouncementService} from "../../core/services/announcement.service";
 import {SecurityService} from "../../core/services/security.service";
 import {Role} from "../../core/models/role";
 import {TranslateService} from "@ngx-translate/core";
+import {registerLocaleData} from "@angular/common";
+import localeUa from "@angular/common/locales/uk";
+import localeEnGb from "@angular/common/locales/en-GB";
 
 @Component({
   selector: 'app-announcements',
@@ -58,6 +61,9 @@ export class AnnouncementsComponent implements OnInit {
 
   ngOnInit(): void {
     this.getNew();
+
+    registerLocaleData(localeUa, 'ua');
+    registerLocaleData(localeEnGb, 'en-GB');
   }
 
 
