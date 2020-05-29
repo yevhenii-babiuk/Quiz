@@ -9,5 +9,5 @@ public interface QuestionDao extends GenericDao<Question> {
 
     List<Question> getByQuizId(int id);
 
-    int deleteQuestions(List<Integer> questionId);
+    void deleteQuestions(List<Integer> questionId);
 }

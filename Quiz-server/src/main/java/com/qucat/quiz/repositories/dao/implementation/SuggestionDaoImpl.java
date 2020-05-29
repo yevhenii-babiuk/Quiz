@@ -31,7 +31,8 @@ public class SuggestionDaoImpl implements SuggestionDao {
                 (ResultSet rs) -> {
             Map<String, String> results = new HashMap<>();
             while (rs.next()) {
-                results.put(rs.getString("login"), rs.getString("email"));
+                results.put(rs.getString("login"),
+                        rs.getString("email"));
             }
             return results;
         });
