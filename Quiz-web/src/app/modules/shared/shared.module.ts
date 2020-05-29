@@ -7,13 +7,14 @@ import {HeaderComponent} from './header/header.component';
 import {FooterComponent} from './footer/footer.component';
 import {SidenavComponent} from './sidenav/sidenav.component';
 import {RouterModule} from "@angular/router";
-import { NotificationMenuComponent } from './notification-menu/notification-menu.component';
+import {NotificationMenuComponent} from './notification-menu/notification-menu.component';
 import {MatBadgeModule} from "@angular/material/badge";
 import {MatIconModule} from "@angular/material/icon";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {FormsModule} from "@angular/forms";
 import {TranslateModule} from "@ngx-translate/core";
-import { MessageMenuComponent } from './message-menu/message-menu.component';
+import {MessageMenuComponent} from './message-menu/message-menu.component';
+import {SpinCatComponent} from './spincat/spin-cat.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { MessageMenuComponent } from './message-menu/message-menu.component';
     FooterComponent,
     SidenavComponent,
     NotificationMenuComponent,
-    MessageMenuComponent
+    MessageMenuComponent,
+    SpinCatComponent,
   ],
   imports: [
     CommonModule,
@@ -39,7 +41,9 @@ import { MessageMenuComponent } from './message-menu/message-menu.component';
     HeaderComponent,
     FooterComponent,
     SidenavComponent,
-    TranslateModule
+    TranslateModule,
+    SpinCatComponent,
   ]
 })
-export class SharedModule { }
+export class SharedModule {
+}
