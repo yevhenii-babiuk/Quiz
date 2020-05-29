@@ -5,6 +5,8 @@ import {AuthenticationService} from '../../core/services/authentication.service'
 import {AlertService} from '../../core/services/alert.service';
 
 import {User} from '../../core/models/user';
+import {TranslateService} from "@ngx-translate/core";
+import {Lang} from "../../core/models/lang";
 
 @Component({
   selector: 'app-registration',
@@ -18,7 +20,8 @@ export class RegistrationComponent implements OnInit {
   constructor(
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
-    private router: Router
+    private router: Router,
+    public translate: TranslateService
   ) {
   }
 
@@ -31,7 +34,7 @@ export class RegistrationComponent implements OnInit {
       this.alertService.error('alert.fieldEmpty');
       return;
     }
-
+    this.user.language=Lang[this.translate.currentLang];
     this.authenticationService.register(this.user)
       .subscribe(
         data => {

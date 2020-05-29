@@ -28,7 +28,7 @@
         <div class="languageChange ">
           <span class="material-icons align-middle">language</span>
           <ng-container *ngFor="let lang of translate.getLangs() let i = index">
-            <span (click)="translate.use(lang)" class="changeLangEvent"
+            <span (click)="setLang(lang)" class="changeLangEvent"
                   [ngClass]="{active: translate.currentLang==lang}">{{lang}}</span>
             <span *ngIf="i!=translate.getLangs().length-1">/</span>
           </ng-container>
