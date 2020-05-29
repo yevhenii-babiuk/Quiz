@@ -17,8 +17,6 @@ export class SpinCatComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.show)
-    console.log(this.text)
   }
 
 }
