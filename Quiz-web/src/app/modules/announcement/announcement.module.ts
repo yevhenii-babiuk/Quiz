@@ -8,6 +8,7 @@ import {FormsModule} from "@angular/forms";
 import { UpdateAnnouncementComponent } from './update-announcement/update-announcement.component';
 import { AnnouncementsComponent } from './announcements/announcements.component';
 import {TranslateModule} from "@ngx-translate/core";
+import {SharedModule} from "../shared/shared.module";
 
 
 @NgModule({
@@ -15,12 +16,13 @@ import {TranslateModule} from "@ngx-translate/core";
     ViewAnnouncementComponent,
     UpdateAnnouncementComponent,
     AnnouncementsComponent],
-  imports: [
-    CommonModule,
-    AnnouncementRoutingModule,
-    RouterModule,
-    FormsModule,
-    TranslateModule
-  ]
+    imports: [
+        CommonModule,
+        AnnouncementRoutingModule,
+        RouterModule,
+        FormsModule,
+        TranslateModule,
+        SharedModule
+    ]
 })
 export class AnnouncementModule { }

@@ -65,7 +65,8 @@ export class EditorComponent implements OnInit {
       registrationDate: this.userData.registrationDate,
       imageId: this.userData.imageId,
       image: this.userData.image,
-      status: this.userData.status
+      status: this.userData.status,
+      language: this.userData.language
     };
 
     this.profileService.updateUser(editedUser).subscribe(data => {

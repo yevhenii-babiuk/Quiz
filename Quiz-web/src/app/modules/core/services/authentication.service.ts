@@ -7,6 +7,7 @@ import {url} from '../../../../environments/environment.prod';
 import {map} from "rxjs/operators";
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Observable} from "rxjs";
+import {Lang} from "../models/lang";
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,10 @@ export class AuthenticationService {
         }
       )
     );
+  }
+
+  setLang(id: number, lang:Lang){
+    return this.http.put(`${url}/users/${id}/setLang`, lang, this.httpOptions)
   }
 
   register(user: User) {

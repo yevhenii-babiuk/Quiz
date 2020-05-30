@@ -10,7 +10,6 @@ import {countOnPage} from "../../../../environments/environment.prod";
 import {TagFilter} from "./vertical-filter-bar/tag-filter/tag-filter.model";
 import {SecurityService} from "../../core/services/security.service";
 import {TranslateService} from '@ngx-translate/core';
-import {AuthenticationService} from "../../core/services/authentication.service";
 
 @Component({
   selector: 'app-quizzes',
@@ -26,16 +25,17 @@ export class QuizzesComponent implements OnInit {
     'DEACTIVATED'
   ];
   isWaiting: boolean = false;
+  endQuizList: boolean = false;
 
   params: string;
 
 
   constructor(
-      private route: ActivatedRoute,
-      private router: Router,
-      private quizzesService: QuizzesService,
-      public translate: TranslateService,
-      public securityService: SecurityService
+    private route: ActivatedRoute,
+    private router: Router,
+    private quizzesService: QuizzesService,
+    public translate: TranslateService,
+    public securityService: SecurityService
   ) {
   }
 
@@ -50,27 +50,28 @@ export class QuizzesComponent implements OnInit {
   quizStatusesFilter: FBFilter = new CheckboxFilter('status', 'status', this.quizStatuses);
 
 
-  @HostListener("window:scroll", ["$event"])
+  @HostListener("window:scroll")
   onWindowScroll() {
 
     if (document.documentElement.scrollHeight - document.documentElement.scrollTop -
-      document.documentElement.clientHeight < 40) {
+      document.documentElement.clientHeight < 80) {
       this.getQuizzes();
     }
 
   }
 
   getQuizzes(): void {
-    if (this.isWaiting) {
+    if (this.isWaiting || this.endQuizList) {
       return;
     }
     this.isWaiting = true;
     this.quizzesService.getQuizzes(this.params, this.quizzes.length)
       .subscribe(
         quizzes => {
-          if (quizzes.length == countOnPage) {
-            this.isWaiting = false;
+          if (quizzes.length != countOnPage) {
+            this.endQuizList = true;
           }
+          this.isWaiting = false;
           this.quizzes = this.quizzes.concat(quizzes);
         },
         err => {
@@ -110,12 +111,12 @@ export class QuizzesComponent implements OnInit {
   ngOnInit(): void {
     this.route.queryParams.subscribe(_params => {
       this.quizzes = [];
-      this.isWaiting = false;
+      this.endQuizList = false;
       this.params = "?";
-      if (!this.securityService.getCurrentRole() || this.securityService.getCurrentRole()=='USER'){
-        this.params +='status=ACTIVATED&'
+      if (!this.securityService.getCurrentRole() || this.securityService.getCurrentRole() == 'USER') {
+        this.params += 'status=ACTIVATED&'
       }
-      if (this.router.url.indexOf("?")!=-1){
+      if (this.router.url.indexOf("?") != -1) {
         this.params += this.router.url.substring(this.router.url.indexOf("?") + 1);
       }
 
@@ -123,7 +124,7 @@ export class QuizzesComponent implements OnInit {
 
     });
 
-    if(this.securityService.getCurrentRole() && this.securityService.getCurrentRole()!='USER'){
+    if (this.securityService.getCurrentRole() && this.securityService.getCurrentRole() != 'USER') {
       this.verticalBarFilters.push(this.quizStatusesFilter);
     }
 

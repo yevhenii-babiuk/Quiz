@@ -24,14 +24,14 @@
   <div class="row mx-0" *ngIf="securityService.getCurrentId() &&
   (securityService.getCurrentRole()!='USER'|| securityService.getCurrentId()==quiz.authorId)">
 
-    <div (click)="setDeactivated()" *ngIf="!isDeactivated()" class="col mx-3 btn btn-warning">
+    <div (click)="setDeactivated()" *ngIf="!isDeactivated()" class="col mx-3 my-2 btn btn-warning">
       {{'quiz.viewQuiz.deactivateQuiz' | translate}}
     </div>
     <div (click)="setActivated()" *ngIf="securityService.getCurrentRole()!='USER' && !isActivated()"
-         class="col mx-3 btn btn-warning">
+         class="col mx-3 my-2 btn btn-warning">
       {{'quiz.viewQuiz.publishQuiz' | translate}}
     </div>
-    <button *ngIf="securityService.getCurrentId()==quiz.authorId" class="col mx-3 btn btn-warning">
+    <button *ngIf="securityService.getCurrentId()==quiz.authorId" class="col mx-3 my-2 btn btn-warning">
       {{'quiz.viewQuiz.editQuiz' | translate}}
     </button>
 
