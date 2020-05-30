@@ -70,28 +70,11 @@ public class QuizService {
         return quizId;
     }
 
-    private void addQuizTags(Quiz quiz) {
-        for (Tag tag : quiz.getTags()) {
-            int tagId = tagService.addTag(tag);
-            if (tagId != -1) {
-                quizDao.addTag(quiz.getId(), tagId);
-            }
-        }
-    }
-
-    private void deleteQuizTags(Quiz quiz) {
-        int quizId = quiz.getId();
-        for (Tag tag : quiz.getTags()) {
-            quizDao.removeTag(quizId, tag.getId());
-        }
-    }
-
-    //todo create test Tetyana
     @Transactional
-    public void updateQuiz(Quiz quiz) {
+    public boolean updateQuiz(Quiz quiz) {
         if (quiz == null) {
             log.info("updateQuiz: Quiz is null");
-            return;
+            return false;
         }
 
         Quiz beforeUpdateQuiz = getQuizById(quiz.getId());
@@ -113,12 +96,28 @@ public class QuizService {
         }
 
         questionService.deleteQuestions(toDelete);
-        for (Question question : toInsert) {
-            questionService.addQuestion(question);
-        }
+        questionService.addQuestions(toInsert);
 
         addQuizTags(quiz);
         quizDao.update(quiz);
+
+        return true;
+    }
+
+    public void addQuizTags(Quiz quiz) {
+        for (Tag tag : quiz.getTags()) {
+            int tagId = tagService.addTag(tag);
+            if (tagId != -1) {
+                quizDao.addTag(quiz.getId(), tagId);
+            }
+        }
+    }
+
+    public void deleteQuizTags(Quiz quiz) {
+        int quizId = quiz.getId();
+        for (Tag tag : quiz.getTags()) {
+            quizDao.removeTag(quizId, tag.getId());
+        }
     }
 
     public Quiz getQuizByIdForUser(int userId, int quizId) {
