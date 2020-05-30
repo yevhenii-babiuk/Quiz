@@ -1,6 +1,6 @@
 import {Image} from "./image";
 import {Imaged} from "./imaged";
-import {Role} from "./role";
+import {Lang} from "./lang";
 
 export class User implements Imaged {
   id: number;
@@ -16,6 +16,7 @@ export class User implements Imaged {
   registrationDate: Date;
   imageId: number = -1;
   image: Image = new Image();
+  language: Lang = Lang.en;
 }
 
 

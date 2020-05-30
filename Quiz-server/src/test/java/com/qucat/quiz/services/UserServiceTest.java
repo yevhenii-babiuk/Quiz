@@ -4,6 +4,7 @@ import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.entities.NotificationSettings;
 import com.qucat.quiz.repositories.entities.Token;
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.enums.Lang;
 import com.qucat.quiz.repositories.entities.enums.MessageInfo;
 import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
 import org.junit.Test;
@@ -133,6 +134,7 @@ public class UserServiceTest {
         when(mockUser.getPassword()).thenReturn(TEST_USER_PASS);
         when(userDao.getUserByLogin(anyString())).thenReturn(null);
         when(userDao.getUserByMail(anyString())).thenReturn(TEST_USER);
+        doNothing().when(userDao).updateUserLanguage(anyInt(), any(Lang.class));
         when(passwordEncoder.encode(anyString())).thenReturn(TEST_USER_PASS);
         when(imageService.addUserProfileImage()).thenReturn(7);
         when(tokenService.getTokenByUserId(anyInt())).thenReturn(TEST_TOKEN);
@@ -182,6 +184,7 @@ public class UserServiceTest {
         when(userDao.getUserByLogin(anyString())).thenReturn(null);
         when(userDao.getUserByMail(anyString())).thenReturn(null);
         when(userDao.save(any(User.class))).thenReturn(3);
+        doNothing().when(userDao).updateUserLanguage(anyInt(), any(Lang.class));
         when(passwordEncoder.encode(anyString())).thenReturn(TEST_USER_PASS);
         when(imageService.addUserProfileImage()).thenReturn(7);
         doNothing().when(tokenService).saveToken(any(Token.class));

@@ -2,7 +2,7 @@
       rel="stylesheet">
 <div class="row mx-0">
   <ng-container *ngFor="let quiz of quizzes">
-    <div class="col-sm-3 card border-0" routerLink="/quiz/{{quiz.id}}">
+    <div class="col-lg-3 col-md-4 col-sm-6 col-12 card border-0" routerLink="/quiz/{{quiz.id}}">
       <img *ngIf="quiz.image" class="card-img-top" src="data:image/jpeg;base64,{{quiz.image.src}}"
            alt="Card image cap">
       <div class="card-body">

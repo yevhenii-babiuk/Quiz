@@ -89,6 +89,9 @@ public class UserService {
             }
         }
 
+        Lang userLanguage = user.getLanguage() != null ? user.getLanguage() : Lang.EN;
+        userDao.updateUserLanguage(id,
+                userLanguage);
         Token tokenForNewUser = Token.builder()
                 .token(UUID.randomUUID().toString())
                 .tokenType(TokenType.REGISTRATION)
@@ -104,8 +107,7 @@ public class UserService {
                 .build();
 
         notificationSettingsService.createNotificationSettings(notificationSettings);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + tokenForNewUser.getToken(), MessageInfo.registration.findByLang(Lang.EN));
-        //todo get Lang
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + REGISTRATION + tokenForNewUser.getToken(), MessageInfo.registration.findByLang(userLanguage));
         return true;
     }
 
@@ -119,9 +121,11 @@ public class UserService {
                 .tokenType(TokenType.PASSWORD_RECOVERY)
                 .userId(user.getId())
                 .build();
+
+        Lang userLanguage = userDao.getUserLanguage(user.getId()) != null
+                ? userDao.getUserLanguage(user.getId()) : Lang.EN;
         tokenService.saveToken(token);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(Lang.EN));
-        //todo get Lang
+        emailSender.sendMessage(user.getMail(), user.getLogin(), URL + PASS_RECOVERY + token.getToken(), MessageInfo.passwordRecover.findByLang(userLanguage));
         return true;
     }
 
@@ -136,7 +140,9 @@ public class UserService {
         }
         User user = userDao.get(id);
         user.setStatus(UserAccountStatus.ACTIVATED);
-        emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.activationAccount.findByLang(Lang.EN));
+        Lang userLanguage = userDao.getUserLanguage(user.getId()) != null
+                ? userDao.getUserLanguage(user.getId()) : Lang.EN;
+        emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.activationAccount.findByLang(userLanguage));
         userDao.update(user);
         return true;
     }
@@ -322,12 +328,13 @@ public class UserService {
         if (user == null) {
             return;
         }
-        //todo get lang
+        Lang userLanguage = userDao.getUserLanguage(userId) != null
+                ? userDao.getUserLanguage(userId) : Lang.EN;
         if (status == UserAccountStatus.UNACTIVATED && user.getStatus() == UserAccountStatus.ACTIVATED) {
-            emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.deactivationAccount.findByLang(Lang.EN));
+            emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.deactivationAccount.findByLang(userLanguage));
         }
         if (status == UserAccountStatus.ACTIVATED && user.getStatus() == UserAccountStatus.UNACTIVATED) {
-            emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.activationAccount.findByLang(Lang.EN));
+            emailSender.sendMessage(user.getMail(), user.getLogin(), MessageInfo.activationAccount.findByLang(userLanguage));
         }
 
         userDao.updateUserStatus(userId, status);
@@ -347,5 +354,19 @@ public class UserService {
         int id = userDao.save(user);
 
         return id > 0;
+    }
+
+    public Lang getUserLanguage(int userId) {
+        return userDao.getUserLanguage(userId);
+    }
+
+    public void updateUserLanguage(int userId, Lang language) {
+        userDao.updateUserLanguage(userId, language);
+    }
+
+    public Lang getUserLanguageByLogin(String login) {
+        User user = userDao.getUserByLogin(login);
+        return userDao.getUserLanguage(user.getId()) != null
+                ? userDao.getUserLanguage(user.getId()) : Lang.EN;
     }
 }

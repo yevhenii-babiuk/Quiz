@@ -24,6 +24,9 @@ public class SuggestionsService {
     @Autowired
     private SuggestionDao suggestionDao;
 
+    @Autowired
+    private UserService userService;
+
     @Value("${url}")
     private String URL;
 
@@ -34,13 +37,13 @@ public class SuggestionsService {
         } else {
             ExecutorService executorService = Executors.newCachedThreadPool();
             for (Map.Entry entry : users.entrySet()) {
+                Lang userLanguage = userService.getUserLanguageByLogin(entry.getKey().toString());
                 executorService.execute(new SuggestionsMailingThread(emailSender,
                         entry.getKey().toString(), entry.getValue().toString(), URL, quizName, categoryName,
                         Integer.toString(quizId),
-                        MessageInfo.suggestion.findByLang(Lang.UA)));
+                        MessageInfo.suggestion.findByLang(userLanguage)));
             }
             executorService.shutdown();
         }
-        //todo get Lang
     }
 }

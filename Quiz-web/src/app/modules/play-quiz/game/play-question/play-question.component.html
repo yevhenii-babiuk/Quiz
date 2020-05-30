@@ -102,11 +102,7 @@
       </button>
 
       <br>
-
-      <div class="p-m-3" *ngIf="isSend">
-        <h5 class="text-center">Waiting for other players...</h5>
-        <img class="w-25 mx-auto d-block p-5 spincat" src='assets/img/uroboros-cat.png'>
-      </div>
+      <app-spin-cat [show]="isSend" [text]="'Waiting for other players...'"></app-spin-cat>
 
     </div>
   </ng-container>

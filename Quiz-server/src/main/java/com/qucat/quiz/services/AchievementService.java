@@ -91,8 +91,7 @@ public class AchievementService {
         return achievementDao.getAll();
     }
 
-    //todo create test Andrii
-    @Scheduled(cron = "0 0 * * * *")
+    @Scheduled(fixedDelay = 3600_000)
     public synchronized void updateUserAchievementLists() {
         List<Achievement> achievements = getAllAchievement();
         List<UserAchievement> beforeUpdateAchievements = userAchievementsService.getAchievementsForAll();
