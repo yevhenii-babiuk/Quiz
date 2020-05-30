@@ -19,7 +19,7 @@
                    #firstname="ngModel"
                    pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="fnHelp">
             <small id="fnHelp" class="form-text text-danger" [hidden]="firstname.valid || firstname.untouched">
-              First name should be at least 2 characters and less than 26 characters long and have no numbers
+              {{'AUTHENTICATION.registration.noValidFirstName'|translate}}
             </small>
           </div>
         </div>
@@ -30,7 +30,7 @@
                    #lastname="ngModel"
                    pattern="^[a-zA-Zа-яА-Яієї']{2,25}$" aria-describedby="lnHelp">
             <small id="lnHelp" class="form-text text-danger" [hidden]="lastname.valid || lastname.untouched">
-              Last name should be at least 2 characters and less than 26 characters long and have no numbers
+              {{'AUTHENTICATION.registration.noValidLastName'|translate}}
             </small>
           </div>
         </div>
@@ -40,7 +40,7 @@
                    #email="ngModel"
                    pattern="^[A-z\d._]+@[A-z]+\.[A-z]+$" aria-describedby="emailHelp">
             <small id="emailHelp" class="form-text text-danger" [hidden]="email.valid || email.untouched">
-              Email does't match the pattern: example@gmail.com
+              {{'AUTHENTICATION.registration.noValidMail'|translate}}
             </small>
           </div>
         </div>
@@ -90,7 +90,7 @@
                    #newPassword="ngModel"
                    pattern="^.{8,}$" aria-describedby="passHelp">
             <small id="passHelp" class="form-text text-danger" [hidden]="newPassword.valid || newPassword.untouched">
-              Password should be at least 8 symbols
+              {{'AUTHENTICATION.registration.noValidPassword'|translate}}
             </small>
           </div>
         </div>
