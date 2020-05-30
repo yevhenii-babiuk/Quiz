@@ -42,7 +42,7 @@ public class NotificationService {
                 break;
             case GAME_INVITATION:
                 notification.setAction("GAME_INVITATION");
-                notification.setActionLink("quiz/35/game/null/play" + objectId);
+                notification.setActionLink("game/" + objectId + "/play");
                 break;
             case FRIEND_INVITATION:
                 notification.setAction("FRIEND_INVITATION");
