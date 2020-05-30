@@ -10,6 +10,20 @@
         <button class="btn btn-outline-secondary" (click)="copy(link)" type="button">Copy to clipboard</button>
       </div>
     </div>
+    <div *ngIf="currentUser.registerId==hostId">
+      <button class="btn btn-secondary form-control" type="button"
+              (click)="invitation = !invitation; loadFriends()">{{ 'CHAT.INVITE_FRIENDS' | translate }}</button>
+    </div>
+    <div *ngIf="currentUser.registerId==hostId && invitation" class="input-group mt-2">
+      <select #mySelect (change)="onChange(mySelect.value)" class="custom-select">
+        <option selected>{{ 'CHAT.CHOOSE_FRIEND' | translate }}</option>
+        <option *ngFor="let friend of friends" [value]="friend.login">{{friend.login}}</option>
+      </select>
+      <div class="input-group-append">
+        <button class="btn btn-secondary pl-5 pr-5" type="button"
+                (click)="inviteFriend()">{{ 'CHAT.INVITE' | translate }}</button>
+      </div>
+    </div>
   </div>
   <div class="col">
     <ng-container *ngFor="let player of players">
@@ -37,5 +51,5 @@
   </div>
 </div>
 <div *ngIf="currentUser.registerId==hostId" class="text-center">
-  <button (click)="start()" class="btn btn-warning my-4 w-50">START GAME</button>
+  <button (click)="start()" class="btn-lg btn-dark my-5 w-50">START GAME</button>
 </div>
