@@ -39,6 +39,7 @@ public class FriendActivityExtractor implements ResultSetExtractor<List<FriendAc
             FriendActivity activity = FriendActivity.builder()
                     .friendId(resultSet.getInt("id"))
                     .friendLogin(resultSet.getString("login"))
+                    .friendImageSrc(resultSet.getString("src"))
                     .activityId(resultSet.getInt("activity_id"))
                     .activityContent(resultSet.getString("activity_content"))
                     .activityDate(resultSet.getTimestamp("date"))

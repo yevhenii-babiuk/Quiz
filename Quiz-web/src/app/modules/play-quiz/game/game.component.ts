@@ -49,7 +49,6 @@ export class GameComponent implements OnInit, OnDestroy {
       game => {
         this.game = game;
         this.isWaiting = true;
-        console.log(game);
       }, err => {
         console.log(err);
         this.redirect.navigate(['home']);

@@ -30,7 +30,7 @@ public class QuizController {
 
 
     @PostMapping("/quiz")
-    public boolean addQuiz(@RequestBody Quiz quiz) {
+    public int addQuiz(@RequestBody Quiz quiz) {
         return quizService.createQuiz(quiz);
     }
 

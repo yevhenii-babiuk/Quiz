@@ -5,6 +5,7 @@ import com.qucat.quiz.repositories.dto.game.AnswerDto;
 import com.qucat.quiz.repositories.dto.game.GameDto;
 import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.User;
 import com.qucat.quiz.services.GameService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,6 +56,12 @@ public class PlayGameController {
     public UserDto addJoinedUser(@PathVariable String gameId, @RequestBody int userId) {
         log.info("get by api/v1/game/" + gameId + "/joinedUser " + userId);
         return gameService.connectUser(gameId, userId);
+    }
+
+    @PostMapping("api/v1/game/{gameId}/inviteFriend")
+    public void inviteFriend(@PathVariable String gameId, @RequestBody User user) {
+        log.info("get by api/v1/game/" + gameId + "/inviteFriend " + user.getId());
+        //return gameService.connectUser(gameId, userId);
     }
 
     @GetMapping("api/v1/game/{gameId}/joinedUser")

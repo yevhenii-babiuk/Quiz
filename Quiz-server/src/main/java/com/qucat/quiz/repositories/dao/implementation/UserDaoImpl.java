@@ -364,7 +364,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
         if (addFriend) {
             if (isUnion) {
-                query += " UNION ";
+                query += " UNION ALL ";
             }
             isUnion = true;
             query += friendsActivityQueries.get("addFriendPart");
@@ -372,7 +372,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
         if (markQuizAsFavorite) {
             if (isUnion) {
-                query += " UNION ";
+                query += " UNION ALL ";
             }
             isUnion = true;
             query += friendsActivityQueries.get("markQuizPart");
@@ -380,7 +380,7 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
         if (publishQuiz) {
             if (isUnion) {
-                query += " UNION ";
+                query += " UNION ALL ";
             }
             isUnion = true;
             query += friendsActivityQueries.get("publishQuizPart");
@@ -388,9 +388,8 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
 
         if (achievement) {
             if (isUnion) {
-                query += " UNION ";
+                query += " UNION ALL ";
             }
-            isUnion = true;
             query += friendsActivityQueries.get("achievementPart");
         }
 

@@ -7,7 +7,7 @@
 
   <div class="row mx-0">
 
-    <div class="col-sm-3">
+    <div class="col-md-3">
       <label class="image-upload-container btn btn-bwm">
         <input class="d-none" #imageInput
                type="file"
@@ -25,7 +25,7 @@
     </div>
 
 
-    <div class="col-sm-9">
+    <div class="col-md-9">
 
       <div class="row mx-0">
 
@@ -98,7 +98,7 @@
         <div class="row">
 
 
-          <div class="col-sm-3">
+          <div class="col-md-3">
             <label *ngIf="question.imageId==-1" class="image-upload-container btn btn-bwm btn-warning">
               <span>{{'quiz.editQuiz.selectImage'|translate}}</span>
               <input class="d-none" #imageInput
@@ -118,7 +118,7 @@
             </label>
           </div>
 
-          <div class="col-sm-9">
+          <div class="col-md-9">
 
             <div>
               <select #mySelect class="custom-select m-1"
@@ -205,7 +205,7 @@
               </div>
 
               <div *ngSwitchCase="'ENTER_ANSWER'">
-                <input [(ngModel)]="question.options[0].content" placeholder="<span>{{'quiz.editQuiz.correctAnswer'|translate}}</span>"
+                <input [(ngModel)]="question.options[0].content" placeholder="{{'quiz.editQuiz.correctAnswer'|translate}}"
                        class="form-control w-75 m-1 mt-2">
               </div>
             </div>

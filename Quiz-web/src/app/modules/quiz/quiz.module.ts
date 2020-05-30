@@ -26,6 +26,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import { UserQuizzesComponent } from './user-quizzes/user-quizzes.component';
 import { QuizListComponent } from './quiz-list/quiz-list.component';
 import {TranslateModule} from "@ngx-translate/core";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import {TranslateModule} from "@ngx-translate/core";
         MatDatepickerModule,
         MatNativeDateModule,
         TranslateModule,
+        SharedModule,
     ]
 })
 export class QuizModule {

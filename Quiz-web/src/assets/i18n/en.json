@@ -58,6 +58,7 @@
     "TEXT": "Text",
     "UPLOAD": "Add image",
     "SUBMIT": "Submit",
+    "waitLoad": "Wait please. Announcements are loading",
     "ALERT": "Title and text can't be empty"
   },
   "quiz": {
@@ -66,6 +67,7 @@
     "completed": "Completed",
     "created": "Created",
     "NEXT": "Next",
+    "waitLoad": "Wait please. Quizzes are loading",
     "questionTypes": {
       "SELECT_OPTION": "Select options",
       "SELECT_SEQUENCE": "Select sequence",

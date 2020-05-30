@@ -3,17 +3,22 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.repositories.dao.AchievementDao;
 import com.qucat.quiz.repositories.entities.Achievement;
 import com.qucat.quiz.repositories.entities.AchievementCondition;
+import com.qucat.quiz.repositories.entities.UserAchievement;
 import com.qucat.quiz.repositories.entities.enums.ConditionOperator;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.*;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Captor;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -25,6 +30,11 @@ public class AchievementServiceTest {
     @Captor
     ArgumentCaptor<List<AchievementCondition>> toDelete;
 
+    @Captor
+    ArgumentCaptor<List<UserAchievement>> toInsertUAL;
+    @Captor
+    ArgumentCaptor<List<UserAchievement>> toDeleteUAL;
+
     List<AchievementCondition> toInsertExpected = new ArrayList<>();
 
     List<AchievementCondition> toDeleteExpected = new ArrayList<>();
@@ -32,6 +42,14 @@ public class AchievementServiceTest {
     Achievement achievementBeforeUpdate;
 
     Achievement achievementAfterUpdate;
+
+    List<UserAchievement> userAchievementsBefore = new ArrayList<>();
+
+    List<UserAchievement> userAchievementsAfter = new ArrayList<>();
+
+    UserAchievement noChangeUserAchievement;
+    UserAchievement oldUserAchievement;
+    UserAchievement newUserAchievement;
 
     @InjectMocks
     private AchievementService achievementService;
@@ -61,9 +79,9 @@ public class AchievementServiceTest {
                 .build();
 
         AchievementCondition changedConditionAfterUpdate = AchievementCondition.builder()
-                .characteristicId(3)
-                .value(3)
-                .achievementId(3)
+                .characteristicId(2)
+                .value(2)
+                .achievementId(2)
                 .operator(ConditionOperator.LESS)
                 .build();
 
@@ -107,6 +125,18 @@ public class AchievementServiceTest {
                 .id(achievementBeforeUpdate.getId())
                 .conditions(conditionsAfter)
                 .build();
+
+        noChangeUserAchievement = UserAchievement.builder().userId(1).achievementId(1).build();
+        oldUserAchievement = UserAchievement.builder().userId(2).achievementId(2).build();
+        newUserAchievement = UserAchievement.builder().userId(3).achievementId(3).build();
+
+        userAchievementsBefore.add(noChangeUserAchievement);
+        userAchievementsBefore.add(oldUserAchievement);
+
+        userAchievementsAfter.add(noChangeUserAchievement);
+        userAchievementsAfter.add(newUserAchievement);
+
+
     }
 
     @Before
@@ -117,7 +147,7 @@ public class AchievementServiceTest {
     }
 
     @Test
-    public void updateAchievement() {
+    public void updateAchievementWithUpdate() {
         assertTrue(achievementService.updateAchievement(achievementAfterUpdate));
 
         verify(achievementConditionService).addConditions(toInsert.capture());//set values into toInsert
@@ -128,6 +158,39 @@ public class AchievementServiceTest {
     }
 
     @Test
-    public void updateUserAchievementLists() {
+    public void updateAchievementWithoutUpdate() {
+        assertTrue(achievementService.updateAchievement(achievementBeforeUpdate));
+
+        verify(achievementConditionService, never()).addConditions(toInsert.capture());
+        verify(achievementConditionService, never()).removeConditions(toDelete.capture());
+    }
+
+    @Test
+    public void updateUserAchievementListsWithoutUpdate() {
+        when(userAchievementsService.getAchievementsForAll()).thenReturn(userAchievementsBefore);
+        when(achievementDao.getNewUserAchievements(any())).thenReturn(userAchievementsBefore);
+
+        achievementService.updateUserAchievementLists();
+
+        verify(userAchievementsService, never()).deleteUserAchievements(toInsertUAL.capture());
+        verify(userAchievementsService, never()).insertUserAchievements(toDeleteUAL.capture());
+    }
+
+    @Test
+    public void updateUserAchievementListsWithUpdate() {
+        when(userAchievementsService.getAchievementsForAll()).thenReturn(userAchievementsBefore);
+        when(achievementDao.getNewUserAchievements(any())).thenReturn(userAchievementsAfter);
+
+        achievementService.updateUserAchievementLists();
+
+        verify(userAchievementsService).deleteUserAchievements(toDeleteUAL.capture());
+        verify(userAchievementsService).insertUserAchievements(toInsertUAL.capture());
+
+        assertEquals(toInsertUAL.getValue().size(), 1);
+        assertEquals(toInsertUAL.getValue().get(0), newUserAchievement);
+
+        assertEquals(toDeleteUAL.getValue().size(), 1);
+        assertEquals(toDeleteUAL.getValue().get(0), oldUserAchievement);
+
     }
 }

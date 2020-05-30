@@ -73,6 +73,12 @@ public class GameService {
     public UserDto connectUser(String gameId, int userId) {
         UserDto user;
         if (userId != 0) {
+            Optional<UserDto> userDto = gameDao.getUsersByGame(gameId).stream()
+                    .filter(userDto1 -> userDto1.getRegisterId() == userId)
+                    .findFirst();
+            if (userDto.isPresent()) {
+                return userDto.get();
+            }
             User registerUser = userService.getUserDataById(userId);
             user = UserDto.builder()
                     .login(registerUser.getLogin())
@@ -103,7 +109,6 @@ public class GameService {
     }
 
     private void calculateCorrectForAnswer(AnswerDto answer, Question question) {
-        log.info("answer input" + answer);
         List<QuestionOption> options = question.getOptions();
         int correctAnswer = 0;
         switch (question.getType()) {
@@ -127,12 +132,12 @@ public class GameService {
 
             case SELECT_SEQUENCE:
                 Map<Integer, Integer> sequence = answer.getSequence();
-                log.info("sequence" + sequence.toString());
-                log.info(" question.getOptions()" + question.getOptions());
                 for (QuestionOption option : question.getOptions()) {
-                    if (option.getSequenceOrder() == sequence.get(option.getId())) {
+                    if (sequence.containsKey(option.getId())
+                            && option.getSequenceOrder() == sequence.get(option.getId())) {
                         correctAnswer++;
                     }
+
                 }
                 answer.setPercent(100 * correctAnswer / question.getOptions().size());
                 break;
@@ -140,7 +145,6 @@ public class GameService {
             default:
                 break;
         }
-        log.info("answer " + answer);
     }
 
     public void setAnswer(AnswerDto answer) {
@@ -154,7 +158,7 @@ public class GameService {
 
     public GameDto getGameById(String gameID) {
         GameDto gameDto = gameDao.getGame(gameID);
-        gameDto.setImage(getQRCode(gameDto.getQuizId(), gameID));
+        gameDto.setImage(getQRCode(gameID));
         gameDto.setCountQuestions(gameDao.getCountGameQuestion(gameID));
         return gameDto;
     }
@@ -211,9 +215,9 @@ public class GameService {
         return gameId;
     }
 
-    private String getQRCode(int quizId, String accessCode) {
+    private String getQRCode(String accessCode) {
         return Base64.getEncoder().encodeToString(qrCodeGenerator.getQRCodeImage(
-                URL + "quiz/" + quizId + "/game/" + accessCode + "/play",
+                URL + "game/" + accessCode + "/play",
                 200, 200));
     }
 

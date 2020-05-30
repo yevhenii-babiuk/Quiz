@@ -49,7 +49,7 @@ export class SettingsComponent implements OnInit {
     if (this.isValid()) {
       this.playGameService.sendGame(this.game).subscribe(
         gameId => {
-          this.redirect.navigate(['quiz/' + this.game.quizId + '/game/' + gameId + '/play']);
+          this.redirect.navigate(['game/' + gameId + '/play']);
         }, err => {
           console.log(err);
           this.redirect.navigate(['quiz/' + this.game.quizId]);

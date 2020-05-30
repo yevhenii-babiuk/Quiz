@@ -5,6 +5,7 @@ import {Router} from "@angular/router";
 import {SecurityService} from "../../core/services/security.service";
 import {AuthenticationService} from "../../core/services/authentication.service";
 import {TranslateService} from '@ngx-translate/core';
+import {Lang} from "../../core/models/lang";
 
 @Component({
   selector: 'app-header',
@@ -54,6 +55,14 @@ export class HeaderComponent implements OnInit {
     this.showNotification = showNotification;
   }
 
+  setLang(lang: string) {
+    this.translate.use(lang)
+    let id = this.securityService.getCurrentId();
+    if (id) {
+      this.authService.setLang(id, Lang[lang]).subscribe(_ => {
+      });
+    }
+  }
 
   search(event: any) {
     this.redirect.navigate(['/quizzes'], {queryParams: {quizName: event.target.value}});
