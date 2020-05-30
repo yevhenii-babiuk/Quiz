@@ -8,6 +8,7 @@ import {url} from "../../../../environments/environment.prod";
 import {GameDto} from "../models/gameDto";
 import {UserDto} from "../models/userDto";
 import {Question} from "../models/question";
+import {User} from "../models/user";
 
 @Injectable({
   providedIn: 'root'
@@ -92,5 +93,9 @@ export class PlayGameService {
       .pipe(
         catchError(this.handleError<Question>(null))
       );
+  }
+
+  inviteToGame(selectedFriend: User, gameId: string) {
+    return this.http.post(`${url}/game/${gameId}/inviteFriend`, selectedFriend, this.httpOptions);
   }
 }

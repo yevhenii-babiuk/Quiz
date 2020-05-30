@@ -75,6 +75,9 @@
   color: #212531;
 }
 
+#sidebar ul li{
+  list-style-type:none;
+}
 
 #scrollTop{
   flex: 1;

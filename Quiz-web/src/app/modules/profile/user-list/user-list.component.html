@@ -25,7 +25,7 @@
           <td><img src="assets/img/userIcons/{{(user.id%50)+1}}.png" height="50" class="avatar" alt="Avatar"></td>
           <td><a routerLink="/users/{{user.id}}" > {{user.login}}</a></td>
           <td>{{user.firstName}} {{user.secondName}}</td>
-          <td>{{user.registrationDate | date:'MMMM d, yyyy'}}</td>
+          <td>{{  user.registrationDate | date: 'longDate' : '' : translate.currentLang }}</td>
           <td *ngIf="role!=roleEnum.USER">{{user.role}}</td>
 
         </tr>

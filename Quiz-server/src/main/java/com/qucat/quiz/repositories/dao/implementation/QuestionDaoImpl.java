@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -37,8 +36,7 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
         preparedStatement.setInt(1, question.getQuizId());
         preparedStatement.setString(2, question.getType().name().toLowerCase());
         preparedStatement.setString(3, question.getContent());
-        preparedStatement.setInt(4, question.getScore());
-        preparedStatement.setInt(5, question.getImageId());
+        preparedStatement.setInt(4, question.getImageId());
         return preparedStatement;
     }
 
@@ -52,7 +50,6 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
         return new Object[]{question.getQuizId(),
                 question.getType().name().toLowerCase(),
                 question.getContent(),
-                question.getScore(),
                 question.getImageId(),
                 question.getId()};
     }
@@ -65,26 +62,21 @@ public class QuestionDaoImpl extends GenericDaoImpl<Question> implements Questio
     }
 
     @Override
-    public int deleteQuestions(List<Integer> questionId) {
-        StringBuilder deleteQuery = new StringBuilder(questionQueries.get("deleteQuestions"));
-        List<String> mark = new ArrayList<>();
-        for (int i = 0; i < questionId.size(); i++) {
-            mark.add("?");
-        }
-        String insertion = String.join(",", mark);
-        deleteQuery.replace(deleteQuery.lastIndexOf("(") + 1,
-                deleteQuery.lastIndexOf(")") - 1, insertion);
-        int deletedRow = 0;
-        PreparedStatement preparedStatement = null;
+    public void deleteQuestions(List<Integer> questionId) {
 
-        try {
-            preparedStatement = jdbcTemplate.getDataSource().getConnection().prepareStatement(deleteQuery.toString());
-            deletedRow = preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            log.error("error while get connection: " + e.getMessage());
-            e.getStackTrace();
-        }
-        return deletedRow;
+        jdbcTemplate.update(getQueryForInsertQuestions(questionId),
+                questionId.toArray());
+
     }
-}
 
+
+    private String getQueryForInsertQuestions(List<Integer> questions) {
+        String query = questionQueries.get("deleteQuestions").concat(" ( ");
+
+        for (int i = 0; i < questions.size() - 1; i++) {
+            query = query.concat("?, ");
+        }
+        return query.concat(" ?);");
+    }
+
+}

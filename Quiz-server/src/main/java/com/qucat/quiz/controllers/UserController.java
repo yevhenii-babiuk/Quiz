@@ -1,9 +1,9 @@
 package com.qucat.quiz.controllers;
 
 import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.enums.Lang;
 import com.qucat.quiz.repositories.entities.enums.Role;
 import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
-
 import com.qucat.quiz.services.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +24,11 @@ public class UserController {
     @GetMapping("{id}")
     public User getUser(@PathVariable int id) {
         return userService.getUserDataById(id);
+    }
+
+    @PutMapping("{id}/setLang")
+    public void updateLang(@PathVariable int id, @RequestBody Lang lang) {
+        userService.updateUserLanguage(id, lang);
     }
 
     @PutMapping

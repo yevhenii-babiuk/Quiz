@@ -50,4 +50,8 @@ public class QuestionService {
                 questions.stream().map(Question::getId).collect(Collectors.toList())
         );
     }
+
+    public void addQuestions(List<Question> questions) {
+        questions.stream().map(this::addQuestion).close();
+    }
 }

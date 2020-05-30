@@ -27,6 +27,7 @@ export class GameComponent implements OnInit, OnDestroy {
   public gameResults: Users;
   eventType = EventType;
   receivedEvent: WebsocketEvent;
+  currQuestion: number;
   s: any;
 
   public currentUser: UserDto;
@@ -48,7 +49,6 @@ export class GameComponent implements OnInit, OnDestroy {
       game => {
         this.game = game;
         this.isWaiting = true;
-        console.log(game);
       }, err => {
         console.log(err);
         this.redirect.navigate(['home']);
@@ -59,7 +59,7 @@ export class GameComponent implements OnInit, OnDestroy {
         this.currentUser = user;
         if (!securityService.getCurrentId() && !localStorage.getItem("playerId"))
           localStorage.setItem("playerId", String(this.currentUser.id));
-        if(!this.players) this.players.push(this.currentUser.login);
+        if(this.players.length==0) this.players.push(this.currentUser.login);
         this.playGameService.getJoinedPlayers(this.gameId).subscribe(
           players => {
             if (players)
@@ -104,6 +104,7 @@ export class GameComponent implements OnInit, OnDestroy {
             that.isWaiting = false;
             that.gameResults = null;
             that.receivedQuestion = that.receivedEvent.question;
+            that.currQuestion = that.receivedEvent.currQuestion;
             if (that.question && that.receivedQuestion.id == that.question.id) that.question = that.receivedQuestion;
             else {
               if (that.question != null) localStorage.removeItem("endTime" + that.question.id);
