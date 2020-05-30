@@ -37,7 +37,9 @@
     "photoChanged": "Фото змінено",
     "editSuccessful": "Ви успішно відредагували свій профіль",
     "passwordsDontMatch": "Паролі не збігаються",
-    "fillAllRequiredFields": "Заповніть всі обов'язкові поля"
+    "fillAllRequiredFields": "Заповніть всі обов'язкові поля",
+    "passwordChanged": "Ви успішно змінили пароль",
+    "currentPasswordIncorrect": "Поточний пароль неправильний"
   },
   "USERLIST": {
     "LOGIN": "Логін",
@@ -226,9 +228,13 @@
     "firstName": "Ім'я",
     "lastName": "Прізвище",
     "description": "Опис профілю",
-    "password": "Пароль",
+    "newPassword": "Новий пароль",
     "confirmPassword": "Підтвердити пароль",
-    "save": "Зберегти"
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "currentPassword": "Поточний пароль",
+    "changePassword": "Змінити пароль",
+    "editPersonalData": "Редагувати особисті дані"
   },
   "activities": {
     "user": "Користувач ",

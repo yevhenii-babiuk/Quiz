@@ -37,7 +37,9 @@
     "photoChanged": "Photo is changed",
     "editSuccessful": "You have successfully edited your profile",
     "passwordsDontMatch": "Passwords don`t match",
-    "fillAllRequiredFields": "Fill all required fields"
+    "fillAllRequiredFields": "Fill all required fields",
+    "passwordChanged": "You have successfully changed your password",
+    "currentPasswordIncorrect": "Current password is incorrect"
   },
   "USERLIST": {
     "LOGIN": "Login",
@@ -146,9 +148,13 @@
     "firstName": "First name",
     "lastName": "Last Name",
     "description": "Description",
-    "password": "Password",
+    "newPassword": "New password",
     "confirmPassword": "Confirm password",
-    "save": "Save"
+    "save": "Save",
+    "cancel": "Cancel",
+    "currentPassword": "Current password",
+    "changePassword": "Change password",
+    "editPersonalData": "Edit personal data"
   },
   "activities": {
     "user": "User",

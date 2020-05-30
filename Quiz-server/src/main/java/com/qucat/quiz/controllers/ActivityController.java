@@ -17,7 +17,7 @@ public class ActivityController {
     @GetMapping("{id}")
     public List<FriendActivity> getActivities(@PathVariable int id,
                                               @RequestParam(value = "pageNumber") int pageNumber) {
-        return userService.getAllFriendsActivityPage(id, Optional.of(pageNumber), Optional.of(10)).toList();
+        return userService.getAllFriendsActivityPage(id, Optional.of(pageNumber), Optional.of(20)).toList();
     }
 
     @GetMapping("/filter/{id}")
@@ -25,13 +25,13 @@ public class ActivityController {
                                                           @RequestParam(value = "categoryFilter") boolean[] categoryFilter,
                                                           @RequestParam(value = "pageNumber") int pageNumber) {
         return userService.getFilteredFriendsActivityPage(id, categoryFilter[0],
-                categoryFilter[1], categoryFilter[2], categoryFilter[3], Optional.of(pageNumber), Optional.of(10)).toList();
+                categoryFilter[1], categoryFilter[2], categoryFilter[3], Optional.of(pageNumber), Optional.of(20)).toList();
     }
 
-    @GetMapping("{id}/pages")
+    /*@GetMapping("{id}/pages")
     public List<FriendActivity> getActivitiesPage(@PathVariable int id,
                                                   @RequestParam(value = "pageNumber") int pageNumber) {
-        return userService.getAllFriendsActivityPage(id, Optional.of(pageNumber), Optional.of(10)).toList();
+        return userService.getAllFriendsActivityPage(id, Optional.of(pageNumber), Optional.of(20)).toList();
     }
 
     @GetMapping("/filter/pages")
@@ -39,6 +39,6 @@ public class ActivityController {
                                                           @RequestParam(value = "categoryFilter") boolean[] categoryFilter,
                                                           @RequestParam(value = "pageNumber") int pageNumber) {
         return userService.getFilteredFriendsActivityPage(userId, categoryFilter[0],
-                categoryFilter[1], categoryFilter[2], categoryFilter[3], Optional.of(pageNumber), Optional.of(10)).toList();
-    }
+                categoryFilter[1], categoryFilter[2], categoryFilter[3], Optional.of(pageNumber), Optional.of(20)).toList();
+    }*/
 }

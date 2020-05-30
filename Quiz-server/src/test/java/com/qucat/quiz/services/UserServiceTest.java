@@ -1,12 +1,10 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.UserDao;
-import com.qucat.quiz.repositories.dao.implementation.UserDaoImpl;
 import com.qucat.quiz.repositories.entities.Token;
 import com.qucat.quiz.repositories.entities.User;
-import com.qucat.quiz.repositories.entities.enums.Role;
+import com.qucat.quiz.repositories.entities.enums.MessageInfo;
 import com.qucat.quiz.repositories.entities.enums.UserAccountStatus;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
@@ -16,8 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -91,6 +88,22 @@ public class UserServiceTest {
         verify(userDao).getUserByMail(TEST_USER_MAIL);
 
         assertFalse(result);
+    }
+
+    @Test
+    public void updateUserStatusShouldReturnFalseWhenUserIsNull() {
+        final UserAccountStatus TEST_USER_STATUS = UserAccountStatus.ACTIVATED;
+        when(userDao.get(anyInt())).thenReturn(null);
+        assertFalse(mockService.updateUserStatus(anyInt(),TEST_USER_STATUS));
+    }
+
+    @Test
+    public void updateUserStatusShouldReturnTrueWhenUserIsNotNull() {
+        final UserAccountStatus TEST_USER_STATUS = UserAccountStatus.ACTIVATED;
+        when(userDao.get(anyInt())).thenReturn(mockUser);
+        boolean result = mockService.updateUserStatus(anyInt(),TEST_USER_STATUS);
+        assertTrue(result);
+
     }
 
 }

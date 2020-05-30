@@ -70,6 +70,10 @@ export class ViewProfile implements OnInit {
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
+    if (imageInput.files[0].size/1024/1024 > 1) {
+      this.alertService.error("Size of loaded photo should be less than 1 MB");
+      return;
+    }
     reader.addEventListener('load', (event: any) => {
       imaged.image.src = event.target.result;
       this.updated = true;

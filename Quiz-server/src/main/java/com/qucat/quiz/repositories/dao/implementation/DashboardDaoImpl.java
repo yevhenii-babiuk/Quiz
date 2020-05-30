@@ -149,6 +149,7 @@ public class DashboardDaoImpl implements DashboardDao {
             platformTransactionManager.commit(status);
         } catch (Exception e) {
             platformTransactionManager.rollback(status);
+            log.error("Can`t get statistics about created and published quizzes");
         }
         return adminStatistics;
     }

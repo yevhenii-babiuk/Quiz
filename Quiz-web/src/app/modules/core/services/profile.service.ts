@@ -25,6 +25,14 @@ export class ProfileService {
   public updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${this.url}/users/`, user);
   }
+  public changePassword(login:string,newPassword:string): Observable<string> {
+    return this.http.put<string>(`${this.url}/users/password/${login}`,newPassword);
+  }
+
+  public checkPasswords(login:string, password:string) {
+    return this.http.get<boolean>(`${url}/users/password/check?login=${login}&password=${password}`);
+  }
+
   public updateUserPhoto(user: User): Observable<User> {
     return this.http.put<User>(`${this.url}/users/photo`, user);
   }

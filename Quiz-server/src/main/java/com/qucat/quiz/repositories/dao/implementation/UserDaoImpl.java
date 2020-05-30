@@ -402,4 +402,10 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         jdbcTemplate.update(usersQueries.get("updateUserPhoto"),
                 imageId, userId);
     }
+
+    @Override
+    public void changePassword(String password, String login) {
+        jdbcTemplate.update(usersQueries.get("changePassword"),
+                password,login);
+    }
 }

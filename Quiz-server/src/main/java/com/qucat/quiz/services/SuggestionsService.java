@@ -33,9 +33,9 @@ public class SuggestionsService {
             log.warn("There are no users to recommend quiz with id={}", quizId);
         } else {
             ExecutorService executorService = Executors.newCachedThreadPool();
-            for (Map.Entry entry : users.entrySet()) {
+            for (Map.Entry<String, String> entry : users.entrySet()) {
                 executorService.execute(new SuggestionsMailingThread(emailSender,
-                        entry.getKey().toString(), entry.getValue().toString(), URL, quizName, categoryName,
+                        entry.getKey(), entry.getValue(), URL, quizName, categoryName,
                         Integer.toString(quizId),
                         MessageInfo.suggestion.findByLang(Lang.UA)));
             }
