@@ -5,7 +5,7 @@
     </div>
     <div class="input-group mb-3">
       <input type="text" class="form-control" aria-describedby="basic-addon2"
-             value="https://qucat.herokuapp.com/#/quiz/{{route.snapshot.paramMap.get('quizId')}}/game/{{route.snapshot.paramMap.get('gameId')}}/play" readonly #link>
+             value="https://qucat.herokuapp.com/#/game/{{route.snapshot.paramMap.get('gameId')}}/play" readonly #link>
       <div class="input-group-append">
         <button class="btn btn-outline-secondary" (click)="copy(link)" type="button">Copy to clipboard</button>
       </div>
