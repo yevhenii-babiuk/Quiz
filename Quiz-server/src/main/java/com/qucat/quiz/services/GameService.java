@@ -158,7 +158,7 @@ public class GameService {
 
     public GameDto getGameById(String gameID) {
         GameDto gameDto = gameDao.getGame(gameID);
-        gameDto.setImage(getQRCode(gameDto.getQuizId(), gameID));
+        gameDto.setImage(getQRCode(gameID));
         gameDto.setCountQuestions(gameDao.getCountGameQuestion(gameID));
         return gameDto;
     }
@@ -215,9 +215,9 @@ public class GameService {
         return gameId;
     }
 
-    private String getQRCode(int quizId, String accessCode) {
+    private String getQRCode(String accessCode) {
         return Base64.getEncoder().encodeToString(qrCodeGenerator.getQRCodeImage(
-                URL + "quiz/" + quizId + "/game/" + accessCode + "/play",
+                URL + "game/" + accessCode + "/play",
                 200, 200));
     }
 
