@@ -78,10 +78,11 @@
             <div class="form-group p-3 m-2 border border-light bg-light col">
 
               <div class="row">
-                <select class="col-2  form-control" [disabled]="isSend">
+                <select #sel class="form-control col-2" [disabled]="isSend"
+                        (change)="setSequence(questionOption.id, sel.value)">
                   <option></option>
                   <option *ngFor="let qo of question.options; let i = index"
-                          (click)="setSequence(questionOption.id, i+1)">{{i + 1}}</option>
+                          [value]="i+1">{{i + 1}}</option>
                 </select>
                 <label class="col">{{questionOption.content}}</label>
               </div>
@@ -101,11 +102,7 @@
       </button>
 
       <br>
-
-      <div class="p-m-3" *ngIf="isSend">
-        <h5 class="text-center">Waiting for other players...</h5>
-        <img class="w-25 mx-auto d-block p-5 spincat" src='assets/img/uroboros-cat.png'>
-      </div>
+      <app-spin-cat [show]="isSend" [text]="'Waiting for other players...'"></app-spin-cat>
 
     </div>
   </ng-container>

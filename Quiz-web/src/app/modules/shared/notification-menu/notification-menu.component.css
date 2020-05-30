@@ -2,7 +2,7 @@
 
 
 .notification-item {
-  padding: 3px 3px 3px 5px;
+  padding: 10px;
   border-bottom: 0.1mm solid #212531;
 }
 .notification-item:hover {
@@ -25,6 +25,7 @@
   color: #212531;
 }
 .notification-wrapper .notification-container {
+
   position: relative;
   overflow: auto;
   width: 100%;

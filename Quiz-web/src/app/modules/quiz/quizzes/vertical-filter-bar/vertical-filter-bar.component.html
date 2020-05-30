@@ -1,18 +1,26 @@
 <div class="vertical-filter-bar col">
   <div *ngFor="let fbFilter of filters; let i = index">
     <div class="form-group">
-      <!-- filter title -->
-      <h5 class="float-left">{{'quiz.viewQuiz.' + fbFilter.title | translate}}</h5>
-      <!-- collapse filter link -->
-      <div class="float-right minimize-button"
-              (click)="onHideFilterClick(i)">
-        <div *ngIf="!filterCollapsed[i]">
-          <i class="fas fa-sm fa-minus"></i>
-        </div>
-        <div *ngIf="filterCollapsed[i]">
-          <i class="fas fa-sm fa-plus"></i>
+      
+      <div class="container">
+        <div class="row">
+          <!-- filter title -->
+          <div class="col px-0">
+            <h5 class="float-left">{{'quiz.viewQuiz.' + fbFilter.title | translate}}</h5>
+          </div>
+          <!-- collapse filter link -->
+          <div class="col px-0 my-auto float-right minimize-button"
+               (click)="onHideFilterClick(i)">
+            <div *ngIf="!filterCollapsed[i]">
+              <i class="float-right fas fa-sm fa-minus"></i>
+            </div>
+            <div *ngIf="filterCollapsed[i]">
+              <i class="float-right fas fa-sm fa-plus"></i>
+            </div>
+          </div>
         </div>
       </div>
+
       <span class="clearfix"></span>
       <!-- filter panel -->
       <div #filterPanel [ngClass]="{'d-none': filterCollapsed[i]}" class="collapse show">
