@@ -20,7 +20,6 @@ public class NotificationService {
     @Autowired
     private UserService userService;
 
-    //todo create test Dima
     public Notification generateNotification(int authorId, int objectId, int userId, NotificationType notificationType) {
         User notificationAuthor = userService.getUserDataById(authorId);
 
@@ -57,21 +56,21 @@ public class NotificationService {
             default:
                 return null;
         }
-        createNotification(notification);
+        notification.setId(createNotification(notification));
         return notification;
     }
 
-    public boolean createNotification(Notification notification) {
+    public int createNotification(Notification notification) {
         int notificationId = notificationDao.save(notification);
         if (notificationId == -1) {
             log.info("createNotification: Notification wasn't saved");
-            return false;
+            return -1;
         }
-        return true;
+        return notificationId;
     }
 
     @Scheduled(cron = "* * * 14 * *")
-    private void deleteOldNotifications() {
+    public void deleteOldNotifications() {
         notificationDao.deleteOldNotifications();
     }
 

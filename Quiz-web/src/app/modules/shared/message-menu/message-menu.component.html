@@ -1,16 +1,16 @@
 <div class="notification-wrapper">
-  <div  class="notification-btn" (click)="openNotification(!showMessage); changeShowMenu(showMessage)" >
-    <div  matBadge="{{unviewedNotificationCount}}" matBadgeColor="warn" *ngIf="unviewedNotificationCount > 0">
+  <div class="notification-btn" (click)="openNotification(!showMessage); changeShowMenu(showMessage)">
+    <div matBadge="{{unviewedNotificationCount}}" matBadgeColor="warn" *ngIf="unviewedNotificationCount > 0">
       <span class="fas fa-envelope" style="font-size: 20px; padding: 0"></span>
     </div>
-    <div  *ngIf="unviewedNotificationCount == 0">
+    <div *ngIf="unviewedNotificationCount == 0">
       <span class="fas fa-envelope" style="font-size: 20px; padding: 0"></span>
     </div>
 
   </div>
 
-  <div *ngIf="showMessage" class="notification-content" >
-    <div class="notification-header" >
+  <div *ngIf="showMessage" class="notification-content">
+    <div class="notification-header">
       <div>
         <span class="label">{{'NOTIFICATIONS.MESSAGE_TITLE' | translate}}</span>
         <span (click)="deleteAllNotification()">
@@ -23,13 +23,14 @@
       <ng-container *ngFor="let notification of messages">
         <div class="notification-item" (mouseover)="setViewed(notification)">
           <button type="button" (click)="deleteNotification(notification.linkAction, notification.id)" class="close"
-                  data-dismiss="modal" aria-hidden="true">×</button>
-          <a routerLink="{{notification.authorLink}}" class="post-title mt-4 authorLinkFont" >
+                  data-dismiss="modal" aria-hidden="true">×
+          </button>
+          <a routerLink="{{notification.authorLink}}" class="post-title mt-4 authorLinkFont">
             {{notification.author}}
             <br>
           </a>
           <span class="lead">
-           {{'NOTIFICATIONS.'+ notification.action | translate}}<br>
+           {{'NOTIFICATIONS.' + notification.action | translate}}<br>
         </span>
           <a routerLink="{{notification.actionLink}}" class="linkFont">{{'NOTIFICATIONS.REVIEW' | translate}}<br></a>
         </div>
