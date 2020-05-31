@@ -56,7 +56,7 @@ export class MessageMenuComponent implements OnInit {
             if (!href.includes(that.receivedEvent.notification.actionLink)) {
               that.messages.push(that.receivedEvent.notification);
               that.unviewedNotificationCount++;
-            } else if(href.includes(that.receivedEvent.notification.actionLink)){
+            } else if (href.includes(that.receivedEvent.notification.actionLink)) {
               that.deleteNotification(that.receivedEvent.notification.actionLink, that.receivedEvent.notification.id);
             }
           }

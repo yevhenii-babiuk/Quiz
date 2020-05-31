@@ -20,7 +20,8 @@ public class NotificationService {
     @Autowired
     private UserService userService;
 
-    public Notification generateNotification(int authorId, int objectId, int userId, NotificationType notificationType) {
+    public Notification generateNotification(int authorId, int objectId, int userId, String gameId,
+                                             NotificationType notificationType) {
         User notificationAuthor = userService.getUserDataById(authorId);
 
         Notification notification = Notification.builder()
@@ -30,6 +31,7 @@ public class NotificationService {
                 .userId(userId)
                 .isMessage(false)
                 .build();
+
         switch (notificationType) {
             case CREATED_NEWS:
                 notification.setAction("CREATED_NEWS");
@@ -41,11 +43,11 @@ public class NotificationService {
                 break;
             case GAME_INVITATION:
                 notification.setAction("GAME_INVITATION");
-                notification.setActionLink("game/" + objectId + "/play");
+                notification.setActionLink("game/" + gameId + "/play");
                 break;
             case FRIEND_INVITATION:
                 notification.setAction("FRIEND_INVITATION");
-                notification.setActionLink("profile/" + authorId);
+                notification.setActionLink("users/" + authorId);
                 notification.setUserId(objectId);
                 break;
             case MESSAGE:
@@ -67,11 +69,6 @@ public class NotificationService {
             return -1;
         }
         return notificationId;
-    }
-
-    @Scheduled(cron = "* * * 14 * *")
-    public void deleteOldNotifications() {
-        notificationDao.deleteOldNotifications();
     }
 
     @Scheduled(cron = "* * * 14 * *")

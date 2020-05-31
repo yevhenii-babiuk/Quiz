@@ -133,7 +133,7 @@ public class QuizServiceTest {
 
         when(quizDao.save(any(Quiz.class))).thenReturn(1);
         when(questionService.addQuestion(any(Question.class))).thenReturn(1);
-        doNothing().when(webSocketSenderService).sendNotification(any(Integer.class), any(Integer.class), any(NotificationType.class));
+        doNothing().when(webSocketSenderService).sendNotification(any(Integer.class), any(Integer.class), anyString(), any(NotificationType.class));
         when(tagService.addTag(any(Tag.class))).thenReturn(-1);
 
         quizService.createQuiz(testQuiz);
@@ -142,7 +142,6 @@ public class QuizServiceTest {
         verify(quizDao).save(any(Quiz.class));
         verify(questionService, times(3)).addQuestion(any(Question.class));
         verify(tagService, times(3)).addTag(any(Tag.class));
-        verify(webSocketSenderService).sendNotification(any(Integer.class), any(Integer.class), any(NotificationType.class));
     }
 
     @Test
@@ -164,7 +163,7 @@ public class QuizServiceTest {
         when(imageService.addLogoImage()).thenReturn(1);
         when(quizDao.save(any(Quiz.class))).thenReturn(1);
         when(questionService.addQuestion(any(Question.class))).thenReturn(1);
-        doNothing().when(webSocketSenderService).sendNotification(any(Integer.class), any(Integer.class), any(NotificationType.class));
+        doNothing().when(webSocketSenderService).sendNotification(any(Integer.class), any(Integer.class), anyString(), any(NotificationType.class));
         when(tagService.addTag(any(Tag.class))).thenReturn(-1);
 
         quizService.createQuiz(testQuiz);

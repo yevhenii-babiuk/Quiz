@@ -12,18 +12,18 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class NotificationServiceTest {
 
-    private final int TEST_OBJECT_ID = 2;
     private final int TEST_AUTHOR_ID = 1;
+    private final int TEST_OBJECT_ID = 2;
     private final int TEST_USER_ID = 3;
     private final int TEST_ID = 4;
     private final String TEST_AUTHOR_LOGIN = "TEST_AUTHOR_LOGIN";
+    private final String TEST_GAME_ID = "00689482545";
     private final User TEST_USER = User.builder()
             .login(TEST_AUTHOR_LOGIN)
             .build();
@@ -68,7 +68,7 @@ public class NotificationServiceTest {
 
         Notification expected = getNotification(TEST_ACTION, TEST_ACTION_LINK);
 
-        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID,
+        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID, anyString(),
                 NotificationType.CREATED_NEWS);
         assertThat(result).isEqualToComparingFieldByField(expected);
     }
@@ -80,7 +80,7 @@ public class NotificationServiceTest {
 
         Notification expected = getNotification(TEST_ACTION, TEST_ACTION_LINK);
 
-        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID,
+        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID, anyString(),
                 NotificationType.CREATED_QUIZ);
         assertThat(result).isEqualToComparingFieldByField(expected);
     }
@@ -88,11 +88,12 @@ public class NotificationServiceTest {
     @Test
     public void generateNotificationShouldReturnGameInvitationNotification() {
         final String TEST_ACTION = "GAME_INVITATION";
-        final String TEST_ACTION_LINK = "quiz/35/game/null/play" + TEST_OBJECT_ID;
+        final String TEST_ACTION_LINK = "game/" + TEST_GAME_ID + "/play";
 
         Notification expected = getNotification(TEST_ACTION, TEST_ACTION_LINK);
+        expected.setUserId(TEST_AUTHOR_ID);
 
-        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID,
+        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, anyInt(), TEST_AUTHOR_ID, TEST_GAME_ID,
                 NotificationType.GAME_INVITATION);
         assertThat(result).isEqualToComparingFieldByField(expected);
     }
@@ -100,11 +101,11 @@ public class NotificationServiceTest {
     @Test
     public void generateNotificationShouldReturnFriendInvitationNotification() {
         final String TEST_ACTION = "FRIEND_INVITATION";
-        final String TEST_ACTION_LINK = "profile/" + TEST_AUTHOR_ID;
+        final String TEST_ACTION_LINK = "users/" + TEST_AUTHOR_ID;
 
         Notification expected = getNotification(TEST_ACTION, TEST_ACTION_LINK);
         expected.setUserId(TEST_OBJECT_ID);
-        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID,
+        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID, anyString(),
                 NotificationType.FRIEND_INVITATION);
         assertThat(result).isEqualToComparingFieldByField(expected);
     }
@@ -116,9 +117,8 @@ public class NotificationServiceTest {
 
         Notification expected = getNotification(TEST_ACTION, TEST_ACTION_LINK);
         expected.setMessage(true);
-        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID,
+        Notification result = mockService.generateNotification(TEST_AUTHOR_ID, TEST_OBJECT_ID, TEST_USER_ID, anyString(),
                 NotificationType.MESSAGE);
         assertThat(result).isEqualToComparingFieldByField(expected);
     }
-
 }
