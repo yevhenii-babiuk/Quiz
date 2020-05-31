@@ -39,7 +39,8 @@
     "passwordsDontMatch": "Паролі не збігаються",
     "fillAllRequiredFields": "Заповніть всі обов'язкові поля",
     "passwordChanged": "Ви успішно змінили пароль",
-    "currentPasswordIncorrect": "Поточний пароль неправильний"
+    "currentPasswordIncorrect": "Поточний пароль неправильний",
+    "photoSize": "Розмір завантаженого фото повинен бути менше 1 МБ"
   },
   "USERLIST": {
     "LOGIN": "Логін",

@@ -4,7 +4,7 @@
       <div class="col-md-auto">
         <div  class="img-preview-container img-preview"
              *ngIf="!isOwn"
-             [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}" width="280" height="300">
+             [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
         </div>
 
         <label *ngIf="isOwn" class="image-upload-container btn btn-bwm">
@@ -49,28 +49,28 @@
               <tbody>
               <tr class="table-borderless">
                 <td style="text-align: left">{{'viewProfile.login' | translate}}</td>
-                <td style="text-align: left" class="space">{{userData.login}}</td>
+                <td style="text-align: left" class="word-break">{{userData.login}}</td>
 
               </tr>
 
               <tr>
                 <td style="text-align: left">{{'viewProfile.firstName' | translate}}</td>
-                <td style="text-align: left" class="space">{{userData.firstName}}
+                <td style="text-align: left" class="word-break">{{userData.firstName}}
                 </td>
               </tr>
               <tr>
                 <td style="text-align: left">{{'viewProfile.lastName' | translate}}</td>
-                <td style="text-align: left" class="space">{{userData.secondName}}</td>
+                <td style="text-align: left" class="word-break">{{userData.secondName}}</td>
               </tr>
               <tr>
                 <td style="text-align: left">{{'viewProfile.description' | translate}}</td>
-                <td style="text-align: left" class="space">{{userData.profile}}
+                <td style="text-align: left" class="word-break">{{userData.profile}}
                 </td>
               </tr>
               <tr *ngIf="userData.role == roleEnum.USER">
                 <td style="text-align: left">{{'viewProfile.score' | translate}}</td>
                 <td style="text-align: left"> {{userData.score}}
-                  <img src="../../assets/img/score.png" width="30" height="30" align="bottom"/></td>
+                  <img src="../../assets/img/score.png" width="30" height="30"/></td>
               </tr>
 
               </tbody>

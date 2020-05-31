@@ -53,7 +53,7 @@
         <div class="row">
           <div class="form-check col-sm-4 offset-md-1">
             <button
-              [disabled]="!firstname.valid || !lastname.valid ||  !email.valid || (userData.login.length < 1)"
+              [disabled]="!firstname.valid || !lastname.valid ||  !email.valid"
               (click)="edit(id,firstname.value, lastname.value, email.value, profile.value)"
               class="btn btn-warning btn-block col-sm-12">
               {{'editProfile.save' | translate}}
