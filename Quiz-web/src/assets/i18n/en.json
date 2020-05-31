@@ -37,7 +37,10 @@
     "photoChanged": "Photo is changed",
     "editSuccessful": "You have successfully edited your profile",
     "passwordsDontMatch": "Passwords don`t match",
-    "fillAllRequiredFields": "Fill all required fields"
+    "fillAllRequiredFields": "Fill all required fields",
+    "BadCredentialsException": "Invalid login and password combination",
+    "DisabledException": "Login operation is disabled",
+    "Unauthorized": "Error while login"
   },
   "USERLIST": {
     "LOGIN": "Login",

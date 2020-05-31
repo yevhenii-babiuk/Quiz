@@ -182,9 +182,9 @@ public class QuizServiceTest {
         final Quiz testQuizBefore = Quiz.builder().questions(creationQuestions).tags(tags).build();
         final Quiz testQuizUpdate = Quiz.builder().questions(updateQuestions).tags(tags).build();
 
-        when(quizDao.getFullInfo(any(Integer.class))).thenReturn(testQuizBefore);
+        when(quizDao.getFullInfo(anyInt())).thenReturn(testQuizBefore);
         when(tagService.addTag(any(Tag.class))).thenReturn(-1);
-        doNothing().when(quizDao).removeTag(any(Integer.class), any(Integer.class));
+        doNothing().when(quizDao).removeTag(anyInt(), anyInt());
         doNothing().when(questionService).deleteQuestions(anyList());
         doNothing().when(questionService).addQuestions(anyList());
         doNothing().when(quizDao).update(any(Quiz.class));

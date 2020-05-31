@@ -9,6 +9,7 @@ import {AlertService} from "../../core/services/alert.service";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
 import {TranslateService} from "@ngx-translate/core";
+import {Lang} from "../../core/models/lang";
 
 
 
@@ -54,7 +55,9 @@ export class ViewProfile implements OnInit {
       this.id = this.securityService.getCurrentId();
       this.isOwn = true;
     }
-
+    if (this.isOwn){
+      this.getLang()
+    }
     this.getUser();
   }
 
@@ -64,6 +67,12 @@ export class ViewProfile implements OnInit {
       this.role = this.securityService.getCurrentRole();
       this.isActivate();
     });
+  }
+
+  private getLang() {
+    this.profileService.getLang(this.id).subscribe(data =>{
+      this.translate.use(data.toString().toLowerCase());
+    })
   }
 
   processFile(imageInput: any, imaged: Imaged) {

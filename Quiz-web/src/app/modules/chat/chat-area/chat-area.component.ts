@@ -1,4 +1,4 @@
-import {AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {Chat} from "../../core/models/chat";
 import {Message} from "../../core/models/message";
 import {SecurityService} from "../../core/services/security.service";
@@ -49,7 +49,9 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
               private router: Router,
               private profileService: ProfileService,
               public translate: TranslateService) {
+  }
 
+  ngOnInit(): void {
     this.id = this.securityService.getCurrentId();
     this.chat.id = +this.route.snapshot.paramMap.get('chatId');
 
@@ -72,9 +74,7 @@ export class ChatAreaComponent implements OnInit, OnDestroy {
     this.getMessages();
 
     this.initializeWebSocketConnection();
-  }
 
-  ngOnInit(): void  {
     registerLocaleData(localeUa, 'ua');
     registerLocaleData(localeEnGb, 'en-GB');
   }

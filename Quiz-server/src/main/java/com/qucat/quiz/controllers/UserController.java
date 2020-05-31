@@ -31,6 +31,11 @@ public class UserController {
         userService.updateUserLanguage(id, lang);
     }
 
+    @GetMapping("{id}/getLang")
+    public Lang getLang(@PathVariable int id) {
+        return userService.getUserLanguage(id);
+    }
+
     @PutMapping
     public void updateUser(@RequestBody @Valid User editedUser) {
         userService.updateUserProfile(editedUser);
