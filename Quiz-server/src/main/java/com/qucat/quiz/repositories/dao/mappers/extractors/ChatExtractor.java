@@ -50,9 +50,10 @@ public class ChatExtractor implements ResultSetExtractor<List<Chat>> {
                             .imageId(rs.getInt("image_id"))
                             .image(new Image(rs.getInt("image_id"), rs.getString("src")))
                             .build();
-                    users.add(user);
+
                     userMap.put(userId, user);
                 }
+                users.add(user);
             }
         }
         return new ArrayList<>(chatMap.values());

@@ -37,7 +37,10 @@
     "photoChanged": "Фото змінено",
     "editSuccessful": "Ви успішно відредагували свій профіль",
     "passwordsDontMatch": "Паролі не збігаються",
-    "fillAllRequiredFields": "Заповніть всі обов'язкові поля"
+    "fillAllRequiredFields": "Заповніть всі обов'язкові поля",
+    "BadCredentialsException": "Невірна комбінація логіну і паролю",
+    "DisabledException": "Операція авторизації недоступна",
+    "Unauthorized": "Помилка при авторизації"
   },
   "USERLIST": {
     "LOGIN": "Логін",

@@ -1,18 +1,12 @@
 <div class="container">
 
-  <div *ngIf="isConfirmed; else tokenUnavailable">
+  <div *ngIf="isConfirmed; else tokenUnavailable" style="margin-top: 20vh;" class="row">
+    <div class="col"></div>
 
-    <div class="row form-group">
-      <div class="col-sm"></div>
-      <div class="col-sm">
-        <h3>{{ 'AUTHENTICATION.PASS_RECOVERY.NEW_PASSWORD_MSG' | translate }}</h3>
-      </div>
-      <div class="col-sm"></div>
-    </div>
+    <div class="col">
+      <h3 class="text-center">{{ 'AUTHENTICATION.PASS_RECOVERY.NEW_PASSWORD_MSG' | translate }}</h3>
 
-    <div class="row form-group">
-      <div class="col-sm"></div>
-      <div class="col-sm">
+      <div class="form-group">
         <!--        <input type="password" class="form-control" placeholder="{{'AUTHENTICATION.password'|translate}}" #password>-->
         <input type="password" placeholder="{{'AUTHENTICATION.password'|translate}}"
                class="form-control" [(ngModel)]="newPassword" #password="ngModel"
@@ -21,23 +15,20 @@
           {{'AUTHENTICATION.registration.noValidPassword'|translate}}
         </small>
       </div>
-      <div class="col-sm"></div>
-    </div>
 
-    <div class="row form-group">
-      <div class="col-sm"></div>
-      <div class="col-sm text-center">
-        <button [disabled]="!password.valid || (newPassword.length < 1)" class="btn btn-block btn-warning" (click)="createNewPass()">
+      <div class="form-group">
+        <button [disabled]="!password.valid || (newPassword.length < 1)" class="btn btn-block btn-warning"
+                (click)="createNewPass()">
           {{ 'AUTHENTICATION.PASS_RECOVERY.APPLY' | translate }}
         </button>
       </div>
-      <div class="col-sm"></div>
-    </div>
 
+    </div>
+    <div class="col"></div>
   </div>
 
   <ng-template #tokenUnavailable>
-    <div class="col-sm text-center">
+    <div class="col-sm text-center" style="margin-top: 30vh;">
       <h3>{{ 'AUTHENTICATION.PASS_RECOVERY.UNAVAILABLE' | translate }}</h3>
     </div>
   </ng-template>

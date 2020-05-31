@@ -219,8 +219,11 @@ public class UserService {
         Objects.requireNonNull(password);
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             User user = userDao.getUserByLogin(username);
+            if (user == null) {
+                throw new BadCredentialsException("Invalid username " + username);
+            }
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             boolean isActivated = user
                     .getStatus()
                     .equals(UserAccountStatus.ACTIVATED);
