@@ -38,10 +38,16 @@ public class SuggestionsService {
             ExecutorService executorService = Executors.newCachedThreadPool();
             for (Map.Entry<String, String> entry : users.entrySet()) {
                 Lang userLanguage = userService.getUserLanguageByLogin(entry.getKey());
-                executorService.execute(new SuggestionsMailingThread(emailSender,
-                        entry.getKey(), entry.getValue(), URL, quizName, categoryName,
-                        Integer.toString(quizId),
-                        MessageInfo.suggestion.findByLang(userLanguage)));
+                executorService.execute(SuggestionsMailingThread.builder()
+                        .emailSender(emailSender)
+                        .login(entry.getKey())
+                        .email(entry.getValue())
+                        .URL(URL)
+                        .quizName(quizName)
+                        .categoryName(categoryName)
+                        .quizId(Integer.toString(quizId))
+                        .messageInfoItem(MessageInfo.suggestion.findByLang(userLanguage))
+                        .build());
             }
             executorService.shutdown();
         }
