@@ -228,8 +228,11 @@ public class UserService {
         Objects.requireNonNull(password);
 
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             User user = userDao.getUserByLogin(username);
+            if (user == null) {
+                throw new BadCredentialsException("Invalid username " + username);
+            }
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
             boolean isActivated = user
                     .getStatus()
                     .equals(UserAccountStatus.ACTIVATED);
@@ -331,7 +334,6 @@ public class UserService {
         userDao.updateUserPhoto(user.getImageId(), user.getId());
     }
 
-    //todo create test Anna
     public boolean updateUserStatus(int userId, UserAccountStatus status) {
         User user = userDao.get(userId);
         if (user == null) {

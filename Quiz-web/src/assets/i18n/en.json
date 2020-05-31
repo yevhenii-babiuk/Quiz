@@ -40,7 +40,10 @@
     "fillAllRequiredFields": "Fill all required fields",
     "passwordChanged": "You have successfully changed your password",
     "currentPasswordIncorrect": "Current password is incorrect",
-    "photoSize": "Size of loaded photo should be less than 1 MB"
+    "photoSize": "Size of loaded photo should be less than 1 MB",
+    "BadCredentialsException": "Invalid login and password combination",
+    "DisabledException": "Login operation is disabled",
+    "Unauthorized": "Error while login"
   },
   "USERLIST": {
     "LOGIN": "Login",

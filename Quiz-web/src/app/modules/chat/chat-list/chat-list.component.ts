@@ -37,7 +37,7 @@ export class ChatListComponent implements OnInit {
   }
 
   createChat() {
-    this.chat.users.push({id : this.id} as User);
+    this.chat.users.push({id: this.id} as User);
     this.chatService.createChat(this.chat, this.id)
       .subscribe(
         data => {

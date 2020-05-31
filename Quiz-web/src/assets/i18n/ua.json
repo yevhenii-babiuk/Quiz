@@ -40,7 +40,10 @@
     "fillAllRequiredFields": "Заповніть всі обов'язкові поля",
     "passwordChanged": "Ви успішно змінили пароль",
     "currentPasswordIncorrect": "Поточний пароль неправильний",
-    "photoSize": "Розмір завантаженого фото повинен бути менше 1 МБ"
+    "photoSize": "Розмір завантаженого фото повинен бути менше 1 МБ",
+    "BadCredentialsException": "Невірна комбінація логіну і паролю",
+    "DisabledException": "Операція авторизації недоступна",
+    "Unauthorized": "Помилка при авторизації"
   },
   "USERLIST": {
     "LOGIN": "Логін",

@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['profile']).then();
         },
         error => {
-          this.alertService.error('alert.errorLogin');
+          this.alertService.error('alert.' + error.error.message);
         });
   }
 
