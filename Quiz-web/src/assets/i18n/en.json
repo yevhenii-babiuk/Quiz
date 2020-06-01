@@ -170,6 +170,8 @@
     "favouriteList": "to the list of favourite quizzes",
     "addUser": "added user",
     "toFriends": "to friends",
+    "waitLoad": "Wait please. Activities are loading",
+    "noResults": "No results",
     "categoryTypes": {
       "addFriend": "Added friends",
       "favouriteQuizzes": "Added quizzes to favorites list",

@@ -14,6 +14,12 @@
   </div>
 </div>
 
+<app-spin-cat [show]="isWaiting" [text]="'activities.waitLoad'"></app-spin-cat>
+<div style="text-align: center">
+<h5 *ngIf="isEmpty && activities.length == 0">
+  {{'activities.noResults' | translate}}
+</h5>
+</div>
 <ng-container *ngFor="let activity of activities">
   <div class="row custom">
     <div class="col-lg-10 col-md-10 mx-auto m-2">

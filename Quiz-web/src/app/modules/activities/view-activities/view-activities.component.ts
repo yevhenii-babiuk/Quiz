@@ -5,7 +5,6 @@ import {ActivitiesService} from "../../core/services/activities.service";
 import {Activity} from "../../core/models/activity";
 import {FriendActivityType} from "../../core/models/friendActivityType";
 import {TranslateService} from "@ngx-translate/core";
-import {countOnPage} from "../../../../environments/environment.prod";
 import {registerLocaleData} from "@angular/common";
 import localeUa from "@angular/common/locales/uk";
 import localeEnGb from "@angular/common/locales/en-GB";
@@ -46,6 +45,7 @@ export class ViewActivitiesComponent implements OnInit {
   role: Role;
   isWaiting: boolean;
   isFiltering: boolean;
+  isEmpty: boolean;
 
   @HostListener("window:scroll", ["$event"])
   onWindowScroll() {
@@ -76,6 +76,7 @@ export class ViewActivitiesComponent implements OnInit {
 
   getActivities(): void {
     this.userId = this.securityService.getCurrentId();
+    this.isEmpty = false;
     this.isFiltering = false;
     if (this.isWaiting) {
       return;
@@ -84,9 +85,13 @@ export class ViewActivitiesComponent implements OnInit {
     this.activitiesService.getActivitiesPageByUserId(this.userId, this.activities.length)
       .subscribe(
         activities => {
-          if (activities.length == countOnPage) {
+          if (activities.length == 0) {
+            this.isEmpty = true;
             this.isWaiting = false;
+            return;
           }
+          this.isEmpty = false;
+          this.isWaiting = false;
           this.activities = this.activities.concat(activities);
         },
         err => {
@@ -102,6 +107,7 @@ export class ViewActivitiesComponent implements OnInit {
   }
 
   getFilteredActivities(): void {
+    this.isEmpty = false;
     if (this.isWaiting) {
       return;
     }
@@ -113,7 +119,7 @@ export class ViewActivitiesComponent implements OnInit {
     });
 
 
-    if (resultSelected.every(elem => elem ==false)) {
+    if (resultSelected.every(elem => elem == false)) {
       this.isWaiting = false;
       this.getActivities();
       return;
@@ -123,9 +129,13 @@ export class ViewActivitiesComponent implements OnInit {
     this.activitiesService.getFilterActivitiesPage(this.userId, resultSelected, this.activities.length)
       .subscribe(
         activities => {
-          if (activities.length == countOnPage) {
+          if (activities.length == 0) {
+            this.isEmpty = true;
             this.isWaiting = false;
+            return;
           }
+          this.isEmpty = false;
+          this.isWaiting = false;
           this.activities = this.activities.concat(activities);
         },
         err => {
@@ -133,7 +143,6 @@ export class ViewActivitiesComponent implements OnInit {
           console.log(err);
         })
   }
-
 
 
 }

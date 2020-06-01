@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row justify-content-md-left">
       <div class="col-md-auto">
-        <div  class="img-preview-container img-preview"
+        <div  class="img-preview-container"
              *ngIf="!isOwn"
              [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
         </div>
@@ -13,7 +13,7 @@
                  accept="image/*"
                  (change)="processFile(imageInput, userData)">
           <img *ngIf="updated" src="{{userData.image.src}}" width="230" height="250">
-          <div class="img-preview-container img-preview"
+          <div class="img-preview-container"
                *ngIf="!updated"
                [ngStyle]="{ 'background-image': 'url(data:image/jpeg;base64,' + userData.image.src  + ')'}">
           </div>
