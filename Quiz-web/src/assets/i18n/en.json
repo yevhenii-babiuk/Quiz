@@ -43,7 +43,11 @@
     "photoSize": "Size of loaded photo should be less than 1 MB",
     "BadCredentialsException": "Invalid login and password combination",
     "DisabledException": "Login operation is disabled",
-    "Unauthorized": "Error while login"
+    "Unauthorized": "Error while login",
+    "LoginException": "Such login is already exists",
+    "MailException": "Such mail is already exists",
+    "DuplicateException": "Such user is already exists",
+    "TokenException": "Your registration link has not expired yet"
   },
   "USERLIST": {
     "LOGIN": "Login",

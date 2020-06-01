@@ -1,5 +1,9 @@
 package com.qucat.quiz.services;
 
+import com.qucat.quiz.exception.LoginAlreadyExistsException;
+import com.qucat.quiz.exception.MailAlreadyExistsException;
+import com.qucat.quiz.exception.TokenNotExpiredException;
+import com.qucat.quiz.exception.UserAlreadyExistsException;
 import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.*;
@@ -62,7 +66,7 @@ public class UserService {
         user.setRole(Role.USER);
         user.setStatus(UserAccountStatus.UNACTIVATED);
         if (userDao.getUserByLogin(user.getLogin()) != null) {
-            return false;
+            throw new LoginAlreadyExistsException("Login " + user.getLogin() + " is already exists");
         }
 
         int id;
@@ -74,9 +78,9 @@ public class UserService {
         if (userByMail != null) {
             Token token = tokenService.getTokenByUserId(userByMail.getId());
             if (userByMail.getStatus() == UserAccountStatus.ACTIVATED) {
-                return false;
+                throw new MailAlreadyExistsException("Mail " + user.getMail() + " is already exists");
             } else if (token != null && token.getExpiredDate().compareTo(new Date()) > 0) {
-                return false;
+                throw new TokenNotExpiredException("Token " + token.getToken() + " was not expired for user " + user.getLogin());
             } else {
                 id = userByMail.getId();
                 user.setId(id);
@@ -85,7 +89,7 @@ public class UserService {
         } else {
             id = userDao.save(user);
             if (id == -1) {
-                return false;
+                throw new UserAlreadyExistsException("User with such login" + user.getLogin() + "or mail " + user.getMail() + " is already exists");
             }
         }
 
