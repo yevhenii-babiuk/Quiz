@@ -12,7 +12,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -129,7 +128,6 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
-    @Transactional
     public List<AdminStatistics> getAmountOfCreatedAndPublishedQuizzes() {
         createTemporaryTable();
         return jdbcTemplate.query(dashboardQueries.get("getAmountOfPublishedQuizzes"), (rs, rowNum) ->

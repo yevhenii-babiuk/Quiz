@@ -426,7 +426,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         Boolean result = jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId, quizId}, (rs, rowNum) ->
                 rs.getBoolean("is_favourite")
         );
-        return result == null ? false : result;
+        return result != null && result;
     }
 
     @Override
