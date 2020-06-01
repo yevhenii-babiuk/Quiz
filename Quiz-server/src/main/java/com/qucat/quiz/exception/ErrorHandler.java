@@ -77,9 +77,9 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(UserAlreadyExists.class)
+    @ExceptionHandler(UserAlreadyExistsException.class)
     public ResponseEntity<Object> handleUserDuplicateException(
-            UserAlreadyExists ex, WebRequest request) {
+            UserAlreadyExistsException ex, WebRequest request) {
 
         Map<String, Object> body = new LinkedHashMap<>();
         body.put("timestamp", LocalDateTime.now());

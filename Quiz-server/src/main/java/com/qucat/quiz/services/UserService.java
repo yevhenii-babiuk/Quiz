@@ -3,7 +3,7 @@ package com.qucat.quiz.services;
 import com.qucat.quiz.exception.LoginAlreadyExistsException;
 import com.qucat.quiz.exception.MailAlreadyExistsException;
 import com.qucat.quiz.exception.TokenNotExpiredException;
-import com.qucat.quiz.exception.UserAlreadyExists;
+import com.qucat.quiz.exception.UserAlreadyExistsException;
 import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.dto.game.UserDto;
 import com.qucat.quiz.repositories.entities.*;
@@ -89,7 +89,7 @@ public class UserService {
         } else {
             id = userDao.save(user);
             if (id == -1) {
-                throw new UserAlreadyExists("User with such login" + user.getLogin() + "or mail " + user.getMail() + " is already exists");
+                throw new UserAlreadyExistsException("User with such login" + user.getLogin() + "or mail " + user.getMail() + " is already exists");
             }
         }
 
