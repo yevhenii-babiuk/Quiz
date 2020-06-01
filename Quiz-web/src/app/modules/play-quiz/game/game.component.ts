@@ -38,54 +38,6 @@ export class GameComponent implements OnInit, OnDestroy {
               private redirect: Router,
               private securityService: SecurityService,
               private playGameService: PlayGameService) {
-    let userId = securityService.getCurrentId();
-    if (!userId) {
-      userId = localStorage.getItem("playerId");
-      if (!userId) userId = 0;
-    }
-    this.initializeWebSocketConnection();
-
-    this.playGameService.getGame(this.gameId).subscribe(
-      game => {
-        this.game = game;
-        this.isWaiting = true;
-      }, err => {
-        console.log(err);
-        this.redirect.navigate(['home']);
-      });
-
-    this.playGameService.sendJoinedUser(userId, this.gameId).subscribe(
-      user => {
-        this.currentUser = user;
-        if (!securityService.getCurrentId() && !localStorage.getItem("playerId"))
-          localStorage.setItem("playerId", String(this.currentUser.id));
-        if(this.players.length==0) this.players.push(this.currentUser.login);
-        this.playGameService.getJoinedPlayers(this.gameId).subscribe(
-          players => {
-            if (players)
-              this.players = players;
-          }, err => {
-            console.log(err);
-            this.redirect.navigate(['home']);
-          }
-        );
-        this.playGameService.getCurrentQuestion(this.gameId, this.currentUser.id).subscribe(
-          question => {
-            if (question) {
-              this.isWaiting = false;
-              this.gameResults = null;
-              this.question = question;
-            }
-          }, err => {
-            console.log(err);
-            this.redirect.navigate(['home']);
-          }
-        );
-
-      }, err => {
-        console.log(err);
-        this.redirect.navigate(['home']);
-      });
   }
 
   initializeWebSocketConnection() {
@@ -128,6 +80,65 @@ export class GameComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    this.initializeWebSocketConnection();
+
+    this.playGameService.getGame(this.gameId).subscribe(
+      game => {
+        this.game = game;
+        this.isWaiting = true;
+      }, err => {
+        console.log(err);
+        this.redirect.navigate(['home']);
+      });
+
+    let userId = this.securityService.getCurrentId();
+    if (!userId) {
+      userId = localStorage.getItem("playerId");
+      if (!userId) this.connectUser(userId);
+      else this.getCurrentData();
+    } else {
+      this.connectUser(userId);
+    }
+  }
+
+  connectUser(userId: any) {
+    this.playGameService.sendJoinedUser(userId ? userId : 0, this.gameId).subscribe(
+      user => {
+        this.currentUser = user;
+        if (!this.securityService.getCurrentId() && !localStorage.getItem("playerId"))
+          localStorage.setItem("playerId", String(this.currentUser.id));
+        if (this.players.length == 0) this.players.push(this.currentUser.login);
+        this.getCurrentData();
+
+      }, err => {
+        console.log(err);
+        this.redirect.navigate(['home']);
+      });
+  }
+
+  getCurrentData() {
+    this.playGameService.getJoinedPlayers(this.gameId).subscribe(
+      players => {
+        if (players)
+          this.players = players;
+      }, err => {
+        console.log(err);
+        this.redirect.navigate(['home']);
+      }
+    );
+    this.playGameService.getCurrentQuestion(this.gameId, this.currentUser.id).subscribe(
+      question => {
+        if (question) {
+          this.isWaiting = false;
+          this.gameResults = null;
+          this.question = question;
+        }
+      }, err => {
+        console.log(err);
+        this.redirect.navigate(['home']);
+      }
+    );
   }
 
   sendAnswer(answer: Answer) {
