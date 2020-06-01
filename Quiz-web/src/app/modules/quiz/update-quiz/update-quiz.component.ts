@@ -111,17 +111,16 @@ export class UpdateQuizComponent implements OnInit {
     const reader = new FileReader();
 
     reader.addEventListener('load', (event: any) => {
-      imaged.image.src = event.target.result;
-      imaged.image.src = imaged.image.src.substring(imaged.image.src.indexOf(',') + 1)
       this.quizzesService.putImage(file).subscribe(
         id => {
           console.log("id=" + id);
           if (typeof id === "number") {
+            imaged.image.src = event.target.result;
+            imaged.image.src = imaged.image.src.substring(imaged.image.src.indexOf(',') + 1)
             imaged.imageId = id;
           }
         },
         error => {
-          imaged.image.src = null;
           console.log(error);
         });
     });
