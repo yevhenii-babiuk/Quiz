@@ -1,0 +1,34 @@
+<div class="msg_history" #msgScroll (scroll)="scrollHandler($event)">
+  <ng-container *ngFor="let message of messages">
+
+    <div *ngIf="{ isIncoming: message.authorId != this.id}; let local">
+
+      <div class="row m-3" [ngClass]="{'d-flex justify-content-end': !local.isIncoming }">
+        <img *ngIf="local.isIncoming && message.author.image" class="avatar rounded-circle col-1"
+             src="data:image/jpeg;base64,{{message.author.image.src}}">
+
+        <div [ngClass]="local.isIncoming ? 'col-7' : 'col-6'">
+          <p [ngClass]="local.isIncoming ? 'received_msg' : 'sent_msg'">
+            <a routerLink="../../users/{{message.authorId}}" class="login text-dark">{{message.author.login}}</a>
+            {{message.messageText}}
+          </p>
+          <span class="time_date"> {{  message.creationDate | date: 'medium' : '' : translate.currentLang }}</span>
+        </div>
+
+        <img *ngIf="!local.isIncoming && message.author.image" class="avatar rounded-circle col-1"
+             src="data:image/jpeg;base64,{{message.author.image.src}}">
+      </div>
+
+    </div>
+
+  </ng-container>
+</div>
+
+<div class="input-group mt-3">
+  <input type="text" class="form-control" placeholder="{{ 'CHAT.TYPE_MESSAGE' | translate }}..."
+         [(ngModel)]="message.messageText" (keydown.enter)="sendMessage()">
+  <div class="input-group-append">
+    <button class="btn btn-warning pl-5 pr-5" type="Send"
+            (click)="sendMessage()">{{ 'CHAT.SEND' | translate }}</button>
+  </div>
+</div>
