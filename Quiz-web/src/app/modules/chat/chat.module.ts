@@ -6,10 +6,11 @@ import {ChatListComponent} from './chat-list/chat-list.component';
 import {ChatAreaComponent} from './chat-area/chat-area.component';
 import {FormsModule} from "@angular/forms";
 import {CoreModule} from "../core/core.module";
+import { MessageHistoryComponent } from './chat-area/message-history/message-history.component';
 
 
 @NgModule({
-  declarations: [ChatListComponent, ChatAreaComponent],
+  declarations: [ChatListComponent, ChatAreaComponent, MessageHistoryComponent],
   imports: [
     CommonModule,
     RouterModule,

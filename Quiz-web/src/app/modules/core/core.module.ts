@@ -9,11 +9,13 @@ import {PagesRoutingModule} from "./pages/pages-routing.module";
 import {CarouselModule} from "angular-bootstrap-md";
 import { NotFoundComponent } from './pages/not-found/not-found.component';
 import {RouterModule} from "@angular/router";
+import { NgVarDirective } from './directives/ng-var.directive';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    NgVarDirective
   ],
   imports: [
     CommonModule,
@@ -21,6 +23,9 @@ import {RouterModule} from "@angular/router";
     RouterModule,
     PagesRoutingModule,
     CarouselModule
+  ],
+  exports: [
+    NgVarDirective
   ],
   providers: [
     AlertService,

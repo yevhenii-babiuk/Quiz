@@ -16,6 +16,8 @@ import localeEnGb from "@angular/common/locales/en-GB";
 export class ChatListComponent implements OnInit {
   id: number;
   public creation: boolean = false;
+  isWaiting: boolean = false;
+
   public chats: Array<Chat>;
   public chat: Chat = new Chat();
 
@@ -25,10 +27,13 @@ export class ChatListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isWaiting = true;
+
     this.id = this.securityService.getCurrentId();
     this.chatService.getUserChats(this.id)
       .subscribe(
         chats => {
+          this.isWaiting = false;
           this.chats = chats;
         })
 

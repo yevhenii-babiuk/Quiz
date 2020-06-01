@@ -30,21 +30,27 @@ public class QuizServiceTest {
     List<Tag> tags = new ArrayList<>();
     List<Question> toInsertExpected = new ArrayList<>();
     List<Question> toDeleteExpected = new ArrayList<>();
+
     @Captor
     ArgumentCaptor<List<Question>> toInsert;
+
     @Captor
     ArgumentCaptor<List<Question>> toDelete;
+
     @InjectMocks
     private QuizService quizService;
+
     @Mock
     private QuestionService questionService;
+
     @Mock
     private ImageService imageService;
+
     @Mock
     private QuizDao quizDao;
+
     @Mock
     private TagService tagService;
-
 
     @Before
     public void init() {
