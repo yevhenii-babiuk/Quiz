@@ -15,7 +15,7 @@ import {TranslateService} from "@ngx-translate/core";
 @Component({
   selector: 'app-profile',
   templateUrl: './view-profile.component.html',
-  styleUrls: ['./view-profile.component.scss']
+  styleUrls: ['./view-profile.component.css']
 })
 
 export class ViewProfile implements OnInit {

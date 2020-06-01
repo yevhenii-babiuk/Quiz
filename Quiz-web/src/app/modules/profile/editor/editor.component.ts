@@ -42,12 +42,7 @@ export class EditorComponent implements OnInit {
   }
 
   edit(id: number, firstName: string, secondName: string, email: string, profile: string) {
-
-    if (firstName == "" || secondName == "" || email == "") {
-      this.alertService.error('alert.fillAllRequiredFields');
-      return;
-    }
-    let editedUser: User = {
+    const editedUser: User = {
       id: id,
       firstName: firstName,
       secondName: secondName,
@@ -65,19 +60,19 @@ export class EditorComponent implements OnInit {
     };
 
     this.profileService.updateUser(editedUser).subscribe(data => {
-      editedUser = data;
       this.alertService.success('alert.editSuccessful');
       this.router.navigate(['profile']).then();
     });
   }
 
   checkPasswords(oldPassword: string, newPassword: string, confirmPassword: string) {
-    if (newPassword != confirmPassword) {
-      this.alertService.error('alert.passwordsDontMatch');
-      return;
-    }
     if (oldPassword == "" || newPassword == "" || confirmPassword == "") {
       this.alertService.error('alert.fillAllRequiredFields');
+      return;
+    }
+
+    if (newPassword != confirmPassword) {
+      this.alertService.error('alert.passwordsDontMatch');
       return;
     }
 
@@ -95,7 +90,6 @@ export class EditorComponent implements OnInit {
 
   changePassword(newPassword: string) {
     this.profileService.changePassword(this.userData.login, newPassword).subscribe(data => {
-      //editedUser = data;
       this.alertService.success('alert.editSuccessful');
       this.router.navigate(['profile']).then()
     });
