@@ -247,7 +247,7 @@ public class UserService {
     }
 
     public boolean addUserFriend(int userId, int friendId) {
-        webSocketSenderService.sendNotification(userId, friendId, NotificationType.FRIEND_INVITATION);
+        webSocketSenderService.sendNotification(userId, friendId, null, NotificationType.FRIEND_INVITATION);
         return userDao.addUserFriend(userId, friendId);
     }
 

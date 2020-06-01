@@ -44,9 +44,9 @@
       </li>
 
       <li class="nav-item mb-1 mt-1 ml-2" *ngIf="authService.isAuthenticated()">
-        <app-message-menu (isMessage)="getMessage($event)"
+        <app-message-menu *ngIf="securityService.getCurrentRole()==roleEnum.USER" (isMessage)="getMessage($event)"
                           [showMessage]="showMessage"></app-message-menu>
-        <app-notification-menu (isNotification)="getNotification($event)"
+        <app-notification-menu *ngIf="securityService.getCurrentRole()==roleEnum.USER" (isNotification)="getNotification($event)"
                                [showNotification]="showNotification"></app-notification-menu>
       </li>
 

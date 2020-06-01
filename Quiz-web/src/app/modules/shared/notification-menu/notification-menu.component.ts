@@ -9,8 +9,6 @@ import {SecurityService} from "../../core/services/security.service";
 import {NotificationService} from "../../core/services/notification.service";
 import {NotificationDto} from "../../core/models/notificationDto";
 import {NotificationFilters} from "../../core/models/notificationFilters";
-import {MessageMenuComponent} from "../message-menu/message-menu.component";
-import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-notification-menu',
@@ -32,9 +30,11 @@ export class NotificationMenuComponent implements OnInit {
   showSettings: boolean;
 
   @Output() isNotification = new EventEmitter<boolean>();
-  changeShowMenu(isShowMenu:boolean) {
+
+  changeShowMenu(isShowMenu: boolean) {
     this.isNotification.emit(isShowMenu);
   }
+
   constructor(public securityService: SecurityService,
               public authService: AuthenticationService,
               private notificationService: NotificationService) {
@@ -48,9 +48,9 @@ export class NotificationMenuComponent implements OnInit {
       that.stompClient.subscribe("/notification" + that.securityService.getCurrentId(), async (message) => {
         if (message.body) {
           that.receivedEvent = JSON.parse(message.body);
-          if(!that.receivedEvent.notification.isMessage) {
+          if (!that.receivedEvent.notification.isMessage) {
             that.notifications.push(that.receivedEvent.notification);
-            if(!that.receivedEvent.notification.isViewed) {
+            if (!that.receivedEvent.notification.isViewed) {
               that.unviewedNotificationCount++;
             }
           }
@@ -85,7 +85,7 @@ export class NotificationMenuComponent implements OnInit {
   }
 
   openNotification(state: boolean) {
-      this.showNotification = state;
+    this.showNotification = state;
   }
 
   getNotificationFromDB() {
@@ -106,6 +106,7 @@ export class NotificationMenuComponent implements OnInit {
 
   updateSettings() {
     this.notificationService.updateSettings(this.notificationFilters).subscribe();
+    console.log(this.notificationFilters)
   }
 
   ngOnInit(): void {
