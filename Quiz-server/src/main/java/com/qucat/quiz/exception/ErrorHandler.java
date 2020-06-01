@@ -55,6 +55,50 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
     }
 
+    @ExceptionHandler(LoginAlreadyExistsException.class)
+    public ResponseEntity<Object> handleUserLoginException(
+            LoginAlreadyExistsException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "LoginException");
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MailAlreadyExistsException.class)
+    public ResponseEntity<Object> handleUserMailException(
+            MailAlreadyExistsException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "MailException");
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(UserAlreadyExists.class)
+    public ResponseEntity<Object> handleUserDuplicateException(
+            UserAlreadyExists ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "DuplicateException");
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(TokenNotExpiredException.class)
+    public ResponseEntity<Object> handleUserTokenException(
+            TokenNotExpiredException ex, WebRequest request) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("timestamp", LocalDateTime.now());
+        body.put("message", "TokenException");
+
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers,
