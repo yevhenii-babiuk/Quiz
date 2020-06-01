@@ -40,17 +40,6 @@
                *ngFor="let questionOption of question.options; let i = index">
 
             <div class="col p-1 md-2">
-
-              <!--              <label class="btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">-->
-              <!--                <input type="radio" class="form-check-input" name="optradio" [disabled]="isSend">-->
-              <!--                {{questionOption.content}}-->
-              <!--              </label>-->
-
-              <!--              <label class="btn bg-light btn-block p-3 form-check-label" (click)="setOption(questionOption.id)">-->
-              <!--                <input class="form-check-input" type="checkbox" value="" [disabled]="isSend" >-->
-              <!--                {{questionOption.content}}-->
-              <!--              </label>-->
-
               <div class="form-check btn bg-light btn-block p-3" (click)="setOption(questionOption.id)">
 
                 <input class="form-check-input" type="checkbox" value="" id="defaultCheck{{i}}" [disabled]="isSend"
@@ -61,7 +50,6 @@
                 <img src="data:image/jpeg;base64,{{questionOption.image.src}}" class="w-25 mx-auto d-inline p-3" alt=""
                      *ngIf="questionOption.imageId!=-1 && questionOption.image">
               </div>
-
             </div>
 
           </div>

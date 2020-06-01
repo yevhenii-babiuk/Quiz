@@ -221,7 +221,8 @@
     "LEAVE": "Leave",
     "CHOOSE_FRIEND": "Choose friend",
     "SEND": "Send",
-    "TYPE_MESSAGE": "Type a message"
+    "TYPE_MESSAGE": "Type a message",
+    "WAIT_LOAD": "Wait please. Chats are loading"
   },
   "AUTHENTICATION": {
     "login": "Login",
