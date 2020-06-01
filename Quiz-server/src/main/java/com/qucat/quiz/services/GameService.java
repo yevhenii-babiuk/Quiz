@@ -2,10 +2,7 @@ package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.GameDao;
 import com.qucat.quiz.repositories.dto.game.*;
-import com.qucat.quiz.repositories.entities.Question;
-import com.qucat.quiz.repositories.entities.QuestionOption;
-import com.qucat.quiz.repositories.entities.Quiz;
-import com.qucat.quiz.repositories.entities.User;
+import com.qucat.quiz.repositories.entities.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Lookup;
@@ -69,6 +66,12 @@ public class GameService {
                 .collect(Collectors.toList());
     }
 
+    public List<Integer> getUsersRegisterIdByGameId(String gameId) {
+        return gameDao.getUsersByGame(gameId).stream()
+                .map(UserDto::getRegisterId)
+                .collect(Collectors.toList());
+    }
+
     public UserDto connectUser(String gameId, int userId) {
         UserDto user;
         if (userId != 0) {
@@ -93,7 +96,16 @@ public class GameService {
         }
         user.setId(gameDao.saveUser(user));
         socketSenderService.sendUsers(user.getGameId(), gameDao.getUsersByGame(user.getGameId()));
+
         return user;
+    }
+
+    public void sendInvitationNotification(String gameId, int userId) {
+        GameDto game = getGameById(gameId);
+        List<Integer> usersInGame = getUsersRegisterIdByGameId(gameId);
+        if (!usersInGame.contains(userId)) {
+            socketSenderService.sendNotification(game.getHostId(), userId, gameId, NotificationType.GAME_INVITATION);
+        }
     }
 
     @Lookup

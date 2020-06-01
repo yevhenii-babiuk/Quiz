@@ -66,7 +66,6 @@ public class QuizService {
         addQuizTags(quiz);
 
         log.info("createQuiz: Quiz successfully saved");
-        webSocketSenderService.sendNotification(quiz.getAuthorId(), quizId, NotificationType.CREATED_QUIZ);
         return quizId;
     }
 
@@ -184,7 +183,12 @@ public class QuizService {
 
     public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
         quizDao.updateQuizStatus(quizId, quizStatus);
-        sendSuggestion(quizId, quizStatus);
+
+        if (quizStatus.equals(QuizStatus.ACTIVATED)) {
+            sendSuggestion(quizId, quizStatus);
+            Quiz forAuthorId = getQuizById(quizId);
+            webSocketSenderService.sendNotification(forAuthorId.getAuthorId(), quizId, null, NotificationType.CREATED_QUIZ);
+        }
     }
 
     private void sendSuggestion(int quizId, QuizStatus quizStatus) {

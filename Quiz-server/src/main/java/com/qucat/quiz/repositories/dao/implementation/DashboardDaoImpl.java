@@ -12,9 +12,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.PlatformTransactionManager;
-import org.springframework.transaction.TransactionStatus;
-import org.springframework.transaction.support.DefaultTransactionDefinition;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -29,9 +27,6 @@ public class DashboardDaoImpl implements DashboardDao {
     @Autowired
     @Qualifier("postgresJdbcTemplate")
     private JdbcTemplate jdbcTemplate;
-
-    @Autowired
-    private PlatformTransactionManager platformTransactionManager;
 
     @Override
     public List<User> getTopUsers(int limit) {
@@ -59,12 +54,12 @@ public class DashboardDaoImpl implements DashboardDao {
         return jdbcTemplate.query(dashboardQueries.get("getStatisticInTheCategoryById"),
                 new Object[]{userId},
                 (rs, rowNum) ->
-                new CategoryStatistics(
-                        rs.getInt("category_id"),
-                        rs.getString("name"),
-                        rs.getTimestamp("take_date"),
-                        rs.getInt("count")
-                ));
+                        new CategoryStatistics(
+                                rs.getInt("category_id"),
+                                rs.getString("name"),
+                                rs.getTimestamp("take_date"),
+                                rs.getInt("count")
+                        ));
     }
 
     @Override
@@ -72,10 +67,10 @@ public class DashboardDaoImpl implements DashboardDao {
         return jdbcTemplate.query(dashboardQueries.get("getPercentOfCorrectAnswersById"),
                 new Object[]{userId},
                 (rs, rowNum) ->
-                new QuizStatistics(
-                        rs.getString("name"),
-                        rs.getDouble("correct_answers_persentage")
-                ));
+                        new QuizStatistics(
+                                rs.getString("name"),
+                                rs.getDouble("correct_answers_persentage")
+                        ));
     }
 
     @Override
@@ -84,11 +79,11 @@ public class DashboardDaoImpl implements DashboardDao {
             return jdbcTemplate.queryForObject(dashboardQueries.get("getMaxScoreById"),
                     new Object[]{userId},
                     (rs, rowNum) ->
-                    new BestQuiz(
-                            rs.getString("name"),
-                            rs.getTimestamp("take_date"),
-                            rs.getInt("score")
-                    ));
+                            new BestQuiz(
+                                    rs.getString("name"),
+                                    rs.getTimestamp("take_date"),
+                                    rs.getInt("score")
+                            ));
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -99,13 +94,13 @@ public class DashboardDaoImpl implements DashboardDao {
         return jdbcTemplate.query(dashboardQueries.get("getComparedScores"),
                 new Object[]{userId},
                 (rs, rowNum) ->
-                new ComparedScores(
-                        rs.getInt("id"),
-                        rs.getString("name"),
-                        rs.getInt("score"),
-                        rs.getInt("userId"),
-                        rs.getInt("record")
-                ));
+                        new ComparedScores(
+                                rs.getInt("id"),
+                                rs.getString("name"),
+                                rs.getInt("score"),
+                                rs.getInt("userId"),
+                                rs.getInt("record")
+                        ));
     }
 
     @Override
@@ -113,20 +108,20 @@ public class DashboardDaoImpl implements DashboardDao {
         return jdbcTemplate.query(dashboardQueries.get("getFriendsPreferences"),
                 new Object[]{userId},
                 (rs, rowNum) ->
-                new QuizStatistics(
-                        rs.getString("name"),
-                        rs.getDouble("count")
-                ));
+                        new QuizStatistics(
+                                rs.getString("name"),
+                                rs.getDouble("count")
+                        ));
     }
 
     @Override
     public List<QuizStatistics> getStatisticOfQuizzesPlayed() {
         return jdbcTemplate.query(dashboardQueries.get("getStatisticOfQuizzesPlayed"),
                 (rs, rowNum) ->
-                new QuizStatistics(
-                        rs.getString("name"),
-                        rs.getDouble("count")
-                ));
+                        new QuizStatistics(
+                                rs.getString("name"),
+                                rs.getDouble("count")
+                        ));
     }
 
     private void createTemporaryTable() {
@@ -134,23 +129,15 @@ public class DashboardDaoImpl implements DashboardDao {
     }
 
     @Override
+    @Transactional
     public List<AdminStatistics> getAmountOfCreatedAndPublishedQuizzes() {
-        DefaultTransactionDefinition paramTransactionDefinition = new DefaultTransactionDefinition();
-        TransactionStatus status = platformTransactionManager.getTransaction(paramTransactionDefinition);
-        List<AdminStatistics> adminStatistics = null;
-        try {
-            createTemporaryTable();
-            adminStatistics = jdbcTemplate.query(dashboardQueries.get("getAmountOfPublishedQuizzes"), (rs, rowNum) ->
-                    new AdminStatistics(
-                            rs.getDate("date"),
-                            rs.getInt("created"),
-                            rs.getInt("published")
-                    ));
-            platformTransactionManager.commit(status);
-        } catch (Exception e) {
-            platformTransactionManager.rollback(status);
-        }
-        return adminStatistics;
+        createTemporaryTable();
+        return jdbcTemplate.query(dashboardQueries.get("getAmountOfPublishedQuizzes"), (rs, rowNum) ->
+                new AdminStatistics(
+                        rs.getDate("date"),
+                        rs.getInt("created"),
+                        rs.getInt("published")
+                ));
     }
 
 }

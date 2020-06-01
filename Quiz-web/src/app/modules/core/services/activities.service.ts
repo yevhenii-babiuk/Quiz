@@ -1,10 +1,10 @@
 import {Injectable} from '@angular/core';
 
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable, of} from 'rxjs';
 import {catchError} from "rxjs/operators";
 
-import {url} from "../../../../environments/environment.prod";
+import {countOnPage, url} from "../../../../environments/environment.prod";
 import {Activity} from "../models/activity";
 
 @Injectable({
@@ -13,22 +13,18 @@ import {Activity} from "../models/activity";
 
 export class ActivitiesService {
 
-  httpOptions = {
-    headers: new HttpHeaders({'Content-Type': 'application/json'})
-  };
-
   constructor(private http: HttpClient) {
   }
 
   getFilterActivitiesPage(userId: number, categoryFilter: boolean[], currentCount: number): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${url}/activities/filter/${userId}?categoryFilter=${categoryFilter}&pageNumber=${currentCount/10}`)
+    return this.http.get<Activity[]>(`${url}/activities/filter/${userId}?categoryFilter=${categoryFilter}&pageNumber=${currentCount/countOnPage}`)
       .pipe(
         catchError(this.handleError<Activity[]>([]))
       );
   }
 
   getActivitiesPageByUserId(userId: number, currentCount: number): Observable<Activity[]> {
-    return this.http.get<Activity[]>(`${url}/activities/${userId}?pageNumber=${currentCount/10}`)
+    return this.http.get<Activity[]>(`${url}/activities/${userId}?pageNumber=${currentCount/countOnPage}`)
       .pipe(
         catchError(this.handleError<Activity[]>([]))
       );

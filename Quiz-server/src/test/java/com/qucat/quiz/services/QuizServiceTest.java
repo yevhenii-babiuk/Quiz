@@ -1,7 +1,10 @@
 package com.qucat.quiz.services;
 
 import com.qucat.quiz.repositories.dao.QuizDao;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.Question;
+import com.qucat.quiz.repositories.entities.QuestionOption;
+import com.qucat.quiz.repositories.entities.Quiz;
+import com.qucat.quiz.repositories.entities.Tag;
 import com.qucat.quiz.repositories.entities.enums.QuestionType;
 import org.junit.Assert;
 import org.junit.Before;
@@ -22,6 +25,18 @@ import static org.mockito.Mockito.*;
 @RunWith(MockitoJUnitRunner.class)
 public class QuizServiceTest {
 
+    List<Question> creationQuestions;
+    List<Question> updateQuestions;
+    List<Tag> tags = new ArrayList<>();
+    List<Question> toInsertExpected = new ArrayList<>();
+    List<Question> toDeleteExpected = new ArrayList<>();
+
+    @Captor
+    ArgumentCaptor<List<Question>> toInsert;
+
+    @Captor
+    ArgumentCaptor<List<Question>> toDelete;
+
     @InjectMocks
     private QuizService quizService;
 
@@ -36,21 +51,6 @@ public class QuizServiceTest {
 
     @Mock
     private TagService tagService;
-
-    @Mock
-    private WebSocketSenderService webSocketSenderService;
-
-    List<Question> creationQuestions;
-    List<Question> updateQuestions;
-    List<Tag> tags = new ArrayList<>();
-
-    List<Question> toInsertExpected = new ArrayList<>();
-    List<Question> toDeleteExpected = new ArrayList<>();
-
-    @Captor
-    ArgumentCaptor<List<Question>> toInsert;
-    @Captor
-    ArgumentCaptor<List<Question>> toDelete;
 
     @Before
     public void init() {
@@ -133,7 +133,6 @@ public class QuizServiceTest {
 
         when(quizDao.save(any(Quiz.class))).thenReturn(1);
         when(questionService.addQuestion(any(Question.class))).thenReturn(1);
-        doNothing().when(webSocketSenderService).sendNotification(any(Integer.class), any(Integer.class), any(NotificationType.class));
         when(tagService.addTag(any(Tag.class))).thenReturn(-1);
 
         quizService.createQuiz(testQuiz);
@@ -142,7 +141,6 @@ public class QuizServiceTest {
         verify(quizDao).save(any(Quiz.class));
         verify(questionService, times(3)).addQuestion(any(Question.class));
         verify(tagService, times(3)).addTag(any(Tag.class));
-        verify(webSocketSenderService).sendNotification(any(Integer.class), any(Integer.class), any(NotificationType.class));
     }
 
     @Test
@@ -164,7 +162,6 @@ public class QuizServiceTest {
         when(imageService.addLogoImage()).thenReturn(1);
         when(quizDao.save(any(Quiz.class))).thenReturn(1);
         when(questionService.addQuestion(any(Question.class))).thenReturn(1);
-        doNothing().when(webSocketSenderService).sendNotification(any(Integer.class), any(Integer.class), any(NotificationType.class));
         when(tagService.addTag(any(Tag.class))).thenReturn(-1);
 
         quizService.createQuiz(testQuiz);
@@ -183,9 +180,9 @@ public class QuizServiceTest {
         final Quiz testQuizBefore = Quiz.builder().questions(creationQuestions).tags(tags).build();
         final Quiz testQuizUpdate = Quiz.builder().questions(updateQuestions).tags(tags).build();
 
-        when(quizDao.getFullInfo(any(Integer.class))).thenReturn(testQuizBefore);
+        when(quizDao.getFullInfo(anyInt())).thenReturn(testQuizBefore);
         when(tagService.addTag(any(Tag.class))).thenReturn(-1);
-        doNothing().when(quizDao).removeTag(any(Integer.class), any(Integer.class));
+        doNothing().when(quizDao).removeTag(anyInt(), anyInt());
         doNothing().when(questionService).deleteQuestions(anyList());
         doNothing().when(questionService).addQuestions(anyList());
         doNothing().when(quizDao).update(any(Quiz.class));

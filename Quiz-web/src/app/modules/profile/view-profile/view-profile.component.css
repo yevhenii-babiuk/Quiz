@@ -1,6 +1,10 @@
 .leftpic {
   margin: 20px 20px 20px 20px;
 }
+.word-break{
+  word-break: break-all;
+}
+
 .image-upload-container {
   cursor: pointer;
 }
@@ -12,9 +16,6 @@
   background-size: contain;
   height: 250px !important;
   width: 230px !important;
-
-  .img-preview {
-  }
 
 }
 

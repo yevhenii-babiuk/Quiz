@@ -1,5 +1,6 @@
 package com.qucat.quiz.services;
 
+import com.qucat.quiz.exception.IncorrectFileContentTypeException;
 import com.qucat.quiz.repositories.dao.implementation.ImageDaoImpl;
 import com.qucat.quiz.repositories.entities.Image;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,9 @@ public class ImageService {
     @Value("${user.image.src}")
     private String userProfileImage;
 
+    @Value("${image.contentTypes}")
+    private List<String> contentTypes;
+
     public Image getImageById(int id) {
         return imageDao.get(id);
     }
@@ -37,6 +41,9 @@ public class ImageService {
             log.error("addImage: multipartFile is null");
             return -1;
         } else {
+            if (!contentTypes.contains(multipartFile.getContentType())) {
+                throw new IncorrectFileContentTypeException("File has incorrect content type " + multipartFile.getContentType());
+            }
             byte[] fileBytes;
             try {
                 fileBytes = multipartFile.getBytes();

@@ -15,7 +15,7 @@ import {TranslateService} from "@ngx-translate/core";
 @Component({
   selector: 'app-profile',
   templateUrl: './view-profile.component.html',
-  styleUrls: ['./view-profile.component.scss']
+  styleUrls: ['./view-profile.component.css']
 })
 
 export class ViewProfile implements OnInit {
@@ -54,7 +54,9 @@ export class ViewProfile implements OnInit {
       this.id = this.securityService.getCurrentId();
       this.isOwn = true;
     }
-
+    if (this.isOwn){
+      this.getLang()
+    }
     this.getUser();
   }
 
@@ -66,10 +68,20 @@ export class ViewProfile implements OnInit {
     });
   }
 
+  private getLang() {
+    this.profileService.getLang(this.id).subscribe(data =>{
+      this.translate.use(data.toString().toLowerCase());
+    })
+  }
+
   processFile(imageInput: any, imaged: Imaged) {
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
+    if (imageInput.files[0].size/1024/1024 > 1) {
+      this.alertService.error("alert.photoSize");
+      return;
+    }
     reader.addEventListener('load', (event: any) => {
       imaged.image.src = event.target.result;
       this.updated = true;

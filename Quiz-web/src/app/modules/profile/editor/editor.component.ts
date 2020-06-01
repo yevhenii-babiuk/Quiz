@@ -16,9 +16,8 @@ export class EditorComponent implements OnInit {
 
   id: number;
   userData: User;
-  login: String;
-  role: String;
-
+  role: string;
+  passwordNew:string;
   constructor(
     private profileService: ProfileService,
     private alertService: AlertService,
@@ -38,27 +37,18 @@ export class EditorComponent implements OnInit {
     this.profileService.getUser(this.id).subscribe(data => {
       this.userData = data;
       this.userData.id = this.id;
-      this.userData.password = null;
 
     });
   }
 
-  edit(id: number, firstname: string, secondname: string, email: string, profile: string, password: string, confirmPassword: string) {
-    if (password != confirmPassword) {
-      this.alertService.error('alert.passwordsDontMatch');
-      return;
-    }
-    if (firstname == "" || secondname == "" || email == "" || password == "" || confirmPassword == "") {
-      this.alertService.error('alert.fillAllRequiredFields');
-      return;
-    }
-    let editedUser: User = {
+  edit(id: number, firstName: string, secondName: string, email: string, profile: string) {
+    const editedUser: User = {
       id: id,
-      firstName: firstname,
-      secondName: secondname,
+      firstName: firstName,
+      secondName: secondName,
       login: this.userData.login,
       mail: email,
-      password: password,
+      password: this.userData.password,
       profile: profile,
       score: this.userData.score,
       role: this.userData.role,
@@ -70,9 +60,38 @@ export class EditorComponent implements OnInit {
     };
 
     this.profileService.updateUser(editedUser).subscribe(data => {
-      editedUser = data;
       this.alertService.success('alert.editSuccessful');
       this.router.navigate(['profile']).then();
+    });
+  }
+
+  checkPasswords(oldPassword: string, newPassword: string, confirmPassword: string) {
+    if (oldPassword == "" || newPassword == "" || confirmPassword == "") {
+      this.alertService.error('alert.fillAllRequiredFields');
+      return;
+    }
+
+    if (newPassword != confirmPassword) {
+      this.alertService.error('alert.passwordsDontMatch');
+      return;
+    }
+
+    this.profileService.checkPasswords(this.userData.login, oldPassword).subscribe(data => {
+      console.log("check " + data);
+      if (data) {
+        this.changePassword(newPassword);
+        this.alertService.success('alert.passwordChanged');
+      }
+      else {
+        this.alertService.error('alert.currentPasswordIncorrect');
+      }
+    });
+  }
+
+  changePassword(newPassword: string) {
+    this.profileService.changePassword(this.userData.login, newPassword).subscribe(data => {
+      this.alertService.success('alert.editSuccessful');
+      this.router.navigate(['profile']).then()
     });
   }
 

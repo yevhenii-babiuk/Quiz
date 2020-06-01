@@ -31,9 +31,26 @@ public class UserController {
         userService.updateUserLanguage(id, lang);
     }
 
+    @GetMapping("{id}/getLang")
+    public Lang getLang(@PathVariable int id) {
+        return userService.getUserLanguage(id);
+    }
+
     @PutMapping
     public void updateUser(@RequestBody @Valid User editedUser) {
         userService.updateUserProfile(editedUser);
+    }
+
+    @PutMapping("/password/{login}")
+    public void changePassword(@PathVariable String login,
+                               @RequestBody String newPassword) {
+        userService.changeUserPassword(login, newPassword);
+    }
+
+    @GetMapping("/password/check")
+    public boolean checkPasswords(@RequestParam(value = "login") String login,
+                                  @RequestParam(value = "password") String password) {
+        return userService.checkPasswords(login, password);
     }
 
     @PutMapping("/photo")

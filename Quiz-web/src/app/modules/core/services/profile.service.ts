@@ -5,6 +5,7 @@ import {User} from "../models/user";
 import {url} from "../../../../environments/environment.prod";
 import {catchError} from "rxjs/operators";
 import {Status} from "../models/Status";
+import {Lang} from "../models/lang";
 
 @Injectable({
   providedIn: 'root'
@@ -22,9 +23,21 @@ export class ProfileService {
     return this.http.get<User>(`${this.url}/users/${id}`);
   }
 
+  public getLang(id: number): Observable<Lang> {
+    return this.http.get<Lang>(`${this.url}/users/${id}/getLang`);
+  }
+
   public updateUser(user: User): Observable<User> {
     return this.http.put<User>(`${this.url}/users/`, user);
   }
+  public changePassword(login:string,newPassword:string): Observable<string> {
+    return this.http.put<string>(`${this.url}/users/password/${login}`,newPassword);
+  }
+
+  public checkPasswords(login:string, password:string) {
+    return this.http.get<boolean>(`${url}/users/password/check?login=${login}&password=${password}`);
+  }
+
   public updateUserPhoto(user: User): Observable<User> {
     return this.http.put<User>(`${this.url}/users/photo`, user);
   }

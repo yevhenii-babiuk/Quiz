@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, Input, OnInit, ViewChild} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 import {Role} from "../../core/models/role";
 import {SecurityService} from "../../core/services/security.service";
 import {ActivitiesService} from "../../core/services/activities.service";
@@ -45,6 +45,7 @@ export class ViewActivitiesComponent implements OnInit {
   role: Role;
   isWaiting: boolean;
   isFiltering: boolean;
+  isEmpty: boolean;
 
   @HostListener("window:scroll", ["$event"])
   onWindowScroll() {
@@ -66,9 +67,16 @@ export class ViewActivitiesComponent implements OnInit {
   ) {
   }
 
+  ngOnInit(): void {
+    this.getActivities();
+
+    registerLocaleData(localeUa, 'ua');
+    registerLocaleData(localeEnGb, 'en-GB');
+  }
 
   getActivities(): void {
     this.userId = this.securityService.getCurrentId();
+    this.isEmpty = false;
     this.isFiltering = false;
     if (this.isWaiting) {
       return;
@@ -77,12 +85,17 @@ export class ViewActivitiesComponent implements OnInit {
     this.activitiesService.getActivitiesPageByUserId(this.userId, this.activities.length)
       .subscribe(
         activities => {
-          if (activities.length == 10) {
+          if (activities.length == 0) {
+            this.isEmpty = true;
             this.isWaiting = false;
+            return;
           }
+          this.isEmpty = false;
+          this.isWaiting = false;
           this.activities = this.activities.concat(activities);
         },
         err => {
+          this.isWaiting = false;
           console.log(err);
         })
 
@@ -94,40 +107,42 @@ export class ViewActivitiesComponent implements OnInit {
   }
 
   getFilteredActivities(): void {
+    this.isEmpty = false;
+    if (this.isWaiting) {
+      return;
+    }
     this.isFiltering = true;
-    let resultSelected = [];
+    const resultSelected = [];
     this.userId = this.securityService.getCurrentId();
     this.activityCategories.forEach(function (value) {
       resultSelected.push(value.selected);
     });
 
-    if (!resultSelected[0] && !resultSelected[1] && !resultSelected[2] && !resultSelected[3]) {
+
+    if (resultSelected.every(elem => elem == false)) {
       this.isWaiting = false;
       this.getActivities();
       return;
     }
-    if (this.isWaiting) {
-      return;
-    }
+
     this.isWaiting = true;
     this.activitiesService.getFilterActivitiesPage(this.userId, resultSelected, this.activities.length)
       .subscribe(
         activities => {
-          if (activities.length == 10) {
+          if (activities.length == 0) {
+            this.isEmpty = true;
             this.isWaiting = false;
+            return;
           }
+          this.isEmpty = false;
+          this.isWaiting = false;
           this.activities = this.activities.concat(activities);
         },
         err => {
+          this.isWaiting = false;
           console.log(err);
         })
   }
 
-  ngOnInit(): void {
-    this.getActivities();
-
-    registerLocaleData(localeUa, 'ua');
-    registerLocaleData(localeEnGb, 'en-GB');
-  }
 
 }

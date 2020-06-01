@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -25,28 +26,28 @@ public class FriendListDaoImpl implements FriendListDao {
 
     @Override
     public boolean isSendNotification(int userId, NotificationType notificationType) {
-        boolean isSend = false;
+        Optional<Boolean> isSend;
         switch (notificationType) {
             case CREATED_NEWS:
-                isSend = jdbcTemplate.queryForObject(friendsListQueries.get("caseIsNewAnnouncement"),
-                        new Object[]{userId}, boolean.class);
+                isSend = Optional.ofNullable(jdbcTemplate.queryForObject(friendsListQueries.get("caseIsNewAnnouncement"),
+                        new Object[]{userId}, boolean.class));
                 break;
             case CREATED_QUIZ:
-                isSend = jdbcTemplate.queryForObject(friendsListQueries.get("caseIsCreatedQuiz"),
-                        new Object[]{userId}, boolean.class);
+                isSend = Optional.ofNullable(jdbcTemplate.queryForObject(friendsListQueries.get("caseIsCreatedQuiz"),
+                        new Object[]{userId}, boolean.class));
                 break;
             case GAME_INVITATION:
-                isSend = jdbcTemplate.queryForObject(friendsListQueries.get("caseIsGameInvitation"),
-                        new Object[]{userId}, boolean.class);
+                isSend = Optional.ofNullable(jdbcTemplate.queryForObject(friendsListQueries.get("caseIsGameInvitation"),
+                        new Object[]{userId}, boolean.class));
                 break;
             case FRIEND_INVITATION:
-                isSend = jdbcTemplate.queryForObject(friendsListQueries.get("caseIsFriendInvitation"),
-                        new Object[]{userId}, boolean.class);
+                isSend = Optional.ofNullable(jdbcTemplate.queryForObject(friendsListQueries.get("caseIsFriendInvitation"),
+                        new Object[]{userId}, boolean.class));
                 break;
             default:
                 return false;
         }
-        return isSend;
+        return isSend.orElse(false);
     }
 
     @Override

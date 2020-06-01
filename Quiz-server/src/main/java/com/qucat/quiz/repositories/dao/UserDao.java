@@ -64,4 +64,6 @@ public interface UserDao extends GenericDao<User> {
     Lang getUserLanguage(int userId);
 
     void updateUserLanguage(int userId, Lang lang);
+
+    void changePassword(String password, String login);
 }
