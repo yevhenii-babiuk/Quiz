@@ -183,10 +183,12 @@ public class QuizService {
 
     public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
         quizDao.updateQuizStatus(quizId, quizStatus);
-        sendSuggestion(quizId, quizStatus);
 
-        Quiz forAuthorId = getQuizById(quizId);
-        webSocketSenderService.sendNotification(forAuthorId.getAuthorId(), quizId, null, NotificationType.CREATED_QUIZ);
+        if (quizStatus.equals(QuizStatus.ACTIVATED)) {
+            sendSuggestion(quizId, quizStatus);
+            Quiz forAuthorId = getQuizById(quizId);
+            webSocketSenderService.sendNotification(forAuthorId.getAuthorId(), quizId, null, NotificationType.CREATED_QUIZ);
+        }
     }
 
     private void sendSuggestion(int quizId, QuizStatus quizStatus) {
