@@ -28,8 +28,6 @@ public class AnnouncementService {
             log.info("createAnnouncement: Announcement wasn't saved");
             return -1;
         }
-        webSocketSenderService.sendNotification(announcement.getAuthorId(), announcementId,
-                NotificationType.CREATED_NEWS);
         return announcementId;
     }
 
@@ -38,7 +36,7 @@ public class AnnouncementService {
             log.info("updateAnnouncement: Announcement is null");
             return;
         }
-        webSocketSenderService.sendNotification(announcement.getAuthorId(), announcement.getId(),
+        webSocketSenderService.sendNotification(announcement.getAuthorId(), announcement.getId(), null,
                 NotificationType.CREATED_NEWS);
         announcementDao.update(announcement);
     }

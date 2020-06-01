@@ -43,7 +43,11 @@
     "photoSize": "Size of loaded photo should be less than 1 MB",
     "BadCredentialsException": "Invalid login and password combination",
     "DisabledException": "Login operation is disabled",
-    "Unauthorized": "Error while login"
+    "Unauthorized": "Error while login",
+    "LoginException": "Such login is already exists",
+    "MailException": "Such mail is already exists",
+    "DuplicateException": "Such user is already exists",
+    "TokenException": "Your registration link has not expired yet"
   },
   "USERLIST": {
     "LOGIN": "Login",
@@ -123,9 +127,9 @@
     "LOGIN": "Login",
     "PASSWORD": "Password",
     "FIRST_NAME": "First name",
-    "NO_VALID_FIRST_NAME": "First name should be at least 2 characters long and have no numbers",
+    "NO_VALID_FIRST_NAME": "First name should be at least 2 characters and not more than 25 characters long and have no numbers",
     "LAST_NAME": "Last Name",
-    "NO_VALID_LAST_NAME": "Last name should be at least 2 characters long and have no numbers",
+    "NO_VALID_LAST_NAME": "Last name should be at least 2 characters and not more than 25 characters long and have no numbers",
     "NO_VALID_LOGIN": "Login should not be empty!",
     "EMAIL": "Email",
     "NO_VALID_MAIL": "Email does't match the pattern: example@gmail.com",
@@ -147,7 +151,8 @@
     "activate": "Activate",
     "deactivate": "Deactivate",
     "CHANGED_STATUS_SUCCESSFUL": "Status successfully changed",
-    "CHANGED_STATUS_ERRORED": "Error while changing status!"
+    "CHANGED_STATUS_ERRORED": "Error while changing status!",
+    "waitLoad": "Wait please. Data is loading"
   },
   "editProfile": {
     "title": "Edit profile",
@@ -160,7 +165,8 @@
     "cancel": "Cancel",
     "currentPassword": "Current password",
     "changePassword": "Change password",
-    "editPersonalData": "Edit personal data"
+    "editPersonalData": "Edit personal data",
+    "noValidProfile": "Description should be not more than 100 symbols"
   },
   "activities": {
     "user": "User",

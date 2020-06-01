@@ -11,6 +11,7 @@ import {AchievementModule} from "../achivement/achievement.module";
 import { FriendListComponent } from './friend-list/friend-list.component';
 import {TranslateModule} from "@ngx-translate/core";
 import {TopUserListComponent} from "./top-user-list/top-user-list.component";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   declarations: [
@@ -20,13 +21,14 @@ import {TopUserListComponent} from "./top-user-list/top-user-list.component";
     FriendListComponent,
     TopUserListComponent
   ],
-  imports: [
-    CommonModule,
-    ProfileRoutingModule,
-    RouterModule,
-    FormsModule,
-    AchievementModule,
-    TranslateModule
-  ]
+    imports: [
+        CommonModule,
+        ProfileRoutingModule,
+        RouterModule,
+        FormsModule,
+        AchievementModule,
+        TranslateModule,
+        SharedModule
+    ]
 })
 export class ProfileModule { }

@@ -14,7 +14,7 @@ import {Lang} from "../../core/models/lang";
 })
 export class HeaderComponent implements OnInit {
   id: number;
-  role: Role;
+  roleEnum= Role;
   @Input()
   showNotification: boolean;
   @Input()
@@ -25,12 +25,11 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private profileService: ProfileService,
-    private securityService: SecurityService,
+    public securityService: SecurityService,
     private redirect: Router,
     public authService: AuthenticationService,
     public translate: TranslateService
   ) {
-    this.role = this.securityService.getCurrentRole();
     this.showNotification = false;
     this.showMessage = false;
   }

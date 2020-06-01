@@ -61,7 +61,7 @@ public class PlayGameController {
     @PostMapping("api/v1/game/{gameId}/inviteFriend")
     public void inviteFriend(@PathVariable String gameId, @RequestBody User user) {
         log.info("get by api/v1/game/" + gameId + "/inviteFriend " + user.getId());
-        //return gameService.connectUser(gameId, userId);
+        gameService.sendInvitationNotification(gameId, user.getId());
     }
 
     @GetMapping("api/v1/game/{gameId}/joinedUser")

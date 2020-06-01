@@ -61,7 +61,7 @@ public class WebSocketSenderService {
                 gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.PLAYERS).players(players).build()));
     }
 
-    public void sendNotification(int authorId, int objectId, NotificationType notificationType) {
+    public void sendNotification(int authorId, int objectId, String gameId, NotificationType notificationType) {
 
         if (notificationType == NotificationType.CREATED_NEWS | notificationType == NotificationType.CREATED_QUIZ
                 | notificationType == NotificationType.MESSAGE) {
@@ -72,16 +72,28 @@ public class WebSocketSenderService {
                 friendsId = friendListDao.getForNotification(authorId, notificationType);
             }
             for (int friendId : friendsId) {
-                Notification notification = notificationService.generateNotification(authorId, objectId, friendId, notificationType);
+                Notification notification = notificationService.generateNotification(authorId, objectId, friendId,
+                        null, notificationType);
                 this.template.convertAndSend("/notification" + friendId,
                         gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
                                 .notification(notification).build()));
             }
         }
-        if (notificationType == NotificationType.FRIEND_INVITATION
-                | notificationType == NotificationType.GAME_INVITATION) {
-            Notification notification = notificationService.generateNotification(authorId, objectId, objectId, notificationType);
+
+        if (notificationType == NotificationType.FRIEND_INVITATION) {
+            Notification notification = notificationService.generateNotification(authorId, objectId, objectId,
+                    null, notificationType);
             if (friendListDao.isSendNotification(objectId, notificationType)) {
+                this.template.convertAndSend("/notification" + objectId,
+                        gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
+                                .notification(notification).build()));
+            }
+        }
+
+        if (notificationType == NotificationType.GAME_INVITATION) {
+            Notification notification = notificationService.generateNotification(authorId, objectId, objectId,
+                    gameId, notificationType);
+            if (friendListDao.isSendNotification(authorId, notificationType)) {
                 this.template.convertAndSend("/notification" + objectId,
                         gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.NOTIFICATION)
                                 .notification(notification).build()));

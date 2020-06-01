@@ -46,7 +46,7 @@ export class RegistrationComponent implements OnInit {
           }
         },
         error => {
-          this.alertService.error('alert.errorRegistration');
+          this.alertService.error('alert.' + error.error.message);
         });
   }
 

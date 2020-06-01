@@ -1,5 +1,9 @@
 package com.qucat.quiz.services;
 
+import com.qucat.quiz.exception.LoginAlreadyExistsException;
+import com.qucat.quiz.exception.MailAlreadyExistsException;
+import com.qucat.quiz.exception.TokenNotExpiredException;
+import com.qucat.quiz.exception.UserAlreadyExistsException;
 import com.qucat.quiz.repositories.dao.UserDao;
 import com.qucat.quiz.repositories.entities.NotificationSettings;
 import com.qucat.quiz.repositories.entities.Token;
@@ -17,10 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
-import static org.mockito.ArgumentMatchers.anyString;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -50,8 +53,8 @@ public class UserServiceTest {
     @Mock
     private User mockUser;
 
-    @Test
-    public void registerUserShouldReturnFalseWhenLoginIsAlreadyExist() {
+    @Test(expected = LoginAlreadyExistsException.class)
+    public void registerUserShouldThrowLoginAlreadyExistsExceptionWhenLoginIsAlreadyExist() {
 
         final User TEST_USER = User.builder().build();
         final String TEST_USER_LOGIN = "testLogin";
@@ -59,14 +62,14 @@ public class UserServiceTest {
         when(mockUser.getLogin()).thenReturn(TEST_USER_LOGIN);
         when(userDao.getUserByLogin(anyString())).thenReturn(TEST_USER);
 
-        boolean result = mockService.registerUser(mockUser);
+        mockService.registerUser(mockUser);
 
         verify(userDao).getUserByLogin(TEST_USER_LOGIN);
-        assertFalse(result);
+
     }
 
-    @Test
-    public void registerUserShouldReturnFalseWhenUserStatusIsActivated() {
+    @Test(expected = MailAlreadyExistsException.class)
+    public void registerUserShouldThrowMailAlreadyExistsExceptionWhenUserStatusIsActivated() {
 
         final User TEST_USER = User.builder().id(7).status(UserAccountStatus.ACTIVATED).build();
         final Token TEST_TOKEN = Token.builder().build();
@@ -83,17 +86,16 @@ public class UserServiceTest {
         when(imageService.addUserProfileImage()).thenReturn(7);
         when(tokenService.getTokenByUserId(anyInt())).thenReturn(TEST_TOKEN);
 
-        boolean result = mockService.registerUser(mockUser);
+        mockService.registerUser(mockUser);
 
         verify(passwordEncoder).encode(TEST_USER_PASS);
         verify(userDao).getUserByMail(TEST_USER_MAIL);
         verify(tokenService).getTokenByUserId(7);
 
-        assertFalse(result);
     }
 
-    @Test
-    public void registerUserShouldReturnFalseWhenTokenIsNotExpired() {
+    @Test(expected = TokenNotExpiredException.class)
+    public void registerUserShouldThrowTokenNotExpiredExceptionWhenTokenIsNotExpired() {
 
         final User TEST_USER = User.builder().id(7).status(UserAccountStatus.UNACTIVATED).build();
         final Date TEST_DATE = new Date(new Date().getTime() + TimeUnit.DAYS.toMillis(1));
@@ -111,9 +113,8 @@ public class UserServiceTest {
         when(imageService.addUserProfileImage()).thenReturn(7);
         when(tokenService.getTokenByUserId(anyInt())).thenReturn(TEST_TOKEN);
 
-        boolean result = mockService.registerUser(mockUser);
+        mockService.registerUser(mockUser);
 
-        assertFalse(result);
     }
 
     @Test
@@ -147,8 +148,8 @@ public class UserServiceTest {
         assertTrue(result);
     }
 
-    @Test
-    public void registerUserShouldReturnFalseWhenSameUserIsAlreadyExist() {
+    @Test(expected = UserAlreadyExistsException.class)
+    public void registerUserShouldThrowUserAlreadyExistsExceptionWhenSameUserIsAlreadyExist() {
 
         final String TEST_USER_LOGIN = "testLogin";
         final String TEST_USER_MAIL = "example@example.com";
@@ -163,10 +164,10 @@ public class UserServiceTest {
         when(passwordEncoder.encode(anyString())).thenReturn(TEST_USER_PASS);
         when(imageService.addUserProfileImage()).thenReturn(7);
 
-        boolean result = mockService.registerUser(mockUser);
+        mockService.registerUser(mockUser);
 
         verify(userDao).save(any(User.class));
-        assertFalse(result);
+
     }
 
     @Test

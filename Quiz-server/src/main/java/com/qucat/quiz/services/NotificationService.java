@@ -20,8 +20,8 @@ public class NotificationService {
     @Autowired
     private UserService userService;
 
-    //todo create test Dima
-    public Notification generateNotification(int authorId, int objectId, int userId, NotificationType notificationType) {
+    public Notification generateNotification(int authorId, int objectId, int userId, String gameId,
+                                             NotificationType notificationType) {
         User notificationAuthor = userService.getUserDataById(authorId);
 
         Notification notification = Notification.builder()
@@ -31,6 +31,7 @@ public class NotificationService {
                 .userId(userId)
                 .isMessage(false)
                 .build();
+
         switch (notificationType) {
             case CREATED_NEWS:
                 notification.setAction("CREATED_NEWS");
@@ -42,11 +43,11 @@ public class NotificationService {
                 break;
             case GAME_INVITATION:
                 notification.setAction("GAME_INVITATION");
-                notification.setActionLink("game/" + objectId + "/play");
+                notification.setActionLink("game/" + gameId + "/play");
                 break;
             case FRIEND_INVITATION:
                 notification.setAction("FRIEND_INVITATION");
-                notification.setActionLink("profile/" + authorId);
+                notification.setActionLink("users/" + authorId);
                 notification.setUserId(objectId);
                 break;
             case MESSAGE:
@@ -57,17 +58,17 @@ public class NotificationService {
             default:
                 return null;
         }
-        createNotification(notification);
+        notification.setId(createNotification(notification));
         return notification;
     }
 
-    public boolean createNotification(Notification notification) {
+    public int createNotification(Notification notification) {
         int notificationId = notificationDao.save(notification);
         if (notificationId == -1) {
             log.info("createNotification: Notification wasn't saved");
-            return false;
+            return -1;
         }
-        return true;
+        return notificationId;
     }
 
     @Scheduled(cron = "* * * 14 * *")
