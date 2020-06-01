@@ -207,11 +207,20 @@ public class UserService {
 
         currentUser.setFirstName(user.getFirstName());
         currentUser.setSecondName(user.getSecondName());
-        currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        //currentUser.setPassword(passwordEncoder.encode(user.getPassword()));
         currentUser.setProfile(user.getProfile());
         currentUser.setMail(user.getMail());
 
         userDao.update(currentUser);
+    }
+
+    public void changeUserPassword(String login, String newPassword) {
+        userDao.changePassword(passwordEncoder.encode(newPassword), login);
+    }
+
+    public boolean checkPasswords(String login, String oldPassword) {
+        User currentUser = userDao.getUserByLogin(login);
+        return passwordEncoder.matches(oldPassword, currentUser.getPassword());
     }
 
     public void authenticate(String username, String password) throws Exception {
@@ -325,11 +334,10 @@ public class UserService {
         userDao.updateUserPhoto(user.getImageId(), user.getId());
     }
 
-    //todo create test Anna
-    public void updateUserStatus(int userId, UserAccountStatus status) {
+    public boolean updateUserStatus(int userId, UserAccountStatus status) {
         User user = userDao.get(userId);
         if (user == null) {
-            return;
+            return false;
         }
         Lang userLanguage = userDao.getUserLanguage(userId) != null
                 ? userDao.getUserLanguage(userId) : Lang.EN;
@@ -341,6 +349,7 @@ public class UserService {
         }
 
         userDao.updateUserStatus(userId, status);
+        return true;
     }
 
     public void updateUsersScore(UserDto user) {

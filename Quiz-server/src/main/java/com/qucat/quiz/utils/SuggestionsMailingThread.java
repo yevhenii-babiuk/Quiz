@@ -2,7 +2,9 @@ package com.qucat.quiz.utils;
 
 import com.qucat.quiz.repositories.entities.enums.MessageInfo;
 import com.qucat.quiz.services.EmailSender;
+import lombok.Builder;
 
+@Builder
 public class SuggestionsMailingThread implements Runnable {
     private EmailSender emailSender;
     private String login;
@@ -14,16 +16,6 @@ public class SuggestionsMailingThread implements Runnable {
     private MessageInfo.MessageInfoItem messageInfoItem;
     private final String QUIZ = "quiz/";
 
-    public SuggestionsMailingThread(EmailSender emailSender, String login, String email, String url, String quizName, String categoryName, String quizId, MessageInfo.MessageInfoItem messageInfoItem) {
-        this.emailSender = emailSender;
-        this.login = login;
-        this.email = email;
-        this.URL = url;
-        this.quizName = quizName;
-        this.categoryName = categoryName;
-        this.quizId = quizId;
-        this.messageInfoItem = messageInfoItem;
-    }
 
     @Override
     public void run() {
