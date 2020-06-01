@@ -38,9 +38,16 @@
     "editSuccessful": "Ви успішно відредагували свій профіль",
     "passwordsDontMatch": "Паролі не збігаються",
     "fillAllRequiredFields": "Заповніть всі обов'язкові поля",
+    "passwordChanged": "Ви успішно змінили пароль",
+    "currentPasswordIncorrect": "Поточний пароль неправильний",
+    "photoSize": "Розмір завантаженого фото повинен бути менше 1 МБ",
     "BadCredentialsException": "Невірна комбінація логіну і паролю",
     "DisabledException": "Операція авторизації недоступна",
-    "Unauthorized": "Помилка при авторизації"
+    "Unauthorized": "Помилка при авторизації",
+    "LoginException": "Таакйи догін уже існує",
+    "MailException": "Така пошта уже зареєстрована",
+    "DuplicateException": "Такий користувач уже існує",
+    "TokenException": "Ваше посилання для активації облікового запису ще активне"
   },
   "USERLIST": {
     "LOGIN": "Логін",
@@ -231,9 +238,13 @@
     "firstName": "Ім'я",
     "lastName": "Прізвище",
     "description": "Опис профілю",
-    "password": "Пароль",
+    "newPassword": "Новий пароль",
     "confirmPassword": "Підтвердити пароль",
-    "save": "Зберегти"
+    "save": "Зберегти",
+    "cancel": "Скасувати",
+    "currentPassword": "Поточний пароль",
+    "changePassword": "Змінити пароль",
+    "editPersonalData": "Редагувати особисті дані"
   },
   "activities": {
     "user": "Користувач ",

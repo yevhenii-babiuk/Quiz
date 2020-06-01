@@ -424,7 +424,11 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
     @Override
     public void updateQuizStatus(int quizId, QuizStatus quizStatus) {
-        jdbcTemplate.update(quizQueries.get("updateQuizStatus"), quizStatus.name().toLowerCase(), quizId);
+        if (quizStatus.equals(QuizStatus.ACTIVATED)) {
+            jdbcTemplate.update(quizQueries.get("updateQuizStatusToPublished"), quizStatus.name().toLowerCase(), quizId);
+        } else {
+            jdbcTemplate.update(quizQueries.get("updateQuizStatus"), quizStatus.name().toLowerCase(), quizId);
+        }
     }
 
     @Override

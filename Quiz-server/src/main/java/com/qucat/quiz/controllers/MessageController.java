@@ -41,7 +41,7 @@ public class MessageController {
         if (sm != null) {
             this.template.convertAndSend(String.format("/chat/%s", chatId),
                     gson.toJson(WebsocketEvent.builder().type(WebsocketEvent.EventType.MESSAGE).message(sm).build()));
-            webSocketSenderService.sendNotification(sm.getAuthorId(), Integer.parseInt(chatId), NotificationType.MESSAGE);
+            webSocketSenderService.sendNotification(sm.getAuthorId(), Integer.parseInt(chatId), null, NotificationType.MESSAGE);
         }
     }
 
