@@ -21,9 +21,7 @@ import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceTest {
@@ -195,6 +193,53 @@ public class UserServiceTest {
 
         verify(userDao).save(any(User.class));
         assertTrue(result);
+    }
+
+    @Test
+    public void updateUserStatusWhenUserIsNull() {
+        final UserAccountStatus TEST_USER_STATUS = UserAccountStatus.ACTIVATED;
+        when(userDao.get(anyInt())).thenReturn(null);
+        assertFalse(mockService.updateUserStatus(anyInt(), TEST_USER_STATUS));
+    }
+
+    @Test
+    public void updateUserStatusWhenUserIsNotNullAndStatusChangeToActivated() {
+        final UserAccountStatus TEST_USER_STATUS = UserAccountStatus.ACTIVATED;
+        final Lang TEST_USER_LANG = Lang.EN;
+        final String TEST_USER_LOGIN = "login";
+        final String TEST_USER_MAIL = "example@example.com";
+        when(userDao.get(anyInt())).thenReturn(mockUser);
+
+        when(userDao.getUserLanguage(anyInt())).thenReturn(TEST_USER_LANG);
+
+        when(mockUser.getStatus()).thenReturn(UserAccountStatus.UNACTIVATED);
+        when(mockUser.getLogin()).thenReturn(TEST_USER_LOGIN);
+        when(mockUser.getMail()).thenReturn(TEST_USER_MAIL);
+
+        boolean result = mockService.updateUserStatus(anyInt(), TEST_USER_STATUS);
+        verify(emailSender).sendMessage(anyString(), anyString(), any(MessageInfo.MessageInfoItem.class));
+        assertTrue(result);
+
+    }
+
+    @Test
+    public void updateUserStatusWhenUserIsNotNullAndStatusChangeToUnactivated() {
+        final UserAccountStatus TEST_USER_STATUS = UserAccountStatus.UNACTIVATED;
+        final Lang TEST_USER_LANG = Lang.EN;
+        final String TEST_USER_LOGIN = "login";
+        final String TEST_USER_MAIL = "example@example.com";
+        when(userDao.get(anyInt())).thenReturn(mockUser);
+
+        when(userDao.getUserLanguage(anyInt())).thenReturn(TEST_USER_LANG);
+
+        when(mockUser.getStatus()).thenReturn(UserAccountStatus.ACTIVATED);
+        when(mockUser.getLogin()).thenReturn(TEST_USER_LOGIN);
+        when(mockUser.getMail()).thenReturn(TEST_USER_MAIL);
+
+        boolean result = mockService.updateUserStatus(anyInt(), TEST_USER_STATUS);
+        verify(emailSender).sendMessage(anyString(), anyString(), any(MessageInfo.MessageInfoItem.class));
+        assertTrue(result);
+
     }
 
 }

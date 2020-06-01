@@ -9,7 +9,6 @@ import {AlertService} from "../../core/services/alert.service";
 import {AchievementService} from "../../core/services/achievement.service";
 import {Status} from "../../core/models/Status";
 import {TranslateService} from "@ngx-translate/core";
-import {Lang} from "../../core/models/lang";
 
 
 
@@ -79,6 +78,10 @@ export class ViewProfile implements OnInit {
     const file: File = imageInput.files[0];
     const reader = new FileReader();
 
+    if (imageInput.files[0].size/1024/1024 > 1) {
+      this.alertService.error("alert.photoSize");
+      return;
+    }
     reader.addEventListener('load', (event: any) => {
       imaged.image.src = event.target.result;
       this.updated = true;

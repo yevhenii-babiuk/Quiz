@@ -18,16 +18,18 @@
   <div class="row custom">
     <div class="col-lg-10 col-md-10 mx-auto m-2">
       <div class="post-preview">
-        <img class="img-responsive img-left" src="../../assets/img/userIcons/{{(activity.friendId%50)+1}}.png" alt="logo"
+        <img class="img-fluid rounded-circle img-left" src="data:image/jpeg;base64,{{activity.friendImageSrc}}"
              width="70" height="70" alt="Avatar">
         <!--achievement-->
         <h5 *ngIf="activity.type==category.ACHIEVEMENT">
-          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.getAchievement' | translate}}
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a>
+          {{'activities.getAchievement' | translate}}
           <q>{{activity.activityContent}}</q>.
         </h5>
         <!--added new quiz-->
         <h5 *ngIf="activity.type==category.PUBLISH_QUIZ">
-          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.createQuiz' | translate}}
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a>
+          {{'activities.createQuiz' | translate}}
           <a routerLink="../quiz/{{activity.activityId}}"><q>{{activity.activityContent}}</q></a>
           .
         </h5>
@@ -39,7 +41,8 @@
         </h5>
         <!--add to friends-->
         <h5 *ngIf="activity.type==category.ADD_FRIEND">
-          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a> {{'activities.addUser' | translate}}
+          {{'activities.user' | translate}} <a routerLink="../users/{{activity.friendId}}">{{activity.friendLogin}}</a>
+          {{'activities.addUser' | translate}}
           <a routerLink="../users/{{activity.activityId}}">{{activity.activityContent}}</a>
           {{'activities.toFriends' | translate}}.
         </h5>

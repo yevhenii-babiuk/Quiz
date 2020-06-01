@@ -41,6 +41,18 @@ public class UserController {
         userService.updateUserProfile(editedUser);
     }
 
+    @PutMapping("/password/{login}")
+    public void changePassword(@PathVariable String login,
+                               @RequestBody String newPassword) {
+        userService.changeUserPassword(login, newPassword);
+    }
+
+    @GetMapping("/password/check")
+    public boolean checkPasswords(@RequestParam(value = "login") String login,
+                                  @RequestParam(value = "password") String password) {
+        return userService.checkPasswords(login, password);
+    }
+
     @PutMapping("/photo")
     public void updateUserPhoto(@RequestBody User editedUser) {
         userService.updateUserImage(editedUser);

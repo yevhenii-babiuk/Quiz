@@ -38,6 +38,9 @@
     "editSuccessful": "You have successfully edited your profile",
     "passwordsDontMatch": "Passwords don`t match",
     "fillAllRequiredFields": "Fill all required fields",
+    "passwordChanged": "You have successfully changed your password",
+    "currentPasswordIncorrect": "Current password is incorrect",
+    "photoSize": "Size of loaded photo should be less than 1 MB",
     "BadCredentialsException": "Invalid login and password combination",
     "DisabledException": "Login operation is disabled",
     "Unauthorized": "Error while login"
@@ -151,9 +154,13 @@
     "firstName": "First name",
     "lastName": "Last Name",
     "description": "Description",
-    "password": "Password",
+    "newPassword": "New password",
     "confirmPassword": "Confirm password",
-    "save": "Save"
+    "save": "Save",
+    "cancel": "Cancel",
+    "currentPassword": "Current password",
+    "changePassword": "Change password",
+    "editPersonalData": "Edit personal data"
   },
   "activities": {
     "user": "User",
