@@ -1,7 +1,7 @@
 <h4 *ngIf="cards && cards.length>0"><p style="text-align:center">{{'DASHBOARD.ACHIEVEMENTS' | translate}}</p></h4>
 <mdb-carousel *ngIf="cards && cards.length>6" [isControls]="true" class="carousel-multi-item multi-animation m-2" [type]="'carousel-multi-item'"
               [animation]="'slide'">
-  <mdb-carousel *ngIf="cards && cards.lengt<=6" [isControls]="true" class="carousel-multi-item multi-animation m-2" [type]="'carousel-multi-item'">
+  <mdb-carousel *ngIf="cards && cards.length<=6" [isControls]="true" class="carousel-multi-item multi-animation m-2" [type]="'carousel-multi-item'">
   <mdb-carousel-item class=" row w-100"  *ngFor="let item of slides; let i = index">
     <div class="col-md-2" *ngFor="let card of item; let cardIndex = index">
       <mdb-card class="my-2" data-toggle="tooltip" title="{{card.description}}">
