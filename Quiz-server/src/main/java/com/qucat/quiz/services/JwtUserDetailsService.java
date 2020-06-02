@@ -22,12 +22,18 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = uDao.getUserByLogin(username);
-        if (user.getLogin().equals(username)) {
-            return new org.springframework.security.core.userdetails.User(
-                    user.getLogin(), user.getPassword(), getAuthority(user));
-        } else {
+        UserDetails userDetails = null;
+        try {
+            if (user.getLogin().equals(username)) {
+                userDetails = new org.springframework.security.core.userdetails.User(
+                        user.getLogin(),
+                        user.getPassword(),
+                        getAuthority(user));
+            }
+        } catch (NullPointerException npe) {
             throw new UsernameNotFoundException("User not found with username: " + username);
         }
+        return userDetails;
     }
 
     private List<SimpleGrantedAuthority> getAuthority(User user) {
