@@ -3,7 +3,7 @@
       rel="stylesheet">
 -->
 <div class="container" *ngIf="quiz">
-  <button *ngIf="securityService.getCurrentRole()=='USER'" [ngStyle]="{'background-color': COLORS.AMBER}"
+  <button *ngIf="securityService.getCurrentRole()=='USER' && quiz.status=='ACTIVATED'" [ngStyle]="{'background-color': COLORS.AMBER}"
           class="btn form-control" routerLink="gameSettings">
     {{ 'quiz.viewQuiz.playQuiz' | translate }}
   </button>

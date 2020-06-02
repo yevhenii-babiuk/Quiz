@@ -34,7 +34,7 @@ export class RoleGuardService implements CanActivate {
         return true;
       }
     }
-    this.router.navigate(['profile']);
+    this.router.navigate(['404']);
     return false;
   }
 }

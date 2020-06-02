@@ -109,8 +109,8 @@ public class AchievementService {
                 .filter(userAchievement -> !afterUpdateAchievements.contains(userAchievement))
                 .collect(Collectors.toList());
 
-        log.info("toInsert: " + toInsert);
-        log.info("toDelete: " + toDelete);
+        log.info("toInsert: {}", toInsert);
+        log.info("toDelete: {}", toDelete);
 
         if (!toDelete.isEmpty()) {
             userAchievementsService.deleteUserAchievements(toDelete);

@@ -85,7 +85,7 @@ public class AchievementDaoImpl extends GenericDaoImpl<Achievement> implements A
             objects.add(achievement.getId());
         }
 
-        return jdbcTemplate.query(String.join(" UNION ", sql), objects.toArray(),
+        return jdbcTemplate.query(String.join(" UNION ALL ", sql), objects.toArray(),
                 new UserAchievementMapper());
     }
 }

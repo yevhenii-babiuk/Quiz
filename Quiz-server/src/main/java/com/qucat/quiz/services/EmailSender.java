@@ -44,8 +44,10 @@ public class EmailSender {
             replace.put(URL_TOKEN, url);
             setContent(message, messageInfoItem, replace);
             Transport.send(message);
-        } catch (MessagingException | IOException e) {
+        } catch (MessagingException e) {
             log.error("cant send message", e);
+        } catch (IOException e) {
+            log.error("cant read file with message", e);
         }
     }
 
@@ -62,8 +64,10 @@ public class EmailSender {
             Message message = generateMessage(receiverEmailAddress);
             setContent(message, messageInfoItem, replace);
             Transport.send(message);
-        } catch (MessagingException | IOException e) {
+        } catch (MessagingException e) {
             log.error("cant send message", e);
+        } catch (IOException e) {
+            log.error("cant read file with message", e);
         }
     }
 
@@ -76,8 +80,10 @@ public class EmailSender {
             setContent(message, messageInfoItem, replace);
             Transport.send(message);
 
-        } catch (MessagingException | IOException e) {
+        } catch (MessagingException e) {
             log.error("cant send message", e);
+        } catch (IOException e) {
+            log.error("cant read file with message", e);
         }
     }
 

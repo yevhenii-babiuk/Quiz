@@ -20,7 +20,6 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -67,13 +66,9 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
         if (user.getProfile() != null) {
             preparedStatement.setString(8, user.getProfile());
         } else {
-            preparedStatement.setNull(8, Types.VARCHAR);
+            preparedStatement.setString(8, "");
         }
-        if (user.getScore() != 0) {
-            preparedStatement.setInt(9, user.getScore());
-        } else {
-            preparedStatement.setNull(9, Types.INTEGER);
-        }
+        preparedStatement.setInt(9, user.getScore());
         preparedStatement.setInt(10, user.getImageId());
         return preparedStatement;
     }
@@ -405,6 +400,6 @@ public class UserDaoImpl extends GenericDaoImpl<User> implements UserDao {
     @Override
     public void changePassword(String password, String login) {
         jdbcTemplate.update(usersQueries.get("changePassword"),
-                password,login);
+                password, login);
     }
 }
