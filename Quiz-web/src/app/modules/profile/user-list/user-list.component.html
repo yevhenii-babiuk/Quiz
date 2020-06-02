@@ -22,7 +22,7 @@
       <tbody>
       <ng-container *ngFor="let user of users">
         <tr routerLink="/users/{{user.id}}">
-          <td><img src="assets/img/userIcons/{{(user.id%50)+1}}.png" height="50" class="avatar" alt="Avatar"></td>
+          <td><img src="data:image/jpeg;base64,{{user.image.src}}" height="50" class="avatar" alt="Avatar"></td>
           <td><a routerLink="/users/{{user.id}}" > {{user.login}}</a></td>
           <td>{{user.firstName}} {{user.secondName}}</td>
           <td>{{  user.registrationDate | date: 'longDate' : '' : translate.currentLang }}</td>

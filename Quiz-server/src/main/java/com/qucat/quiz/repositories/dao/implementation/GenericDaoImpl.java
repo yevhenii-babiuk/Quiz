@@ -1,6 +1,7 @@
 package com.qucat.quiz.repositories.dao.implementation;
 
 import com.qucat.quiz.repositories.dao.GenericDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 public abstract class GenericDaoImpl<T> implements GenericDao<T> {
 
     @Value("#{${sql.generic}}")
@@ -47,6 +49,7 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
             object = jdbcTemplate.queryForObject(String.format(genericQueries.get("get"), tableName),
                     new Object[]{id}, rowMapper);
         } catch (EmptyResultDataAccessException e) {
+            log.info("No object with id {} int table {}", id, tableName);
             return null;
         }
         return object;
@@ -67,6 +70,7 @@ public abstract class GenericDaoImpl<T> implements GenericDao<T> {
                 return getInsertPreparedStatement(preparedStatement, t);
             }, keyHolder);
         } catch (DuplicateKeyException e) {
+            log.info("DuplicateKeyException while inserting object {}", t);
             return -1;
         }
         return (int) Objects.requireNonNull(keyHolder.getKeys()).get("id");

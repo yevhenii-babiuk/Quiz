@@ -72,7 +72,6 @@ public class GameService {
                 .collect(Collectors.toList());
     }
 
-    //todo create test Alexandra
     public UserDto connectUser(String gameId, int userId) {
         UserDto user;
         if (userId != 0) {

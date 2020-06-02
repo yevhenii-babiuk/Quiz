@@ -3,7 +3,8 @@ package com.qucat.quiz.repositories.dao.implementation;
 import com.qucat.quiz.repositories.dao.QuizDao;
 import com.qucat.quiz.repositories.dao.mappers.QuizMapper;
 import com.qucat.quiz.repositories.dao.mappers.extractors.QuizExtractor;
-import com.qucat.quiz.repositories.entities.*;
+import com.qucat.quiz.repositories.entities.Image;
+import com.qucat.quiz.repositories.entities.Quiz;
 import com.qucat.quiz.repositories.entities.enums.QuizStatus;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -100,7 +101,11 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
         List<Quiz> result = jdbcTemplate.query(getQuery,
                 new Object[]{id},
                 new QuizExtractor());
-        return result.size() == 0 ? null : result.get(0);
+        if (result == null || result.size() == 0) {
+            log.info("No quiz with id {} found in database", id);
+            return null;
+        }
+        return result.get(0);
     }
 
     @Override
@@ -111,6 +116,7 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                     quizId, tagId
             );
         } catch (DuplicateKeyException e) {
+            log.info("Relation quizId = {}, tagId={} already exists ", quizId, tagId);
             return true;
         }
         return true;
@@ -417,9 +423,10 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
 
     @Override
     public boolean getFavouriteMarkByUserIdAndQuizId(int userId, int quizId) {
-        return jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId, quizId}, (rs, rowNum) ->
+        Boolean result = jdbcTemplate.queryForObject(quizQueries.get("getFavouriteMarkByUserIdAndQuizId"), new Object[]{userId, quizId}, (rs, rowNum) ->
                 rs.getBoolean("is_favourite")
         );
+        return result != null && result;
     }
 
     @Override
@@ -439,7 +446,8 @@ public class QuizDaoImpl extends GenericDaoImpl<Quiz> implements QuizDao {
                     quizId, userId
             );
         } catch (DuplicateKeyException e) {
-            return false;
+            log.info("Relation quizId = {}, userId={} in table favorite_mark already exists ", quizId, userId);
+            return true;
         }
         return true;
     }

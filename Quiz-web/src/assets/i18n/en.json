@@ -275,6 +275,11 @@
     "INTERMEDIATE RESULT": "Show intermediate results",
     "PLAY": "PLAY"
   },
+  "WR": {
+    "START":"Start game",
+    "COPY": "Copy to clipboard",
+    "WAIT": "Wait until host start game"
+  },
   "HOME": {
     "PLAY": "Play now"
   },
